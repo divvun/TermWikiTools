@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -55,9 +54,10 @@ class Concept(object):
 
     def __str__(self):
         strings = ['{{Concept']
-        for key, value in self.concept_info.items():
-            if len(value.strip()) > 0:
-                strings.append('|' + key + '=' + value)
+        for key, values in self.concept_info.items():
+            for value in values:
+                if len(value.strip()) > 0:
+                    strings.append('|' + key + '=' + value)
         strings.append('}}')
 
         for lang, expressions in self.expressions.items():
@@ -110,7 +110,7 @@ class TermWiki(object):
 
 class Importer(object):
     def __init__(self):
-        self.termwiki = TermWiki
+        self.termwiki = TermWiki()
         self.termwiki.get_terms_expression()
 
     def do_expressions_exist(self, expressions, language):
@@ -352,7 +352,7 @@ def export_to_mediawiki():
     for (path, lang_column) in mapping:
         excel.write(path, lang_column)
 
-export_to_mediawiki()
+#export_to_mediawiki()
 
 import glob
 

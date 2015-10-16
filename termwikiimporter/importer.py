@@ -38,14 +38,58 @@ class ExternalCommandRunner(object):
         self.returncode = subp.returncode
 
 
+class ExpressionInfo(
+    collections.namedtuple('ExpressionInfo',
+                           'expression language is_typo has_illegal_char collection wordclass sanctioned')):
+    '''ExpressionInfo
+
+    Information bound to an expression
+    expression is a string
+
+    is_typo, has_illegal_char and sanctioned are booleans
+
+    is_typo is true if an fst does not recognize the expression
+    has_illegal_char is true if the expression contains unwanted characters
+    sanctioned is true if expressions are recommended by a language organ
+
+    collection is a string that points to the collection the expression belongs to
+    wordclass is a string informing what part of speech the word is
+    '''
+    __slots__ = ()
+
+    def __str__(self):
+        strings = ['{{Related_expression']
+        for key, value in self._asdict().items():
+            if value is True:
+                strings.append('|' + key + '=Yes')
+            elif value is False:
+                strings.append('|' + key + '=No')
+            else:
+                strings.append('|' + key + '=' + value)
+
+        strings.append('}}')
+
+        return '\n'.join(strings)
+
+
 class Concept(object):
+    '''Model the TermWiki concept
+
+    concept_info is a dict
+    The concept information is key, the value is a set containing the
+    definitions, explanations and more_infos
+
+    expressions is a set containing ExpressionInfos
+
+    pages is a set of TermWiki pages that may be duplicates of this concept
+    '''
     def __init__(self):
         self.concept_info = collections.defaultdict(set)
-        self.expressions = collections.defaultdict(set)
+        self.expressions = set()
         self.pages = set()
 
-    def add_expression(self, lang, expression):
-        self.expressions[lang].add(expression)
+    def add_expression(self, lang, expression_info):
+        self.expressions[lang].add(expression_info)
 
     def add_concept_info(self, key, info):
         self.concept_info[key].add(info)

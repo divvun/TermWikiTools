@@ -7,20 +7,51 @@ import unittest
 from termwikiimporter import importer
 
 
+class TestExpressionInfo(unittest.TestCase):
+    def test_str(self):
+        e = importer.ExpressionInfo(expression='test1',
+                                    language='se',
+                                    is_typo=False,
+                                    has_illegal_char=True,
+                                    collection='Example coll',
+                                    wordclass='N',
+                                    sanctioned=True)
+        want = [
+            '{{Related_expression',
+            '|expression=test1',
+            '|language=se',
+            '|is_typo=No',
+            '|has_illegal_char=Yes',
+            '|collection=Example coll',
+            '|wordclass=N',
+            '|sanctioned=Yes',
+            '}}']
+
+        self.assertEqual('\n'.join(want), str(e))
+
+
 class TestConcept(unittest.TestCase):
     def setUp(self):
         self.concept = importer.Concept()
 
     def add_expression(self):
-        self.concept.add_expression('se', 'sámi1')
-        self.concept.add_expression('se', 'sámi2')
-        self.concept.add_expression('nb', 'norsk1')
-        self.concept.add_expression('nb', 'norsk1')
+        uff = {
+            'se': ['sámi1', 'sámi2'],
+            'nb': ['norsk1']}
+        for lang, expressions in uff:
+            for expression in expressions:
+                self.concept.add_expression(
+                    'se', importer.ExpressionInfo(expression=expression,
+                                                  is_typo=False,
+                                                  has_illegal_char=True,
+                                                  collection='Example coll',
+                                                  wordclass='N',
+                                                  sanctioned=True))
 
     def test_add_expression(self):
         self.add_expression()
-        self.assertEqual(self.concept.expressions['se'], set(['sámi1', 'sámi2']))
-        self.assertEqual(self.concept.expressions['nb'], set(['norsk1']))
+        self.assertEqual(self.concept.expressions['se'], set([('sámi1'), ('sámi2')]))
+        self.assertEqual(self.concept.expressions['nb'], set([('norsk1')]))
 
 
     def add_concept_info(self):

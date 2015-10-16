@@ -1,0 +1,100 @@
+<r>
+  <e xmlns:xi="http://www.w3.org/2001/XInclude" id="100830" category="Dihtorteknologiija ja diehtoteknihkka">
+    <tg xml:lang="nb">
+      <t>
+        <xi:include href="terms-nb.xml" xpointer="xpointer(//e[@id='hodetelefoner\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="fi">
+      <t>
+        <xi:include href="terms-fi.xml" xpointer="xpointer(//e[@id='kuulokkeet\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="nb">
+      <t>
+        <xi:include href="terms-nb.xml" xpointer="xpointer(//e[@id='hodesett\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='belljosat\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+  </e>
+  <e xmlns:xi="http://www.w3.org/2001/XInclude" id="206" category="Dihtorteknologiija ja diehtoteknihkka">
+    <tg xml:lang="nb">
+      <t>
+        <xi:include href="terms-nb.xml" xpointer="xpointer(//e[@id='hodetelefoner\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="fi">
+      <t>
+        <xi:include href="terms-fi.xml" xpointer="xpointer(//e[@id='kuulokkeet\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='bealjoštelefovdna\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+  </e>
+  <e xmlns:xi="http://www.w3.org/2001/XInclude" id="101148" category="Geografiija">
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='Brasilia\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="fi">
+      <t>
+        <xi:include href="terms-fi.xml" xpointer="xpointer(//e[@id='Brasilia\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='Brasil\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="nb">
+      <t>
+        <xi:include href="terms-nb.xml" xpointer="xpointer(//e[@id='Brasil\N']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+  </e>
+  <e xmlns:xi="http://www.w3.org/2001/XInclude" id="101149" category="Geografiija">
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='Brasilia\V']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="fi">
+      <t>
+        <xi:include href="terms-fi.xml" xpointer="xpointer(//e[@id='Brasilia\V']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="se">
+      <t>
+        <xi:include href="terms-se.xml" xpointer="xpointer(//e[@id='Brasil\V']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+    <tg xml:lang="nb">
+      <t>
+        <xi:include href="terms-nb.xml" xpointer="xpointer(//e[@id='Brasil\V']/lg/l/text())">
+</xi:include>
+      </t>
+    </tg>
+  </e>
+</r>

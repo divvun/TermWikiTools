@@ -80,33 +80,41 @@ class TermWiki(object):
     for å slå opp, så sjekker man om ordet er i 1. Om det finnes, slår man opp id i 2, sjekker om man har treff i 3.
     '''
     def __init__(self):
-        self.expression_id = collections.defaultdict(set)
-        self.expressions_lang = collections.defaultdict(set)
-        self.idref_expressions = collections.defaultdict(dict)
+        self.expressions = collections.defaultdict(dict)
+        self.idrefs = collections.defaultdict(dict)
 
-    def get_terms_expression(self):
-        term_home = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
+    @property
+    def term_home(self):
+        return os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
 
-        for term_file in os.listdir(term_home):
+    def get_expressions(self):
+        for term_file in os.listdir(self.term_home):
             if term_file.startswith('terms-'):
-                expression_tree = etree.parse(os.path.join(term_home, term_file))
                 lang = term_file[term_file.find('-') + 1:term_file.find('.')]
-                print('lang', lang)
-                counter = collections.defaultdict(int)
+                expressions = collections.defaultdict(set)
+                l_elements = etree.parse(
+                    os.path.join(self.term_home,
+                                 term_file)).xpath('.//e/lg/l')
+                for l in l_elements:
+                    expression = l.text
+                    idrefs = [mg.get('idref') for mg in l.getparent().getparent().xpath('.//mg')]
+                    for idref in idrefs:
+                        expressions[expression].add(idref)
 
-                for e in expression_tree.xpath('.//e'):
-                    counter['totals'] += 1
-                    l = e.find('./lg/l')
-                    if l is not None:
-                        counter[lang + '_full'] += 1
-                        idref = e.find('./mg').get('idref')
-                        self.expressions_lang[lang].add(l.text)
-                        self.expression_id[l.text].add(idref)
-                        self.idref_expressions[idref].setdefault(lang, set()).add(l.text)
-                    else:
-                        counter[lang + '_empty'] +=1
+                self.expressions[lang] = expressions
 
-        #print(counter, self.idref_expressions)
+    def get_idrefs(self):
+        for term_file in os.listdir(self.term_home):
+            if term_file.startswith('terms-'):
+                lang = term_file[term_file.find('-') + 1:term_file.find('.')]
+                mg_elements = etree.parse(
+                    os.path.join(self.term_home,
+                                 term_file)).xpath('.//e/mg')
+                for mg in mg_elements:
+                    idref = mg.get('idref')
+                    expressions = [l.text for l in mg.getparent().xpath('./lg/l')]
+                    for expression in expressions:
+                        self.idrefs[idref].setdefault(lang, set()).add(expression)
 
 class Importer(object):
     def __init__(self):
@@ -386,7 +394,7 @@ def print_termcenter():
 '''Sammenligne et concept med TermWiki
 
 Gå gjennom expressions
-For hvert expression sjekk om den eksisterer i expressions_lang
+For hvert expression sjekk om den eksisterer i expressions
 Sjekk om vi har vært innom samme idref i expression_id
 Hvis ikke, sjekk om expression finnes i idref_expressions.
 Hvis ja, lagre idref

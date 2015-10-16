@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import unittest
 
 from termwikiimporter import importer
@@ -76,3 +77,47 @@ class TestConcept(unittest.TestCase):
         self.assertTrue(rel1 in str(self.concept))
         self.assertTrue(rel2 in str(self.concept))
         self.assertTrue(rel3 in str(self.concept))
+
+class TermWikiWithTestSource(importer.TermWiki):
+    @property
+    def term_home(self):
+        return os.path.join(os.path.dirname(__file__), 'terms')
+
+class TestTermwiki(unittest.TestCase):
+    def setUp(self):
+        self.termwiki = TermWikiWithTestSource()
+
+    def test_expressions(self):
+        self.termwiki.get_expressions()
+        self.maxDiff = None
+        self.assertDictEqual(
+            self.termwiki.expressions,
+            {'fi': {'kuulokkeet': set(['206', '100830']),
+                    'Brasilia': set(['101148', '101149'])},
+             'nb': {'Brasil': set(['101149', '101148']),
+                    'hodesett': set(['100830']),
+                    'hodetelefoner': set(['100830', '206'])},
+             'se': {'Brasil': set(['101149', '101148']),
+                    'Brasilia': set(['101149', '101148']),
+                    'bealjoštelefovdna': set(['206']),
+                    'belljosat': set(['100830'])}
+            }
+        )
+
+    def test_idref_expressions(self):
+        self.termwiki.get_idrefs()
+        self.maxDiff = None
+        self.assertDictEqual(
+            self.termwiki.idrefs,
+            {'100830': {'fi': {'kuulokkeet'},
+                        'nb': {'hodetelefoner', 'hodesett'},
+                        'se': {'belljosat'}},
+             '101148': {'fi': {'Brasilia'},
+                        'nb': {'Brasil'},
+                        'se': {'Brasil', 'Brasilia'}},
+             '101149': {'fi': {'Brasilia'},
+                        'nb': {'Brasil'},
+                        'se': {'Brasil', 'Brasilia'}},
+             '206': {'fi': {'kuulokkeet'},
+                    'nb': {'hodetelefoner'},
+                    'se': {'bealjoštelefovdna'}}})

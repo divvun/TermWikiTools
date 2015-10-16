@@ -42,7 +42,7 @@ class Concept(object):
     def __init__(self):
         self.concept_info = collections.defaultdict(set)
         self.expressions = collections.defaultdict(set)
-        self.idref = set()
+        self.pages = set()
 
     def add_expression(self, lang, expression):
         self.expressions[lang].add(expression)
@@ -50,8 +50,8 @@ class Concept(object):
     def add_concept_info(self, key, info):
         self.concept_info[key].add(info)
 
-    def add_idref(self, idref):
-        self.idref.add(idref)
+    def add_page(self, page):
+        self.pages.add(page)
 
     def __str__(self):
         strings = ['{{Concept']
@@ -92,7 +92,7 @@ class TermWiki(object):
     '''
     def __init__(self):
         self.expressions = collections.defaultdict(dict)
-        self.idrefs = collections.defaultdict(dict)
+        self.pages = collections.defaultdict(dict)
 
     @property
     def term_home(self):
@@ -113,7 +113,7 @@ class TermWiki(object):
 
                 self.expressions[lang] = expressions
 
-    def get_idrefs(self):
+    def get_pages(self):
         for term_file in os.listdir(self.term_home):
             if term_file.startswith('terms-'):
                 lang = term_file[term_file.find('-') + 1:term_file.find('.')]
@@ -121,19 +121,48 @@ class TermWiki(object):
                     os.path.join(self.term_home,
                                  term_file)).xpath('.//e/mg')
                 for mg in mg_elements:
-                    idref = mg.get('idref')
-                    self.idrefs[idref].setdefault(lang, set()).update(
+                    page = mg.get('idref')
+                    self.pages[page].setdefault(lang, set()).update(
                         set([l.text for l in mg.getparent().xpath('./lg/l')]))
 
     def get_expressions_set(self, lang):
         return set(self.expressions.keys())
+
+    def get_pages_where_concept_probably_exists(self, concept):
+        '''Check if a Concept already exists in TermWiki
+
+        A concept is possibly part of the termwiki if one expression from two
+        different languages is part of a page.
+
+        concept: is a Concept
+        return: a set of the pages containing at least one expression from two
+        different languages
+        '''
+        common_pages = set()
+        hits = 0
+        for lang, expressions in concept.expressions.items():
+            if not self.get_expressions_set().isdisjoint(expressions):
+                hits += 1
+
+        termwiki_pages = collections.defaultdict(set)
+        for lang, expressions in concept.expressions.items():
+            for expression in expressions:
+                termwiki_pages[lang].add(self.expressions[expression])
+
+        for lang1, pages1 in termwiki_pages.items():
+            for lang2, pages2 in termwiki_pages.items():
+                if lang1 != lang2:
+                    common_pages.update(pages1.intersection(pages2))
+
+        return common_pages
+
 
 
 class Importer(object):
     def __init__(self):
         self.termwiki = TermWiki()
         self.termwiki.get_expressions()
-        self.termwiki.get_idrefs()
+        self.termwiki.get_pages()
         self.concepts = []
 
     def do_expressions_exist(self, expressions, language):

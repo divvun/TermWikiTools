@@ -31,18 +31,18 @@ class TestConcept(unittest.TestCase):
 
         self.assertEqual(self.concept.concept_info['definition_se'], set(['definition1']))
 
-    def add_idref(self):
-        self.concept.add_idref('8')
+    def add_page(self):
+        self.concept.add_page('8')
 
-    def test_add_idref(self):
-        self.add_idref()
+    def test_add_page(self):
+        self.add_page()
 
-        self.assertEqual(self.concept.idref, set(['8']))
+        self.assertEqual(self.concept.pages, set(['8']))
 
     def test_string(self):
         self.add_concept_info()
         self.add_expression()
-        self.add_idref()
+        self.add_page()
 
         concept = (
             '{{Concept\n'
@@ -105,7 +105,7 @@ class TestTermwiki(unittest.TestCase):
     def setUp(self):
         self.termwiki = TermWikiWithTestSource()
         self.termwiki.get_expressions()
-        self.termwiki.get_idrefs()
+        self.termwiki.get_pages()
 
     def test_expressions(self):
         self.maxDiff = None
@@ -123,10 +123,10 @@ class TestTermwiki(unittest.TestCase):
             }
         )
 
-    def test_idref_expressions(self):
+    def test_page_expressions(self):
         self.maxDiff = None
         self.assertDictEqual(
-            self.termwiki.idrefs,
+            self.termwiki.pages,
             {'Dihtorteknologiija ja diehtoteknihkka:belljosat':
                  {'fi': {'kuulokkeet'},
                   'nb': {'hodetelefoner', 'hodesett'},

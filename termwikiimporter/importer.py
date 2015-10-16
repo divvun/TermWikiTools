@@ -403,9 +403,11 @@ def print_termcenter():
 
 '''Sammenligne et concept med TermWiki
 
-Gå gjennom expressions
-For hvert expression sjekk om den eksisterer i expressions
-Sjekk om vi har vært innom samme idref i expression_id
-Hvis ikke, sjekk om expression finnes i idref_expressions.
-Hvis ja, lagre idref
+Språkuttrykk i Concept er samlet set, det samme er uttrykk i TermWiki.
+Sjekk om språkuttryk per språk er disjoint med samme språk i TermWiki.
+
+Om det er treff innen to eller flere språk er det muligens snakk om samme
+Concept.
+Sjekk om det er treff innen samme idref (mao. samme TermWiki-Concept). Om det
+er det, ta vare på idrefen(e)
 '''

@@ -100,6 +100,7 @@ class TermWikiWithTestSource(importer.TermWiki):
     def term_home(self):
         return os.path.join(os.path.dirname(__file__), 'terms')
 
+
 class TestTermwiki(unittest.TestCase):
     def setUp(self):
         self.termwiki = TermWikiWithTestSource()

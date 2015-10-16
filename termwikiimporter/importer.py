@@ -89,14 +89,29 @@ class Concept(object):
         self.pages = set()
 
     def add_expression(self, expression_info):
-        print('appending', str(expression_info))
-        self.expressions.append(expression_info)
+        if expression_info not in self.expressions:
+            self.expressions.append(expression_info)
 
     def add_concept_info(self, key, info):
         self.concept_info[key].add(info)
 
     def add_page(self, page):
         self.pages.add(page)
+
+    def get_expressions_set(self, lang):
+        e_set = set()
+        for e in self.expressions:
+            if e.language == lang:
+                e_set.add(e.expression)
+
+        return e_set
+
+    def get_lang_set(self):
+        lang_set = set()
+        for e in self.expressions:
+            lang_set.add(e.language)
+
+        return lang_set
 
     def __str__(self):
         strings = ['{{Concept']
@@ -106,7 +121,7 @@ class Concept(object):
                     strings.append('|' + key + '=' + value)
         strings.append('}}')
 
-        for expression in self.expressions:
+        for expression in sorted(self.expressions):
             strings.append(str(expression))
 
         return '\n'.join(strings)
@@ -170,14 +185,14 @@ class TermWiki(object):
         '''
         common_pages = set()
         hits = 0
-        for lang, expressions in concept.expressions.items():
-            if not self.get_expressions_set(lang).isdisjoint(expressions):
+        for lang in concept.get_lang_set():
+            if not self.get_expressions_set(lang).isdisjoint(concept.get_expressions_set(lang)):
                 hits += 1
 
         if hits > 1:
             termwiki_pages = collections.defaultdict(set)
-            for lang, expressions in concept.expressions.items():
-                for expression in expressions:
+            for lang in concept.get_lang_set():
+                for expression in concept.get_expressions_set(lang):
                     termwiki_pages[lang].update(self.expressions[lang][expression])
 
             for lang1, pages1 in termwiki_pages.items():
@@ -220,45 +235,91 @@ class Importer(object):
 
         return runner.stdout
 
-    def is_expression_typo(self, expression):
+    def is_expression_typo(self, expression, lang):
         """Runs lookup on the expression
 
         Returns the output of preprocess
         """
-        lookup_command = ['lookup', '-q', '-flags', 'mbTT',
-                          os.path.join(os.getenv('GTHOME'), 'langs', 'sme',
-                                       'src', 'analyser-gt-norm.xfst')]
+        if lang in ['se', 'sma', 'smj']:
+            if lang == 'se':
+                lang = 'sme'
+            lookup_command = ['lookup', '-q', '-flags', 'mbTT',
+                              os.path.join(os.getenv('GTHOME'), 'langs', lang,
+                                           'src', 'analyser-gt-norm.xfst')]
 
-        if b'?' in self.run_external_command(lookup_command, expression.encode('utf8')):
-            return True
-        else:
-            return False
+            if b'?' in self.run_external_command(lookup_command, expression.encode('utf8')):
+                return True
+
+        return False
 
 
 class ExcelImportException(Exception):
     pass
 
 class ExcelImporter(Importer):
-    @staticmethod
-    def collect_expressions(startline):
+    def collect_expressions(self, startline, language, collection='', wordclass='N/A'):
+        '''Insert expressions found in startline into a list of ExpressionInfo
+
+        startline: the content of an expression line
+        language: the language of the expression line
+        collection: the basename of the file where the expression comes from
+        '''
+        expressions = []
         if re.search(r'[()-]', startline) is not None:
-            raise ExcelImportException('Illegal char in {}'.format(startline))
+            expressions.append(
+                ExpressionInfo(
+                    expression=startline,
+                    language=language,
+                    is_typo=False,
+                    has_illegal_char=True,
+                    collection=collection,
+                    wordclass='N/A',
+                    sanctioned=False))
+        else:
+            splitters = re.compile(r'[,;\n\/]')
 
-        finaltokens = set()
-        splitters = re.compile(r'[,;\n\/]')
+            for token in splitters.split(startline):
+                finaltoken = token.strip().lower()
+                if len(finaltoken) > 0:
 
-        for token in splitters.split(startline):
-            finaltoken = re.sub('\(.+\)', '', token).strip().lower()
-            if len(finaltoken) > 0:
-                finaltokens.add(finaltoken)
+                    if ' ' in finaltoken:
+                        expressions.append(
+                            ExpressionInfo(
+                                expression=finaltoken,
+                                language=language,
+                                is_typo=False,
+                                has_illegal_char=False,
+                                collection=collection,
+                                wordclass='MWE',
+                                sanctioned=True))
+                    elif self.is_expression_typo(finaltoken, language):
+                        expressions.append(
+                            ExpressionInfo(
+                                expression=finaltoken,
+                                language=language,
+                                is_typo=True,
+                                has_illegal_char=False,
+                                collection=collection,
+                                wordclass=wordclass,
+                                sanctioned=False))
+                    else:
+                        expressions.append(
+                            ExpressionInfo(
+                                expression=finaltoken,
+                                language=language,
+                                is_typo=False,
+                                has_illegal_char=False,
+                                collection=collection,
+                                wordclass=wordclass,
+                                sanctioned=True))
 
-        return finaltokens
+        return expressions
 
     def get_concepts(self, fileinfo):
         totalcounter = collections.defaultdict(int)
 
         for filename, worksheets in fileinfo.items():
-            shortname = os.path.basename(filename)
+            shortname = os.path.splitext(os.path.basename(filename))[0]
             counter = collections.defaultdict(int)
             workbook = openpyxl.load_workbook(filename)
 
@@ -269,27 +330,26 @@ class ExcelImporter(Importer):
 
                 for row in range(2, ws.max_row + 1):
                     counter['totals'] += 1
-                    c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
+                    c = Concept()
 
                     for language, col in lang_column.items():
                         if ws.cell(row=row, column=col).value is not None:
                             if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
                                 c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
-                            else:
-                                expression_line = ws.cell(row=row, column=col).value.strip()
-                                try:
-                                    c.expressions[language] = self.collect_expressions(
-                                        expression_line)
-                                    if language in ['smj', 'se', 'sma']:
-                                        typos = self.are_expressions_typos(c.expressions[language])
-                                        if len(typos) > 0:
-                                            counter['typos'] += 1
-                                            c.typos = typos
-                                except ExcelImportException as e:
-                                    counter['illegal_char'] += 1
-                                    c.expressions[language] = expression_line
-                                    c.illegal_char = True
+                            elif not language.startswith('wordclass'):
+                                wordclass = 'N/A'
 
+                                try:
+                                    wordclass = ws.cell(row=row, column=lang_column[wordclass]).value.strip()
+                                except KeyError:
+                                    pass
+
+                                expression_line = ws.cell(row=row, column=col).value.strip()
+                                for e in self.collect_expressions(
+                                    expression_line, language,
+                                    collection=shortname,
+                                    wordclass=wordclass):
+                                    c.add_expression(e)
 
                     common_pages = self.termwiki.get_pages_where_concept_probably_exists(c)
                     if len(common_pages) > 0:

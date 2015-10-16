@@ -82,6 +82,7 @@ class TestConcept(unittest.TestCase):
         concept = [
             '{{Concept',
             '|definition_se=definition1',
+            '|duplicate_pages=[8]',
             '}}',
             '{{Related_expression',
             '|expression=norsk1',

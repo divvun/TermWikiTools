@@ -119,6 +119,11 @@ class Concept(object):
             for value in values:
                 if len(value.strip()) > 0:
                     strings.append('|' + key + '=' + value)
+            if len(self.pages) > 0:
+                dupe = '|duplicate_pages='
+                for page in self.pages:
+                    dupe += '[' + page + ']'
+                strings.append(dupe)
         strings.append('}}')
 
         for expression in sorted(self.expressions):

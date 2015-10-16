@@ -228,23 +228,6 @@ class Importer(object):
         self.termwiki.get_pages()
         self.concepts = []
 
-    def do_expressions_exist(self, expressions, language):
-        existing_expressions = []
-        for expression in expressions:
-            if expression in self.expressions[language]:
-                existing_expressions.append(expression)
-
-        return existing_expressions
-
-    def are_expressions_typos(self, expressions):
-        typos = []
-        for expression in expressions:
-            for e in expression.split():
-                if self.is_expression_typo(e):
-                    typos.append(e)
-
-        return typos
-
     def run_external_command(self, command, input):
         '''Run the command with input using subprocess'''
         runner = ExternalCommandRunner()
@@ -270,9 +253,15 @@ class Importer(object):
 
         return False
 
+    def write(self, to_file=sys.stdout):
+        for concept in self.concepts:
+            print('<concept>', file=to_file)
+            print(str(concept), file=to_file)
+            print('</end_concept>', file=to_file)
+
 
 class ExcelImporter(Importer):
-    def collect_expressions(self, startline, language, collection='', wordclass='N/A'):
+    def collect_expressions(self, startline, language, counter, collection='', wordclass='N/A'):
         '''Insert expressions found in startline into a list of ExpressionInfo
 
         startline: the content of an expression line
@@ -281,6 +270,7 @@ class ExcelImporter(Importer):
         '''
         expressions = []
         if re.search(r'[()-]', startline) is not None:
+            counter['has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
                     expression=startline,
@@ -298,6 +288,7 @@ class ExcelImporter(Importer):
                 if len(finaltoken) > 0:
 
                     if ' ' in finaltoken:
+                        counter['mwe'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -308,6 +299,7 @@ class ExcelImporter(Importer):
                                 wordclass='MWE',
                                 sanctioned=True))
                     elif self.is_expression_typo(finaltoken, language):
+                        counter['is_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -318,6 +310,7 @@ class ExcelImporter(Importer):
                                 wordclass=wordclass,
                                 sanctioned=False))
                     else:
+                        counter['non_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -338,11 +331,12 @@ class ExcelImporter(Importer):
             counter = collections.defaultdict(int)
             workbook = openpyxl.load_workbook(filename)
 
+            print(shortname)
             for ws_title, lang_column in worksheets.items():
                 ws = workbook.get_sheet_by_name(ws_title)
 
                 for row in range(2, ws.max_row + 1):
-                    counter['totals'] += 1
+                    counter['concepts'] += 1
                     c = Concept()
 
                     for language, col in lang_column.items():
@@ -365,7 +359,7 @@ class ExcelImporter(Importer):
                                 expression_line = ws.cell(row=row,
                                                           column=col).value.strip()
                                 for e in self.collect_expressions(
-                                        expression_line, language,
+                                        expression_line, language, counter,
                                         collection=shortname,
                                         wordclass=wordclass):
                                     c.add_expression(e)
@@ -378,7 +372,6 @@ class ExcelImporter(Importer):
 
                     self.concepts.append(c)
 
-            print(shortname)
             for key, count in counter.items():
                 print('\t', key, count, )
                 totalcounter[key] += count
@@ -387,12 +380,6 @@ class ExcelImporter(Importer):
         print('Total')
         for key, count in totalcounter.items():
             print('\t', key, count, )
-
-    def write(self, path, lang_column, to_file=sys.stdout):
-        for concept in self.get_concepts(path, lang_column):
-            print('xxxxxx', file=to_file)
-            print(concept, file=to_file)
-            print('yyyyyy', file=to_file)
 
 
 class ArbeidImporter(Importer):
@@ -446,12 +433,6 @@ class ArbeidImporter(Importer):
                     finaltokens.append(finaltoken)
 
         return finaltokens
-
-    def write(self, to_file=sys.stdout):
-        for concept in self.concepts:
-            print('<concept>', file=to_file)
-            print(str(concept), file=to_file)
-            print('</end_concept>', file=to_file)
 
 
 def main():
@@ -508,7 +489,8 @@ def main():
             },
         os.path.join(prefix, 'Batnediksuntearpmat godkjent sgl 2011.xlsx'): {
             'Ark1': {
-                'nb': 1, 'se': 2, 'explanation_nb': 8, 'explanation_se': 9
+                'nb': 1, 'se': 2, 'wordclass': 3, 'explanation_nb': 8,
+                'explanation_se': 9
                 }
             },
         os.path.join(prefix, 'askeladden-red tg-møte 17.2.11.xlsx'): {

@@ -74,7 +74,8 @@ class TestConcept(unittest.TestCase):
     def test_add_concept_info(self):
         self.add_concept_info()
 
-        self.assertEqual(self.concept.concept_info['definition_se'], set(['definition1']))
+        self.assertEqual(self.concept.concept_info['definition_se'],
+                         set(['definition1']))
 
     def add_page(self):
         self.concept.add_page('8')
@@ -145,44 +146,68 @@ class TestTermwiki(unittest.TestCase):
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.expressions,
-            {'fi': {'kuulokkeet': set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna', 'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
-                    'Brasilia': set(['Geografiija:Brasil', 'Geografiija:Brasilia'])},
-             'nb': {'Brasil': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'hodesett': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat']),
-                    'hodetelefoner': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat', 'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna'])},
-             'se': {'Brasil': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'Brasilia': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'bealjoštelefovdna': set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']),
-                    'belljosat': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat'])}
-            }
-        )
+            {
+                'fi': {
+                    'kuulokkeet': set(
+                        ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                         'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    'Brasilia': set(
+                        ['Geografiija:Brasil', 'Geografiija:Brasilia'])
+                },
+                'nb': {
+                    'Brasil': set(
+                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'hodesett': set(
+                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    'hodetelefoner': set(
+                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat',
+                         'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna'])
+                },
+                'se': {
+                    'Brasil': set(
+                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'Brasilia': set(
+                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'bealjoštelefovdna': set(
+                        ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']),
+                    'belljosat': set(
+                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat'])
+                }
+            })
 
     def test_page_expressions(self):
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.pages,
-            {'Dihtorteknologiija ja diehtoteknihkka:belljosat':
-                 {'fi': {'kuulokkeet'},
-                  'nb': {'hodetelefoner', 'hodesett'},
-                  'se': {'belljosat'}},
-             'Geografiija:Brasil': {
-                 'fi': {'Brasilia'},
-                 'nb': {'Brasil'},
-                 'se': {'Brasil', 'Brasilia'}},
-             'Geografiija:Brasilia': {
-                 'fi': {'Brasilia'},
-                 'nb': {'Brasil'},
-                 'se': {'Brasil', 'Brasilia'}},
-             'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna':
-                 {'fi': {'kuulokkeet'},
-                  'nb': {'hodetelefoner'},
-                  'se': {'bealjoštelefovdna'}}})
+            {
+                'Dihtorteknologiija ja diehtoteknihkka:belljosat': {
+                    'fi': {'kuulokkeet'},
+                    'nb': {'hodetelefoner', 'hodesett'},
+                    'se': {'belljosat'}
+                },
+                'Geografiija:Brasil': {
+                    'fi': {'Brasilia'},
+                    'nb': {'Brasil'},
+                    'se': {'Brasil', 'Brasilia'}
+                },
+                'Geografiija:Brasilia': {
+                    'fi': {'Brasilia'},
+                    'nb': {'Brasil'},
+                    'se': {'Brasil', 'Brasilia'}
+                },
+                'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna': {
+                    'fi': {'kuulokkeet'},
+                    'nb': {'hodetelefoner'},
+                    'se': {'bealjoštelefovdna'}
+                }
+            })
 
     def test_get_expressions_set(self):
         want = collections.defaultdict(set)
         want['fi'].update(set(['kuulokkeet', 'Brasilia']))
         want['nb'].update(set(['hodetelefoner', 'hodesett', 'Brasil']))
-        want['se'].update(set(['belljosat', 'Brasil', 'Brasilia', 'bealjoštelefovdna']))
+        want['se'].update(set(['belljosat', 'Brasil', 'Brasilia',
+                               'bealjoštelefovdna']))
 
         for lang in self.termwiki.expressions.keys():
             self.assertSetEqual(want[lang],
@@ -230,7 +255,7 @@ class TestTermwiki(unittest.TestCase):
             self.termwiki.get_pages_where_concept_probably_exists(concept),
             set())
 
-    def test_get_pages_where_concept_probably_exists2(self):
+    def test_get_pages_where_concept_probably_exists3(self):
         '''Common expressions in two languages'''
         concept = importer.Concept()
         uff = {
@@ -328,7 +353,6 @@ class TestExcelImporter(unittest.TestCase):
                         wordclass='N/A',
                         sanctioned=False),
                 ], got)
-
 
     def test_collect_expressions_multiword_expression(self):
         '''Handle multiword expression'''

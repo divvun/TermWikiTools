@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-from lxml import etree
 import collections
+from lxml import etree
 import openpyxl
 import os
 import re
-import sys
 import subprocess
+import sys
 
 
 class ExternalCommandRunner(object):
@@ -39,11 +39,11 @@ class ExternalCommandRunner(object):
 
 
 class ExpressionInfo(
-    collections.namedtuple('ExpressionInfo',
-                           'expression language is_typo has_illegal_char collection wordclass sanctioned')):
-    '''ExpressionInfo
+    collections.namedtuple(
+        'ExpressionInfo',
+        'expression language is_typo has_illegal_char collection wordclass sanctioned')):
+    '''Information bound to an expression
 
-    Information bound to an expression
     expression is a string
 
     is_typo, has_illegal_char and sanctioned are booleans
@@ -141,12 +141,16 @@ class Concept(object):
 
 
 class TermWiki(object):
-    '''
-    1. liste over ord laget fra terms-xxx.xml
-    2. hvert ord peker til en liste av id'er der de finnes
-    3. en dict med id, og set av ord for hvert språk som hører til den id'en
+    '''Represent the termwiki xml files
 
-    for å slå opp, så sjekker man om ordet er i 1. Om det finnes, slår man opp id i 2, sjekker om man har treff i 3.
+    expressions is a dict where language is the key and the value is a dict
+    The key in this subdict an expression and the value is a set containing
+    the concept pages where the expression appears. This effectively mimics
+    the Expression pages on the TermWiki.
+
+    pages is a dict where the termwiki pagename is the key and the value is a dict
+    The key in this subdict is language and the value is the set of expressions on
+    that page. This effictively mimics the Concept pages on the TermWiki.
     '''
     def __init__(self):
         self.expressions = collections.defaultdict(dict)
@@ -199,7 +203,8 @@ class TermWiki(object):
         common_pages = set()
         hits = 0
         for lang in concept.get_lang_set():
-            if not self.get_expressions_set(lang).isdisjoint(concept.get_expressions_set(lang)):
+            if not self.get_expressions_set(lang).isdisjoint(
+                    concept.get_expressions_set(lang)):
                 hits += 1
 
         if hits > 1:
@@ -214,7 +219,6 @@ class TermWiki(object):
                         common_pages.update(pages1.intersection(pages2))
 
         return common_pages
-
 
 
 class Importer(object):
@@ -260,14 +264,12 @@ class Importer(object):
                               os.path.join(os.getenv('GTHOME'), 'langs', lang,
                                            'src', 'analyser-gt-norm.xfst')]
 
-            if b'?' in self.run_external_command(lookup_command, expression.encode('utf8')):
+            if b'?' in self.run_external_command(lookup_command,
+                                                 expression.encode('utf8')):
                 return True
 
         return False
 
-
-class ExcelImportException(Exception):
-    pass
 
 class ExcelImporter(Importer):
     def collect_expressions(self, startline, language, collection='', wordclass='N/A'):
@@ -338,8 +340,6 @@ class ExcelImporter(Importer):
 
             for ws_title, lang_column in worksheets.items():
                 ws = workbook.get_sheet_by_name(ws_title)
-                max_column = ws.max_column
-                typos_column = max_column + 1
 
                 for row in range(2, ws.max_row + 1):
                     counter['totals'] += 1
@@ -347,24 +347,31 @@ class ExcelImporter(Importer):
 
                     for language, col in lang_column.items():
                         if ws.cell(row=row, column=col).value is not None:
-                            if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
-                                c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
+                            if (language.startswith('definition') or
+                                    language.startswith('explanation') or
+                                    language.startswith('more_info')):
+                                c.concept_info[language] = ws.cell(
+                                    row=row, column=col).value.strip()
                             elif not language.startswith('wordclass'):
                                 wordclass = 'N/A'
 
                                 try:
-                                    wordclass = ws.cell(row=row, column=lang_column[wordclass]).value.strip()
+                                    wordclass = ws.cell(row=row,
+                                                        column=lang_column[wordclass]
+                                                        ).value.strip()
                                 except KeyError:
                                     pass
 
-                                expression_line = ws.cell(row=row, column=col).value.strip()
+                                expression_line = ws.cell(row=row,
+                                                          column=col).value.strip()
                                 for e in self.collect_expressions(
-                                    expression_line, language,
-                                    collection=shortname,
-                                    wordclass=wordclass):
+                                        expression_line, language,
+                                        collection=shortname,
+                                        wordclass=wordclass):
                                     c.add_expression(e)
 
-                    common_pages = self.termwiki.get_pages_where_concept_probably_exists(c)
+                    common_pages = \
+                        self.termwiki.get_pages_where_concept_probably_exists(c)
                     if len(common_pages) > 0:
                         c.possible_duplicate = common_pages
                         counter['possible_duplicate'] += 1
@@ -381,7 +388,6 @@ class ExcelImporter(Importer):
         for key, count in totalcounter.items():
             print('\t', key, count, )
 
-
     def write(self, path, lang_column, to_file=sys.stdout):
         for concept in self.get_concepts(path, lang_column):
             print('xxxxxx', file=to_file)
@@ -394,7 +400,8 @@ class ArbeidImporter(Importer):
         super().__init__()
 
     def get_arbeid_concepts(self):
-        with open('sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt') as arbeid:
+        filename = 'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
+        with open(filename) as arbeid:
             all_concepts = []
             c = Concepts({'nb': Concept(), 'se': Concept()})
             start = re.compile('\w\w\w$')
@@ -406,14 +413,16 @@ class ArbeidImporter(Importer):
                     c = Concepts({'nb': Concept(), 'se': Concept()})
                 else:
                     if line.startswith('se: '):
-                        c.concepts['se'].expressions = self.collect_expressions(line[len('se: '):].strip())
+                        c.concepts['se'].expressions = self.collect_expressions(
+                            line[len('se: '):].strip())
                         self.do_expressions_exist(c.concepts['se'].expressions, 'se')
                     elif line.startswith('MRKN: '):
                         c.concepts['se'].explanation = line[len('MRKN: '):].strip()
                     elif line.startswith('DEF1: '):
                         c.concepts['se'].definition = line[len('DEF1: '):].strip()
                     elif line.startswith('nb: '):
-                        c.concepts['nb'].expressions = self.collect_expressions(line[len('nb: '):].strip())
+                        c.concepts['nb'].expressions = self.collect_expressions(
+                            line[len('nb: '):].strip())
                         self.do_expressions_exist(c.concepts['nb'].expressions, 'nb')
                     elif line.startswith('nbMRKN: '):
                         c.concepts['nb'].explanation = line[len('nbMRKN: '):].strip()
@@ -426,7 +435,6 @@ class ArbeidImporter(Importer):
 
     @staticmethod
     def collect_expressions(startline):
-        tokens = startline.split(',')
         finaltokens = []
         for commatoken in startline.split(','):
             for semicolontoken in commatoken.split(';'):
@@ -445,48 +453,69 @@ class ArbeidImporter(Importer):
             print(concepts.related_expressions_string(), file=to_file)
 
 
-#ai = ArbeidImporter()
-#ai.write()
-
-
 def main():
     prefix = os.path.join(os.getenv('GTHOME'), 'words', 'terms', 'from_GG',
                           'orig', 'sme', 'sgl_dohkkehuvvon_listtut')
     fileinfos = {
-        os.path.join(prefix, 'Terminologiens terminologi.xlsx'):
-             {'Sheet1':
-                  {'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'definition_fi': 7, 'explanation_nn': 8, 'nn': 9, 'sma': 10}},
-        os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'):
-            {'Sheet1':
-                 {'nb': 1, 'se': 2}},
-         os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'):
-              {'Sheet1':
-                   {'en': 1, 'nb': 3, 'se': 2, 'explanation_se': 7, 'explanation_nb': 8}},
-         os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'):
-              {'RIEKTESÁNIT':
-                   {'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5}},
-         os.path.join(prefix, 'njuorjjotearpmat.xlsx'):
-             {'Sheet1':
-                  {'se': 1, 'definition_se': 2, 'definition_nb': 3, 'more_info_se': 4, 'more_info_nb': 5}},
-         os.path.join(prefix, 'mielladearvvašvuođalága tearbmalistu.xlsx'):
-             {'Sheet1':
-                  {'nb': 1, 'se': 2, 'more_info_se': 3}},
-         os.path.join(prefix, 'Mearra ja mearragáttenámahusat.xlsx'):
-             {'Sheet1':
-                  {'se': 1, 'explanation_nb': 2}},
-         os.path.join(prefix, 'matematihkkalistugarvvisABC  D.xlsx'):
-             {'sátnelistu':
-                  {'se': 1, 'fi': 2, 'nb': 3}},
-         os.path.join(prefix, 'Jurdihkalaš_tearbmalistu_2011-SEG.xlsx'):
-             {'Sheet1':
-                  {'nb': 1, 'se': 2, 'fi': 3, 'more_info_se': 5, 'explanation_se': 7, 'explanation_nb': 8}},
-         os.path.join(prefix, 'Batnediksuntearpmat godkjent sgl 2011.xlsx'):
-             {'Ark1':
-                  {'nb': 1, 'se': 2, 'explanation_nb': 8, 'explanation_se': 9}},
-         os.path.join(prefix, 'askeladden-red tg-møte 17.2.11.xlsx'):
-             {'KMB_OWNER_ARTERData':
-                  {'nb': 2, 'se': 4, 'explanation_nb': 5, 'more_info_nb': 6}},
-    }
+        os.path.join(prefix, 'Terminologiens terminologi.xlsx'): {
+                'Sheet1': {
+                    'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'definition_fi': 7,
+                    'explanation_nn': 8, 'nn': 9, 'sma': 10
+                }
+            },
+        os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'): {
+            'Sheet1': {
+                'nb': 1, 'se': 2
+                }
+            },
+        os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'): {
+            'Sheet1': {
+                'en': 1, 'nb': 3, 'se': 2, 'explanation_se': 7, 'explanation_nb': 8
+                }
+            },
+        os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'): {
+            'RIEKTESÁNIT': {
+                'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5
+                }
+            },
+        os.path.join(prefix, 'njuorjjotearpmat.xlsx'): {
+            'Sheet1': {
+                'se': 1, 'definition_se': 2, 'definition_nb': 3, 'more_info_se': 4,
+                'more_info_nb': 5
+                }
+            },
+        os.path.join(prefix, 'mielladearvvašvuođalága tearbmalistu.xlsx'): {
+            'Sheet1': {
+                'nb': 1, 'se': 2, 'more_info_se': 3
+                }
+            },
+        os.path.join(prefix, 'Mearra ja mearragáttenámahusat.xlsx'): {
+            'Sheet1': {
+                'se': 1, 'explanation_nb': 2
+                }
+            },
+        os.path.join(prefix, 'matematihkkalistugarvvisABC  D.xlsx'): {
+            'sátnelistu': {
+                'se': 1, 'fi': 2, 'nb': 3
+                }
+            },
+        os.path.join(prefix, 'Jurdihkalaš_tearbmalistu_2011-SEG.xlsx'): {
+            'Sheet1': {
+                'nb': 1, 'se': 2, 'fi': 3, 'more_info_se': 5, 'explanation_se': 7,
+                'explanation_nb': 8
+                }
+            },
+        os.path.join(prefix, 'Batnediksuntearpmat godkjent sgl 2011.xlsx'): {
+            'Ark1': {
+                'nb': 1, 'se': 2, 'explanation_nb': 8, 'explanation_se': 9
+                }
+            },
+        os.path.join(prefix, 'askeladden-red tg-møte 17.2.11.xlsx'): {
+            'KMB_OWNER_ARTERData': {
+                'nb': 2, 'se': 4, 'explanation_nb': 5, 'more_info_nb': 6
+                }
+            },
+        }
 
     excel = ExcelImporter()
     excel.get_concepts(fileinfos)

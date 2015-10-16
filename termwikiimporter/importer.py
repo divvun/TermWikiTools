@@ -253,11 +253,12 @@ class Importer(object):
 
         return False
 
-    def write(self, to_file=sys.stdout):
-        for concept in self.concepts:
-            print('<concept>', file=to_file)
-            print(str(concept), file=to_file)
-            print('</end_concept>', file=to_file)
+    def write(self, filename):
+        with open(filename, 'w') as to_file:
+            for concept in self.concepts:
+                print('{{-start-}}', file=to_file)
+                print(str(concept), file=to_file)
+                print('{{-stop-}}', file=to_file)
 
 
 class ExcelImporter(Importer):

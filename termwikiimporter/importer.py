@@ -447,17 +447,19 @@ def main():
             },
         os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'): {
             'Sheet1': {
-                'nb': 1, 'se': 2
+                'nb': 1, 'se': 2, 'wordclass': 4,
                 }
             },
         os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'): {
             'Sheet1': {
-                'en': 1, 'nb': 3, 'se': 2, 'explanation_se': 7, 'explanation_nb': 8
+                'en': 1, 'nb': 3, 'se': 2, 'wordclass': 4, 'explanation_se': 7,
+                'explanation_nb': 8
                 }
             },
         os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'): {
             'RIEKTESÁNIT': {
-                'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5
+                'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'wordclass': 4,
+                'explanation_nb': 5
                 }
             },
         os.path.join(prefix, 'njuorjjotearpmat.xlsx'): {

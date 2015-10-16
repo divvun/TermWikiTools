@@ -172,7 +172,8 @@ class TestExcelImporter(unittest.TestCase):
         ec.add_expression('nb', 'norsk')
         ec.add_expression('se', 'davvisámegiella')
 
-        got = ei.get_concepts(fileinfo)
+        ei.get_concepts(fileinfo)
+        got = ei.concepts
         got_concept = got[0]
         self.assertEqual(len(got), 1)
         self.assertDictEqual(got_concept.expressions, ec.expressions)

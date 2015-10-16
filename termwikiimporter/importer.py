@@ -37,6 +37,7 @@ class ExternalCommandRunner(object):
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
         self.returncode = subp.returncode
 
+
 class Concept(object):
     def __init__(self):
         self.concept_info = collections.defaultdict(set)
@@ -133,6 +134,7 @@ class Importer(object):
         self.termwiki = TermWiki()
         self.termwiki.get_expressions()
         self.termwiki.get_idrefs()
+        self.concepts = []
 
     def do_expressions_exist(self, expressions, language):
         existing_expressions = []
@@ -233,7 +235,6 @@ class ExcelImporter(Importer):
         workbook.save(filename.replace('.xlsx', '.more.xlsx'))
 
     def get_concepts(self, fileinfo):
-        all_concepts = []
         for filename, worksheets in fileinfo.items():
             workbook = openpyxl.load_workbook(filename)
 
@@ -264,10 +265,9 @@ class ExcelImporter(Importer):
                     if len(existing_expressions) > 0:
                         exists += 1
                         print('Check:', filename, ' row:', row, '\n', c, file=sys.stderr)
-                    all_concepts.append(c)
+                    self.concepts.append(c)
 
         print('Existing vs totals', exists, ':', totals, file=sys.stderr)
-        return all_concepts
 
     def write(self, path, lang_column, to_file=sys.stdout):
         for concept in self.get_concepts(path, lang_column):

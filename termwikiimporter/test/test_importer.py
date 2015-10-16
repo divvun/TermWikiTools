@@ -38,21 +38,16 @@ class TestConcept(unittest.TestCase):
         uff = {
             'se': ['sámi1', 'sámi2'],
             'nb': ['norsk1']}
-        for lang, expressions in uff:
+        for lang, expressions in uff.items():
             for expression in expressions:
                 self.concept.add_expression(
-                    'se', importer.ExpressionInfo(expression=expression,
-                                                  is_typo=False,
-                                                  has_illegal_char=True,
-                                                  collection='Example coll',
-                                                  wordclass='N',
-                                                  sanctioned=True))
-
-    def test_add_expression(self):
-        self.add_expression()
-        self.assertEqual(self.concept.expressions['se'], set([('sámi1'), ('sámi2')]))
-        self.assertEqual(self.concept.expressions['nb'], set([('norsk1')]))
-
+                    importer.ExpressionInfo(expression=expression,
+                                            language=lang,
+                                            is_typo=False,
+                                            has_illegal_char=True,
+                                            collection='Example coll',
+                                            wordclass='N',
+                                            sanctioned=True))
 
     def add_concept_info(self):
         self.concept.add_concept_info('definition_se', 'definition1')
@@ -71,44 +66,46 @@ class TestConcept(unittest.TestCase):
         self.assertEqual(self.concept.pages, set(['8']))
 
     def test_string(self):
+        self.maxDiff = None
         self.add_concept_info()
         self.add_expression()
         self.add_page()
 
-        concept = (
-            '{{Concept\n'
-            '|definition_se=definition1\n'
-            '}}\n'
-        )
+        print(str(self.concept))
+        concept = [
+            '{{Concept',
+            '|definition_se=definition1',
+            '}}',
+            '{{Related_expression',
+            '|expression=sámi1',
+            '|language=se',
+            '|is_typo=No',
+            '|has_illegal_char=Yes',
+            '|collection=Example coll',
+            '|wordclass=N',
+            '|sanctioned=Yes',
+            '}}',
+            '{{Related_expression',
+            '|expression=sámi2',
+            '|language=se',
+            '|is_typo=No',
+            '|has_illegal_char=Yes',
+            '|collection=Example coll',
+            '|wordclass=N',
+            '|sanctioned=Yes',
+            '}}',
+            '{{Related_expression',
+            '|expression=norsk1',
+            '|language=nb',
+            '|is_typo=No',
+            '|has_illegal_char=Yes',
+            '|collection=Example coll',
+            '|wordclass=N',
+            '|sanctioned=Yes',
+            '}}',
+        ]
 
-        rel1 = (
-            '{{Related_expression\n'
-            '|language=nb\n'
-            '|expression=norsk1\n'
-            '|sanctioned=Yes\n'
-            '}}'
-        )
-
-        rel2 = (
-            '{{Related_expression\n'
-            '|language=se\n'
-            '|expression=sámi2\n'
-            '|sanctioned=Yes\n'
-            '}}'
-        )
-
-        rel3 = (
-            '{{Related_expression\n'
-            '|language=se\n'
-            '|expression=sámi1\n'
-            '|sanctioned=Yes\n'
-            '}}'
-        )
-
-        self.assertTrue(concept in str(self.concept))
-        self.assertTrue(rel1 in str(self.concept))
-        self.assertTrue(rel2 in str(self.concept))
-        self.assertTrue(rel3 in str(self.concept))
+        self.assertEqual('\n'.join(concept), str(self.concept))
 
 
 class TestExcelConcept(unittest.TestCase):

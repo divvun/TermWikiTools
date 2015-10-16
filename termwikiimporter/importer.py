@@ -79,17 +79,18 @@ class Concept(object):
     The concept information is key, the value is a set containing the
     definitions, explanations and more_infos
 
-    expressions is a set containing ExpressionInfos
+    expressions is a list containing ExpressionInfos
 
     pages is a set of TermWiki pages that may be duplicates of this concept
     '''
     def __init__(self):
         self.concept_info = collections.defaultdict(set)
-        self.expressions = set()
+        self.expressions = []
         self.pages = set()
 
-    def add_expression(self, lang, expression_info):
-        self.expressions[lang].add(expression_info)
+    def add_expression(self, expression_info):
+        print('appending', str(expression_info))
+        self.expressions.append(expression_info)
 
     def add_concept_info(self, key, info):
         self.concept_info[key].add(info)
@@ -105,13 +106,8 @@ class Concept(object):
                     strings.append('|' + key + '=' + value)
         strings.append('}}')
 
-        for lang, expressions in self.expressions.items():
-            for expression in expressions:
-                strings.append('{{Related_expression')
-                strings.append('|language=' + lang)
-                strings.append('|expression=' + expression)
-                strings.append('|sanctioned=Yes')
-                strings.append('}}')
+        for expression in self.expressions:
+            strings.append(str(expression))
 
         return '\n'.join(strings)
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import collections
 import os
 import unittest
 
@@ -78,6 +79,22 @@ class TestConcept(unittest.TestCase):
         self.assertTrue(rel2 in str(self.concept))
         self.assertTrue(rel3 in str(self.concept))
 
+
+class TestExcelConcept(unittest.TestCase):
+    def test_init_default(self):
+        ec = importer.ExcelConcept()
+
+        self.assertTupleEqual((ec.filename, ec.worksheet, ec.row),
+                              ('', '', 0))
+
+    def test_init_set_variables(self):
+        ec = importer.ExcelConcept(filename='filename', worksheet='worksheet',
+                                   row=10)
+
+        self.assertTupleEqual((ec.filename, ec.worksheet, ec.row),
+                              ('filename', 'worksheet', 10))
+
+
 class TermWikiWithTestSource(importer.TermWiki):
     @property
     def term_home(self):
@@ -86,9 +103,10 @@ class TermWikiWithTestSource(importer.TermWiki):
 class TestTermwiki(unittest.TestCase):
     def setUp(self):
         self.termwiki = TermWikiWithTestSource()
+        self.termwiki.get_expressions()
+        self.termwiki.get_idrefs()
 
     def test_expressions(self):
-        self.termwiki.get_expressions()
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.expressions,
@@ -105,7 +123,6 @@ class TestTermwiki(unittest.TestCase):
         )
 
     def test_idref_expressions(self):
-        self.termwiki.get_idrefs()
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.idrefs,
@@ -121,3 +138,16 @@ class TestTermwiki(unittest.TestCase):
              '206': {'fi': {'kuulokkeet'},
                     'nb': {'hodetelefoner'},
                     'se': {'bealjoštelefovdna'}}})
+
+    def test_get_expressions_set(self):
+        want = collections.defaultdict(set)
+        want['fi'].update(set(['kuulokkeet', 'Brasilia']))
+        want['nb'].update(set(['hodetelefoner', 'hodesett', 'Brasil']))
+        want['se'].update(set(['belljosat', 'Brasil', 'Brasilia', 'bealjoštelefovdna']))
+
+        got = collections.defaultdict(set)
+        for lang in self.termwiki.expressions.keys():
+            got[lang].update(self.termwiki.expressions[lang])
+
+        self.assertDictEqual(got, want)
+

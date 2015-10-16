@@ -71,6 +71,14 @@ class Concept(object):
         return '\n'.join(strings)
 
 
+class ExcelConcept(Concept):
+    '''Make it possible to trace where the Concept first appeared'''
+    def __init__(self, filename='', worksheet='', row=0):
+        self.row = row
+        self.filename = filename
+        self.worksheet = worksheet
+
+
 class TermWiki(object):
     '''
     1. liste over ord laget fra terms-xxx.xml
@@ -96,10 +104,9 @@ class TermWiki(object):
                     os.path.join(self.term_home,
                                  term_file)).xpath('.//e/lg/l')
                 for l in l_elements:
-                    expression = l.text
-                    idrefs = [mg.get('idref') for mg in l.getparent().getparent().xpath('.//mg')]
-                    for idref in idrefs:
-                        expressions[expression].add(idref)
+                    expressions[l.text].update(
+                        set([mg.get('idref')
+                             for mg in l.getparent().getparent().xpath('.//mg')]))
 
                 self.expressions[lang] = expressions
 
@@ -112,9 +119,12 @@ class TermWiki(object):
                                  term_file)).xpath('.//e/mg')
                 for mg in mg_elements:
                     idref = mg.get('idref')
-                    expressions = [l.text for l in mg.getparent().xpath('./lg/l')]
-                    for expression in expressions:
-                        self.idrefs[idref].setdefault(lang, set()).add(expression)
+                    self.idrefs[idref].setdefault(lang, set()).update(
+                        set([l.text for l in mg.getparent().xpath('./lg/l')]))
+
+    def get_expressions_set(self, lang):
+        return set(self.expressions.keys())
+
 
 class Importer(object):
     def __init__(self):

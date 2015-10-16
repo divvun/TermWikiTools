@@ -244,11 +244,13 @@ class TestExcelImporter(unittest.TestCase):
         self.assertSetEqual(set(['a', 'b']), got)
 
     def test_collect_expressions5(self):
-        '''remove parenthesis'''
+        '''illegal chars'''
+        illegal_chars = '()-'
         ei = importer.ExcelImporter()
-        got = ei.collect_expressions('a/ b (asdf)')
 
-        self.assertSetEqual(set(['a', 'b']), got)
+        for c in illegal_chars:
+            with self.assertRaises(importer.ExcelImportException):
+                ei.collect_expressions(c)
 
     def test_collect_expressions6(self):
         '''multiword expression'''

@@ -71,12 +71,13 @@ class Concept(object):
         return '\n'.join(strings)
 
 
+ExcelInfo = collections.namedtuple('ExcelInfo', ['filename', 'worksheet',
+                                                 'row'])
+
 class ExcelConcept(Concept):
     '''Make it possible to trace where the Concept first appeared'''
     def __init__(self, filename='', worksheet='', row=0):
-        self.row = row
-        self.filename = filename
-        self.worksheet = worksheet
+        self.excelinfo = ExcelInfo(filename, worksheet, row)
         super().__init__()
 
 
@@ -175,15 +176,13 @@ class Importer(object):
 class ExcelImporter(Importer):
     @staticmethod
     def collect_expressions(startline):
-        tokens = startline.split(',')
         finaltokens = set()
-        for commatoken in startline.split(','):
-            for semicolontoken in commatoken.split(';'):
-                for newlinetoken in semicolontoken.split('\n'):
-                    for slashtoken in newlinetoken.split('/'):
-                        finaltoken = re.sub('\(.+\)', '', slashtoken).strip().lower()
-                        if len(finaltoken) > 0:
-                            finaltokens.add(finaltoken)
+        splitters = re.compile(r'[,;\n\/]')
+
+        for token in splitters.split(startline):
+            finaltoken = re.sub('\(.+\)', '', token).strip().lower()
+            if len(finaltoken) > 0:
+                finaltokens.add(finaltoken)
 
         return finaltokens
 
@@ -233,37 +232,39 @@ class ExcelImporter(Importer):
 
         workbook.save(filename.replace('.xlsx', '.more.xlsx'))
 
-    def get_concepts(self, filename, lang_column):
-        workbook = openpyxl.load_workbook(filename)
+    def get_concepts(self, fileinfo):
         all_concepts = []
+        for filename, worksheets in fileinfo.items():
+            workbook = openpyxl.load_workbook(filename)
 
-        exists = 0
-        totals = 0
-        for ws in workbook:
-            max_column = ws.max_column
-            typos_column = max_column + 1
+            exists = 0
+            totals = 0
+            for ws_title, lang_column in worksheets.items():
+                ws = workbook.get_sheet_by_name(ws_title)
+                max_column = ws.max_column
+                typos_column = max_column + 1
 
-            for row in range(2, ws.max_row + 1):
-                totals += 1
-                existing_expressions = []
-                c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
+                for row in range(2, ws.max_row + 1):
+                    totals += 1
+                    existing_expressions = []
+                    c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
 
-                for language, col in lang_column.items():
-                    if ws.cell(row=row, column=col).value is not None:
-                        if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
-                            c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
-                        else:
-                            c.expressions[language] = self.collect_expressions(
-                                ws.cell(row=row, column=col).value.strip())
-                            if language == 'se':
-                                typos = self.are_expressions_typos(c.expressions[language])
-                                if len(typos) > 0:
-                                    print('Vejolaš čállinmeattáhusat:', 'row:', row, ','.join(typos), file=sys.stderr)
+                    for language, col in lang_column.items():
+                        if ws.cell(row=row, column=col).value is not None:
+                            if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
+                                c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
+                            else:
+                                c.expressions[language] = self.collect_expressions(
+                                    ws.cell(row=row, column=col).value.strip())
+                                if language == 'se':
+                                    typos = self.are_expressions_typos(c.expressions[language])
+                                    if len(typos) > 0:
+                                        print('Vejolaš čállinmeattáhusat:', 'row:', row, ','.join(typos), file=sys.stderr)
 
-                if len(existing_expressions) > 0:
-                    exists += 1
-                    print('Check:', filename, ' row:', row, '\n', c, file=sys.stderr)
-                all_concepts.append(c)
+                    if len(existing_expressions) > 0:
+                        exists += 1
+                        print('Check:', filename, ' row:', row, '\n', c, file=sys.stderr)
+                    all_concepts.append(c)
 
         print('Existing vs totals', exists, ':', totals, file=sys.stderr)
         return all_concepts

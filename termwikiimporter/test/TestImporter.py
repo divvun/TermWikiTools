@@ -84,14 +84,14 @@ class TestExcelConcept(unittest.TestCase):
     def test_init_default(self):
         ec = importer.ExcelConcept()
 
-        self.assertTupleEqual((ec.filename, ec.worksheet, ec.row),
+        self.assertTupleEqual(ec.excelinfo,
                               ('', '', 0))
 
     def test_init_set_variables(self):
         ec = importer.ExcelConcept(filename='filename', worksheet='worksheet',
                                    row=10)
 
-        self.assertTupleEqual((ec.filename, ec.worksheet, ec.row),
+        self.assertTupleEqual(ec.excelinfo,
                               ('filename', 'worksheet', 10))
 
 
@@ -161,20 +161,23 @@ class TestExcelImporter(unittest.TestCase):
     def test_get_concepts(self):
         ei = importer.ExcelImporter()
         lang_column = {'fi': 1, 'nb': 2, 'se': 3}
+        worksheets = {'Sheet1': lang_column}
         filename = os.path.join(os.path.dirname(__file__), 'excel',
                                 'simple.xlsx')
+        fileinfo = {filename: worksheets}
+
         ec = importer.ExcelConcept(filename=filename, worksheet='Sheet1',
                                    row=2)
         ec.add_expression('fi', 'suomi')
         ec.add_expression('nb', 'norsk')
         ec.add_expression('se', 'davvisámegiella')
 
-        got = ei.get_concepts(filename, lang_column)
+        got = ei.get_concepts(fileinfo)
         got_concept = got[0]
         self.assertEqual(len(got), 1)
         self.assertDictEqual(got_concept.expressions, ec.expressions)
-        self.assertTupleEqual((got_concept.filename, got_concept.worksheet, got_concept.row),
-                              (ec.filename, ec.worksheet, ec.row))
+        self.assertTupleEqual((got_concept.excelinfo),
+                              (ec.excelinfo))
 
     def test_collect_expressions1(self):
         ''', as splitter'''
@@ -212,7 +215,7 @@ class TestExcelImporter(unittest.TestCase):
         self.assertSetEqual(set(['a', 'b']), got)
 
     def test_collect_expressions6(self):
-        '''multiword expresseion'''
+        '''multiword expression'''
         ei = importer.ExcelImporter()
         got = ei.collect_expressions('a b')
 

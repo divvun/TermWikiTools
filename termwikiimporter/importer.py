@@ -77,6 +77,7 @@ class ExcelConcept(Concept):
         self.row = row
         self.filename = filename
         self.worksheet = worksheet
+        super().__init__()
 
 
 class TermWiki(object):
@@ -129,7 +130,8 @@ class TermWiki(object):
 class Importer(object):
     def __init__(self):
         self.termwiki = TermWiki()
-        self.termwiki.get_terms_expression()
+        self.termwiki.get_expressions()
+        self.termwiki.get_idrefs()
 
     def do_expressions_exist(self, expressions, language):
         existing_expressions = []
@@ -244,7 +246,7 @@ class ExcelImporter(Importer):
             for row in range(2, ws.max_row + 1):
                 totals += 1
                 existing_expressions = []
-                c = Concept()
+                c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
 
                 for language, col in lang_column.items():
                     if ws.cell(row=row, column=col).value is not None:
@@ -403,7 +405,7 @@ def print_termcenter():
 
 '''Sammenligne et concept med TermWiki
 
-Språkuttrykk i Concept er samlet set, det samme er uttrykk i TermWiki.
+Språkuttrykk i Concept er samlet i set, det samme er uttrykk i TermWiki.
 Sjekk om språkuttryk per språk er disjoint med samme språk i TermWiki.
 
 Om det er treff innen to eller flere språk er det muligens snakk om samme

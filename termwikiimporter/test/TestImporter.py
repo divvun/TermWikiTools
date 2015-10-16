@@ -127,18 +127,22 @@ class TestTermwiki(unittest.TestCase):
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.idrefs,
-            {'Dihtorteknologiija ja diehtoteknihkka:belljosat': {'fi': {'kuulokkeet'},
-                        'nb': {'hodetelefoner', 'hodesett'},
-                        'se': {'belljosat'}},
-             'Geografiija:Brasil': {'fi': {'Brasilia'},
-                        'nb': {'Brasil'},
-                        'se': {'Brasil', 'Brasilia'}},
-             'Geografiija:Brasilia': {'fi': {'Brasilia'},
-                        'nb': {'Brasil'},
-                        'se': {'Brasil', 'Brasilia'}},
-             'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna': {'fi': {'kuulokkeet'},
-                    'nb': {'hodetelefoner'},
-                    'se': {'bealjoštelefovdna'}}})
+            {'Dihtorteknologiija ja diehtoteknihkka:belljosat':
+                 {'fi': {'kuulokkeet'},
+                  'nb': {'hodetelefoner', 'hodesett'},
+                  'se': {'belljosat'}},
+             'Geografiija:Brasil': {
+                 'fi': {'Brasilia'},
+                 'nb': {'Brasil'},
+                 'se': {'Brasil', 'Brasilia'}},
+             'Geografiija:Brasilia': {
+                 'fi': {'Brasilia'},
+                 'nb': {'Brasil'},
+                 'se': {'Brasil', 'Brasilia'}},
+             'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna':
+                 {'fi': {'kuulokkeet'},
+                  'nb': {'hodetelefoner'},
+                  'se': {'bealjoštelefovdna'}}})
 
     def test_get_expressions_set(self):
         want = collections.defaultdict(set)
@@ -152,3 +156,64 @@ class TestTermwiki(unittest.TestCase):
 
         self.assertDictEqual(got, want)
 
+
+class TestExcelImporter(unittest.TestCase):
+    def test_get_concepts(self):
+        ei = importer.ExcelImporter()
+        lang_column = {'fi': 1, 'nb': 2, 'se': 3}
+        filename = os.path.join(os.path.dirname(__file__), 'excel',
+                                'simple.xlsx')
+        ec = importer.ExcelConcept(filename=filename, worksheet='Sheet1',
+                                   row=2)
+        ec.add_expression('fi', 'suomi')
+        ec.add_expression('nb', 'norsk')
+        ec.add_expression('se', 'davvisámegiella')
+
+        got = ei.get_concepts(filename, lang_column)
+        got_concept = got[0]
+        self.assertEqual(len(got), 1)
+        self.assertDictEqual(got_concept.expressions, ec.expressions)
+        self.assertTupleEqual((got_concept.filename, got_concept.worksheet, got_concept.row),
+                              (ec.filename, ec.worksheet, ec.row))
+
+    def test_collect_expressions1(self):
+        ''', as splitter'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a, b')
+
+        self.assertSetEqual(set(['a', 'b']), got)
+
+    def test_collect_expressions2(self):
+        '''; as splitter'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a; b')
+
+        self.assertSetEqual(set(['a', 'b']), got)
+
+    def test_collect_expressions3(self):
+        '''\n as splitter'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a\nb')
+
+        self.assertSetEqual(set(['a', 'b']), got)
+
+    def test_collect_expressions4(self):
+        '''/ as splitter'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a/ b')
+
+        self.assertSetEqual(set(['a', 'b']), got)
+
+    def test_collect_expressions5(self):
+        '''remove parenthesis'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a/ b (asdf)')
+
+        self.assertSetEqual(set(['a', 'b']), got)
+
+    def test_collect_expressions6(self):
+        '''multiword expresseion'''
+        ei = importer.ExcelImporter()
+        got = ei.collect_expressions('a b')
+
+        self.assertSetEqual(set(['a b']), got)

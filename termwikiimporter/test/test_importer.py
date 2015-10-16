@@ -8,7 +8,7 @@ from termwikiimporter import importer
 
 
 class TestExpressionInfo(unittest.TestCase):
-    def test_str(self):
+    def test_str_is_typo_false(self):
         e = importer.ExpressionInfo(expression='test1',
                                     language='se',
                                     is_typo=False,
@@ -20,8 +20,27 @@ class TestExpressionInfo(unittest.TestCase):
             '{{Related_expression',
             '|expression=test1',
             '|language=se',
-            '|is_typo=No',
             '|has_illegal_char=Yes',
+            '|collection=Example coll',
+            '|wordclass=N',
+            '|sanctioned=Yes',
+            '}}']
+
+        self.assertEqual('\n'.join(want), str(e))
+
+    def test_str_has_illegal_char_is_false(self):
+        e = importer.ExpressionInfo(expression='test1',
+                                    language='se',
+                                    is_typo=True,
+                                    has_illegal_char=False,
+                                    collection='Example coll',
+                                    wordclass='N',
+                                    sanctioned=True)
+        want = [
+            '{{Related_expression',
+            '|expression=test1',
+            '|language=se',
+            '|is_typo=Yes',
             '|collection=Example coll',
             '|wordclass=N',
             '|sanctioned=Yes',
@@ -44,7 +63,7 @@ class TestConcept(unittest.TestCase):
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
                                             is_typo=False,
-                                            has_illegal_char=True,
+                                            has_illegal_char=False,
                                             collection='Example coll',
                                             wordclass='N',
                                             sanctioned=True))
@@ -87,8 +106,6 @@ class TestConcept(unittest.TestCase):
             '{{Related_expression',
             '|expression=norsk1',
             '|language=nb',
-            '|is_typo=No',
-            '|has_illegal_char=Yes',
             '|collection=Example coll',
             '|wordclass=N',
             '|sanctioned=Yes',
@@ -96,8 +113,6 @@ class TestConcept(unittest.TestCase):
             '{{Related_expression',
             '|expression=sámi1',
             '|language=se',
-            '|is_typo=No',
-            '|has_illegal_char=Yes',
             '|collection=Example coll',
             '|wordclass=N',
             '|sanctioned=Yes',
@@ -105,8 +120,6 @@ class TestConcept(unittest.TestCase):
             '{{Related_expression',
             '|expression=sámi2',
             '|language=se',
-            '|is_typo=No',
-            '|has_illegal_char=Yes',
             '|collection=Example coll',
             '|wordclass=N',
             '|sanctioned=Yes',

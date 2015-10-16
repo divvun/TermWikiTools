@@ -50,6 +50,10 @@ class ExpressionInfo(
 
     is_typo is true if an fst does not recognize the expression
     has_illegal_char is true if the expression contains unwanted characters
+
+    is_typo and has_illegal_char should only written if they are True, as
+    they are only used for debugging/checking TermWiki pages
+
     sanctioned is true if expressions are recommended by a language organ
 
     collection is a string that points to the collection the expression belongs to
@@ -60,12 +64,16 @@ class ExpressionInfo(
     def __str__(self):
         strings = ['{{Related_expression']
         for key, value in self._asdict().items():
-            if value is True:
-                strings.append('|' + key + '=Yes')
-            elif value is False:
-                strings.append('|' + key + '=No')
+            if key in ['is_typo', 'has_illegal_char']:
+                if value is True:
+                    strings.append('|' + key + '=Yes')
             else:
-                strings.append('|' + key + '=' + value)
+                if value is True:
+                    strings.append('|' + key + '=Yes')
+                elif value is False:
+                    strings.append('|' + key + '=No')
+                else:
+                    strings.append('|' + key + '=' + value)
 
         strings.append('}}')
 

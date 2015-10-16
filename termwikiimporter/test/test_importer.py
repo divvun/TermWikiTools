@@ -150,11 +150,46 @@ class TestTermwiki(unittest.TestCase):
         want['nb'].update(set(['hodetelefoner', 'hodesett', 'Brasil']))
         want['se'].update(set(['belljosat', 'Brasil', 'Brasilia', 'bealjoštelefovdna']))
 
-        got = collections.defaultdict(set)
         for lang in self.termwiki.expressions.keys():
-            got[lang].update(self.termwiki.expressions[lang])
+            self.assertSetEqual(want[lang],
+                                self.termwiki.get_expressions_set(lang))
 
-        self.assertDictEqual(got, want)
+    def test_get_pages_where_concept_probably_exists1(self):
+        '''No common expressions'''
+        concept = importer.Concept()
+        concept.add_expression('se', 'sámi1')
+        concept.add_expression('se', 'sámi2')
+        concept.add_expression('nb', 'norsk1')
+        concept.add_expression('nb', 'norsk1')
+
+        self.assertSetEqual(
+            self.termwiki.get_pages_where_concept_probably_exists(concept),
+            set())
+
+    def test_get_pages_where_concept_probably_exists2(self):
+        '''Common expressions in one language'''
+        concept = importer.Concept()
+        concept.add_expression('se', 'Brasil')
+        concept.add_expression('se', 'sámi2')
+        concept.add_expression('nb', 'norsk1')
+        concept.add_expression('nb', 'norsk1')
+
+        self.assertSetEqual(
+            self.termwiki.get_pages_where_concept_probably_exists(concept),
+            set())
+
+    def test_get_pages_where_concept_probably_exists2(self):
+        '''Common expressions in two languages'''
+        concept = importer.Concept()
+        concept.add_expression('se', 'bealjoštelefovdna')
+        concept.add_expression('se', 'belljosat')
+        concept.add_expression('nb', 'norsk1')
+        concept.add_expression('nb', 'hodetelefoner')
+
+        self.assertSetEqual(
+            self.termwiki.get_pages_where_concept_probably_exists(concept),
+            set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                 'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
 
 
 class TestExcelImporter(unittest.TestCase):

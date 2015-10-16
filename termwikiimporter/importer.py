@@ -126,7 +126,7 @@ class TermWiki(object):
                         set([l.text for l in mg.getparent().xpath('./lg/l')]))
 
     def get_expressions_set(self, lang):
-        return set(self.expressions.keys())
+        return set(self.expressions[lang].keys())
 
     def get_pages_where_concept_probably_exists(self, concept):
         '''Check if a Concept already exists in TermWiki
@@ -141,18 +141,19 @@ class TermWiki(object):
         common_pages = set()
         hits = 0
         for lang, expressions in concept.expressions.items():
-            if not self.get_expressions_set().isdisjoint(expressions):
+            if not self.get_expressions_set(lang).isdisjoint(expressions):
                 hits += 1
 
-        termwiki_pages = collections.defaultdict(set)
-        for lang, expressions in concept.expressions.items():
-            for expression in expressions:
-                termwiki_pages[lang].add(self.expressions[expression])
+        if hits > 1:
+            termwiki_pages = collections.defaultdict(set)
+            for lang, expressions in concept.expressions.items():
+                for expression in expressions:
+                    termwiki_pages[lang].update(self.expressions[lang][expression])
 
-        for lang1, pages1 in termwiki_pages.items():
-            for lang2, pages2 in termwiki_pages.items():
-                if lang1 != lang2:
-                    common_pages.update(pages1.intersection(pages2))
+            for lang1, pages1 in termwiki_pages.items():
+                for lang2, pages2 in termwiki_pages.items():
+                    if lang1 != lang2:
+                        common_pages.update(pages1.intersection(pages2))
 
         return common_pages
 

@@ -447,10 +447,11 @@ class ArbeidImporter(Importer):
 
         return finaltokens
 
-    def write(self, path, lang_column, to_file=sys.stdout):
-        for concepts in self.get_arbeid_concepts(path, lang_column):
-            print(concepts.__str__(), file=to_file)
-            print(concepts.related_expressions_string(), file=to_file)
+    def write(self, to_file=sys.stdout):
+        for concept in self.concepts:
+            print('<concept>', file=to_file)
+            print(str(concept), file=to_file)
+            print('</end_concept>', file=to_file)
 
 
 def main():
@@ -519,3 +520,4 @@ def main():
 
     excel = ExcelImporter()
     excel.get_concepts(fileinfos)
+    excel.write(sys.argv[1])

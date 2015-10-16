@@ -473,7 +473,7 @@ def main():
             },
         os.path.join(prefix, 'Mearra ja mearragáttenámahusat.xlsx'): {
             'Sheet1': {
-                'se': 1, 'explanation_nb': 2
+                'se': 1, 'explanation_nb': 2, 'wordclass': 4
                 }
             },
         os.path.join(prefix, 'matematihkkalistugarvvisABC  D.xlsx'): {

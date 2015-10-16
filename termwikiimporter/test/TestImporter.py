@@ -111,15 +111,15 @@ class TestTermwiki(unittest.TestCase):
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.expressions,
-            {'fi': {'kuulokkeet': set(['206', '100830']),
-                    'Brasilia': set(['101148', '101149'])},
-             'nb': {'Brasil': set(['101149', '101148']),
-                    'hodesett': set(['100830']),
-                    'hodetelefoner': set(['100830', '206'])},
-             'se': {'Brasil': set(['101149', '101148']),
-                    'Brasilia': set(['101149', '101148']),
-                    'bealjoštelefovdna': set(['206']),
-                    'belljosat': set(['100830'])}
+            {'fi': {'kuulokkeet': set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna', 'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    'Brasilia': set(['Geografiija:Brasil', 'Geografiija:Brasilia'])},
+             'nb': {'Brasil': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'hodesett': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    'hodetelefoner': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat', 'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna'])},
+             'se': {'Brasil': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'Brasilia': set(['Geografiija:Brasilia', 'Geografiija:Brasil']),
+                    'bealjoštelefovdna': set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']),
+                    'belljosat': set(['Dihtorteknologiija ja diehtoteknihkka:belljosat'])}
             }
         )
 
@@ -127,16 +127,16 @@ class TestTermwiki(unittest.TestCase):
         self.maxDiff = None
         self.assertDictEqual(
             self.termwiki.idrefs,
-            {'100830': {'fi': {'kuulokkeet'},
+            {'Dihtorteknologiija ja diehtoteknihkka:belljosat': {'fi': {'kuulokkeet'},
                         'nb': {'hodetelefoner', 'hodesett'},
                         'se': {'belljosat'}},
-             '101148': {'fi': {'Brasilia'},
+             'Geografiija:Brasil': {'fi': {'Brasilia'},
                         'nb': {'Brasil'},
                         'se': {'Brasil', 'Brasilia'}},
-             '101149': {'fi': {'Brasilia'},
+             'Geografiija:Brasilia': {'fi': {'Brasilia'},
                         'nb': {'Brasil'},
                         'se': {'Brasil', 'Brasilia'}},
-             '206': {'fi': {'kuulokkeet'},
+             'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna': {'fi': {'kuulokkeet'},
                     'nb': {'hodetelefoner'},
                     'se': {'bealjoštelefovdna'}}})
 

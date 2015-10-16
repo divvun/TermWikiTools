@@ -4,27 +4,27 @@ timestamp="2015-10-11" id="termwiki" xmlns:xi="http://www.w3.org/2001/XInclude">
     <lg>
       <l pos="N">kuulokkeet</l>
     </lg>
-    <mg idref="206">
-      <xi:include xpointer="xpointer(//e[@id='206']/tg)" href="termcenter.xml"/>
+    <mg idref="Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna">
+      <xi:include xpointer="xpointer(//e[@id='Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']/tg)" href="termcenter.xml"/>
     </mg>
-    <mg idref="100830">
-      <xi:include xpointer="xpointer(//e[@id='100830']/tg)" href="termcenter.xml"/>
+    <mg idref="Dihtorteknologiija ja diehtoteknihkka:belljosat">
+      <xi:include xpointer="xpointer(//e[@id='Dihtorteknologiija ja diehtoteknihkka:belljosat']/tg)" href="termcenter.xml"/>
     </mg>
   </e>
   <e id="Brasilia\N">
     <lg>
       <l pos="N">Brasilia</l>
     </lg>
-    <mg idref="101148">
-      <xi:include xpointer="xpointer(//e[@id='101148']/tg)" href="termcenter.xml"/>
+    <mg idref="Geografiija:Brasil">
+      <xi:include xpointer="xpointer(//e[@id='Geografiija:Brasil']/tg)" href="termcenter.xml"/>
     </mg>
   </e>
   <e id="Brasilia\V">
     <lg>
       <l pos="V">Brasilia</l>
     </lg>
-    <mg idref="101149">
-      <xi:include xpointer="xpointer(//e[@id='101149']/tg)" href="termcenter.xml"/>
+    <mg idref="Geografiija:Brasilia">
+      <xi:include xpointer="xpointer(//e[@id='Geografiija:Brasilia']/tg)" href="termcenter.xml"/>
     </mg>
   </e>
 </r>

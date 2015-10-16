@@ -383,7 +383,7 @@ def print_termcenter():
 
     tree = etree.parse(os.path.join(term_prefix, 'termcenter.xml'))
 
-    ids = tree.xpath('.//e[@id=100830]')
+    ids = tree.xpath('.//e[@id=Dihtorteknologiija ja diehtoteknihkka:belljosat]')
     for id in ids[:2]:
         print('id', id.get('id'))
         for tg in id.xpath('./tg'):

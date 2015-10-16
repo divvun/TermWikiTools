@@ -11,7 +11,7 @@ setup(
     long_description=open('README.md').read(),
     entry_points={
         'console_scripts': [
-            'import = termwikiimporter.importer.main',
+            'termimport = termwikiimporter.importer:main',
         ]
     },
     install_requires=[

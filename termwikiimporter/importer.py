@@ -224,34 +224,21 @@ class ExcelImporter(Importer):
 
         return finaltokens
 
-    @staticmethod
-    def int_range(i1, i2):
-        '''Generates the ints as strings'''
-        for i in range(i1, i2):
-            yield str(i)
-
-    @staticmethod
-    def int_range(i1, i2):
-        '''Generates the ints as strings'''
-        for i in range(i1, i2):
-            yield str(i)
-
     def get_concepts(self, fileinfo):
-        totalexisting = 0
-        totaltotal = 0
+        totalcounter = collections.defaultdict(int)
+
         for filename, worksheets in fileinfo.items():
             shortname = os.path.basename(filename)
+            counter = collections.defaultdict(int)
             workbook = openpyxl.load_workbook(filename)
 
-            exists = 0
-            totals = 0
             for ws_title, lang_column in worksheets.items():
                 ws = workbook.get_sheet_by_name(ws_title)
                 max_column = ws.max_column
                 typos_column = max_column + 1
 
                 for row in range(2, ws.max_row + 1):
-                    totals += 1
+                    counter['totals'] += 1
                     c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
 
                     for language, col in lang_column.items():
@@ -259,27 +246,38 @@ class ExcelImporter(Importer):
                             if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
                                 c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
                             else:
+                                expression_line = ws.cell(row=row, column=col).value.strip()
                                 try:
                                     c.expressions[language] = self.collect_expressions(
-                                        ws.cell(row=row, column=col).value.strip())
+                                        expression_line)
+                                    if language in ['smj', 'se', 'sma']:
+                                        typos = self.are_expressions_typos(c.expressions[language])
+                                        if len(typos) > 0:
+                                            counter['typos'] += 1
+                                            c.typos = typos
                                 except ExcelImportException as e:
-                                    print(shortname, row, col, str(e), file=sys.stderr)
-                                if language == 'se':
-                                    typos = self.are_expressions_typos(c.expressions[language])
-                                    if len(typos) > 0:
-                                        print(shortname, row, 'Vejolaš čállinmeattáhusat:', ', '.join(typos), file=sys.stderr)
+                                    counter['illegal_char'] += 1
+                                    c.expressions[language] = expression_line
+                                    c.illegal_char = True
+
 
                     common_pages = self.termwiki.get_pages_where_concept_probably_exists(c)
                     if len(common_pages) > 0:
-                        exists += 1
-                        print(shortname, row, common_pages, file=sys.stderr)
+                        c.possible_duplicate = common_pages
+                        counter['possible_duplicate'] += 1
 
                     self.concepts.append(c)
-            totaltotal += totals
-            totalexisting += exists
-            print(shortname, 'existing', exists, 'total', totals, file=sys.stderr)
 
-        print('totalexisting', totalexisting, 'totaltotal', totaltotal)
+            print(shortname)
+            for key, count in counter.items():
+                print('\t', key, count, )
+                totalcounter[key] += count
+            print()
+
+        print('Total')
+        for key, count in totalcounter.items():
+            print('\t', key, count, )
+
 
     def write(self, path, lang_column, to_file=sys.stdout):
         for concept in self.get_concepts(path, lang_column):
@@ -347,25 +345,8 @@ class ArbeidImporter(Importer):
 #ai = ArbeidImporter()
 #ai.write()
 
-def check_files():
-    '''Check the files that giellagáldu is to go through'''
-    prefix = os.path.join(os.getenv('HOME'), 'tmp', 'python-excel')
-    mapping = [
-        (os.path.join(prefix, 'BUP-Ordliste SG 12-04.xlsx'), {'nb': 1, 'se': 2}),
-        (os.path.join(prefix, 'giellalisttu_sátnelistu_(1)(1).xlsx'), {'nb': 2, 'se': 1}),
-        (os.path.join(prefix, 'láhkatearpmat-dearvvašvuohta.xlsx'), {'nb': 1, 'se': 4}),
-        (os.path.join(prefix, 'oadjosanit SG 52-05.xlsx'), {'nb': 1, 'se': 2}),
-        (os.path.join(prefix, 'Ped-Psyk.satnelistu SG 24-02.xlsx'), {'nb': 1, 'se': 2}),
-        (os.path.join(prefix, 'SEG bálvalusválddahuslistu.xlsx'), {'nb': 2, 'se': 1}),
-        (os.path.join(prefix, 'Syklus birrajohtu -godkjent SGL 2009 til publisering.xlsx'), {'nb': 1, 'se': 2}),
-    ]
 
-    excel = ExcelImporter()
-    for (path, lang_column) in mapping:
-        print(path, lang_column)
-        excel.write_existing_expressions_to_excel(path, lang_column)
-
-def export_to_mediawiki():
+def main():
     prefix = os.path.join(os.getenv('GTHOME'), 'words', 'terms', 'from_GG',
                           'orig', 'sme', 'sgl_dohkkehuvvon_listtut')
     fileinfos = {
@@ -406,45 +387,3 @@ def export_to_mediawiki():
 
     excel = ExcelImporter()
     excel.get_concepts(fileinfos)
-
-#export_to_mediawiki()
-
-import glob
-
-def print_termcenter():
-    term_prefix = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
-    terms_trees = {}
-    for terms in glob.glob(term_prefix + '/terms*.xml'):
-        lang = terms[terms.rfind('-') + 1:terms.rfind('.xml')]
-        terms_trees[lang] = etree.parse(terms)
-
-    tree = etree.parse(os.path.join(term_prefix, 'termcenter.xml'))
-
-    ids = tree.xpath('.//e[@id=Dihtorteknologiija ja diehtoteknihkka:belljosat]')
-    for id in ids[:2]:
-        print('id', id.get('id'))
-        for tg in id.xpath('./tg'):
-            lang = tg.get('{http://www.w3.org/XML/1998/namespace}lang')
-            mgs = terms_trees[lang].xpath('./e/mg[@idref=' + id.get('id') + ']')
-            for mg in mgs:
-                print('\t', lang, mg.getparent().find('./lg/l').text)
-            #tgtree = tg.getroottree()
-            #print('before')
-            #tgtree.xinclude()
-            #print('after')
-    print('#concepts', len(ids))
-
-
-#tw = TermWiki()
-#tw.get_terms_expression()
-
-'''Sammenligne et concept med TermWiki
-
-Språkuttrykk i Concept er samlet i set, det samme er uttrykk i TermWiki.
-Sjekk om språkuttryk per språk er disjoint med samme språk i TermWiki.
-
-Om det er treff innen to eller flere språk er det muligens snakk om samme
-Concept.
-Sjekk om det er treff innen samme idref (mao. samme TermWiki-Concept). Om det
-er det, ta vare på idrefen(e)
-'''

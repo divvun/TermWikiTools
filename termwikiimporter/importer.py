@@ -205,9 +205,15 @@ class Importer(object):
             return False
 
 
+class ExcelImportException(Exception):
+    pass
+
 class ExcelImporter(Importer):
     @staticmethod
     def collect_expressions(startline):
+        if re.search(r'[()-]', startline) is not None:
+            raise ExcelImportException('Illegal char in {}'.format(startline))
+
         finaltokens = set()
         splitters = re.compile(r'[,;\n\/]')
 
@@ -230,42 +236,11 @@ class ExcelImporter(Importer):
         for i in range(i1, i2):
             yield str(i)
 
-    def write_existing_expressions_to_excel(self, filename, lang_column):
-        workbook = openpyxl.load_workbook(filename)
-        all_concepts = []
-
-        for ws in workbook:
-            max_column = ws.max_column
-            typos_column = max_column + 1
-
-            for row in range(2, ws.max_row + 1):
-                existing_expressions = []
-                c = Concepts({'nb': Concept(), 'se': Concept()})
-
-                for language, col in lang_column.items():
-                    if ws.cell(row=row, column=col).value is not None:
-                        c.concepts[language].expressions = self.collect_expressions(
-                            ws.cell(row=row, column=col).value.strip())
-                        existing_expressions += self.do_expressions_exist(c.concepts[language].expressions, language)
-                        if language == 'se':
-                            ws.cell(row=1, column=typos_column).value = 'Vejolaš čállinmeattáhusat'
-                            typos = self.are_expressions_typos(c.concepts[language].expressions)
-                            if len(typos) > 0:
-                                ws.cell(row=row, column=typos_column).value = ', '.join(typos)
-
-                expression_column = typos_column + 1
-                for ee in existing_expressions:
-                    ws.cell(row=1, column=expression_column).value = 'Liŋka TermWikii'
-                    ws.cell(row=row, column=expression_column).value = ee
-                    ws.cell(row=row, column=expression_column).hyperlink = 'http://gtsvn.uit.no/termwiki/index.php/Expression:' + ee
-                    expression_column += 1
-
-                all_concepts.append(c)
-
-        workbook.save(filename.replace('.xlsx', '.more.xlsx'))
-
     def get_concepts(self, fileinfo):
+        totalexisting = 0
+        totaltotal = 0
         for filename, worksheets in fileinfo.items():
+            shortname = os.path.basename(filename)
             workbook = openpyxl.load_workbook(filename)
 
             exists = 0
@@ -277,7 +252,6 @@ class ExcelImporter(Importer):
 
                 for row in range(2, ws.max_row + 1):
                     totals += 1
-                    existing_expressions = []
                     c = ExcelConcept(filename=filename, worksheet=ws.title, row=row)
 
                     for language, col in lang_column.items():
@@ -285,19 +259,27 @@ class ExcelImporter(Importer):
                             if language.startswith('definition') or language.startswith('explanation') or language.startswith('more_info'):
                                 c.concept_info[language] = ws.cell(row=row, column=col).value.strip()
                             else:
-                                c.expressions[language] = self.collect_expressions(
-                                    ws.cell(row=row, column=col).value.strip())
+                                try:
+                                    c.expressions[language] = self.collect_expressions(
+                                        ws.cell(row=row, column=col).value.strip())
+                                except ExcelImportException as e:
+                                    print(shortname, row, col, str(e), file=sys.stderr)
                                 if language == 'se':
                                     typos = self.are_expressions_typos(c.expressions[language])
                                     if len(typos) > 0:
-                                        print('Vejolaš čállinmeattáhusat:', 'row:', row, ','.join(typos), file=sys.stderr)
+                                        print(shortname, row, 'Vejolaš čállinmeattáhusat:', ', '.join(typos), file=sys.stderr)
 
-                    if len(existing_expressions) > 0:
+                    common_pages = self.termwiki.get_pages_where_concept_probably_exists(c)
+                    if len(common_pages) > 0:
                         exists += 1
-                        print('Check:', filename, ' row:', row, '\n', c, file=sys.stderr)
-                    self.concepts.append(c)
+                        print(shortname, row, common_pages, file=sys.stderr)
 
-        print('Existing vs totals', exists, ':', totals, file=sys.stderr)
+                    self.concepts.append(c)
+            totaltotal += totals
+            totalexisting += exists
+            print(shortname, 'existing', exists, 'total', totals, file=sys.stderr)
+
+        print('totalexisting', totalexisting, 'totaltotal', totaltotal)
 
     def write(self, path, lang_column, to_file=sys.stdout):
         for concept in self.get_concepts(path, lang_column):
@@ -386,22 +368,44 @@ def check_files():
 def export_to_mediawiki():
     prefix = os.path.join(os.getenv('GTHOME'), 'words', 'terms', 'from_GG',
                           'orig', 'sme', 'sgl_dohkkehuvvon_listtut')
-    mapping = [
-        #(os.path.join(prefix, 'Terminologiens terminologi.xlsx'),
-         #{'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'definition_fi': 7, 'explanation_nn': 8, 'nn': 9, 'sma': 10}),
-        #(os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'),
-         #{'nb': 1, 'se': 2}),
-         (os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'),
-         {'en': 1, 'nb': 3, 'se': 2, 'explanation_se': 7, 'explanation_nb': 8}),
-         #(os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'),
-         #{'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5}),
-         #(os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'),
-         #{'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5}),
-    ]
+    fileinfos = {
+        os.path.join(prefix, 'Terminologiens terminologi.xlsx'):
+             {'Sheet1':
+                  {'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'definition_fi': 7, 'explanation_nn': 8, 'nn': 9, 'sma': 10}},
+        os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'):
+            {'Sheet1':
+                 {'nb': 1, 'se': 2}},
+         os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'):
+              {'Sheet1':
+                   {'en': 1, 'nb': 3, 'se': 2, 'explanation_se': 7, 'explanation_nb': 8}},
+         os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'):
+              {'RIEKTESÁNIT':
+                   {'nb': 1, 'fi': 6, 'se': 2, 'more_info_se': 3, 'explanation_nb': 5}},
+         os.path.join(prefix, 'njuorjjotearpmat.xlsx'):
+             {'Sheet1':
+                  {'se': 1, 'definition_se': 2, 'definition_nb': 3, 'more_info_se': 4, 'more_info_nb': 5}},
+         os.path.join(prefix, 'mielladearvvašvuođalága tearbmalistu.xlsx'):
+             {'Sheet1':
+                  {'nb': 1, 'se': 2, 'more_info_se': 3}},
+         os.path.join(prefix, 'Mearra ja mearragáttenámahusat.xlsx'):
+             {'Sheet1':
+                  {'se': 1, 'explanation_nb': 2}},
+         os.path.join(prefix, 'matematihkkalistugarvvisABC  D.xlsx'):
+             {'sátnelistu':
+                  {'se': 1, 'fi': 2, 'nb': 3}},
+         os.path.join(prefix, 'Jurdihkalaš_tearbmalistu_2011-SEG.xlsx'):
+             {'Sheet1':
+                  {'nb': 1, 'se': 2, 'fi': 3, 'more_info_se': 5, 'explanation_se': 7, 'explanation_nb': 8}},
+         os.path.join(prefix, 'Batnediksuntearpmat godkjent sgl 2011.xlsx'):
+             {'Ark1':
+                  {'nb': 1, 'se': 2, 'explanation_nb': 8, 'explanation_se': 9}},
+         os.path.join(prefix, 'askeladden-red tg-møte 17.2.11.xlsx'):
+             {'KMB_OWNER_ARTERData':
+                  {'nb': 2, 'se': 4, 'explanation_nb': 5, 'more_info_nb': 6}},
+    }
 
     excel = ExcelImporter()
-    for (path, lang_column) in mapping:
-        excel.write(path, lang_column)
+    excel.get_concepts(fileinfos)
 
 #export_to_mediawiki()
 

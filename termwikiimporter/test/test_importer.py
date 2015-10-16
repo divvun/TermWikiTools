@@ -108,21 +108,6 @@ class TestConcept(unittest.TestCase):
         self.assertEqual('\n'.join(concept), str(self.concept))
 
 
-class TestExcelConcept(unittest.TestCase):
-    def test_init_default(self):
-        ec = importer.ExcelConcept()
-
-        self.assertTupleEqual(ec.excelinfo,
-                              ('', '', 0))
-
-    def test_init_set_variables(self):
-        ec = importer.ExcelConcept(filename='filename', worksheet='worksheet',
-                                   row=10)
-
-        self.assertTupleEqual(ec.excelinfo,
-                              ('filename', 'worksheet', 10))
-
-
 class TermWikiWithTestSource(importer.TermWiki):
     @property
     def term_home(self):

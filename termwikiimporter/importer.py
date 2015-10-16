@@ -112,16 +112,6 @@ class Concept(object):
         return '\n'.join(strings)
 
 
-ExcelInfo = collections.namedtuple('ExcelInfo', ['filename', 'worksheet',
-                                                 'row'])
-
-class ExcelConcept(Concept):
-    '''Make it possible to trace where the Concept first appeared'''
-    def __init__(self, filename='', worksheet='', row=0):
-        self.excelinfo = ExcelInfo(filename, worksheet, row)
-        super().__init__()
-
-
 class TermWiki(object):
     '''
     1. liste over ord laget fra terms-xxx.xml

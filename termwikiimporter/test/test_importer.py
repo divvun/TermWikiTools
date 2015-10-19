@@ -79,11 +79,12 @@ class TestConcept(unittest.TestCase):
 
     def add_page(self):
         self.concept.add_page('8')
+        self.concept.add_page('9')
 
     def test_add_page(self):
         self.add_page()
 
-        self.assertEqual(self.concept.pages, set(['8']))
+        self.assertEqual(self.concept.pages, set(['8', '9']))
 
     def test_get_expression_set(self):
         self.add_concept_info()
@@ -102,7 +103,7 @@ class TestConcept(unittest.TestCase):
         concept = [
             '{{Concept',
             '|definition_se=definition1',
-            '|duplicate_pages=[8]',
+            '|duplicate_pages=[8], [9]',
             '}}',
             '{{Related_expression',
             '|expression=norsk1',

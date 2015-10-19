@@ -107,35 +107,36 @@ class Concept(object):
         self.pages.add(page)
 
     def get_expressions_set(self, lang):
-        e_set = set()
-        for e in self.expressions:
-            if e.language == lang:
-                e_set.add(e.expression)
-
-        return e_set
+        return set(
+            [e.expression for e in self.expressions
+             if e.language == lang])
 
     def get_lang_set(self):
-        lang_set = set()
-        for e in self.expressions:
-            lang_set.add(e.language)
+        return set([e.language for e in self.expressions])
 
-        return lang_set
+    @property
+    def dupe_string(self):
+        dupe = '|duplicate_pages='
+        dupe += ', '.join(
+            ['[' + page + ']' for page in self.pages])
+
+        return dupe
 
     def __str__(self):
         strings = ['{{Concept']
         for key, values in self.concept_info.items():
-            for value in values:
-                if len(value.strip()) > 0:
-                    strings.append('|' + key + '=' + value)
-            if len(self.pages) > 0:
-                dupe = '|duplicate_pages='
-                for page in self.pages:
-                    dupe += '[' + page + ']'
-                strings.append(dupe)
+            strings.extend(
+                ['|' + key + '=' + value
+                 for value in values
+                 if len(value.strip()) > 0])
+
+        if len(self.pages) > 0:
+            strings.append(self.dupe_string)
+
         strings.append('}}')
 
-        for expression in sorted(self.expressions):
-            strings.append(str(expression))
+        strings.extend([str(expression)
+                        for expression in sorted(self.expressions)])
 
         return '\n'.join(strings)
 
@@ -287,7 +288,6 @@ class ExcelImporter(Importer):
             for token in splitters.split(startline):
                 finaltoken = token.strip().lower()
                 if len(finaltoken) > 0:
-
                     if ' ' in finaltoken:
                         counter['mwe'] += 1
                         expressions.append(
@@ -369,7 +369,7 @@ class ExcelImporter(Importer):
                         self.termwiki.get_pages_where_concept_probably_exists(c)
                     if len(common_pages) > 0:
                         c.possible_duplicate = common_pages
-                        counter['possible_duplicate'] += 1
+                        counter['possible_duplicates'] += 1
 
                     self.concepts.append(c)
 

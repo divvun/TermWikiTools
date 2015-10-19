@@ -239,10 +239,9 @@ class TermWiki(object):
 
 
 class Importer(object):
-    def __init__(self):
-        self.termwiki = TermWiki()
-        self.termwiki.get_expressions()
-        self.termwiki.get_pages()
+    def __init__(self, filename, termwiki):
+        self.filename = filename
+        self.termwiki = termwiki
         self.concepts = []
 
     def run_external_command(self, command, input):
@@ -284,13 +283,9 @@ class Importer(object):
 
 
 class ExcelImporter(Importer):
-    def __init__(self, excelname):
-        super().__init__()
-        self.excelname = excelname
-
     @property
     def resultname(self):
-        return self.excelname.replace('.xlsx', '.txt')
+        return self.filename.replace('.xlsx', '.txt')
 
     def collect_expressions(self, startline, language, counter, collection='',
                             wordclass='N/A'):
@@ -356,16 +351,16 @@ class ExcelImporter(Importer):
 
     @property
     def fileinfo(self):
-        yamlname = self.excelname.replace('.xlsx', '.yaml')
+        yamlname = self.filename.replace('.xlsx', '.yaml')
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
     def get_concepts(self):
         totalcounter = collections.defaultdict(int)
 
-        shortname = os.path.splitext(os.path.basename(self.excelname))[0]
+        shortname = os.path.splitext(os.path.basename(self.filename))[0]
         counter = collections.defaultdict(int)
-        workbook = openpyxl.load_workbook(self.excelname)
+        workbook = openpyxl.load_workbook(self.filename)
 
         print(shortname)
         for ws_title, ws_info in self.fileinfo.items():
@@ -482,7 +477,11 @@ def parse_options():
 def main():
     args = parse_options()
 
+    termwiki = TermWiki()
+    termwiki.get_expressions()
+    termwiki.get_pages()
+
     for termfile in args.termfiles:
-        excel = ExcelImporter(termfile)
+        excel = ExcelImporter(termfile, termwiki)
         excel.get_concepts()
         excel.write()

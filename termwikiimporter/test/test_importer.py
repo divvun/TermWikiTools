@@ -287,11 +287,16 @@ class TestTermwiki(unittest.TestCase):
                           'Geografiija:Brasilia'])
 
 class TestExcelImporter(unittest.TestCase):
+    def setUp(self):
+        self.termwiki = TermWikiWithTestSource()
+        self.termwiki.get_expressions()
+        self.termwiki.get_pages()
+
     def test_get_concepts(self):
         self.maxDiff = None
         filename = os.path.join(os.path.dirname(__file__), 'excel',
                                 'simple.xlsx')
-        ei = importer.ExcelImporter(filename)
+        ei = importer.ExcelImporter(filename, self.termwiki)
 
         concept = importer.Concept('TestCategory')
         uff = {
@@ -318,7 +323,7 @@ class TestExcelImporter(unittest.TestCase):
     def test_collect_expressions_test_splitters(self):
         '''Test if legal split chars work as splitters'''
         counter = collections.defaultdict(int)
-        ei = importer.ExcelImporter('fakename.xlsx')
+        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
             got = ei.collect_expressions(startline, 'se', counter, collection='example')
 
@@ -345,7 +350,7 @@ class TestExcelImporter(unittest.TestCase):
     def test_collect_expressions_illegal_chars(self):
         '''Check that illegal chars in startline is handled correctly'''
         counter = collections.defaultdict(int)
-        ei = importer.ExcelImporter('fakename.xlsx')
+        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         for startline in '()-':
             got = ei.collect_expressions(startline, 'se', counter, collection='example')
 
@@ -364,7 +369,7 @@ class TestExcelImporter(unittest.TestCase):
     def test_collect_expressions_multiword_expression(self):
         '''Handle multiword expression'''
         counter = collections.defaultdict(int)
-        ei = importer.ExcelImporter('fakename.xlsx')
+        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         got = ei.collect_expressions('a b', 'se', counter, collection='example')
 
         self.assertEqual(
@@ -382,7 +387,7 @@ class TestExcelImporter(unittest.TestCase):
     def test_collect_expressions_typo(self):
         '''Handle typo expression'''
         counter = collections.defaultdict(int)
-        ei = importer.ExcelImporter('fakename.xlsx')
+        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         got = ei.collect_expressions('asdfg', 'se', counter, collection='example')
 
         self.assertEqual(

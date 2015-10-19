@@ -312,9 +312,10 @@ class TestExcelImporter(unittest.TestCase):
 
     def test_collect_expressions_test_splitters(self):
         '''Test if legal split chars work as splitters'''
+        counter = collections.defaultdict(int)
         ei = importer.ExcelImporter()
         for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
-            got = ei.collect_expressions(startline, 'se', collection='example')
+            got = ei.collect_expressions(startline, 'se', counter, collection='example')
 
             self.assertEqual(
                 [
@@ -338,9 +339,10 @@ class TestExcelImporter(unittest.TestCase):
 
     def test_collect_expressions_illegal_chars(self):
         '''Check that illegal chars in startline is handled correctly'''
+        counter = collections.defaultdict(int)
         ei = importer.ExcelImporter()
         for startline in '()-':
-            got = ei.collect_expressions(startline, 'se', collection='example')
+            got = ei.collect_expressions(startline, 'se', counter, collection='example')
 
             self.assertEqual(
                 [
@@ -356,8 +358,9 @@ class TestExcelImporter(unittest.TestCase):
 
     def test_collect_expressions_multiword_expression(self):
         '''Handle multiword expression'''
+        counter = collections.defaultdict(int)
         ei = importer.ExcelImporter()
-        got = ei.collect_expressions('a b', 'se', collection='example')
+        got = ei.collect_expressions('a b', 'se', counter, collection='example')
 
         self.assertEqual(
             [
@@ -373,8 +376,9 @@ class TestExcelImporter(unittest.TestCase):
 
     def test_collect_expressions_typo(self):
         '''Handle typo expression'''
+        counter = collections.defaultdict(int)
         ei = importer.ExcelImporter()
-        got = ei.collect_expressions('asdfg', 'se', collection='example')
+        got = ei.collect_expressions('asdfg', 'se', counter, collection='example')
 
         self.assertEqual(
             [

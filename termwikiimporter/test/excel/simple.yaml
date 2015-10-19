@@ -1,5 +1,5 @@
 Sheet1:
     terms: {fi: 1, nb: 2, se: 3}
-    other_info: {}
+    other_info: {explanation_nb: 5}
     main_category: Servodatdieđa
-    wordclass: 0
+    wordclass: 4

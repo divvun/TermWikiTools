@@ -111,7 +111,8 @@ class Concept(object):
             [e.expression for e in self.expressions
              if e.language == lang])
 
-    def get_lang_set(self):
+    @property
+    def lang_set(self):
         return set([e.language for e in self.expressions])
 
     @property
@@ -203,14 +204,14 @@ class TermWiki(object):
         '''
         common_pages = set()
         hits = 0
-        for lang in concept.get_lang_set():
+        for lang in concept.lang_set:
             if not self.get_expressions_set(lang).isdisjoint(
                     concept.get_expressions_set(lang)):
                 hits += 1
 
         if hits > 1:
             termwiki_pages = collections.defaultdict(set)
-            for lang in concept.get_lang_set():
+            for lang in concept.lang_set:
                 for expression in concept.get_expressions_set(lang):
                     termwiki_pages[lang].update(self.expressions[lang][expression])
 

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+import argparse
 import collections
 from lxml import etree
 import openpyxl
@@ -8,6 +9,7 @@ import os
 import re
 import subprocess
 import sys
+import yaml
 
 
 class ExternalCommandRunner(object):
@@ -268,17 +270,28 @@ class Importer(object):
 
         return False
 
-    def write(self, filename):
-        with open(filename, 'w') as to_file:
+    def write(self):
+        with open(self.resultname, 'w') as to_file:
             for concept in self.concepts:
                 print('{{-start-}}', file=to_file)
-                print("'''" + concept.get_pagename(self.termwiki.pagenames) + "'''",
-                      file=to_file)
+                try:
+                    print("'''" + concept.get_pagename(self.termwiki.pagenames) + "'''",
+                        file=to_file)
+                except TypeError:
+                    print('error in', str(concept), file=sys.stderr)
                 print(str(concept), file=to_file)
                 print('{{-stop-}}', file=to_file)
 
 
 class ExcelImporter(Importer):
+    def __init__(self, excelname):
+        super().__init__()
+        self.excelname = excelname
+
+    @property
+    def resultname(self):
+        return self.excelname.replace('.xlsx', '.txt')
+
     def collect_expressions(self, startline, language, counter, collection='',
                             wordclass='N/A'):
         '''Insert expressions found in startline into a list of ExpressionInfo
@@ -341,48 +354,53 @@ class ExcelImporter(Importer):
 
         return expressions
 
-    def get_concepts(self, fileinfo):
+    @property
+    def fileinfo(self):
+        yamlname = self.excelname.replace('.xlsx', '.yaml')
+        with open(yamlname) as yamlfile:
+            return yaml.load(yamlfile)
+
+    def get_concepts(self):
         totalcounter = collections.defaultdict(int)
 
-        for filename, worksheets in fileinfo.items():
-            shortname = os.path.splitext(os.path.basename(filename))[0]
-            counter = collections.defaultdict(int)
-            workbook = openpyxl.load_workbook(filename)
+        shortname = os.path.splitext(os.path.basename(self.excelname))[0]
+        counter = collections.defaultdict(int)
+        workbook = openpyxl.load_workbook(self.excelname)
 
-            print(shortname)
-            for ws_title, ws_info in worksheets.items():
-                ws = workbook.get_sheet_by_name(ws_title)
+        print(shortname)
+        for ws_title, ws_info in self.fileinfo.items():
+            ws = workbook.get_sheet_by_name(ws_title)
 
-                for row in range(2, ws.max_row + 1):
-                    counter['concepts'] += 1
-                    c = Concept(ws_info['main_category'])
-                    wordclass = 'N/A'
-                    if (ws_info['wordclass'] != 0 and
-                            ws.cell(row=row, column=ws_info['wordclass']).value is not None):
-                        wordclass = ws.cell(row=row,
-                                            column=ws_info['wordclass']).value.strip()
-                    for language, col in ws_info['terms'].items():
-                        if ws.cell(row=row, column=col).value is not None:
-                            expression_line = ws.cell(row=row,
-                                                      column=col).value.strip()
-                            for e in self.collect_expressions(
-                                    expression_line, language, counter,
-                                    collection=shortname,
-                                    wordclass=wordclass):
-                                c.add_expression(e)
+            for row in range(2, ws.max_row + 1):
+                counter['concepts'] += 1
+                c = Concept(ws_info['main_category'])
+                wordclass = 'N/A'
+                if (ws_info['wordclass'] != 0 and
+                        ws.cell(row=row, column=ws_info['wordclass']).value is not None):
+                    wordclass = ws.cell(row=row,
+                                        column=ws_info['wordclass']).value.strip()
+                for language, col in ws_info['terms'].items():
+                    if ws.cell(row=row, column=col).value is not None:
+                        expression_line = ws.cell(row=row,
+                                                    column=col).value.strip()
+                        for e in self.collect_expressions(
+                                expression_line, language, counter,
+                                collection=shortname,
+                                wordclass=wordclass):
+                            c.add_expression(e)
 
-                    for info, col in ws_info['other_info'].items():
-                        if ws.cell(row=row, column=col).value is not None:
-                            c.concept_info[language] = ws.cell(
-                                row=row, column=col).value.strip()
+                for info, col in ws_info['other_info'].items():
+                    if ws.cell(row=row, column=col).value is not None:
+                        c.concept_info[language] = ws.cell(
+                            row=row, column=col).value.strip()
 
-                    common_pages = \
-                        self.termwiki.get_pages_where_concept_probably_exists(c)
-                    if len(common_pages) > 0:
-                        c.possible_duplicate = common_pages
-                        counter['possible_duplicates'] += 1
+                common_pages = \
+                    self.termwiki.get_pages_where_concept_probably_exists(c)
+                if len(common_pages) > 0:
+                    c.possible_duplicate = common_pages
+                    counter['possible_duplicates'] += 1
 
-                    self.concepts.append(c)
+                self.concepts.append(c)
 
             for key, count in counter.items():
                 print('\t', key, count, )
@@ -447,143 +465,24 @@ class ArbeidImporter(Importer):
         return finaltokens
 
 
-def main():
-    prefix = os.path.join(os.getenv('GTHOME'), 'words', 'terms', 'from_GG',
-                          'orig', 'sme', 'sgl_dohkkehuvvon_listtut')
-    fileinfos = {
-        os.path.join(prefix, 'terminologiens_terminologi.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'nn': 9, 'sma': 10
-                },
-                'other_info': {
-                    'definition_fi': 7, 'explanation_nn': 8
-                },
-                'main_category': 'Gielladieđa',
-                'wordclass': 0
-            }
-        },
-        os.path.join(prefix, 'teknisk_ordliste_sg_10-03.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'nb': 1, 'se': 2,
-                },
-                'other_info': {
-                },
-                'main_category': 'Teknihkka industriija duoddji',
-                'wordclass': 4,
-            }
-        },
-        os.path.join(prefix, 'skolelinux_sg_12-05.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'en': 1, 'nb': 3, 'se': 2,
-                },
-                'other_info': {
-                    'explanation_se': 7, 'explanation_nb': 8
-                },
-                'main_category': 'Dihtorteknologiija ja diehtoteknihkka‎',
-                'wordclass': 4,
-            }
-        },
-        os.path.join(prefix, 'servodatfaga_tearbmalistu.xlsx'): {
-            'RIEKTESÁNIT': {
-                'terms': {
-                    'nb': 1, 'fi': 6, 'se': 2
-                },
-                'other_info': {
-                    'more_info_se': 3, 'explanation_nb': 5
-                },
-                'main_category': 'Servodatdieđa',
-                'wordclass': 4,
-            }
-        },
-        os.path.join(prefix, 'njuorjjotearpmat.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'se': 1,
-                },
-                'other_info': {
-                    'definition_se': 2, 'definition_nb': 3, 'more_info_se': 4,
-                    'more_info_nb': 5
-                },
-                'main_category': 'Luonddodieđa ja matematihkka',
-                'wordclass': 0
-            }
-        },
-        os.path.join(prefix, 'mielladearvvasvuodalaga_tearbmalistu.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'nb': 1, 'se': 2,
-                },
-                'other_info': {
-                    'more_info_se': 3
-                },
-                'main_category': 'Servodatdieđa',
-                'wordclass': 0,
-            }
-        },
-        os.path.join(prefix, 'mearra_ja_mearragattenamahusat.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'se': 1,
-                },
-                'other_info': {
-                    'explanation_nb': 2,
-                },
-                'main_category': 'Luonddodieđa ja matematihkka',
-                'wordclass': 4
-            }
-        },
-        os.path.join(prefix, 'matematihkkalistugarvvis_abcd.xlsx'): {
-            'sátnelistu': {
-                'terms': {
-                    'se': 1, 'fi': 2, 'nb': 3
-                },
-                'other_info': {
-                },
-                'main_category': 'Luonddodieđa ja matematihkka',
-                'wordclass': 0
-            }
-        },
-        os.path.join(prefix, 'jurdihkalas_tearbmalistu_2011-seg.xlsx'): {
-            'Sheet1': {
-                'terms': {
-                    'nb': 1, 'se': 2, 'fi': 3,
-                },
-                'other_info': {
-                    'more_info_se': 5, 'explanation_se': 7, 'explanation_nb': 8
-                },
-                'main_category': 'Juridihkka',
-                'wordclass': 0
-            }
-        },
-        os.path.join(prefix, 'batnediksuntearpmat_godkjent_sgl_2011.xlsx'): {
-            'Ark1': {
-                'terms': {
-                    'nb': 1, 'se': 2,
-                },
-                'other_info': {
-                    'explanation_nb': 8, 'explanation_se': 9
-                },
-                'main_category': 'Medisiidna',
-                'wordclass': 3,
-            }
-        },
-        os.path.join(prefix, 'askeladden-red_tg-mote_17.2.11.xlsx'): {
-            'KMB_OWNER_ARTERData': {
-                'terms': {
-                    'nb': 2, 'se': 4,
-                },
-                'other_info': {
-                    'explanation_nb': 5, 'more_info_nb': 6
-                },
-                'main_category': 'Servodatdieđa',
-                'wordclass': 0,
-            }
-        },
-    }
+def parse_options():
+    parser = argparse.ArgumentParser(
+        description='Convert files containing terms to TermWiki mediawiki format')
 
-    excel = ExcelImporter()
-    excel.get_concepts(fileinfos)
-    excel.write(sys.argv[1])
+    parser.add_argument('termfiles',
+                        nargs='+',
+                        help='One or more files containing terms. Each file must have a \
+                        yaml file that inform how they should be treated.')
+
+    args = parser.parse_args()
+
+    return args
+
+
+def main():
+    args = parse_options()
+
+    for termfile in args.termfiles:
+        excel = ExcelImporter(termfile)
+        excel.get_concepts()
+        excel.write()

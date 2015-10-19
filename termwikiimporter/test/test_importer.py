@@ -51,7 +51,7 @@ class TestExpressionInfo(unittest.TestCase):
 
 class TestConcept(unittest.TestCase):
     def setUp(self):
-        self.concept = importer.Concept()
+        self.concept = importer.Concept('TestCategory')
 
     def add_expression(self):
         uff = {
@@ -216,7 +216,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists1(self):
         '''No common expressions'''
-        concept = importer.Concept()
+        concept = importer.Concept('TestCategory')
         uff = {
             'se': ['sámi1', 'sámi2'],
             'nb': ['norsk1']}
@@ -237,7 +237,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists2(self):
         '''Common expressions in one language'''
-        concept = importer.Concept()
+        concept = importer.Concept('TestCategory')
         uff = {
             'se': ['Brasil', 'sámi2'],
             'nb': ['norsk1', 'norsk2']}
@@ -258,7 +258,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists3(self):
         '''Common expressions in two languages'''
-        concept = importer.Concept()
+        concept = importer.Concept('TestCategory')
         uff = {
             'se': ['bealjoštelefovdna', 'belljosat'],
             'nb': ['norsk1', 'hodetelefoner']}
@@ -290,13 +290,22 @@ class TestExcelImporter(unittest.TestCase):
     def test_get_concepts(self):
         self.maxDiff = None
         ei = importer.ExcelImporter()
-        lang_column = {'fi': 1, 'nb': 2, 'se': 3}
-        worksheets = {'Sheet1': lang_column}
+        terms = {'fi': 1, 'nb': 2, 'se': 3}
+        other_info = {}
+        main_category = 'Servodatdieđa'
+        worksheets = {
+            'Sheet1': {
+                'terms': terms,
+                'other_info': other_info,
+                'main_category': main_category,
+                'wordclass': 0
+            }
+        }
         filename = os.path.join(os.path.dirname(__file__), 'excel',
                                 'simple.xlsx')
         fileinfo = {filename: worksheets}
 
-        concept = importer.Concept()
+        concept = importer.Concept('TestCategory')
         uff = {
             'fi': ['suomi'],
             'nb': ['norsk'],

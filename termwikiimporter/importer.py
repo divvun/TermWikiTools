@@ -112,10 +112,10 @@ class Concept(object):
             [e.expression for e in self.expressions
              if e.language == lang])
 
-    def get_page_name(self, pagenames):
+    def get_pagename(self, pagenames):
         for lang in ['sms', 'smn', 'sma', 'smj', 'se', 'fi', 'nb', 'sv', 'en', 'lat']:
             if lang in self.lang_set:
-                for expression in self.get_expressions_set():
+                for expression in self.get_expressions_set(lang):
                     pagename = ':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename
@@ -271,11 +271,11 @@ class Importer(object):
     def write(self, filename):
         with open(filename, 'w') as to_file:
             for concept in self.concepts:
-                print('{{-start-}}', filename=to_file)
-                print("'''" + concept.pagename(self.termwiki.pagenames) + "'''",
-                      filename=to_file)
-                print(str(concept), filename=to_file)
-                print('{{-stop-}}', filename=to_file)
+                print('{{-start-}}', file=to_file)
+                print("'''" + concept.get_pagename(self.termwiki.pagenames) + "'''",
+                      file=to_file)
+                print(str(concept), file=to_file)
+                print('{{-stop-}}', file=to_file)
 
 
 class ExcelImporter(Importer):
@@ -358,7 +358,7 @@ class ExcelImporter(Importer):
                     c = Concept(ws_info['main_category'])
                     wordclass = 'N/A'
                     if (ws_info['wordclass'] != 0 and
-                            ws.cell(row=row, column=ws_info['wordclass']) is not None):
+                            ws.cell(row=row, column=ws_info['wordclass']).value is not None):
                         wordclass = ws.cell(row=row,
                                             column=ws_info['wordclass']).value.strip()
                     for language, col in ws_info['terms'].items():
@@ -451,7 +451,7 @@ def main():
     prefix = os.path.join(os.getenv('GTHOME'), 'words', 'terms', 'from_GG',
                           'orig', 'sme', 'sgl_dohkkehuvvon_listtut')
     fileinfos = {
-        os.path.join(prefix, 'Terminologiens terminologi.xlsx'): {
+        os.path.join(prefix, 'terminologiens_terminologi.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'fi': 2, 'nb': 4, 'se': 5, 'sv': 6, 'nn': 9, 'sma': 10
@@ -459,40 +459,43 @@ def main():
                 'other_info': {
                     'definition_fi': 7, 'explanation_nn': 8
                 },
-                'main_category': 'Gielladieđa'
+                'main_category': 'Gielladieđa',
+                'wordclass': 0
             }
         },
-        os.path.join(prefix, 'teknisk ordliste SG 10-03.xlsx'): {
+        os.path.join(prefix, 'teknisk_ordliste_sg_10-03.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'nb': 1, 'se': 2,
                 },
                 'other_info': {
-                    'wordclass': 4,
                 },
                 'main_category': 'Teknihkka industriija duoddji',
+                'wordclass': 4,
             }
         },
-        os.path.join(prefix, 'Skolelinux SG 12-05.xlsx'): {
+        os.path.join(prefix, 'skolelinux_sg_12-05.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'en': 1, 'nb': 3, 'se': 2,
                 },
                 'other_info': {
-                    'wordclass': 4, 'explanation_se': 7, 'explanation_nb': 8
+                    'explanation_se': 7, 'explanation_nb': 8
                 },
                 'main_category': 'Dihtorteknologiija ja diehtoteknihkka‎',
+                'wordclass': 4,
             }
         },
-        os.path.join(prefix, 'servodatfága tearbmalistu.xlsx'): {
+        os.path.join(prefix, 'servodatfaga_tearbmalistu.xlsx'): {
             'RIEKTESÁNIT': {
                 'terms': {
                     'nb': 1, 'fi': 6, 'se': 2
                 },
                 'other_info': {
-                    'more_info_se': 3, 'wordclass': 4, 'explanation_nb': 5
+                    'more_info_se': 3, 'explanation_nb': 5
                 },
                 'main_category': 'Servodatdieđa',
+                'wordclass': 4,
             }
         },
         os.path.join(prefix, 'njuorjjotearpmat.xlsx'): {
@@ -505,9 +508,10 @@ def main():
                     'more_info_nb': 5
                 },
                 'main_category': 'Luonddodieđa ja matematihkka',
+                'wordclass': 0
             }
         },
-        os.path.join(prefix, 'mielladearvvašvuođalága tearbmalistu.xlsx'): {
+        os.path.join(prefix, 'mielladearvvasvuodalaga_tearbmalistu.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'nb': 1, 'se': 2,
@@ -516,20 +520,22 @@ def main():
                     'more_info_se': 3
                 },
                 'main_category': 'Servodatdieđa',
+                'wordclass': 0,
             }
         },
-        os.path.join(prefix, 'Mearra ja mearragáttenámahusat.xlsx'): {
+        os.path.join(prefix, 'mearra_ja_mearragattenamahusat.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'se': 1,
                 },
                 'other_info': {
-                    'explanation_nb': 2, 'wordclass': 4
+                    'explanation_nb': 2,
                 },
                 'main_category': 'Luonddodieđa ja matematihkka',
+                'wordclass': 4
             }
         },
-        os.path.join(prefix, 'matematihkkalistugarvvisABC  D.xlsx'): {
+        os.path.join(prefix, 'matematihkkalistugarvvis_abcd.xlsx'): {
             'sátnelistu': {
                 'terms': {
                     'se': 1, 'fi': 2, 'nb': 3
@@ -537,9 +543,10 @@ def main():
                 'other_info': {
                 },
                 'main_category': 'Luonddodieđa ja matematihkka',
+                'wordclass': 0
             }
         },
-        os.path.join(prefix, 'Jurdihkalaš_tearbmalistu_2011-SEG.xlsx'): {
+        os.path.join(prefix, 'jurdihkalas_tearbmalistu_2011-seg.xlsx'): {
             'Sheet1': {
                 'terms': {
                     'nb': 1, 'se': 2, 'fi': 3,
@@ -548,20 +555,22 @@ def main():
                     'more_info_se': 5, 'explanation_se': 7, 'explanation_nb': 8
                 },
                 'main_category': 'Juridihkka',
+                'wordclass': 0
             }
         },
-        os.path.join(prefix, 'Batnediksuntearpmat godkjent sgl 2011.xlsx'): {
+        os.path.join(prefix, 'batnediksuntearpmat_godkjent_sgl_2011.xlsx'): {
             'Ark1': {
                 'terms': {
                     'nb': 1, 'se': 2,
                 },
                 'other_info': {
-                    'wordclass': 3, 'explanation_nb': 8, 'explanation_se': 9
+                    'explanation_nb': 8, 'explanation_se': 9
                 },
                 'main_category': 'Medisiidna',
+                'wordclass': 3,
             }
         },
-        os.path.join(prefix, 'askeladden-red tg-møte 17.2.11.xlsx'): {
+        os.path.join(prefix, 'askeladden-red_tg-mote_17.2.11.xlsx'): {
             'KMB_OWNER_ARTERData': {
                 'terms': {
                     'nb': 2, 'se': 4,
@@ -570,6 +579,7 @@ def main():
                     'explanation_nb': 5, 'more_info_nb': 6
                 },
                 'main_category': 'Servodatdieđa',
+                'wordclass': 0,
             }
         },
     }

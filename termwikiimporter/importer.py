@@ -117,7 +117,7 @@ class Concept(object):
     def get_pagename(self, pagenames):
         for lang in ['sms', 'smn', 'sma', 'smj', 'se', 'fi', 'nb', 'sv', 'en', 'lat']:
             if lang in self.lang_set:
-                for expression in self.get_expressions_set(lang):
+                for expression in sorted(self.get_expressions_set(lang)):
                     pagename = ':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename

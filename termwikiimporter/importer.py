@@ -386,8 +386,8 @@ class ExcelImporter(Importer):
 
                 for info, col in ws_info['other_info'].items():
                     if ws.cell(row=row, column=col).value is not None:
-                        c.concept_info[language] = ws.cell(
-                            row=row, column=col).value.strip()
+                        c.add_concept_info(info,
+                                           ws.cell(row=row, column=col).value.strip())
 
                 common_pages = \
                     self.termwiki.get_pages_where_concept_probably_exists(c)

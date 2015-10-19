@@ -118,7 +118,7 @@ class Concept(object):
     def dupe_string(self):
         dupe = '|duplicate_pages='
         dupe += ', '.join(
-            ['[' + page + ']' for page in self.pages])
+            ['[' + page + ']' for page in sorted(self.pages)])
 
         return dupe
 

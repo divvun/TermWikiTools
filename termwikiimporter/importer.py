@@ -162,6 +162,10 @@ class TermWiki(object):
     def term_home(self):
         return os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
 
+    @property
+    def pagenames(self):
+        return sorted(self.pages.keys())
+
     def get_expressions(self):
         for term_file in os.listdir(self.term_home):
             if term_file.startswith('terms-'):

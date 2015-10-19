@@ -278,6 +278,13 @@ class TestTermwiki(unittest.TestCase):
             set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
                  'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
 
+    def test_pagenames(self):
+        '''Check if the property pagenames returns what it is supposed to'''
+        self.assertEqual(self.termwiki.pagenames,
+                         ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                          'Dihtorteknologiija ja diehtoteknihkka:belljosat',
+                          'Geografiija:Brasil',
+                          'Geografiija:Brasilia'])
 
 class TestExcelImporter(unittest.TestCase):
     def test_get_concepts(self):

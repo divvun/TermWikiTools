@@ -286,6 +286,7 @@ class TestTermwiki(unittest.TestCase):
                           'Geografiija:Brasil',
                           'Geografiija:Brasilia'])
 
+
 class TestExcelImporter(unittest.TestCase):
     def setUp(self):
         self.termwiki = TermWikiWithTestSource()
@@ -311,13 +312,15 @@ class TestExcelImporter(unittest.TestCase):
                                             is_typo=False,
                                             has_illegal_char=False,
                                             collection='simple',
-                                            wordclass='N/A',
+                                            wordclass='N',
                                             sanctioned=True))
+                concept.add_concept_info('explanation_nb', 'Dette er forklaringen')
 
         ei.get_concepts()
         got = ei.concepts
         got_concept = got[0]
         self.assertEqual(len(got), 1)
+        self.assertDictEqual(got_concept.concept_info, concept.concept_info)
         self.assertEqual(got_concept.expressions, concept.expressions)
 
     def test_collect_expressions_test_splitters(self):

@@ -321,7 +321,7 @@ class TestExcelImporter(unittest.TestCase):
         got_concept = got[0]
         self.assertEqual(len(got), 1)
         self.assertDictEqual(got_concept.concept_info, concept.concept_info)
-        self.assertEqual(got_concept.expressions, concept.expressions)
+        self.assertEqual(sorted(got_concept.expressions), sorted(concept.expressions))
 
     def test_collect_expressions_test_splitters(self):
         '''Test if legal split chars work as splitters'''

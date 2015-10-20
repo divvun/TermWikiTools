@@ -122,6 +122,8 @@ class Concept(object):
                     if pagename not in pagenames:
                         return pagename
 
+
+
     @property
     def lang_set(self):
         return set([e.language for e in self.expressions])
@@ -151,6 +153,10 @@ class Concept(object):
                         for expression in sorted(self.expressions)])
 
         return '\n'.join(strings)
+
+    @property
+    def is_empty(self):
+        return (len(self.expressions) == 0 and len(self.concept_info) == 0)
 
 
 class TermWiki(object):
@@ -269,15 +275,17 @@ class Importer(object):
 
         return False
 
-    def write(self):
+    def write(self, pagecounter):
         with open(self.resultname, 'w') as to_file:
             for concept in self.concepts:
                 print('{{-start-}}', file=to_file)
                 try:
                     print("'''" + concept.get_pagename(self.termwiki.pagenames) + "'''",
-                        file=to_file)
+                          file=to_file)
                 except TypeError:
-                    print('error in', str(concept), file=sys.stderr)
+                    print("'''" + ':'.join([concept.main_category,
+                                            'page_' + str(pagecounter.number)]) + "'''",
+                          file=to_file)
                 print(str(concept), file=to_file)
                 print('{{-stop-}}', file=to_file)
 
@@ -395,7 +403,8 @@ class ExcelImporter(Importer):
                     c.possible_duplicate = common_pages
                     counter['possible_duplicates'] += 1
 
-                self.concepts.append(c)
+                if not c.is_empty:
+                    self.concepts.append(c)
 
         for key, count in counter.items():
             print('\t', key, count, )
@@ -454,6 +463,16 @@ class ArbeidImporter(Importer):
         return finaltokens
 
 
+class PageCounter(object):
+    def __init__(self):
+        self.counter = 0
+
+    @property
+    def number(self):
+        self.counter += 1
+        return self.counter
+
+
 def parse_options():
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
@@ -471,6 +490,8 @@ def parse_options():
 def main():
     args = parse_options()
 
+    pagecounter = PageCounter()
+
     termwiki = TermWiki()
     termwiki.get_expressions()
     termwiki.get_pages()
@@ -478,4 +499,4 @@ def main():
     for termfile in args.termfiles:
         excel = ExcelImporter(termfile, termwiki)
         excel.get_concepts()
-        excel.write()
+        excel.write(pagecounter)

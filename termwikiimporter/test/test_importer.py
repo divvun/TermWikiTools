@@ -130,6 +130,26 @@ class TestConcept(unittest.TestCase):
 
         self.assertEqual('\n'.join(concept), str(self.concept))
 
+    def test_is_empty1(self):
+        '''Both expressions and concept_info are empty'''
+        self.assertTrue(self.concept.is_empty)
+
+    def test_is_empty2(self):
+        '''concept_info is empty'''
+        self.add_expression()
+        self.assertFalse(self.concept.is_empty)
+
+    def test_is_empty3(self):
+        '''expressions is empty'''
+        self.add_concept_info()
+        self.assertFalse(self.concept.is_empty)
+
+    def test_is_empty4(self):
+        '''Both expressions and concept_info are non-empty'''
+        self.add_concept_info()
+        self.add_expression()
+        self.assertFalse(self.concept.is_empty)
+
 
 class TermWikiWithTestSource(importer.TermWiki):
     @property

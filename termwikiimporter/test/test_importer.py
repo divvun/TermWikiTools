@@ -354,7 +354,7 @@ class TestExcelImporter(unittest.TestCase):
         '''Check that illegal chars in startline is handled correctly'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        for startline in '()-':
+        for startline in '()-~?':
             got = ei.collect_expressions(startline, 'se', counter, collection='example')
 
             self.assertEqual(
@@ -368,6 +368,25 @@ class TestExcelImporter(unittest.TestCase):
                         wordclass='N/A',
                         sanctioned=False),
                 ], got)
+
+    def test_collect_expressions_illegal_chars_with_newline(self):
+        '''Check that illegal chars in startline is handled correctly'''
+        counter = collections.defaultdict(int)
+        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
+        startline = 'a-a;\nb=b;\nc?c'
+        got = ei.collect_expressions(startline, 'se', counter, collection='example')
+
+        self.assertEqual(
+            [
+                importer.ExpressionInfo(
+                    expression=startline.replace('\n', ' '),
+                    language='se',
+                    is_typo=False,
+                    has_illegal_char=True,
+                    collection='example',
+                    wordclass='N/A',
+                    sanctioned=False),
+            ], got)
 
     def test_collect_expressions_multiword_expression(self):
         '''Handle multiword expression'''

@@ -296,11 +296,11 @@ class ExcelImporter(Importer):
         collection: the basename of the file where the expression comes from
         '''
         expressions = []
-        if re.search(r'[()-]', startline) is not None:
+        if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
             counter['has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
-                    expression=startline,
+                    expression=startline.replace('\n', ' '),
                     language=language,
                     is_typo=False,
                     has_illegal_char=True,

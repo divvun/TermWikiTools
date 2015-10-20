@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from setuptools import find_packages
 from setuptools import setup
 
@@ -13,11 +15,14 @@ setup(
     entry_points={
         'console_scripts': [
             'termimport = termwikiimporter.importer:main',
+            'termexport = termwikiimporter.exporter:write_to_termwiki',
         ]
     },
     install_requires=[
         'lxml',
+        'mwclient',
         'openpyxl',
+        'pyyaml'
     ],
     test_suite='nose.collector',
 )

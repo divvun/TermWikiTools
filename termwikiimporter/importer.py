@@ -136,7 +136,7 @@ class Concept(object):
 
     def __str__(self):
         strings = ['{{Concept']
-        for key, values in self.concept_info.items():
+        for key, values in sorted(self.concept_info.items()):
             strings.extend(
                 ['|' + key + '=' + value
                  for value in values

@@ -397,13 +397,7 @@ class ExcelImporter(Importer):
 
                 self.concepts.append(c)
 
-            for key, count in counter.items():
-                print('\t', key, count, )
-                totalcounter[key] += count
-            print()
-
-        print('Total')
-        for key, count in totalcounter.items():
+        for key, count in counter.items():
             print('\t', key, count, )
 
 

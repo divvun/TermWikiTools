@@ -276,24 +276,29 @@ class Importer(object):
         return False
 
     def write(self, pagecounter):
+        pages = etree.Element('pages')
+        for concept in self.concepts:
+            content = etree.Element('content')
+            content.text = str(concept)
+
+            page = etree.Element('page')
+            try:
+                page.set('title', concept.get_pagename(self.termwiki.pagenames))
+            except TypeError:
+                page.set('title', ':'.join([concept.main_category,
+                                            'page_' + str(pagecounter.number)]))
+            page.append(content)
+            pages.append(page)
+
         with open(self.resultname, 'w') as to_file:
-            for concept in self.concepts:
-                print('{{-start-}}', file=to_file)
-                try:
-                    print("'''" + concept.get_pagename(self.termwiki.pagenames) + "'''",
-                          file=to_file)
-                except TypeError:
-                    print("'''" + ':'.join([concept.main_category,
-                                            'page_' + str(pagecounter.number)]) + "'''",
-                          file=to_file)
-                print(str(concept), file=to_file)
-                print('{{-stop-}}', file=to_file)
+            to_file.write(etree.tostring(pages, pretty_print=True,
+                                         encoding='unicode'))
 
 
 class ExcelImporter(Importer):
     @property
     def resultname(self):
-        return self.filename.replace('.xlsx', '.txt')
+        return self.filename.replace('.xlsx', '.xml')
 
     def collect_expressions(self, startline, language, counter, collection='',
                             wordclass='N/A'):

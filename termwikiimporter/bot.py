@@ -10,6 +10,9 @@ import sys
 from termwikiimporter import importer
 
 
+class BotException(Exception):
+    pass
+
 
 def lineno():
     """Returns the current line number in our program."""
@@ -78,22 +81,23 @@ def bot(text):
     inside_template = False
     concept = importer.Concept()
     lines = collections.deque(text.split(u'\n'))
-    while len(lines) > 0:
-        l = lines.popleft()
-        if l.startswith(u'{{Concept'):
-            (concept_info, sanctioned) = parse_concept(lines)
-            for key, info in concept_info.iteritems():
-                concept.add_concept_info(key, info)
-        elif (l.startswith(u'{{Related expression') or
-              l.startswith(u'{{Related_expression')):
-            concept.add_expression(parse_related_expression(lines, sanctioned))
-        else:
-            print('unhandled', l.strip())
 
-    if concept.is_empty:
-        return text
+    l = lines.popleft()
+    if l.startswith(u'{{Concept'):
+        (concept_info, sanctioned) = parse_concept(lines)
+        for key, info in concept_info.iteritems():
+            concept.add_concept_info(key, info)
+        while len(lines) > 0:
+            l = lines.popleft()
+            if (l.startswith(u'{{Related expression') or
+                l.startswith(u'{{Related_expression')):
+                concept.add_expression(parse_related_expression(lines, sanctioned))
+            else:
+                raise BotException('unhandled', l.strip())
+        if not concept.is_empty:
+            return unicode(concept)
     else:
-        return unicode(concept)
+        return text
 
 
 def main():

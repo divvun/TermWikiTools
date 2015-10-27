@@ -68,6 +68,8 @@ def parse_related_expression(lines, sanctioned):
                                 info = 'Yes'
                         except KeyError:
                             pass
+                elif key == 'wordclass':
+                    key = 'pos'
                 template_contents[key] = info
 
         elif l.startswith('}}'):

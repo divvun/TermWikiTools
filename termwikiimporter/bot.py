@@ -5,9 +5,11 @@ from __future__ import print_function
 import collections
 from lxml import etree
 import inspect
+import mwclient
 import os
 import sys
 from termwikiimporter import importer
+import yaml
 
 
 class BotException(Exception):
@@ -39,7 +41,7 @@ def parse_concept(lines):
         elif l.startswith('}}'):
             return (template_contents, sanctioned)
         else:
-            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + u' ' + l.strip()
 
 
 def parse_related_expression(lines, sanctioned):
@@ -79,7 +81,7 @@ def parse_related_expression(lines, sanctioned):
             except KeyError:
                 raise BotException('expression not set in Related expression template')
         else:
-            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + u' ' + l.strip()
 
 
 def parse_related_concept(lines):
@@ -96,14 +98,11 @@ def parse_related_concept(lines):
         elif l.startswith('}}'):
             return importer.RelatedConceptInfo(**template_contents)
         else:
-            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + u' ' + l.strip()
 
 
 def bot(text):
-    #klaff = collections.defaultdict(set)
     sanctioned = {}
-    template_content = []
-    inside_template = False
     concept = importer.Concept()
     lines = collections.deque(text.split(u'\n'))
 
@@ -118,7 +117,7 @@ def bot(text):
                     l.startswith(u'{{Related_expression')):
                 try:
                     concept.add_expression(parse_related_expression(lines, sanctioned))
-                except BotException as e:
+                except BotException:
                     pass
             elif l.startswith(u'{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
@@ -130,9 +129,55 @@ def bot(text):
         return text
 
 
+def get_site():
+    with open(os.path.join(os.getenv('HOME'), '.config', 'term_config.yaml')) as config_stream:
+        config = yaml.load(config_stream)
+        site = mwclient.Site('gtsvn.uit.no', path='/termwiki/')
+        site.login(config['username'], config['password'])
+
+        return site
+
+
 def main():
+    print('Logging in …')
+    site = get_site()
+    categories = [
+        u'Boazodoallu', u'Dihtorteknologiija ja diehtoteknihkka',
+        u'Dáidda ja girjjálašvuohta', u'Eanandoallu',
+        u'Ekologiija ja biras', u'Ekonomiija ja gávppašeapmi',
+        u'Geografiija', u'Gielladieđa', u'Gulahallanteknihkka',
+        u'Guolástus', u'Huksenteknihkka', u'Juridihkka',
+        u'Luonddudieđa ja matematihkka', u'Medisiidna',
+        u'Mášenteknihkka', u'Ođđa sánit', u'Servodatdieđa',
+        u'Stáda, almmolaš hálddašeapmi', u'Teknihkka, industriija, duodji',
+        u'Álšateknihkka', u'Ásttoáigi ja faláštallan', u'Ávnnasindustriija']
+
+    print('About to iterate categories')
+    for category in categories:
+        print(category, end=' ')
+        saves = 0
+        total = 0
+        for page in site.Categories[category]:
+            total += 1
+            text = page.text()
+            botted_text = bot(text)
+            if text != botted_text:
+                sys.stdout.write('-')
+                sys.stdout.flush()
+                saves += 1
+                try:
+                    page.save(botted_text, summary='Fixing content')
+                except mwclient.errors.APIError as e:
+                    print(page.name, text, unicode(e), file=sys.stderr)
+            else:
+                sys.stdout.write('|')
+                sys.stdout.flush()
+
+        print(u'\n' + category + u':', unicode(saves) + u'/' + unicode(total))
+
+
+def test():
     abba = etree.parse(os.path.join('termwikiimporter', 'test', 'abba.txt'))
-    inside_template = False
 
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
         for page in abba.xpath(u'./page'):

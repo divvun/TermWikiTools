@@ -50,6 +50,8 @@ def parse_related_expression(lines, sanctioned):
     template_contents[u'pos'] = ''
     template_contents[u'collection'] = ''
     template_contents[u'status'] = ''
+    template_contents[u'note'] = ''
+
 
     key = ''
     while len(lines) > 0:

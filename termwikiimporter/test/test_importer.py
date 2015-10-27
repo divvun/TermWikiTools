@@ -9,54 +9,54 @@ from termwikiimporter import importer
 
 class TestExpressionInfo(unittest.TestCase):
     def test_str_is_typo_false(self):
-        e = importer.ExpressionInfo(expression='test1',
-                                    language='se',
+        e = importer.ExpressionInfo(expression=u'test1',
+                                    language=u'se',
                                     is_typo=False,
                                     has_illegal_char=True,
-                                    collection='Example coll',
-                                    wordclass='N',
+                                    collection=u'Example coll',
+                                    wordclass=u'N',
                                     sanctioned=True)
         want = [
-            '{{Related_expression',
-            '|expression=test1',
-            '|language=se',
-            '|has_illegal_char=Yes',
-            '|collection=Example coll',
-            '|wordclass=N',
-            '|sanctioned=Yes',
-            '}}']
+            u'{{Related_expression',
+            u'|expression=test1',
+            u'|language=se',
+            u'|has_illegal_char=Yes',
+            u'|collection=Example coll',
+            u'|wordclass=N',
+            u'|sanctioned=Yes',
+            u'}}']
 
-        self.assertEqual('\n'.join(want), str(e))
+        self.assertEqual(u'\n'.join(want), str(e))
 
     def test_str_has_illegal_char_is_false(self):
-        e = importer.ExpressionInfo(expression='test1',
-                                    language='se',
+        e = importer.ExpressionInfo(expression=u'test1',
+                                    language=u'se',
                                     is_typo=True,
                                     has_illegal_char=False,
-                                    collection='Example coll',
-                                    wordclass='N',
+                                    collection=u'Example coll',
+                                    wordclass=u'N',
                                     sanctioned=True)
         want = [
-            '{{Related_expression',
-            '|expression=test1',
-            '|language=se',
-            '|is_typo=Yes',
-            '|collection=Example coll',
-            '|wordclass=N',
-            '|sanctioned=Yes',
-            '}}']
+            u'{{Related_expression',
+            u'|expression=test1',
+            u'|language=se',
+            u'|is_typo=Yes',
+            u'|collection=Example coll',
+            u'|wordclass=N',
+            u'|sanctioned=Yes',
+            u'}}']
 
-        self.assertEqual('\n'.join(want), str(e))
+        self.assertEqual(u'\n'.join(want), str(e))
 
 
 class TestConcept(unittest.TestCase):
     def setUp(self):
-        self.concept = importer.Concept('TestCategory')
+        self.concept = importer.Concept(u'TestCategory')
 
     def add_expression(self):
         uff = {
-            'se': ['sámi1', 'sámi2'],
-            'nb': ['norsk1']}
+            u'se': [u'sámi1', u'sámi2'],
+            u'nb': [u'norsk1']}
         for lang, expressions in uff.items():
             for expression in expressions:
                 self.concept.add_expression(
@@ -64,35 +64,35 @@ class TestConcept(unittest.TestCase):
                                             language=lang,
                                             is_typo=False,
                                             has_illegal_char=False,
-                                            collection='Example coll',
-                                            wordclass='N',
+                                            collection=u'Example coll',
+                                            wordclass=u'N',
                                             sanctioned=True))
 
     def add_concept_info(self):
-        self.concept.add_concept_info('definition_se', 'definition1')
+        self.concept.add_concept_info(u'definition_se', u'definition1')
 
     def test_add_concept_info(self):
         self.add_concept_info()
 
-        self.assertEqual(self.concept.concept_info['definition_se'],
-                         set(['definition1']))
+        self.assertEqual(self.concept.concept_info[u'definition_se'],
+                         set([u'definition1']))
 
     def add_page(self):
-        self.concept.add_page('8')
-        self.concept.add_page('9')
+        self.concept.add_page(u'8')
+        self.concept.add_page(u'9')
 
     def test_add_page(self):
         self.add_page()
 
-        self.assertEqual(self.concept.pages, set(['8', '9']))
+        self.assertEqual(self.concept.pages, set([u'8', u'9']))
 
     def test_get_expression_set(self):
         self.add_concept_info()
         self.add_expression()
         self.add_page()
 
-        self.assertSetEqual(set(['sámi1', 'sámi2']),
-                            self.concept.get_expressions_set('se'))
+        self.assertSetEqual(set([u'sámi1', u'sámi2']),
+                            self.concept.get_expressions_set(u'se'))
 
     def test_string(self):
         self.maxDiff = None
@@ -101,34 +101,35 @@ class TestConcept(unittest.TestCase):
         self.add_page()
 
         concept = [
-            '{{Concept',
-            '|definition_se=definition1',
-            '|duplicate_pages=[8], [9]',
-            '}}',
-            '{{Related_expression',
-            '|expression=norsk1',
-            '|language=nb',
-            '|collection=Example coll',
-            '|wordclass=N',
-            '|sanctioned=Yes',
-            '}}',
-            '{{Related_expression',
-            '|expression=sámi1',
-            '|language=se',
-            '|collection=Example coll',
-            '|wordclass=N',
-            '|sanctioned=Yes',
-            '}}',
-            '{{Related_expression',
-            '|expression=sámi2',
-            '|language=se',
-            '|collection=Example coll',
-            '|wordclass=N',
-            '|sanctioned=Yes',
-            '}}',
+            u'{{Concept',
+            u'|definition_se=definition1',
+            u'|duplicate_pages=[8], [9]',
+            u'}}',
+            u'{{Related_expression',
+            u'|expression=norsk1',
+            u'|language=nb',
+            u'|collection=Example coll',
+            u'|wordclass=N',
+            u'|sanctioned=Yes',
+            u'}}',
+            u'{{Related_expression',
+            u'|expression=sámi1',
+            u'|language=se',
+            u'|collection=Example coll',
+            u'|wordclass=N',
+            u'|sanctioned=Yes',
+            u'}}',
+            u'{{Related_expression',
+            u'|expression=sámi2',
+            u'|language=se',
+            u'|collection=Example coll',
+            u'|wordclass=N',
+            u'|sanctioned=Yes',
+            u'}}',
         ]
 
-        self.assertEqual('\n'.join(concept), str(self.concept))
+        got = unicode(self.concept)
+        self.assertEqual(u'\n'.join(concept), got)
 
     def test_is_empty1(self):
         '''Both expressions and concept_info are empty'''
@@ -168,31 +169,31 @@ class TestTermwiki(unittest.TestCase):
         self.assertDictEqual(
             self.termwiki.expressions,
             {
-                'fi': {
-                    'kuulokkeet': set(
-                        ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
-                         'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
-                    'Brasilia': set(
-                        ['Geografiija:Brasil', 'Geografiija:Brasilia'])
+                u'fi': {
+                    u'kuulokkeet': set(
+                        [u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                         u'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    u'Brasilia': set(
+                        [u'Geografiija:Brasil', u'Geografiija:Brasilia'])
                 },
-                'nb': {
-                    'Brasil': set(
-                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'hodesett': set(
-                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat']),
-                    'hodetelefoner': set(
-                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat',
-                         'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna'])
+                u'nb': {
+                    u'Brasil': set(
+                        [u'Geografiija:Brasilia', u'Geografiija:Brasil']),
+                    u'hodesett': set(
+                        [u'Dihtorteknologiija ja diehtoteknihkka:belljosat']),
+                    u'hodetelefoner': set(
+                        [u'Dihtorteknologiija ja diehtoteknihkka:belljosat',
+                         u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna'])
                 },
-                'se': {
-                    'Brasil': set(
-                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'Brasilia': set(
-                        ['Geografiija:Brasilia', 'Geografiija:Brasil']),
-                    'bealjoštelefovdna': set(
-                        ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']),
-                    'belljosat': set(
-                        ['Dihtorteknologiija ja diehtoteknihkka:belljosat'])
+                u'se': {
+                    u'Brasil': set(
+                        [u'Geografiija:Brasilia', u'Geografiija:Brasil']),
+                    u'Brasilia': set(
+                        [u'Geografiija:Brasilia', u'Geografiija:Brasil']),
+                    u'bealjoštelefovdna': set(
+                        [u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna']),
+                    u'belljosat': set(
+                        [u'Dihtorteknologiija ja diehtoteknihkka:belljosat'])
                 }
             })
 
@@ -201,34 +202,34 @@ class TestTermwiki(unittest.TestCase):
         self.assertDictEqual(
             self.termwiki.pages,
             {
-                'Dihtorteknologiija ja diehtoteknihkka:belljosat': {
-                    'fi': {'kuulokkeet'},
-                    'nb': {'hodetelefoner', 'hodesett'},
-                    'se': {'belljosat'}
+                u'Dihtorteknologiija ja diehtoteknihkka:belljosat': {
+                    u'fi': {u'kuulokkeet'},
+                    u'nb': {u'hodetelefoner', u'hodesett'},
+                    u'se': {u'belljosat'}
                 },
-                'Geografiija:Brasil': {
-                    'fi': {'Brasilia'},
-                    'nb': {'Brasil'},
-                    'se': {'Brasil', 'Brasilia'}
+                u'Geografiija:Brasil': {
+                    u'fi': {u'Brasilia'},
+                    u'nb': {u'Brasil'},
+                    u'se': {u'Brasil', u'Brasilia'}
                 },
-                'Geografiija:Brasilia': {
-                    'fi': {'Brasilia'},
-                    'nb': {'Brasil'},
-                    'se': {'Brasil', 'Brasilia'}
+                u'Geografiija:Brasilia': {
+                    u'fi': {u'Brasilia'},
+                    u'nb': {u'Brasil'},
+                    u'se': {u'Brasil', u'Brasilia'}
                 },
-                'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna': {
-                    'fi': {'kuulokkeet'},
-                    'nb': {'hodetelefoner'},
-                    'se': {'bealjoštelefovdna'}
+                u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna': {
+                    u'fi': {u'kuulokkeet'},
+                    u'nb': {u'hodetelefoner'},
+                    u'se': {u'bealjoštelefovdna'}
                 }
             })
 
     def test_get_expressions_set(self):
         want = collections.defaultdict(set)
-        want['fi'].update(set(['kuulokkeet', 'Brasilia']))
-        want['nb'].update(set(['hodetelefoner', 'hodesett', 'Brasil']))
-        want['se'].update(set(['belljosat', 'Brasil', 'Brasilia',
-                               'bealjoštelefovdna']))
+        want[u'fi'].update(set([u'kuulokkeet', u'Brasilia']))
+        want[u'nb'].update(set([u'hodetelefoner', u'hodesett', u'Brasil']))
+        want[u'se'].update(set([u'belljosat', u'Brasil', u'Brasilia',
+                               u'bealjoštelefovdna']))
 
         for lang in self.termwiki.expressions.keys():
             self.assertSetEqual(want[lang],
@@ -236,10 +237,10 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists1(self):
         '''No common expressions'''
-        concept = importer.Concept('TestCategory')
+        concept = importer.Concept(u'TestCategory')
         uff = {
-            'se': ['sámi1', 'sámi2'],
-            'nb': ['norsk1']}
+            u'se': [u'sámi1', u'sámi2'],
+            u'nb': [u'norsk1']}
         for lang, expressions in uff.items():
             for expression in expressions:
                 concept.add_expression(
@@ -247,8 +248,8 @@ class TestTermwiki(unittest.TestCase):
                                             language=lang,
                                             is_typo=False,
                                             has_illegal_char=True,
-                                            collection='Example coll',
-                                            wordclass='N',
+                                            collection=u'Example coll',
+                                            wordclass=u'N',
                                             sanctioned=True))
 
         self.assertSetEqual(
@@ -257,10 +258,10 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists2(self):
         '''Common expressions in one language'''
-        concept = importer.Concept('TestCategory')
+        concept = importer.Concept(u'TestCategory')
         uff = {
-            'se': ['Brasil', 'sámi2'],
-            'nb': ['norsk1', 'norsk2']}
+            u'se': [u'Brasil', u'sámi2'],
+            u'nb': [u'norsk1', u'norsk2']}
         for lang, expressions in uff.items():
             for expression in expressions:
                 concept.add_expression(
@@ -268,8 +269,8 @@ class TestTermwiki(unittest.TestCase):
                                             language=lang,
                                             is_typo=False,
                                             has_illegal_char=True,
-                                            collection='Example coll',
-                                            wordclass='N',
+                                            collection=u'Example coll',
+                                            wordclass=u'N',
                                             sanctioned=True))
 
         self.assertSetEqual(
@@ -278,10 +279,10 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists3(self):
         '''Common expressions in two languages'''
-        concept = importer.Concept('TestCategory')
+        concept = importer.Concept(u'TestCategory')
         uff = {
-            'se': ['bealjoštelefovdna', 'belljosat'],
-            'nb': ['norsk1', 'hodetelefoner']}
+            u'se': [u'bealjoštelefovdna', u'belljosat'],
+            u'nb': [u'norsk1', u'hodetelefoner']}
         for lang, expressions in uff.items():
             for expression in expressions:
                 concept.add_expression(
@@ -289,22 +290,22 @@ class TestTermwiki(unittest.TestCase):
                                             language=lang,
                                             is_typo=False,
                                             has_illegal_char=True,
-                                            collection='Example coll',
-                                            wordclass='N',
+                                            collection=u'Example coll',
+                                            wordclass=u'N',
                                             sanctioned=True))
 
         self.assertSetEqual(
             self.termwiki.get_pages_where_concept_probably_exists(concept),
-            set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
-                 'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
+            set([u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                 u'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
 
     def test_pagenames(self):
         '''Check if the property pagenames returns what it is supposed to'''
         self.assertEqual(self.termwiki.pagenames,
-                         ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
-                          'Dihtorteknologiija ja diehtoteknihkka:belljosat',
-                          'Geografiija:Brasil',
-                          'Geografiija:Brasilia'])
+                         [u'Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                          u'Dihtorteknologiija ja diehtoteknihkka:belljosat',
+                          u'Geografiija:Brasil',
+                          u'Geografiija:Brasilia'])
 
 
 class TestExcelImporter(unittest.TestCase):
@@ -319,11 +320,11 @@ class TestExcelImporter(unittest.TestCase):
                                 'simple.xlsx')
         ei = importer.ExcelImporter(filename, self.termwiki)
 
-        concept = importer.Concept('TestCategory')
+        concept = importer.Concept(u'TestCategory')
         uff = {
-            'fi': ['suomi'],
-            'nb': ['norsk'],
-            'se': ['davvisámegiella']}
+            u'fi': [u'suomi'],
+            u'nb': [u'norsk'],
+            u'se': [u'davvisámegiella']}
         for lang, expressions in uff.items():
             for expression in expressions:
                 concept.add_expression(
@@ -331,10 +332,10 @@ class TestExcelImporter(unittest.TestCase):
                                             language=lang,
                                             is_typo=False,
                                             has_illegal_char=False,
-                                            collection='simple',
-                                            wordclass='N',
+                                            collection=u'simple',
+                                            wordclass=u'N',
                                             sanctioned=True))
-                concept.add_concept_info('explanation_nb', 'Dette er forklaringen')
+                concept.add_concept_info(u'explanation_nb', u'Dette er forklaringen')
 
         ei.get_concepts()
         got = ei.concepts
@@ -347,26 +348,26 @@ class TestExcelImporter(unittest.TestCase):
         '''Test if legal split chars work as splitters'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
-            got = ei.collect_expressions(startline, 'se', counter, collection='example')
+        for startline in [u'a, b', u'a; b', u'a\nb', u'a/b']:
+            got = ei.collect_expressions(startline, u'se', counter, collection=u'example')
 
             self.assertEqual(
                 [
                     importer.ExpressionInfo(
-                        expression='a',
-                        language='se',
+                        expression=u'a',
+                        language=u'se',
                         is_typo=False,
                         has_illegal_char=False,
-                        collection='example',
-                        wordclass='N/A',
+                        collection=u'example',
+                        wordclass=u'N/A',
                         sanctioned=True),
                     importer.ExpressionInfo(
-                        expression='b',
-                        language='se',
+                        expression=u'b',
+                        language=u'se',
                         is_typo=False,
                         has_illegal_char=False,
-                        collection='example',
-                        wordclass='N/A',
+                        collection=u'example',
+                        wordclass=u'N/A',
                         sanctioned=True),
                 ], got)
 
@@ -374,18 +375,18 @@ class TestExcelImporter(unittest.TestCase):
         '''Check that illegal chars in startline is handled correctly'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        for startline in '()-~?':
-            got = ei.collect_expressions(startline, 'se', counter, collection='example')
+        for startline in u'()-~?':
+            got = ei.collect_expressions(startline, u'se', counter, collection=u'example')
 
             self.assertEqual(
                 [
                     importer.ExpressionInfo(
                         expression=startline,
-                        language='se',
+                        language=u'se',
                         is_typo=False,
                         has_illegal_char=True,
-                        collection='example',
-                        wordclass='N/A',
+                        collection=u'example',
+                        wordclass=u'N/A',
                         sanctioned=False),
                 ], got)
 
@@ -393,18 +394,18 @@ class TestExcelImporter(unittest.TestCase):
         '''Check that illegal chars in startline is handled correctly'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        startline = 'a-a;\nb=b;\nc?c'
-        got = ei.collect_expressions(startline, 'se', counter, collection='example')
+        startline = u'a-a;\nb=b;\nc?c'
+        got = ei.collect_expressions(startline, u'se', counter, collection=u'example')
 
         self.assertEqual(
             [
                 importer.ExpressionInfo(
-                    expression=startline.replace('\n', ' '),
-                    language='se',
+                    expression=startline.replace(u'\n', u' '),
+                    language=u'se',
                     is_typo=False,
                     has_illegal_char=True,
-                    collection='example',
-                    wordclass='N/A',
+                    collection=u'example',
+                    wordclass=u'N/A',
                     sanctioned=False),
             ], got)
 
@@ -412,17 +413,17 @@ class TestExcelImporter(unittest.TestCase):
         '''Handle multiword expression'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        got = ei.collect_expressions('a b', 'se', counter, collection='example')
+        got = ei.collect_expressions(u'a b', u'se', counter, collection=u'example')
 
         self.assertEqual(
             [
                 importer.ExpressionInfo(
-                    expression='a b',
-                    language='se',
+                    expression=u'a b',
+                    language=u'se',
                     is_typo=False,
                     has_illegal_char=False,
-                    collection='example',
-                    wordclass='MWE',
+                    collection=u'example',
+                    wordclass=u'MWE',
                     sanctioned=True),
             ], got)
 
@@ -430,16 +431,16 @@ class TestExcelImporter(unittest.TestCase):
         '''Handle typo expression'''
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        got = ei.collect_expressions('asdfg', 'se', counter, collection='example')
+        got = ei.collect_expressions(u'asdfg', u'se', counter, collection=u'example')
 
         self.assertEqual(
             [
                 importer.ExpressionInfo(
-                    expression='asdfg',
-                    language='se',
+                    expression=u'asdfg',
+                    language=u'se',
                     is_typo=True,
                     has_illegal_char=False,
-                    collection='example',
-                    wordclass='N/A',
+                    collection=u'example',
+                    wordclass=u'N/A',
                     sanctioned=False),
             ], got)

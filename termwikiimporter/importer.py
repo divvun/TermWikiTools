@@ -36,7 +36,7 @@ class ExternalCommandRunner(object):
                                     stderr=subprocess.PIPE,
                                     cwd=cwd)
         except OSError:
-            print('Please install {}'.format(command[0]))
+            print(u'Please install {}'.format(command[0]))
             raise
 
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
@@ -45,8 +45,8 @@ class ExternalCommandRunner(object):
 
 class ExpressionInfo(
     collections.namedtuple(
-        'ExpressionInfo',
-        'expression language is_typo has_illegal_char collection wordclass sanctioned')):
+        u'ExpressionInfo',
+        u'expression language is_typo has_illegal_char collection wordclass sanctioned')):
     '''Information bound to an expression
 
     expression is a string
@@ -67,22 +67,22 @@ class ExpressionInfo(
     __slots__ = ()
 
     def __str__(self):
-        strings = ['{{Related_expression']
+        strings = [u'{{Related_expression']
         for key, value in self._asdict().items():
-            if key in ['is_typo', 'has_illegal_char']:
+            if key in [u'is_typo', u'has_illegal_char']:
                 if value is True:
-                    strings.append('|' + key + '=Yes')
+                    strings.append(u'|' + key + u'=Yes')
             else:
                 if value is True:
-                    strings.append('|' + key + '=Yes')
+                    strings.append(u'|' + key + u'=Yes')
                 elif value is False:
-                    strings.append('|' + key + '=No')
+                    strings.append(u'|' + key + u'=No')
                 else:
-                    strings.append('|' + key + '=' + value)
+                    strings.append(u'|' + key + u'=' + value)
 
-        strings.append('}}')
+        strings.append(u'}}')
 
-        return '\n'.join(strings)
+        return u'\n'.join(strings)
 
 
 class Concept(object):
@@ -118,10 +118,10 @@ class Concept(object):
              if e.language == lang])
 
     def get_pagename(self, pagenames):
-        for lang in ['sms', 'smn', 'sma', 'smj', 'se', 'fi', 'nb', 'sv', 'en', 'lat']:
+        for lang in [u'sms', u'smn', u'sma', u'smj', u'se', u'fi', u'nb', u'sv', u'en', u'lat']:
             if lang in self.lang_set:
                 for expression in sorted(self.get_expressions_set(lang)):
-                    pagename = ':'.join([self.main_category, expression])
+                    pagename = u':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename
 
@@ -133,29 +133,29 @@ class Concept(object):
 
     @property
     def dupe_string(self):
-        dupe = '|duplicate_pages='
-        dupe += ', '.join(
-            ['[' + page + ']' for page in sorted(self.pages)])
+        dupe = u'|duplicate_pages='
+        dupe += u', '.join(
+            [u'[' + page + u']' for page in sorted(self.pages)])
 
         return dupe
 
     def __str__(self):
-        strings = ['{{Concept']
+        strings = [u'{{Concept']
         for key, values in sorted(self.concept_info.items()):
             strings.extend(
-                ['|' + key + '=' + value
+                [u'|' + key + u'=' + value
                  for value in values
                  if len(value.strip()) > 0])
 
         if len(self.pages) > 0:
             strings.append(self.dupe_string)
 
-        strings.append('}}')
+        strings.append(u'}}')
 
-        strings.extend([str(expression)
+        strings.extend([unicode(expression)
                         for expression in sorted(self.expressions)])
 
-        return '\n'.join(strings)
+        return u'\n'.join(strings)
 
     @property
     def is_empty(self):
@@ -180,7 +180,7 @@ class TermWiki(object):
 
     @property
     def term_home(self):
-        return os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
+        return os.path.join(os.getenv(u'GTHOME'), u'words/terms/termwiki/terms')
 
     @property
     def pagenames(self):
@@ -188,30 +188,30 @@ class TermWiki(object):
 
     def get_expressions(self):
         for term_file in os.listdir(self.term_home):
-            if term_file.startswith('terms-'):
-                lang = term_file[term_file.find('-') + 1:term_file.find('.')]
+            if term_file.startswith(u'terms-'):
+                lang = term_file[term_file.find(u'-') + 1:term_file.find(u'.')]
                 expressions = collections.defaultdict(set)
                 l_elements = etree.parse(
                     os.path.join(self.term_home,
-                                 term_file)).xpath('.//e/lg/l')
+                                 term_file)).xpath(u'.//e/lg/l')
                 for l in l_elements:
                     expressions[l.text].update(
-                        set([mg.get('idref')
-                             for mg in l.getparent().getparent().xpath('.//mg')]))
+                        set([mg.get(u'idref')
+                             for mg in l.getparent().getparent().xpath(u'.//mg')]))
 
                 self.expressions[lang] = expressions
 
     def get_pages(self):
         for term_file in os.listdir(self.term_home):
-            if term_file.startswith('terms-'):
-                lang = term_file[term_file.find('-') + 1:term_file.find('.')]
+            if term_file.startswith(u'terms-'):
+                lang = term_file[term_file.find(u'-') + 1:term_file.find(u'.')]
                 mg_elements = etree.parse(
                     os.path.join(self.term_home,
-                                 term_file)).xpath('.//e/mg')
+                                 term_file)).xpath(u'.//e/mg')
                 for mg in mg_elements:
-                    page = mg.get('idref')
+                    page = mg.get(u'idref')
                     self.pages[page].setdefault(lang, set()).update(
-                        set([l.text for l in mg.getparent().xpath('./lg/l')]))
+                        set([l.text for l in mg.getparent().xpath(u'./lg/l')]))
 
     def get_expressions_set(self, lang):
         return set(self.expressions[lang].keys())
@@ -265,35 +265,35 @@ class Importer(object):
 
         Returns the output of preprocess
         """
-        if lang in ['se', 'sma', 'smj']:
-            if lang == 'se':
-                lang = 'sme'
-            lookup_command = ['lookup', '-q', '-flags', 'mbTT',
-                              os.path.join(os.getenv('GTHOME'), 'langs', lang,
-                                           'src', 'analyser-gt-norm.xfst')]
+        if lang in [u'se', u'sma', u'smj']:
+            if lang == u'se':
+                lang = u'sme'
+            lookup_command = ['lookup', u'-q', u'-flags', u'mbTT',
+                              os.path.join(os.getenv(u'GTHOME'), u'langs', lang,
+                                           u'src', u'analyser-gt-norm.xfst')]
 
             if b'?' in self.run_external_command(lookup_command,
-                                                 expression.encode('utf8')):
+                                                 expression.encode(u'utf8')):
                 return True
 
         return False
 
     def write(self, pagecounter):
-        pages = etree.Element('pages')
+        pages = etree.Element(u'pages')
         for concept in self.concepts:
-            content = etree.Element('content')
+            content = etree.Element(u'content')
             content.text = str(concept)
 
-            page = etree.Element('page')
+            page = etree.Element(u'page')
             try:
-                page.set('title', concept.get_pagename(self.termwiki.pagenames))
+                page.set(u'title', concept.get_pagename(self.termwiki.pagenames))
             except TypeError:
-                page.set('title', ':'.join([concept.main_category,
-                                            'page_' + str(pagecounter.number)]))
+                page.set(u'title', u':'.join([concept.main_category,
+                                            u'page_' + str(pagecounter.number)]))
             page.append(content)
             pages.append(page)
 
-        with open(self.resultname, 'w') as to_file:
+        with open(self.resultname, u'w') as to_file:
             to_file.write(etree.tostring(pages, pretty_print=True,
                                          encoding='unicode'))
 
@@ -301,7 +301,7 @@ class Importer(object):
 class ExcelImporter(Importer):
     @property
     def resultname(self):
-        return self.filename.replace('.xlsx', '.xml')
+        return self.filename.replace(u'.xlsx', u'.xml')
 
     def collect_expressions(self, startline, language, counter, collection='',
                             wordclass='N/A'):
@@ -312,11 +312,11 @@ class ExcelImporter(Importer):
         collection: the basename of the file where the expression comes from
         '''
         expressions = []
-        if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
-            counter['has_illegal_char'] += 1
+        if u'~' in startline or u'?' in startline or re.search(u'[()-]', startline) is not None:
+            counter[u'has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
-                    expression=startline.replace('\n', ' '),
+                    expression=unicode(startline.replace(u'\n', u' ')),
                     language=language,
                     is_typo=False,
                     has_illegal_char=True,
@@ -327,10 +327,10 @@ class ExcelImporter(Importer):
             splitters = re.compile(r'[,;\n\/]')
 
             for token in splitters.split(startline):
-                finaltoken = token.strip().lower()
+                finaltoken = unicode(token.strip().lower())
                 if len(finaltoken) > 0:
-                    if ' ' in finaltoken:
-                        counter['mwe'] += 1
+                    if u' ' in finaltoken:
+                        counter[u'mwe'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -341,7 +341,7 @@ class ExcelImporter(Importer):
                                 wordclass='MWE',
                                 sanctioned=True))
                     elif self.is_expression_typo(finaltoken, language):
-                        counter['is_typo'] += 1
+                        counter[u'is_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -352,7 +352,7 @@ class ExcelImporter(Importer):
                                 wordclass=wordclass,
                                 sanctioned=False))
                     else:
-                        counter['non_typo'] += 1
+                        counter[u'non_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
@@ -367,7 +367,7 @@ class ExcelImporter(Importer):
 
     @property
     def fileinfo(self):
-        yamlname = self.filename.replace('.xlsx', '.yaml')
+        yamlname = self.filename.replace(u'.xlsx', u'.yaml')
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
@@ -383,14 +383,14 @@ class ExcelImporter(Importer):
             ws = workbook.get_sheet_by_name(ws_title)
 
             for row in range(2, ws.max_row + 1):
-                counter['concepts'] += 1
-                c = Concept(ws_info['main_category'])
-                wordclass = 'N/A'
-                if (ws_info['wordclass'] != 0 and
-                        ws.cell(row=row, column=ws_info['wordclass']).value is not None):
+                counter[u'concepts'] += 1
+                c = Concept(ws_info[u'main_category'])
+                wordclass = u'N/A'
+                if (ws_info[u'wordclass'] != 0 and
+                        ws.cell(row=row, column=ws_info[u'wordclass']).value is not None):
                     wordclass = ws.cell(row=row,
-                                        column=ws_info['wordclass']).value.strip()
-                for language, col in ws_info['terms'].items():
+                                        column=ws_info[u'wordclass']).value.strip()
+                for language, col in ws_info[u'terms'].items():
                     if ws.cell(row=row, column=col).value is not None:
                         expression_line = ws.cell(row=row,
                                                     column=col).value.strip()
@@ -400,7 +400,7 @@ class ExcelImporter(Importer):
                                 wordclass=wordclass):
                             c.add_expression(e)
 
-                for info, col in ws_info['other_info'].items():
+                for info, col in ws_info[u'other_info'].items():
                     if ws.cell(row=row, column=col).value is not None:
                         c.add_concept_info(info,
                                            ws.cell(row=row, column=col).value.strip())
@@ -409,13 +409,13 @@ class ExcelImporter(Importer):
                     self.termwiki.get_pages_where_concept_probably_exists(c)
                 if len(common_pages) > 0:
                     c.possible_duplicate = common_pages
-                    counter['possible_duplicates'] += 1
+                    counter[u'possible_duplicates'] += 1
 
                 if not c.is_empty:
                     self.concepts.append(c)
 
         for key, count in counter.items():
-            print('\t', key, count, )
+            print(u'\t', key, count, )
 
 
 class ArbeidImporter(Importer):
@@ -423,35 +423,35 @@ class ArbeidImporter(Importer):
         super().__init__()
 
     def get_arbeid_concepts(self):
-        filename = 'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
+        filename = u'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
         with open(filename) as arbeid:
             all_concepts = []
-            c = Concepts({'nb': Concept(), 'se': Concept()})
-            start = re.compile('\w\w\w$')
+            c = Concepts({'nb': Concept(), u'se': Concept()})
+            start = re.compile(u'\w\w\w$')
             i = 0
             total = 0
             for line in arbeid:
                 if start.match(line):
                     all_concepts.append(c)
-                    c = Concepts({'nb': Concept(), 'se': Concept()})
+                    c = Concepts({'nb': Concept(), u'se': Concept()})
                 else:
-                    if line.startswith('se: '):
-                        c.concepts['se'].expressions = self.collect_expressions(
-                            line[len('se: '):].strip())
-                        self.do_expressions_exist(c.concepts['se'].expressions, 'se')
-                    elif line.startswith('MRKN: '):
-                        c.concepts['se'].explanation = line[len('MRKN: '):].strip()
-                    elif line.startswith('DEF1: '):
-                        c.concepts['se'].definition = line[len('DEF1: '):].strip()
-                    elif line.startswith('nb: '):
-                        c.concepts['nb'].expressions = self.collect_expressions(
-                            line[len('nb: '):].strip())
-                        self.do_expressions_exist(c.concepts['nb'].expressions, 'nb')
-                    elif line.startswith('nbMRKN: '):
-                        c.concepts['nb'].explanation = line[len('nbMRKN: '):].strip()
-                    elif line.startswith('nbDEF1: '):
-                        c.concepts['nb'].definition = line[len('nbDEF1: '):].strip()
-                    elif not line.startswith('klass'):
+                    if line.startswith(u'se: '):
+                        c.concepts[u'se'].expressions = self.collect_expressions(
+                            line[len(u'se: '):].strip())
+                        self.do_expressions_exist(c.concepts[u'se'].expressions, u'se')
+                    elif line.startswith(u'MRKN: '):
+                        c.concepts[u'se'].explanation = line[len(u'MRKN: '):].strip()
+                    elif line.startswith(u'DEF1: '):
+                        c.concepts[u'se'].definition = line[len(u'DEF1: '):].strip()
+                    elif line.startswith(u'nb: '):
+                        c.concepts[u'nb'].expressions = self.collect_expressions(
+                            line[len(u'nb: '):].strip())
+                        self.do_expressions_exist(c.concepts[u'nb'].expressions, u'nb')
+                    elif line.startswith(u'nbMRKN: '):
+                        c.concepts[u'nb'].explanation = line[len(u'nbMRKN: '):].strip()
+                    elif line.startswith(u'nbDEF1: '):
+                        c.concepts[u'nb'].definition = line[len(u'nbDEF1: '):].strip()
+                    elif not line.startswith(u'klass'):
                         print(line.strip())
 
             return all_concepts
@@ -459,12 +459,12 @@ class ArbeidImporter(Importer):
     @staticmethod
     def collect_expressions(startline):
         finaltokens = []
-        for commatoken in startline.split(','):
-            for semicolontoken in commatoken.split(';'):
-                if '<STE>' not in semicolontoken and '<FRTE>' not in semicolontoken:
-                    finaltoken = semicolontoken.replace('<SY>', '').strip()
-                    finaltoken = re.sub('<GRAM.+>', '', finaltoken)
-                    if '<' in finaltoken or '>' in finaltoken:
+        for commatoken in startline.split(u','):
+            for semicolontoken in commatoken.split(u';'):
+                if u'<STE>' not in semicolontoken and u'<FRTE>' not in semicolontoken:
+                    finaltoken = semicolontoken.replace(u'<SY>', u'').strip()
+                    finaltoken = re.sub(u'<GRAM.+>', u'', finaltoken)
+                    if u'<' in finaltoken or u'>' in finaltoken:
                         print(finaltoken, file=sys.stderr)
                     finaltokens.append(finaltoken)
 
@@ -485,7 +485,7 @@ def parse_options():
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
 
-    parser.add_argument('termfiles',
+    parser.add_argument(u'termfiles',
                         nargs='+',
                         help='One or more files containing terms. Each file must have a \
                         yaml file that inform how they should be treated.')

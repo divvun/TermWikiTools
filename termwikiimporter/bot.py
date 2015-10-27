@@ -38,7 +38,7 @@ def bot(text):
                         template_content.append(u'|sanctioned=' +
                                                 sanctioned[lang])
                     except KeyError:
-                        print(lineno(), 'no sanctioned', lang, file=sys.stderr)
+                        pass
             elif l.startswith(u'|in_header') or l.startswith(u'|no picture'):
                 pass
             else:
@@ -62,5 +62,7 @@ def main():
         for page in abba.xpath('./page'):
             c = page.find('content')
             botted_text = bot(c.text)
-            if botted_text != c.text:
-                print('should save')
+            abc.write(botted_text.encode('utf8'))
+            abc.write('\n')
+            #if botted_text != c.text:
+                #print('should save')

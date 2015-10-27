@@ -69,15 +69,9 @@ class ExpressionInfo(
     def __str__(self):
         strings = [u'{{Related expression']
         for key, value in self._asdict().items():
-            if key in [u'is_typo', u'has_illegal_char']:
-                if value is True:
-                    strings.append(u'|' + key + u'=Yes')
-            else:
-                if value is True:
-                    strings.append(u'|' + key + u'=Yes')
-                elif value is False:
-                    strings.append(u'|' + key + u'=No')
-                elif value == '':
+                if (value == u'' or
+                    (value == 'No' and (key == 'is_typo' or
+                                        key == 'has_illegal_char'))):
                     pass
                 else:
                     strings.append(u'|' + key + u'=' + value)
@@ -320,12 +314,12 @@ class ExcelImporter(Importer):
                 ExpressionInfo(
                     expression=unicode(startline.replace(u'\n', u' ')),
                     language=language,
-                    is_typo=False,
-                    has_illegal_char=True,
+                    is_typo='No',
+                    has_illegal_char='Yes',
                     collection=collection,
                     wordclass='N/A',
                     status='',
-                    sanctioned=False))
+                    sanctioned='No'))
         else:
             splitters = re.compile(r'[,;\n\/]')
 
@@ -338,36 +332,36 @@ class ExcelImporter(Importer):
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=False,
-                                has_illegal_char=False,
+                                is_typo=u'No',
+                                has_illegal_char=u'No',
                                 collection=collection,
                                 wordclass='MWE',
                                 status='',
-                                sanctioned=True))
+                                sanctioned=u'Yes'))
                     elif self.is_expression_typo(finaltoken, language):
                         counter[u'is_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=True,
-                                has_illegal_char=False,
+                                is_typo=u'Yes',
+                                has_illegal_char=u'No',
                                 collection=collection,
                                 wordclass=wordclass,
                                 status='',
-                                sanctioned=False))
+                                sanctioned=u'No'))
                     else:
                         counter[u'non_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=False,
-                                has_illegal_char=False,
+                                is_typo=u'No',
+                                has_illegal_char=u'No',
                                 collection=collection,
                                 wordclass=wordclass,
                                 status='',
-                                sanctioned=True))
+                                sanctioned=u'Yes'))
 
         return expressions
 

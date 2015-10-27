@@ -11,12 +11,12 @@ class TestExpressionInfo(unittest.TestCase):
     def test_str_is_typo_false(self):
         e = importer.ExpressionInfo(expression=u'test1',
                                     language=u'se',
-                                    is_typo=False,
-                                    has_illegal_char=True,
+                                    is_typo=u'No',
+                                    has_illegal_char=u'Yes',
                                     collection=u'Example coll',
                                     wordclass=u'N',
-                                    status='',
-                                    sanctioned=True)
+                                    status=u'',
+                                    sanctioned=u'Yes')
         want = [
             u'{{Related expression',
             u'|language=se',
@@ -32,12 +32,12 @@ class TestExpressionInfo(unittest.TestCase):
     def test_str_has_illegal_char_is_false(self):
         e = importer.ExpressionInfo(expression=u'test1',
                                     language=u'se',
-                                    is_typo=True,
-                                    has_illegal_char=False,
+                                    is_typo=u'Yes',
+                                    has_illegal_char=u'No',
                                     collection=u'Example coll',
                                     wordclass=u'N',
-                                    status='',
-                                    sanctioned=True)
+                                    status=u'',
+                                    sanctioned=u'Yes')
         want = [
             u'{{Related expression',
             u'|language=se',
@@ -64,12 +64,12 @@ class TestConcept(unittest.TestCase):
                 self.concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo=False,
-                                            has_illegal_char=False,
+                                            is_typo=u'No',
+                                            has_illegal_char=u'No',
                                             collection=u'Example coll',
                                             wordclass=u'N',
-                                            status='',
-                                            sanctioned=True))
+                                            status=u'',
+                                            sanctioned=u'Yes'))
 
     def add_concept_info(self):
         self.concept.add_concept_info(u'definition_se', u'definition1')
@@ -249,12 +249,12 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo=False,
-                                            has_illegal_char=True,
+                                            is_typo=u'No',
+                                            has_illegal_char=u'Yes',
                                             collection=u'Example coll',
                                             wordclass=u'N',
-                                            status='',
-                                            sanctioned=True))
+                                            status=u'',
+                                            sanctioned=u'Yes'))
 
         self.assertSetEqual(
             self.termwiki.get_pages_where_concept_probably_exists(concept),
@@ -271,12 +271,12 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo=False,
-                                            has_illegal_char=True,
+                                            is_typo=u'No',
+                                            has_illegal_char=u'Yes',
                                             collection=u'Example coll',
                                             wordclass=u'N',
-                                            status='',
-                                            sanctioned=True))
+                                            status=u'',
+                                            sanctioned=u'Yes'))
 
         self.assertSetEqual(
             self.termwiki.get_pages_where_concept_probably_exists(concept),
@@ -293,12 +293,12 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo=False,
-                                            has_illegal_char=True,
+                                            is_typo=u'No',
+                                            has_illegal_char=u'Yes',
                                             collection=u'Example coll',
                                             wordclass=u'N',
-                                            status='',
-                                            sanctioned=True))
+                                            status=u'',
+                                            sanctioned=u'Yes'))
 
         self.assertSetEqual(
             self.termwiki.get_pages_where_concept_probably_exists(concept),
@@ -336,12 +336,12 @@ class TestExcelImporter(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo=False,
-                                            has_illegal_char=False,
+                                            is_typo=u'No',
+                                            has_illegal_char=u'No',
                                             collection=u'simple',
                                             wordclass=u'N',
-                                            status='',
-                                            sanctioned=True))
+                                            status=u'',
+                                            sanctioned=u'Yes'))
                 concept.add_concept_info(u'explanation_nb', u'Dette er forklaringen')
 
         ei.get_concepts()
@@ -363,21 +363,21 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression=u'a',
                         language=u'se',
-                        is_typo=False,
-                        has_illegal_char=False,
+                        is_typo=u'No',
+                        has_illegal_char=u'No',
                         collection=u'example',
                         wordclass=u'N/A',
-                        status='',
-                        sanctioned=True),
+                        status=u'',
+                        sanctioned=u'Yes'),
                     importer.ExpressionInfo(
                         expression=u'b',
                         language=u'se',
-                        is_typo=False,
-                        has_illegal_char=False,
+                        is_typo=u'No',
+                        has_illegal_char=u'No',
                         collection=u'example',
                         wordclass=u'N/A',
-                        status='',
-                        sanctioned=True),
+                        status=u'',
+                        sanctioned=u'Yes'),
                 ], got)
 
     def test_collect_expressions_illegal_chars(self):
@@ -392,12 +392,12 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression=startline,
                         language=u'se',
-                        is_typo=False,
-                        has_illegal_char=True,
+                        is_typo=u'No',
+                        has_illegal_char=u'Yes',
                         collection=u'example',
                         wordclass=u'N/A',
-                        status='',
-                        sanctioned=False),
+                        status=u'',
+                        sanctioned=u'No'),
                 ], got)
 
     def test_collect_expressions_illegal_chars_with_newline(self):
@@ -412,12 +412,12 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression=startline.replace(u'\n', u' '),
                     language=u'se',
-                    is_typo=False,
-                    has_illegal_char=True,
+                    is_typo=u'No',
+                    has_illegal_char=u'Yes',
                     collection=u'example',
                     wordclass=u'N/A',
-                    status='',
-                    sanctioned=False),
+                    status=u'',
+                    sanctioned=u'No'),
             ], got)
 
     def test_collect_expressions_multiword_expression(self):
@@ -431,12 +431,12 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression=u'a b',
                     language=u'se',
-                    is_typo=False,
-                    has_illegal_char=False,
+                    is_typo=u'No',
+                    has_illegal_char=u'No',
                     collection=u'example',
                     wordclass=u'MWE',
-                    status='',
-                    sanctioned=True),
+                    status=u'',
+                    sanctioned=u'Yes'),
             ], got)
 
     def test_collect_expressions_typo(self):
@@ -450,10 +450,10 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression=u'asdfg',
                     language=u'se',
-                    is_typo=True,
-                    has_illegal_char=False,
+                    is_typo=u'Yes',
+                    has_illegal_char=u'No',
                     collection=u'example',
                     wordclass=u'N/A',
-                    status='',
-                    sanctioned=False),
+                    status=u'',
+                    sanctioned=u'No'),
             ], got)

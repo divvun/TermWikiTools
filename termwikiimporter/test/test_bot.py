@@ -251,3 +251,46 @@ class TestBot(unittest.TestCase):
         got = bot.bot('\n'.join(concept))
 
         self.assertEqual(got, want)
+
+    def test_bot8(self):
+        concept = u'''{{Concept
+|definition_se=ákšodearri
+|explanation_se=
+|more_info_se=
+|reviewed_se=Yes
+|definition_nb=tynne delen av øks
+|explanation_nb=Den tynne del av ei øks (den slipes til egg)
+|more_info_nb=
+|reviewed_nb=Yes
+|sources=
+|category=
+|no picture=No
+}}
+{{Related expression
+|language=se
+|expression=ákšodearri
+|in_header=No
+}}
+{{Related expression
+|language=nb
+|expression=tynne delen av øks
+|in_header=No
+}}'''
+        want = u'''{{Concept
+|definition_se=ákšodearri
+|definition_nb=tynne delen av øks
+|explanation_nb=Den tynne del av ei øks (den slipes til egg)
+}}
+{{Related expression
+|language=nb
+|expression=tynne delen av øks
+|sanctioned=Yes
+}}
+{{Related expression
+|language=se
+|expression=ákšodearri
+|sanctioned=Yes
+}}'''
+
+        got = bot.bot(concept)
+        self.assertEqual(got, want)

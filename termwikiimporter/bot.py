@@ -53,7 +53,6 @@ def parse_related_expression(lines, sanctioned):
     template_contents[u'note'] = ''
     template_contents[u'equivalence'] = ''
 
-
     key = ''
     while len(lines) > 0:
         l = lines.popleft().strip()
@@ -62,18 +61,18 @@ def parse_related_expression(lines, sanctioned):
             if key == 'in_header':
                 pass
             else:
-                if key == 'sanctioned':
-                    if info == 'No':
-                        try:
-                            if sanctioned[template_contents['language']] == 'Yes':
-                                info = 'Yes'
-                        except KeyError:
-                            pass
-                elif key == 'wordclass':
+                if key == 'wordclass':
                     key = 'pos'
                 template_contents[key] = info
 
         elif l.startswith('}}'):
+            if template_contents['sanctioned'] == 'No':
+                try:
+                    if sanctioned[template_contents['language']] == 'Yes':
+                        template_contents['sanctioned'] = 'Yes'
+                except KeyError:
+                    pass
+
             try:
                 template_contents['expression']
                 return importer.ExpressionInfo(**template_contents)
@@ -139,9 +138,13 @@ def main():
         for page in abba.xpath(u'./page'):
             c = page.find('content')
             botted_text = bot(c.text)
-            #abc.write(botted_text.encode('utf8'))
-            #abc.write('\n')
-            if botted_text != c.text:
-                print('should save')
-                print(botted_text)
-                print(c.text)
+            if botted_text is not None:
+                abc.write(botted_text.encode('utf8'))
+                abc.write('\n')
+            else:
+                print(etree.tostring(page, encoding='utf8'))
+
+            #if botted_text != c.text:
+                #print('should save')
+                #print(botted_text)
+                #print(c.text)

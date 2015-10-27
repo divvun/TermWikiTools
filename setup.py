@@ -16,6 +16,7 @@ setup(
         'console_scripts': [
             'termimport = termwikiimporter.importer:main',
             'termexport = termwikiimporter.exporter:write_to_termwiki',
+            'termbot = termwikiimporter.bot:main',
         ]
     },
     install_requires=[

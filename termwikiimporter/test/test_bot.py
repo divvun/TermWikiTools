@@ -123,3 +123,35 @@ class TestBot(unittest.TestCase):
         )
 
         self.assertEqual(bot.bot(c), want)
+
+    def test_bot4(self):
+        self.maxDiff = None
+        c = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'|explanation_se=Njiŋŋálas bohcco gohčodit rotnun leaš dal reiton dahje massán miesis, dahje ii leat oppa leamašge čoavjjis\n'
+            u'|reviewed=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'}}'
+        )
+
+        want = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'|explanation_se=Njiŋŋálas bohcco gohčodit rotnun leaš dal reiton dahje massán miesis, dahje ii leat oppa leamašge čoavjjis\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'}}'
+        )
+
+        got = bot.bot(c)
+        print(want)
+        print(got)
+        self.assertEqual(got, want)

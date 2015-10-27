@@ -39,7 +39,9 @@ def bot(text):
                                                 sanctioned[lang])
                     except KeyError:
                         pass
-            elif l.startswith(u'|in_header') or l.startswith(u'|no picture'):
+            elif (l.startswith(u'|in_header') or
+                  l.startswith(u'|no picture') or
+                  l.startswith(u'|reviewed=')):
                 pass
             else:
                 template_content.append(l.strip())
@@ -59,10 +61,12 @@ def main():
     inside_template = False
 
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
-        for page in abba.xpath('./page'):
+        for page in abba.xpath(u'./page[@title="Boazodoallu:ađaiduvvat"]'):
             c = page.find('content')
             botted_text = bot(c.text)
-            abc.write(botted_text.encode('utf8'))
-            abc.write('\n')
-            #if botted_text != c.text:
-                #print('should save')
+            #abc.write(botted_text.encode('utf8'))
+            #abc.write('\n')
+            if botted_text != c.text:
+                print('should save')
+                print(botted_text)
+                print(c.text)

@@ -34,7 +34,7 @@ def parse_concept(lines):
             if l.startswith('|reviewed=') or l.startswith('|no picture'):
                 pass
             else:
-                (key, info) = l[1:].split('=')
+                (key, info) = l[1:].split('=', 1)
                 template_contents[key] = info
         elif l.startswith('}}'):
             return (template_contents, sanctioned)

@@ -46,7 +46,7 @@ class ExternalCommandRunner(object):
 class ExpressionInfo(
     collections.namedtuple(
         u'ExpressionInfo',
-        u'language expression is_typo has_illegal_char collection wordclass status sanctioned')):
+        u'language expression is_typo has_illegal_char collection pos status sanctioned')):
     '''Information bound to an expression
 
     expression is a string
@@ -62,7 +62,7 @@ class ExpressionInfo(
     sanctioned is true if expressions are recommended by a language organ
 
     collection is a string that points to the collection the expression belongs to
-    wordclass is a string informing what part of speech the word is
+    pos is a string informing what part of speech the word is
     '''
     __slots__ = ()
 
@@ -331,7 +331,7 @@ class ExcelImporter(Importer):
         return self.filename.replace(u'.xlsx', u'.xml')
 
     def collect_expressions(self, startline, language, counter, collection='',
-                            wordclass='N/A'):
+                            pos='N/A'):
         '''Insert expressions found in startline into a list of ExpressionInfo
 
         startline: the content of an expression line
@@ -348,7 +348,7 @@ class ExcelImporter(Importer):
                     is_typo='No',
                     has_illegal_char='Yes',
                     collection=collection,
-                    wordclass='N/A',
+                    pos='N/A',
                     status='',
                     sanctioned='No'))
         else:
@@ -366,7 +366,7 @@ class ExcelImporter(Importer):
                                 is_typo=u'No',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                wordclass='MWE',
+                                pos='MWE',
                                 status='',
                                 sanctioned=u'Yes'))
                     elif self.is_expression_typo(finaltoken, language):
@@ -378,7 +378,7 @@ class ExcelImporter(Importer):
                                 is_typo=u'Yes',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                wordclass=wordclass,
+                                pos=pos,
                                 status='',
                                 sanctioned=u'No'))
                     else:
@@ -390,7 +390,7 @@ class ExcelImporter(Importer):
                                 is_typo=u'No',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                wordclass=wordclass,
+                                pos=pos,
                                 status='',
                                 sanctioned=u'Yes'))
 
@@ -416,10 +416,10 @@ class ExcelImporter(Importer):
             for row in range(2, ws.max_row + 1):
                 counter[u'concepts'] += 1
                 c = Concept(ws_info[u'main_category'])
-                wordclass = u'N/A'
+                pos = u'N/A'
                 if (ws_info[u'wordclass'] != 0 and
                         ws.cell(row=row, column=ws_info[u'wordclass']).value is not None):
-                    wordclass = ws.cell(row=row,
+                    pos = ws.cell(row=row,
                                         column=ws_info[u'wordclass']).value.strip()
                 for language, col in ws_info[u'terms'].items():
                     if ws.cell(row=row, column=col).value is not None:
@@ -428,7 +428,7 @@ class ExcelImporter(Importer):
                         for e in self.collect_expressions(
                                 expression_line, language, counter,
                                 collection=shortname,
-                                wordclass=wordclass):
+                                pos=pos):
                             c.add_expression(e)
 
                 for info, col in ws_info[u'other_info'].items():

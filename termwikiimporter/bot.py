@@ -47,7 +47,7 @@ def parse_related_expression(lines, sanctioned):
     template_contents[u'sanctioned'] = 'No'
     template_contents[u'is_typo'] = 'No'
     template_contents[u'has_illegal_char'] = 'No'
-    template_contents[u'wordclass'] = ''
+    template_contents[u'pos'] = ''
     template_contents[u'collection'] = ''
     template_contents[u'status'] = ''
 

@@ -14,7 +14,7 @@ class TestExpressionInfo(unittest.TestCase):
                                     is_typo=u'No',
                                     has_illegal_char=u'Yes',
                                     collection=u'Example coll',
-                                    wordclass=u'N',
+                                    pos=u'N',
                                     status=u'',
                                     sanctioned=u'Yes')
         want = [
@@ -23,7 +23,7 @@ class TestExpressionInfo(unittest.TestCase):
             u'|expression=test1',
             u'|has_illegal_char=Yes',
             u'|collection=Example coll',
-            u'|wordclass=N',
+            u'|pos=N',
             u'|sanctioned=Yes',
             u'}}']
 
@@ -35,7 +35,7 @@ class TestExpressionInfo(unittest.TestCase):
                                     is_typo=u'Yes',
                                     has_illegal_char=u'No',
                                     collection=u'Example coll',
-                                    wordclass=u'N',
+                                    pos=u'N',
                                     status=u'',
                                     sanctioned=u'Yes')
         want = [
@@ -44,7 +44,7 @@ class TestExpressionInfo(unittest.TestCase):
             u'|expression=test1',
             u'|is_typo=Yes',
             u'|collection=Example coll',
-            u'|wordclass=N',
+            u'|pos=N',
             u'|sanctioned=Yes',
             u'}}']
 
@@ -80,7 +80,7 @@ class TestConcept(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'No',
                                             collection=u'Example coll',
-                                            wordclass=u'N',
+                                            pos=u'N',
                                             status=u'',
                                             sanctioned=u'Yes'))
 
@@ -131,21 +131,21 @@ class TestConcept(unittest.TestCase):
             u'|language=nb',
             u'|expression=norsk1',
             u'|collection=Example coll',
-            u'|wordclass=N',
+            u'|pos=N',
             u'|sanctioned=Yes',
             u'}}',
             u'{{Related expression',
             u'|language=se',
             u'|expression=sámi1',
             u'|collection=Example coll',
-            u'|wordclass=N',
+            u'|pos=N',
             u'|sanctioned=Yes',
             u'}}',
             u'{{Related expression',
             u'|language=se',
             u'|expression=sámi2',
             u'|collection=Example coll',
-            u'|wordclass=N',
+            u'|pos=N',
             u'|sanctioned=Yes',
             u'}}',
             u'{{Related concept',
@@ -275,7 +275,7 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            wordclass=u'N',
+                                            pos=u'N',
                                             status=u'',
                                             sanctioned=u'Yes'))
 
@@ -297,7 +297,7 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            wordclass=u'N',
+                                            pos=u'N',
                                             status=u'',
                                             sanctioned=u'Yes'))
 
@@ -319,7 +319,7 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            wordclass=u'N',
+                                            pos=u'N',
                                             status=u'',
                                             sanctioned=u'Yes'))
 
@@ -362,7 +362,7 @@ class TestExcelImporter(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'No',
                                             collection=u'simple',
-                                            wordclass=u'N',
+                                            pos=u'N',
                                             status=u'',
                                             sanctioned=u'Yes'))
                 concept.add_concept_info(u'explanation_nb', u'Dette er forklaringen')
@@ -389,7 +389,7 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'No',
                         collection=u'example',
-                        wordclass=u'N/A',
+                        pos=u'N/A',
                         status=u'',
                         sanctioned=u'Yes'),
                     importer.ExpressionInfo(
@@ -398,7 +398,7 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'No',
                         collection=u'example',
-                        wordclass=u'N/A',
+                        pos=u'N/A',
                         status=u'',
                         sanctioned=u'Yes'),
                 ], got)
@@ -418,7 +418,7 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'Yes',
                         collection=u'example',
-                        wordclass=u'N/A',
+                        pos=u'N/A',
                         status=u'',
                         sanctioned=u'No'),
                 ], got)
@@ -438,7 +438,7 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'No',
                     has_illegal_char=u'Yes',
                     collection=u'example',
-                    wordclass=u'N/A',
+                    pos=u'N/A',
                     status=u'',
                     sanctioned=u'No'),
             ], got)
@@ -457,7 +457,7 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'No',
                     has_illegal_char=u'No',
                     collection=u'example',
-                    wordclass=u'MWE',
+                    pos=u'MWE',
                     status=u'',
                     sanctioned=u'Yes'),
             ], got)
@@ -476,7 +476,7 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'Yes',
                     has_illegal_char=u'No',
                     collection=u'example',
-                    wordclass=u'N/A',
+                    pos=u'N/A',
                     status=u'',
                     sanctioned=u'No'),
             ], got)

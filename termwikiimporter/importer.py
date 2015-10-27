@@ -82,8 +82,8 @@ class ExpressionInfo(
         return u'\n'.join(strings)
 
 
-class RelatedConceptInfo(
-    collections.namedtuple(u'RelatedConceptInfo', u'concept relation')):
+class RelatedConceptInfo(collections.namedtuple(u'RelatedConceptInfo',
+                                                u'concept relation')):
     __slots__ = ()
 
     def __str__(self):
@@ -149,8 +149,6 @@ class Concept(object):
                     pagename = u':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename
-
-
 
     @property
     def lang_set(self):
@@ -317,7 +315,7 @@ class Importer(object):
                 page.set(u'title', concept.get_pagename(self.termwiki.pagenames))
             except TypeError:
                 page.set(u'title', u':'.join([concept.main_category,
-                                            u'page_' + str(pagecounter.number)]))
+                                              u'page_' + str(pagecounter.number)]))
             page.append(content)
             pages.append(page)
 
@@ -427,13 +425,14 @@ class ExcelImporter(Importer):
                 c = Concept(ws_info[u'main_category'])
                 pos = u'N/A'
                 if (ws_info[u'wordclass'] != 0 and
-                        ws.cell(row=row, column=ws_info[u'wordclass']).value is not None):
+                        ws.cell(row=row,
+                                column=ws_info[u'wordclass']).value is not None):
                     pos = ws.cell(row=row,
-                                        column=ws_info[u'wordclass']).value.strip()
+                                  column=ws_info[u'wordclass']).value.strip()
                 for language, col in ws_info[u'terms'].items():
                     if ws.cell(row=row, column=col).value is not None:
                         expression_line = ws.cell(row=row,
-                                                    column=col).value.strip()
+                                                  column=col).value.strip()
                         for e in self.collect_expressions(
                                 expression_line, language, counter,
                                 collection=shortname,

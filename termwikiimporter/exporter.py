@@ -2,6 +2,7 @@
 
 
 import argparse
+import collections
 from lxml import etree
 import mwclient
 
@@ -54,7 +55,7 @@ def write_to_termwiki():
             else:
                 print('\t adding content', new_page_title)
                 site_page.save(pages.pop().find('./content').text,
-                                summary='New import')
+                               summary='New import')
             new_page_title = page_title + '_' + str(counter)
             counter += 1
         print('pages len', len(pages))

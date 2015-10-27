@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import os
 import unittest
 
 from termwikiimporter import bot
@@ -207,7 +206,6 @@ class TestBot(unittest.TestCase):
 
         got = bot.bot(c)
         self.assertEqual(got, want)
-
 
     def test_bot6(self):
         self.maxDiff = None

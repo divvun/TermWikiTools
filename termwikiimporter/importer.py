@@ -46,7 +46,7 @@ class ExternalCommandRunner(object):
 class ExpressionInfo(
     collections.namedtuple(
         u'ExpressionInfo',
-        u'expression language is_typo has_illegal_char collection wordclass sanctioned')):
+        u'language expression is_typo has_illegal_char collection wordclass status sanctioned')):
     '''Information bound to an expression
 
     expression is a string
@@ -67,7 +67,7 @@ class ExpressionInfo(
     __slots__ = ()
 
     def __str__(self):
-        strings = [u'{{Related_expression']
+        strings = [u'{{Related expression']
         for key, value in self._asdict().items():
             if key in [u'is_typo', u'has_illegal_char']:
                 if value is True:
@@ -77,6 +77,8 @@ class ExpressionInfo(
                     strings.append(u'|' + key + u'=Yes')
                 elif value is False:
                     strings.append(u'|' + key + u'=No')
+                elif value == '':
+                    pass
                 else:
                     strings.append(u'|' + key + u'=' + value)
 
@@ -96,7 +98,7 @@ class Concept(object):
 
     pages is a set of TermWiki pages that may be duplicates of this concept
     '''
-    def __init__(self, main_category):
+    def __init__(self, main_category=''):
         self.main_category = main_category
         self.concept_info = collections.defaultdict(set)
         self.expressions = []
@@ -322,6 +324,7 @@ class ExcelImporter(Importer):
                     has_illegal_char=True,
                     collection=collection,
                     wordclass='N/A',
+                    status='',
                     sanctioned=False))
         else:
             splitters = re.compile(r'[,;\n\/]')
@@ -339,6 +342,7 @@ class ExcelImporter(Importer):
                                 has_illegal_char=False,
                                 collection=collection,
                                 wordclass='MWE',
+                                status='',
                                 sanctioned=True))
                     elif self.is_expression_typo(finaltoken, language):
                         counter[u'is_typo'] += 1
@@ -350,6 +354,7 @@ class ExcelImporter(Importer):
                                 has_illegal_char=False,
                                 collection=collection,
                                 wordclass=wordclass,
+                                status='',
                                 sanctioned=False))
                     else:
                         counter[u'non_typo'] += 1
@@ -361,6 +366,7 @@ class ExcelImporter(Importer):
                                 has_illegal_char=False,
                                 collection=collection,
                                 wordclass=wordclass,
+                                status='',
                                 sanctioned=True))
 
         return expressions

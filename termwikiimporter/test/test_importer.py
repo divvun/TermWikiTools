@@ -15,11 +15,12 @@ class TestExpressionInfo(unittest.TestCase):
                                     has_illegal_char=True,
                                     collection=u'Example coll',
                                     wordclass=u'N',
+                                    status='',
                                     sanctioned=True)
         want = [
-            u'{{Related_expression',
-            u'|expression=test1',
+            u'{{Related expression',
             u'|language=se',
+            u'|expression=test1',
             u'|has_illegal_char=Yes',
             u'|collection=Example coll',
             u'|wordclass=N',
@@ -35,11 +36,12 @@ class TestExpressionInfo(unittest.TestCase):
                                     has_illegal_char=False,
                                     collection=u'Example coll',
                                     wordclass=u'N',
+                                    status='',
                                     sanctioned=True)
         want = [
-            u'{{Related_expression',
-            u'|expression=test1',
+            u'{{Related expression',
             u'|language=se',
+            u'|expression=test1',
             u'|is_typo=Yes',
             u'|collection=Example coll',
             u'|wordclass=N',
@@ -51,7 +53,7 @@ class TestExpressionInfo(unittest.TestCase):
 
 class TestConcept(unittest.TestCase):
     def setUp(self):
-        self.concept = importer.Concept(u'TestCategory')
+        self.concept = importer.Concept(main_category=u'TestCategory')
 
     def add_expression(self):
         uff = {
@@ -66,6 +68,7 @@ class TestConcept(unittest.TestCase):
                                             has_illegal_char=False,
                                             collection=u'Example coll',
                                             wordclass=u'N',
+                                            status='',
                                             sanctioned=True))
 
     def add_concept_info(self):
@@ -105,23 +108,23 @@ class TestConcept(unittest.TestCase):
             u'|definition_se=definition1',
             u'|duplicate_pages=[8], [9]',
             u'}}',
-            u'{{Related_expression',
-            u'|expression=norsk1',
+            u'{{Related expression',
             u'|language=nb',
+            u'|expression=norsk1',
             u'|collection=Example coll',
             u'|wordclass=N',
             u'|sanctioned=Yes',
             u'}}',
-            u'{{Related_expression',
+            u'{{Related expression',
+            u'|language=se',
             u'|expression=sámi1',
-            u'|language=se',
             u'|collection=Example coll',
             u'|wordclass=N',
             u'|sanctioned=Yes',
             u'}}',
-            u'{{Related_expression',
-            u'|expression=sámi2',
+            u'{{Related expression',
             u'|language=se',
+            u'|expression=sámi2',
             u'|collection=Example coll',
             u'|wordclass=N',
             u'|sanctioned=Yes',
@@ -237,7 +240,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists1(self):
         '''No common expressions'''
-        concept = importer.Concept(u'TestCategory')
+        concept = importer.Concept(main_category=u'TestCategory')
         uff = {
             u'se': [u'sámi1', u'sámi2'],
             u'nb': [u'norsk1']}
@@ -250,6 +253,7 @@ class TestTermwiki(unittest.TestCase):
                                             has_illegal_char=True,
                                             collection=u'Example coll',
                                             wordclass=u'N',
+                                            status='',
                                             sanctioned=True))
 
         self.assertSetEqual(
@@ -258,7 +262,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists2(self):
         '''Common expressions in one language'''
-        concept = importer.Concept(u'TestCategory')
+        concept = importer.Concept(main_category=u'TestCategory')
         uff = {
             u'se': [u'Brasil', u'sámi2'],
             u'nb': [u'norsk1', u'norsk2']}
@@ -271,6 +275,7 @@ class TestTermwiki(unittest.TestCase):
                                             has_illegal_char=True,
                                             collection=u'Example coll',
                                             wordclass=u'N',
+                                            status='',
                                             sanctioned=True))
 
         self.assertSetEqual(
@@ -279,7 +284,7 @@ class TestTermwiki(unittest.TestCase):
 
     def test_get_pages_where_concept_probably_exists3(self):
         '''Common expressions in two languages'''
-        concept = importer.Concept(u'TestCategory')
+        concept = importer.Concept(main_category=u'TestCategory')
         uff = {
             u'se': [u'bealjoštelefovdna', u'belljosat'],
             u'nb': [u'norsk1', u'hodetelefoner']}
@@ -292,6 +297,7 @@ class TestTermwiki(unittest.TestCase):
                                             has_illegal_char=True,
                                             collection=u'Example coll',
                                             wordclass=u'N',
+                                            status='',
                                             sanctioned=True))
 
         self.assertSetEqual(
@@ -320,7 +326,7 @@ class TestExcelImporter(unittest.TestCase):
                                 'simple.xlsx')
         ei = importer.ExcelImporter(filename, self.termwiki)
 
-        concept = importer.Concept(u'TestCategory')
+        concept = importer.Concept(main_category=u'TestCategory')
         uff = {
             u'fi': [u'suomi'],
             u'nb': [u'norsk'],
@@ -334,6 +340,7 @@ class TestExcelImporter(unittest.TestCase):
                                             has_illegal_char=False,
                                             collection=u'simple',
                                             wordclass=u'N',
+                                            status='',
                                             sanctioned=True))
                 concept.add_concept_info(u'explanation_nb', u'Dette er forklaringen')
 
@@ -360,6 +367,7 @@ class TestExcelImporter(unittest.TestCase):
                         has_illegal_char=False,
                         collection=u'example',
                         wordclass=u'N/A',
+                        status='',
                         sanctioned=True),
                     importer.ExpressionInfo(
                         expression=u'b',
@@ -368,6 +376,7 @@ class TestExcelImporter(unittest.TestCase):
                         has_illegal_char=False,
                         collection=u'example',
                         wordclass=u'N/A',
+                        status='',
                         sanctioned=True),
                 ], got)
 
@@ -387,6 +396,7 @@ class TestExcelImporter(unittest.TestCase):
                         has_illegal_char=True,
                         collection=u'example',
                         wordclass=u'N/A',
+                        status='',
                         sanctioned=False),
                 ], got)
 
@@ -406,6 +416,7 @@ class TestExcelImporter(unittest.TestCase):
                     has_illegal_char=True,
                     collection=u'example',
                     wordclass=u'N/A',
+                    status='',
                     sanctioned=False),
             ], got)
 
@@ -424,6 +435,7 @@ class TestExcelImporter(unittest.TestCase):
                     has_illegal_char=False,
                     collection=u'example',
                     wordclass=u'MWE',
+                    status='',
                     sanctioned=True),
             ], got)
 
@@ -442,5 +454,6 @@ class TestExcelImporter(unittest.TestCase):
                     has_illegal_char=False,
                     collection=u'example',
                     wordclass=u'N/A',
+                    status='',
                     sanctioned=False),
             ], got)

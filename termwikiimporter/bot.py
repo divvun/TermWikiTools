@@ -7,6 +7,8 @@ from lxml import etree
 import inspect
 import os
 import sys
+from termwikiimporter import importer
+
 
 
 def lineno():
@@ -14,47 +16,83 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
+def parse_concept(lines):
+    template_contents = {}
+    sanctioned = {}
+    key = ''
+
+    while len(lines) > 0:
+        l = lines.popleft().strip()
+        if l.startswith(u'|reviewed_'):
+            lang = l.split(u'=')[0].replace(u'|reviewed_', u'')
+            bool = l.strip().split(u'=')[1]
+            sanctioned[lang] = bool
+        elif l.startswith('|'):
+            if l.startswith('|reviewed=') or l.startswith('|no picture'):
+                pass
+            else:
+                (key, info) = l[1:].split('=')
+                template_contents[key] = info
+        elif l.startswith('}}'):
+            return (template_contents, sanctioned)
+        else:
+            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+
+
+def parse_related_expression(lines, sanctioned):
+    template_contents = {}
+    template_contents[u'sanctioned'] = 'No'
+    template_contents[u'is_typo'] = 'No'
+    template_contents[u'has_illegal_char'] = 'No'
+    template_contents[u'wordclass'] = ''
+    template_contents[u'collection'] = ''
+    template_contents[u'status'] = ''
+
+    key = ''
+    while len(lines) > 0:
+        l = lines.popleft().strip()
+        if l.startswith('|'):
+            (key, info) = l[1:].split('=')
+            if key == 'in_header':
+                pass
+            else:
+                if key == 'sanctioned':
+                    if info == 'No':
+                        try:
+                            if sanctioned[template_contents['language']] == 'Yes':
+                                info = 'Yes'
+                        except KeyError:
+                            pass
+                template_contents[key] = info
+
+        elif l.startswith('}}'):
+            return importer.ExpressionInfo(**template_contents)
+        else:
+            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+
+
 def bot(text):
     #klaff = collections.defaultdict(set)
     sanctioned = {}
     template_content = []
     inside_template = False
-    for l in text.split(u'\n'):
-        if l.startswith(u'{{'):
-            template_content.append(l.strip())
-            key = l.strip()
-            inside_template = True
-        elif l.startswith(u'|') and inside_template == True:
-            if l.startswith(u'|reviewed_'):
-                lang = l.split(u'=')[0].replace(u'|reviewed_', u'')
-                bool = l.strip().split(u'=')[1]
-                sanctioned[lang] = bool
-            elif l.startswith(u'|language'):
-                template_content.append(l.strip())
-                if (key == u'{{Related expression' or
-                        key == u'{{Related_expression'):
-                    lang = l.strip().split(u'=')[1]
-                    try:
-                        template_content.append(u'|sanctioned=' +
-                                                sanctioned[lang])
-                    except KeyError:
-                        pass
-            elif (l.startswith(u'|in_header') or
-                  l.startswith(u'|no picture') or
-                  l.startswith(u'|reviewed=')):
-                pass
-            else:
-                template_content.append(l.strip())
-        elif l.startswith(u'}}'):
-            template_content.append(l.strip())
-            key = u''
-            inside_template = False
-        elif inside_template == True:
-            template_content[-1]  = template_content[-1] + u' ' + l.strip()
+    concept = importer.Concept()
+    lines = collections.deque(text.split(u'\n'))
+    while len(lines) > 0:
+        l = lines.popleft()
+        if l.startswith(u'{{Concept'):
+            (concept_info, sanctioned) = parse_concept(lines)
+        elif (l.startswith(u'{{Related expression') or
+              l.startswith(u'{{Related_expression')):
+            concept.add_expression(parse_related_expression(lines, sanctioned))
         else:
-            template_content.append(l.strip())
+            print('unhandled', l.strip())
 
-    return u'\n'.join(template_content)
+    if concept.is_empty:
+        return text
+    else:
+        return unicode(concept)
+
 
 def main():
     abba = etree.parse(os.path.join('termwikiimporter', 'test', 'abba.txt'))

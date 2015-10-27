@@ -138,7 +138,6 @@ class TestBot(unittest.TestCase):
             u'|sanctioned=Yes\n'
             u'}}'
         )
-
         want = (
             u'{{Concept\n'
             u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
@@ -150,8 +149,68 @@ class TestBot(unittest.TestCase):
             u'|sanctioned=Yes\n'
             u'}}'
         )
+        got = bot.bot(c)
+
+        self.assertEqual(got, want)
+
+    def test_bot5(self):
+        self.maxDiff = None
+        c = (
+            u'{{Concept\n'
+            u'|reviewed=No\n'
+            u'|reviewed_se=No\n'
+            u'|reviewed_nb=No\n'
+            u'|reviewed_fi=Yes\n'
+            u'|no picture=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|expression=se\n'
+            u'|language=se\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|expression=se\n'
+            u'|language=nb\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|expression=se\n'
+            u'|language=fi\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|expression=se\n'
+            u'|language=smn\n'
+            u'|status=recommended\n'
+            u'|sanctioned=Yes\n'
+            u'}}'
+        )
+
+        want = (
+            u'{{Concept\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=fi\n'
+            u'|expression=se\n'
+            u'|sanctioned=Yes\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=nb\n'
+            u'|expression=se\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=se\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=smn\n'
+            u'|expression=se\n'
+            u'|status=recommended\n'
+            u'|sanctioned=Yes\n'
+            u'}}'
+        )
 
         got = bot.bot(c)
-        print(want)
-        print(got)
         self.assertEqual(got, want)

@@ -17,7 +17,7 @@ def lineno():
 
 
 def parse_concept(lines):
-    template_contents = {}
+    template_contents = collections.OrderedDict()
     sanctioned = {}
     key = ''
 
@@ -82,6 +82,8 @@ def bot(text):
         l = lines.popleft()
         if l.startswith(u'{{Concept'):
             (concept_info, sanctioned) = parse_concept(lines)
+            for key, info in concept_info.items():
+                concept.add_concept_info(key, info)
         elif (l.startswith(u'{{Related expression') or
               l.startswith(u'{{Related_expression')):
             concept.add_expression(parse_related_expression(lines, sanctioned))

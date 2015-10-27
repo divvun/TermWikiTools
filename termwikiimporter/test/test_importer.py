@@ -17,6 +17,7 @@ class TestExpressionInfo(unittest.TestCase):
                                     pos=u'N',
                                     status=u'',
                                     note=u'',
+                                    equivalence=u'',
                                     sanctioned=u'Yes')
         want = [
             u'{{Related expression',
@@ -39,6 +40,7 @@ class TestExpressionInfo(unittest.TestCase):
                                     pos=u'N',
                                     status=u'',
                                     note=u'',
+                                    equivalence=u'',
                                     sanctioned=u'Yes')
         want = [
             u'{{Related expression',
@@ -85,6 +87,7 @@ class TestConcept(unittest.TestCase):
                                             pos=u'N',
                                             status=u'',
                                             note=u'',
+                                            equivalence=u'',
                                             sanctioned=u'Yes'))
 
     def add_concept_info(self):
@@ -281,6 +284,7 @@ class TestTermwiki(unittest.TestCase):
                                             pos=u'N',
                                             status=u'',
                                             note=u'',
+                                            equivalence=u'',
                                             sanctioned=u'Yes'))
 
         self.assertSetEqual(
@@ -304,6 +308,7 @@ class TestTermwiki(unittest.TestCase):
                                             pos=u'N',
                                             status=u'',
                                             note=u'',
+                                            equivalence=u'',
                                             sanctioned=u'Yes'))
 
         self.assertSetEqual(
@@ -327,6 +332,7 @@ class TestTermwiki(unittest.TestCase):
                                             pos=u'N',
                                             status=u'',
                                             note=u'',
+                                            equivalence=u'',
                                             sanctioned=u'Yes'))
 
         self.assertSetEqual(
@@ -371,6 +377,7 @@ class TestExcelImporter(unittest.TestCase):
                                             pos=u'N',
                                             status=u'',
                                             note=u'',
+                                            equivalence=u'',
                                             sanctioned=u'Yes'))
                 concept.add_concept_info(u'explanation_nb', u'Dette er forklaringen')
 
@@ -399,6 +406,7 @@ class TestExcelImporter(unittest.TestCase):
                         pos=u'N/A',
                         status=u'',
                         note=u'',
+                        equivalence=u'',
                         sanctioned=u'Yes'),
                     importer.ExpressionInfo(
                         expression=u'b',
@@ -409,6 +417,7 @@ class TestExcelImporter(unittest.TestCase):
                         pos=u'N/A',
                         status=u'',
                         note=u'',
+                        equivalence=u'',
                         sanctioned=u'Yes'),
                 ], got)
 
@@ -430,6 +439,7 @@ class TestExcelImporter(unittest.TestCase):
                         pos=u'N/A',
                         status=u'',
                         note=u'',
+                        equivalence=u'',
                         sanctioned=u'No'),
                 ], got)
 
@@ -451,6 +461,7 @@ class TestExcelImporter(unittest.TestCase):
                     pos=u'N/A',
                     status=u'',
                     note=u'',
+                    equivalence=u'',
                     sanctioned=u'No'),
             ], got)
 
@@ -471,6 +482,7 @@ class TestExcelImporter(unittest.TestCase):
                     pos=u'MWE',
                     status=u'',
                     note=u'',
+                    equivalence=u'',
                     sanctioned=u'Yes'),
             ], got)
 
@@ -491,5 +503,6 @@ class TestExcelImporter(unittest.TestCase):
                     pos=u'N/A',
                     status=u'',
                     note=u'',
+                    equivalence=u'',
                     sanctioned=u'No'),
             ], got)

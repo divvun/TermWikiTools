@@ -51,6 +51,7 @@ def parse_related_expression(lines, sanctioned):
     template_contents[u'collection'] = ''
     template_contents[u'status'] = ''
     template_contents[u'note'] = ''
+    template_contents[u'equivalence'] = ''
 
 
     key = ''

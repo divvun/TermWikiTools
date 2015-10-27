@@ -46,7 +46,8 @@ class ExternalCommandRunner(object):
 class ExpressionInfo(
     collections.namedtuple(
         u'ExpressionInfo',
-        u'language expression is_typo has_illegal_char collection pos status note sanctioned')):
+        u'language expression is_typo has_illegal_char collection pos status note '
+        u'sanctioned equivalence')):
     '''Information bound to an expression
 
     expression is a string
@@ -351,6 +352,7 @@ class ExcelImporter(Importer):
                     pos='N/A',
                     status='',
                     note=u'',
+                    equivalence=u'',
                     sanctioned='No'))
         else:
             splitters = re.compile(r'[,;\n\/]')
@@ -370,6 +372,7 @@ class ExcelImporter(Importer):
                                 pos='MWE',
                                 status='',
                                 note=u'',
+                                equivalence=u'',
                                 sanctioned=u'Yes'))
                     elif self.is_expression_typo(finaltoken, language):
                         counter[u'is_typo'] += 1
@@ -383,6 +386,7 @@ class ExcelImporter(Importer):
                                 pos=pos,
                                 status='',
                                 note=u'',
+                                equivalence=u'',
                                 sanctioned=u'No'))
                     else:
                         counter[u'non_typo'] += 1
@@ -396,6 +400,7 @@ class ExcelImporter(Importer):
                                 pos=pos,
                                 status='',
                                 note=u'',
+                                equivalence=u'',
                                 sanctioned=u'Yes'))
 
         return expressions

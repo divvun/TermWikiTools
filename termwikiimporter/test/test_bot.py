@@ -207,3 +207,23 @@ class TestBot(unittest.TestCase):
 
         got = bot.bot(c)
         self.assertEqual(got, want)
+
+
+    def test_bot6(self):
+        self.maxDiff = None
+
+        concept = [
+            u'{{Concept',
+            u'|definition_se=definition1',
+            u'|duplicate_pages=[8], [9]',
+            u'}}',
+            u'{{Related concept',
+            u'|concept=Boazodoallu:duottarmiessi',
+            u'|relation=cohyponym',
+            u'}}'
+        ]
+
+        want = '\n'.join(concept)
+        got = bot.bot(want)
+
+        self.assertEqual(got, want)

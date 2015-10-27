@@ -81,6 +81,23 @@ class ExpressionInfo(
         return u'\n'.join(strings)
 
 
+class RelatedConceptInfo(
+    collections.namedtuple(u'RelatedConceptInfo', u'concept relation')):
+    __slots__ = ()
+
+    def __str__(self):
+        strings = [u'{{Related concept']
+        for key, value in self._asdict().items():
+                if value == u'':
+                    pass
+                else:
+                    strings.append(u'|' + key + u'=' + value)
+
+        strings.append(u'}}')
+
+        return u'\n'.join(strings)
+
+
 class OrderedDefaultDict(collections.OrderedDict, collections.defaultdict):
     '''https://gist.github.com/merwok/11268759'''
     pass
@@ -102,11 +119,16 @@ class Concept(object):
         self.concept_info = OrderedDefaultDict()
         self.concept_info.default_factory = set
         self.expressions = []
+        self.related_concepts = []
         self.pages = set()
 
     def add_expression(self, expression_info):
         if expression_info not in self.expressions:
             self.expressions.append(expression_info)
+
+    def add_related_concept(self, concept_info):
+        if concept_info not in self.related_concepts:
+            self.related_concepts.append(concept_info)
 
     def add_concept_info(self, key, info):
         self.concept_info[key].add(info)
@@ -156,6 +178,9 @@ class Concept(object):
 
         strings.extend([unicode(expression)
                         for expression in sorted(self.expressions)])
+
+        strings.extend([unicode(related_concept)
+                        for related_concept in sorted(self.related_concepts)])
 
         return u'\n'.join(strings)
 

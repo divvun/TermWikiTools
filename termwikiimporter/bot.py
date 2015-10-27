@@ -74,6 +74,22 @@ def parse_related_expression(lines, sanctioned):
             template_contents[key]  = template_contents[key] + u' ' + l.strip()
 
 
+def parse_related_concept(lines):
+    template_contents = {}
+
+    key = ''
+    while len(lines) > 0:
+        l = lines.popleft().strip()
+        if l.startswith('|'):
+            (key, info) = l[1:].split('=')
+            template_contents[key] = info
+
+        elif l.startswith('}}'):
+            return importer.RelatedConceptInfo(**template_contents)
+        else:
+            template_contents[key]  = template_contents[key] + u' ' + l.strip()
+
+
 def bot(text):
     #klaff = collections.defaultdict(set)
     sanctioned = {}
@@ -92,6 +108,8 @@ def bot(text):
             if (l.startswith(u'{{Related expression') or
                 l.startswith(u'{{Related_expression')):
                 concept.add_expression(parse_related_expression(lines, sanctioned))
+            elif l.startswith(u'{{Related concept'):
+                concept.add_related_concept(parse_related_concept(lines))
             else:
                 raise BotException('unhandled', l.strip())
         if not concept.is_empty:
@@ -105,7 +123,7 @@ def main():
     inside_template = False
 
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
-        for page in abba.xpath(u'./page[@title="Boazodoallu:ađaiduvvat"]'):
+        for page in abba.xpath(u'./page'):
             c = page.find('content')
             botted_text = bot(c.text)
             #abc.write(botted_text.encode('utf8'))

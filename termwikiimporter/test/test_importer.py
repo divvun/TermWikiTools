@@ -51,6 +51,19 @@ class TestExpressionInfo(unittest.TestCase):
         self.assertEqual(u'\n'.join(want), str(e))
 
 
+class TestRelatedConceptInfo(unittest.TestCase):
+    def test_related_concept_str(self):
+        rc = importer.RelatedConceptInfo(concept=u'Boazodoallu:duottarmiessi',
+                                         relation=u'cohyponym')
+        want = [
+            u'{{Related concept',
+            u'|concept=Boazodoallu:duottarmiessi',
+            u'|relation=cohyponym',
+            u'}}']
+
+        self.assertEqual(u'\n'.join(want), str(rc))
+
+
 class TestConcept(unittest.TestCase):
     def setUp(self):
         self.concept = importer.Concept(main_category=u'TestCategory')
@@ -84,6 +97,11 @@ class TestConcept(unittest.TestCase):
         self.concept.add_page(u'8')
         self.concept.add_page(u'9')
 
+    def add_related_concept(self):
+        self.concept.add_related_concept(
+            importer.RelatedConceptInfo(concept=u'Boazodoallu:duottarmiessi',
+                                        relation=u'cohyponym'))
+
     def test_add_page(self):
         self.add_page()
 
@@ -101,6 +119,7 @@ class TestConcept(unittest.TestCase):
         self.maxDiff = None
         self.add_concept_info()
         self.add_expression()
+        self.add_related_concept()
         self.add_page()
 
         concept = [
@@ -129,6 +148,10 @@ class TestConcept(unittest.TestCase):
             u'|wordclass=N',
             u'|sanctioned=Yes',
             u'}}',
+            u'{{Related concept',
+            u'|concept=Boazodoallu:duottarmiessi',
+            u'|relation=cohyponym',
+            u'}}'
         ]
 
         got = unicode(self.concept)

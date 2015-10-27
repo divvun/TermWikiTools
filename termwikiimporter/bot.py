@@ -74,7 +74,11 @@ def parse_related_expression(lines, sanctioned):
                 template_contents[key] = info
 
         elif l.startswith('}}'):
-            return importer.ExpressionInfo(**template_contents)
+            try:
+                template_contents['expression']
+                return importer.ExpressionInfo(**template_contents)
+            except KeyError:
+                raise BotException('expression not set in Related expression template')
         else:
             template_contents[key]  = template_contents[key] + u' ' + l.strip()
 
@@ -112,8 +116,11 @@ def bot(text):
         while len(lines) > 0:
             l = lines.popleft()
             if (l.startswith(u'{{Related expression') or
-                l.startswith(u'{{Related_expression')):
-                concept.add_expression(parse_related_expression(lines, sanctioned))
+                    l.startswith(u'{{Related_expression')):
+                try:
+                    concept.add_expression(parse_related_expression(lines, sanctioned))
+                except BotException as e:
+                    pass
             elif l.startswith(u'{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:

@@ -227,3 +227,27 @@ class TestBot(unittest.TestCase):
         got = bot.bot(want)
 
         self.assertEqual(got, want)
+
+    def test_bot7(self):
+        self.maxDiff = None
+
+        concept = [
+            u'{{Concept',
+            u'|definition_se=definition1',
+            u'|duplicate_pages=[8], [9]',
+            u'}}',
+            u'{{Related expression',
+            u'|sanctioned=No',
+            u'}}'
+        ]
+
+        want = '\n'.join([
+            u'{{Concept',
+            u'|definition_se=definition1',
+            u'|duplicate_pages=[8], [9]',
+            u'}}',
+        ])
+
+        got = bot.bot('\n'.join(concept))
+
+        self.assertEqual(got, want)

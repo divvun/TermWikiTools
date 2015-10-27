@@ -76,6 +76,7 @@ def parse_related_expression(lines, sanctioned):
 
 def parse_related_concept(lines):
     template_contents = {}
+    template_contents['relation'] = ''
 
     key = ''
     while len(lines) > 0:

@@ -82,7 +82,7 @@ def bot(text):
         l = lines.popleft()
         if l.startswith(u'{{Concept'):
             (concept_info, sanctioned) = parse_concept(lines)
-            for key, info in concept_info.items():
+            for key, info in concept_info.iteritems():
                 concept.add_concept_info(key, info)
         elif (l.startswith(u'{{Related expression') or
               l.startswith(u'{{Related_expression')):

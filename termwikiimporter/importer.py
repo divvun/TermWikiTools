@@ -81,6 +81,11 @@ class ExpressionInfo(
         return u'\n'.join(strings)
 
 
+class OrderedDefaultDict(collections.OrderedDict, collections.defaultdict):
+    '''https://gist.github.com/merwok/11268759'''
+    pass
+
+
 class Concept(object):
     '''Model the TermWiki concept
 
@@ -94,7 +99,8 @@ class Concept(object):
     '''
     def __init__(self, main_category=''):
         self.main_category = main_category
-        self.concept_info = collections.defaultdict(set)
+        self.concept_info = OrderedDefaultDict()
+        self.concept_info.default_factory = set
         self.expressions = []
         self.pages = set()
 
@@ -137,7 +143,7 @@ class Concept(object):
 
     def __str__(self):
         strings = [u'{{Concept']
-        for key, values in sorted(self.concept_info.items()):
+        for key, values in self.concept_info.iteritems():
             strings.extend(
                 [u'|' + key + u'=' + value
                  for value in values

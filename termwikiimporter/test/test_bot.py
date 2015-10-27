@@ -41,22 +41,18 @@ class TestBot(unittest.TestCase):
             u'{{Concept\n'
             u'|definition_se=ađaiduvvat\n'
             u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva\n'
-            u'|more_info_se=\n'
             u'|definition_nb=bli fetere\n'
             u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet\n'
-            u'|more_info_nb=\n'
-            u'|sources=\n'
-            u'|category=\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=se\n'
-            u'|sanctioned=No\n'
-            u'|expression=ađaiduvvat\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=nb\n'
-            u'|sanctioned=No\n'
             u'|expression=bli fetere\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=ađaiduvvat\n'
+            u'|sanctioned=No\n'
             u'}}'
         )
 
@@ -103,26 +99,23 @@ class TestBot(unittest.TestCase):
             u'{{Concept\n'
             u'|definition_se=ađaiduvvat\n'
             u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva\n'
-            u'|more_info_se=\n'
             u'|definition_nb=bli fetere\n'
             u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet\n'
-            u'|more_info_nb=\n'
-            u'|sources=\n'
-            u'|category=\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=se\n'
-            u'|sanctioned=No\n'
-            u'|expression=ađaiduvvat\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=nb\n'
-            u'|sanctioned=No\n'
             u'|expression=bli fetere\n'
+            u'|sanctioned=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=ađaiduvvat\n'
+            u'|sanctioned=No\n'
             u'}}'
         )
 
-        self.assertEqual(bot.bot(c), want)
+        got = bot.bot(c)
+        self.assertEqual(got, want)
 
     def test_bot4(self):
         self.maxDiff = None

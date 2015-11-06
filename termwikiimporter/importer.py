@@ -78,8 +78,9 @@ class ExpressionInfos(object):
         self._pos = u'N/A'
 
     def __str__(self):
+        strings = []
         for expression in self.expressions:
-            strings = [u'{{Related expression']
+            strings.append(u'{{Related expression')
             for key, value in expression._asdict().items():
                 if (value == u'' or
                     (value == 'No' and (key == 'is_typo' or

@@ -8,8 +8,11 @@ from termwikiimporter import importer
 
 
 class TestExpressionInfos(unittest.TestCase):
-    def test_str_is_typo_false(self):
-        info = importer.ExpressionInfo(expression=u'test1',
+    def setUp(self):
+        self.infos = importer.ExpressionInfos()
+        self.infos.pos = u'N'
+
+        self.info1= importer.ExpressionInfo(expression=u'test1',
                                     language=u'se',
                                     is_typo=u'No',
                                     has_illegal_char=u'Yes',
@@ -18,10 +21,18 @@ class TestExpressionInfos(unittest.TestCase):
                                     note=u'',
                                     equivalence=u'',
                                     sanctioned=u'Yes')
-        infos = importer.ExpressionInfos()
-        infos.pos = u'N'
-        infos.add_expression(info)
-        want = [
+
+        self.info2 = importer.ExpressionInfo(expression=u'test1',
+                                    language=u'se',
+                                    is_typo=u'Yes',
+                                    has_illegal_char=u'No',
+                                    collection=u'Example coll',
+                                    status=u'',
+                                    note=u'',
+                                    equivalence=u'',
+                                    sanctioned=u'Yes')
+
+        self.want1 = [
             u'{{Related expression',
             u'|language=se',
             u'|expression=test1',
@@ -31,22 +42,7 @@ class TestExpressionInfos(unittest.TestCase):
             u'|pos=N',
             u'}}']
 
-        self.assertEqual(u'\n'.join(want), str(infos))
-
-    def test_str_has_illegal_char_is_false(self):
-        info = importer.ExpressionInfo(expression=u'test1',
-                                    language=u'se',
-                                    is_typo=u'Yes',
-                                    has_illegal_char=u'No',
-                                    collection=u'Example coll',
-                                    status=u'',
-                                    note=u'',
-                                    equivalence=u'',
-                                    sanctioned=u'Yes')
-        infos = importer.ExpressionInfos()
-        infos.pos = u'N'
-        infos.add_expression(info)
-        want = [
+        self.want2 = [
             u'{{Related expression',
             u'|language=se',
             u'|expression=test1',
@@ -56,7 +52,27 @@ class TestExpressionInfos(unittest.TestCase):
             u'|pos=N',
             u'}}']
 
-        self.assertEqual(u'\n'.join(want), str(infos))
+    def test_str_is_typo_false(self):
+        self.infos.add_expression(self.info1)
+
+        self.assertEqual(u'\n'.join(self.want1), unicode(self.infos))
+
+    def test_str_has_illegal_char_is_false(self):
+        self.infos.add_expression(self.info2)
+
+        self.assertEqual(u'\n'.join(self.want2), unicode(self.infos))
+
+    def test_str_multiple_related_expressions(self):
+        self.infos.add_expression(self.info1)
+        self.infos.add_expression(self.info2)
+
+        want = []
+        want.extend(self.want1)
+        want.extend(self.want2)
+
+        print(u'\n'.join(want))
+        print(unicode(self.infos))
+        self.assertEqual(u'\n'.join(want), unicode(self.infos))
 
     def test_pos_default(self):
         infos = importer.ExpressionInfos()

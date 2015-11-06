@@ -106,6 +106,14 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.assertEqual(infos.pos, u'N')
 
+    def test_pos_set_na(self):
+        infos = importer.ExpressionInfos()
+        infos.pos = 'N'
+
+        infos.pos = 'N/A'
+
+        self.assertEqual(infos.pos, u'N')
+
 
 class TestRelatedConceptInfo(unittest.TestCase):
     def test_related_concept_str(self):

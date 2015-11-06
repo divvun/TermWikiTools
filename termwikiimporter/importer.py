@@ -121,9 +121,9 @@ class ExpressionInfos(object):
     @pos.setter
     def pos(self, pos):
         if not pos in [u'N', u'A', u'Adv', u'V', u'Pron', u'CS', u'CC', u'Adp', u'Po',
-                       u'Pr', u'Interj', u'Pcle', u'Num', u'ABBR', u'MWE']:
+                       u'Pr', u'Interj', u'Pcle', u'Num', u'ABBR', u'MWE', u'N/A']:
             raise ExpressionException(u'Illegal value', pos)
-        elif pos == 'MWE':
+        elif pos in ['MWE', 'N/A']:
             pass
         elif self._pos == u'N/A':
             self._pos = pos

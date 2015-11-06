@@ -12,25 +12,25 @@ class TestExpressionInfos(unittest.TestCase):
         self.infos = importer.ExpressionInfos()
         self.infos.pos = u'N'
 
-        self.info1= importer.ExpressionInfo(expression=u'test1',
-                                    language=u'se',
-                                    is_typo=u'No',
-                                    has_illegal_char=u'Yes',
-                                    collection=u'Example coll',
-                                    status=u'',
-                                    note=u'',
-                                    equivalence=u'',
-                                    sanctioned=u'Yes')
+        self.info1 = importer.ExpressionInfo(expression=u'test1',
+                                             language=u'se',
+                                             is_typo=u'No',
+                                             has_illegal_char=u'Yes',
+                                             collection=u'Example coll',
+                                             status=u'',
+                                             note=u'',
+                                             equivalence=u'',
+                                             sanctioned=u'Yes')
 
         self.info2 = importer.ExpressionInfo(expression=u'test1',
-                                    language=u'se',
-                                    is_typo=u'Yes',
-                                    has_illegal_char=u'No',
-                                    collection=u'Example coll',
-                                    status=u'',
-                                    note=u'',
-                                    equivalence=u'',
-                                    sanctioned=u'Yes')
+                                             language=u'se',
+                                             is_typo=u'Yes',
+                                             has_illegal_char=u'No',
+                                             collection=u'Example coll',
+                                             status=u'',
+                                             note=u'',
+                                             equivalence=u'',
+                                             sanctioned=u'Yes')
 
         self.want1 = [
             u'{{Related expression',

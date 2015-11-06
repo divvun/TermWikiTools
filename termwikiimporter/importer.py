@@ -101,9 +101,9 @@ class ExpressionInfos(object):
             self.expressions.append(expression_info)
 
     def get_expressions_set(self, lang):
-        return sorted(set(
+        return set(
             [e.expression for e in self.expressions
-             if e.language == lang]))
+             if e.language == lang])
 
     @property
     def lang_set(self):
@@ -170,7 +170,7 @@ class Concept(object):
         self.pages = set()
 
     def add_expression(self, expression_info):
-        self.expressions.add_expression(expression_info)
+        self.expression_infos.add_expression(expression_info)
 
     def add_related_concept(self, concept_info):
         if concept_info not in self.related_concepts:
@@ -218,8 +218,7 @@ class Concept(object):
 
         strings.append(u'}}')
 
-        strings.extend([unicode(expression)
-                        for expression in sorted(self.expressions)])
+        strings.append(unicode(self.expression_infos))
 
         strings.extend([unicode(related_concept)
                         for related_concept in sorted(self.related_concepts)])
@@ -390,7 +389,6 @@ class ExcelImporter(Importer):
                     is_typo='No',
                     has_illegal_char='Yes',
                     collection=collection,
-                    pos='N/A',
                     status='',
                     note=u'',
                     equivalence=u'',
@@ -410,7 +408,6 @@ class ExcelImporter(Importer):
                                 is_typo=u'No',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                pos='MWE',
                                 status='',
                                 note=u'',
                                 equivalence=u'',
@@ -424,7 +421,6 @@ class ExcelImporter(Importer):
                                 is_typo=u'Yes',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                pos=pos,
                                 status='',
                                 note=u'',
                                 equivalence=u'',
@@ -438,7 +434,6 @@ class ExcelImporter(Importer):
                                 is_typo=u'No',
                                 has_illegal_char=u'No',
                                 collection=collection,
-                                pos=pos,
                                 status='',
                                 note=u'',
                                 equivalence=u'',

@@ -99,6 +99,7 @@ class TestRelatedConceptInfo(unittest.TestCase):
 class TestConcept(unittest.TestCase):
     def setUp(self):
         self.concept = importer.Concept(main_category=u'TestCategory')
+        self.concept.expression_infos.pos = 'N'
 
     def add_expression(self):
         uff = {
@@ -112,7 +113,6 @@ class TestConcept(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'No',
                                             collection=u'Example coll',
-                                            pos=u'N',
                                             status=u'',
                                             note=u'',
                                             equivalence=u'',
@@ -165,22 +165,22 @@ class TestConcept(unittest.TestCase):
             u'|language=nb',
             u'|expression=norsk1',
             u'|collection=Example coll',
-            u'|pos=N',
             u'|sanctioned=Yes',
+            u'|pos=N',
             u'}}',
             u'{{Related expression',
             u'|language=se',
             u'|expression=sámi1',
             u'|collection=Example coll',
-            u'|pos=N',
             u'|sanctioned=Yes',
+            u'|pos=N',
             u'}}',
             u'{{Related expression',
             u'|language=se',
             u'|expression=sámi2',
             u'|collection=Example coll',
-            u'|pos=N',
             u'|sanctioned=Yes',
+            u'|pos=N',
             u'}}',
             u'{{Related concept',
             u'|concept=Boazodoallu:duottarmiessi',
@@ -309,7 +309,6 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            pos=u'N',
                                             status=u'',
                                             note=u'',
                                             equivalence=u'',
@@ -333,7 +332,6 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            pos=u'N',
                                             status=u'',
                                             note=u'',
                                             equivalence=u'',
@@ -357,7 +355,6 @@ class TestTermwiki(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'Yes',
                                             collection=u'Example coll',
-                                            pos=u'N',
                                             status=u'',
                                             note=u'',
                                             equivalence=u'',
@@ -402,7 +399,6 @@ class TestExcelImporter(unittest.TestCase):
                                             is_typo=u'No',
                                             has_illegal_char=u'No',
                                             collection=u'simple',
-                                            pos=u'N',
                                             status=u'',
                                             note=u'',
                                             equivalence=u'',
@@ -414,7 +410,8 @@ class TestExcelImporter(unittest.TestCase):
         got_concept = got[0]
         self.assertEqual(len(got), 1)
         self.assertDictEqual(got_concept.concept_info, concept.concept_info)
-        self.assertEqual(sorted(got_concept.expressions), sorted(concept.expressions))
+        self.assertEqual(sorted(got_concept.expression_infos.expressions),
+                         sorted(concept.expression_infos.expressions))
 
     def test_collect_expressions_test_splitters(self):
         '''Test if legal split chars work as splitters'''
@@ -431,7 +428,6 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'No',
                         collection=u'example',
-                        pos=u'N/A',
                         status=u'',
                         note=u'',
                         equivalence=u'',
@@ -442,7 +438,6 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'No',
                         collection=u'example',
-                        pos=u'N/A',
                         status=u'',
                         note=u'',
                         equivalence=u'',
@@ -464,7 +459,6 @@ class TestExcelImporter(unittest.TestCase):
                         is_typo=u'No',
                         has_illegal_char=u'Yes',
                         collection=u'example',
-                        pos=u'N/A',
                         status=u'',
                         note=u'',
                         equivalence=u'',
@@ -486,7 +480,6 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'No',
                     has_illegal_char=u'Yes',
                     collection=u'example',
-                    pos=u'N/A',
                     status=u'',
                     note=u'',
                     equivalence=u'',
@@ -507,7 +500,6 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'No',
                     has_illegal_char=u'No',
                     collection=u'example',
-                    pos=u'MWE',
                     status=u'',
                     note=u'',
                     equivalence=u'',
@@ -528,7 +520,6 @@ class TestExcelImporter(unittest.TestCase):
                     is_typo=u'Yes',
                     has_illegal_char=u'No',
                     collection=u'example',
-                    pos=u'N/A',
                     status=u'',
                     note=u'',
                     equivalence=u'',

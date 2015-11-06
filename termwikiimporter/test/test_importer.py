@@ -90,13 +90,21 @@ class TestExpressionInfos(unittest.TestCase):
         infos.pos = 'N'
 
         with self.assertRaises(importer.ExpressionException):
-            infos.pos = 'MWE'
+            infos.pos = 'ABBR'
 
     def test_pos_set_illegal(self):
         infos = importer.ExpressionInfos()
 
         with self.assertRaises(importer.ExpressionException):
             infos.pos = 'bogus'
+
+    def test_pos_set_mwe(self):
+        infos = importer.ExpressionInfos()
+        infos.pos = 'N'
+
+        infos.pos = 'MWE'
+
+        self.assertEqual(infos.pos, u'N')
 
 
 class TestRelatedConceptInfo(unittest.TestCase):

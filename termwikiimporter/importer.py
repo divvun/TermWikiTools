@@ -123,6 +123,8 @@ class ExpressionInfos(object):
         if not pos in [u'N', u'A', u'Adv', u'V', u'Pron', u'CS', u'CC', u'Adp', u'Po',
                        u'Pr', u'Interj', u'Pcle', u'Num', u'ABBR', u'MWE']:
             raise ExpressionException(u'Illegal value', pos)
+        elif pos == 'MWE':
+            pass
         elif self._pos == u'N/A':
             self._pos = pos
         elif self._pos != pos:
@@ -366,12 +368,12 @@ class Importer(object):
             to_file.write(etree.tostring(pages, pretty_print=True,
                                          encoding='unicode'))
 
-
-class ExcelImporter(Importer):
     @property
     def resultname(self):
         return self.filename.replace(u'.xlsx', u'.xml')
 
+
+class ExcelImporter(Importer):
     def collect_expressions(self, startline, language, counter, collection=''):
         '''Insert expressions found in startline into a list of ExpressionInfo
 

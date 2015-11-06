@@ -3,6 +3,7 @@
 import unittest
 
 from termwikiimporter import bot
+from termwikiimporter import importer
 
 
 class TestBot(unittest.TestCase):
@@ -479,3 +480,82 @@ class TestBot(unittest.TestCase):
 
         got = bot.concept_parser(concept)
         self.assertEqual(want, got)
+
+    def test_exception_raised_when_conflicting_pos_is_set(self):
+        concept = u'''{{Concept
+|definition_se=vuogádat maid geavaheaddji ieš mearrida mo doaibmá
+|more_info_se=Davvisámegiela juogus dohkkehan 11.-12.12.2014
+}}
+{{Related expression
+|language=fi
+|expression=järjestelmäasetukset
+|sanctioned=No
+}}
+{{Related expression
+|language=nb
+|expression=systeminnstillinger
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=fierahit
+|note=synonyma
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=jorahit
+|note=synonyma
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=vuogádatválljejumit
+|status=proposed
+|sanctioned=No
+}}
+{{Related expression
+|language=sv
+|expression=systeminställningar
+|sanctioned=No
+}}'''
+        want = u'''{{Concept
+|definition_se=vuogádat maid geavaheaddji ieš mearrida mo doaibmá
+|more_info_se=Davvisámegiela juogus dohkkehan 11.-12.12.2014
+}}
+{{Related expression
+|language=fi
+|expression=järjestelmäasetukset
+|sanctioned=No
+}}
+{{Related expression
+|language=nb
+|expression=systeminnstillinger
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=fierahit
+|note=synonyma
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=jorahit
+|note=synonyma
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=vuogádatválljejumit
+|status=proposed
+|sanctioned=No
+}}
+{{Related expression
+|language=sv
+|expression=systeminställningar
+|sanctioned=No
+}}'''
+
+        with self.assertRaises(importer.ExpressionException):
+            got = bot.concept_parser(concept)

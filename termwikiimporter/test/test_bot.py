@@ -53,11 +53,11 @@ class TestBot(unittest.TestCase):
             u'|language=se',
             u'|expression=ađaiduvvat',
             u'|sanctioned=No',
-            u'|pos=N/A',
+            u'|pos=V',
             u'}}'
         ]
 
-        self.assertEqual(bot.concept_parser(u'\n'.join(c)), u'\n'.join(want))
+        self.assertEqual(u'\n'.join(want), bot.concept_parser(u'\n'.join(c)))
 
     def test_bot2(self):
         self.maxDiff = None
@@ -113,7 +113,7 @@ class TestBot(unittest.TestCase):
             u'|language=se\n'
             u'|expression=ađaiduvvat\n'
             u'|sanctioned=No\n'
-            u'|pos=N/A\n'
+            u'|pos=V\n'
             u'}}'
         )
 
@@ -143,7 +143,7 @@ class TestBot(unittest.TestCase):
             u'|language=se\n'
             u'|expression=rotnu\n'
             u'|sanctioned=Yes\n'
-            u'|pos=N/A\n'
+            u'|pos=N\n'
             u'}}'
         )
         got = bot.concept_parser(c)
@@ -189,6 +189,7 @@ class TestBot(unittest.TestCase):
             u'{{Related expression\n'
             u'|language=se\n'
             u'|expression=se\n'
+            u'|is_typo=Yes\n'
             u'|sanctioned=No\n'
             u'|pos=N/A\n'
             u'}}\n'
@@ -214,8 +215,6 @@ class TestBot(unittest.TestCase):
         )
 
         got = bot.concept_parser(c)
-        print(want)
-        print(got)
         self.assertEqual(want, got)
 
     def test_bot6(self):
@@ -300,7 +299,129 @@ class TestBot(unittest.TestCase):
 |language=se
 |expression=ákšodearri
 |sanctioned=Yes
-|pos=N/A
+|pos=N
+}}'''
+
+        got = bot.concept_parser(concept)
+        self.assertEqual(want, got)
+
+    def test_set_sanctioned_correctly(self):
+        self.maxDiff = None
+        concept = u'''{{Concept
+|definition_se=boađa lea njuolggadus, man mielde geavaheaddji beassá geavahit dihtora
+|explanation_se=Mo beassat sisa dihtorii
+|definition_sma=juktie riektiem åadtjodh, man mietie utnije fijhkie datovrem utnedh
+|explanation_sma=guktie datovren sïjse fijhkedh
+|definition_smj=bessam, gå besa jali oattjo máhttelisvuodav sirddet diedojt - sierraláhká datåvrån/dáhtámasjijnan
+|definition_nb=tilgang/adgang, er det å få tak i eller plassere data eller instruksjoner i en av maskinsystemets lagerenheter, aksess
+|explanation_nb=(fra lat. egentlig 'adgang') særlig i edb: adgang, mulighet til å overføre informasjon, tilgang
+|sources=http://risten.no
+}}
+{{Related expression
+|language=fi
+|expression=pääsy
+|sanctioned=No
+}}
+{{Related expression
+|language=fi
+|expression=väylä
+|sanctioned=No
+}}
+{{Related expression
+|language=nb
+|expression=adgang
+|status=recommended
+|sanctioned=No
+}}
+{{Related expression
+|language=nb
+|expression=tilgang
+|sanctioned=No
+}}
+{{Related expression
+|language=se
+|expression=boađa
+|sanctioned=No
+}}
+{{Related expression
+|language=smj
+|expression=bessam
+|status=recommended
+|note=Sáme Giellagálldo, dåhkkidum javllamáno 10-11 b. 2013
+|sanctioned=No
+}}
+{{Related expression
+|language=sma
+|expression=baahtseme
+|status=recommended
+|sanctioned=No
+}}
+{{Related expression
+|language=sv
+|expression=tillgång
+|sanctioned=No
+}}'''
+        want = u'''{{Concept
+|definition_se=boađa lea njuolggadus, man mielde geavaheaddji beassá geavahit dihtora
+|explanation_se=Mo beassat sisa dihtorii
+|definition_sma=juktie riektiem åadtjodh, man mietie utnije fijhkie datovrem utnedh
+|explanation_sma=guktie datovren sïjse fijhkedh
+|definition_smj=bessam, gå besa jali oattjo máhttelisvuodav sirddet diedojt - sierraláhká datåvrån/dáhtámasjijnan
+|definition_nb=tilgang/adgang, er det å få tak i eller plassere data eller instruksjoner i en av maskinsystemets lagerenheter, aksess
+|explanation_nb=(fra lat. egentlig 'adgang') særlig i edb: adgang, mulighet til å overføre informasjon, tilgang
+|sources=http://risten.no
+}}
+{{Related expression
+|language=fi
+|expression=pääsy
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=fi
+|expression=väylä
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=nb
+|expression=adgang
+|status=recommended
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=nb
+|expression=tilgang
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=se
+|expression=boađa
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=smj
+|expression=bessam
+|status=recommended
+|note=Sáme Giellagálldo, dåhkkidum javllamáno 10-11 b. 2013
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=sma
+|expression=baahtseme
+|status=recommended
+|sanctioned=No
+|pos=N
+}}
+{{Related expression
+|language=sv
+|expression=tillgång
+|sanctioned=No
+|pos=N
 }}'''
 
         got = bot.concept_parser(concept)

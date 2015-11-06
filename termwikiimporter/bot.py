@@ -101,7 +101,29 @@ def parse_related_concept(lines):
             template_contents[key] = template_contents[key] + u' ' + l.strip()
 
 
-def bot(text):
+def parse_expression(lines):
+    expression_contents = {}
+
+    key = ''
+    while len(lines) > 0:
+        l = lines.popleft().strip()
+        if l.startswith('|'):
+            (key, info) = l[1:].split('=')
+            expression_contents[key] = info
+
+        elif l.startswith('}}'):
+            return importer.RelatedConceptInfo(**expression_contents)
+        else:
+            expression_contents[key] = expression_contents[key] + u' ' + l.strip()
+
+def expression_parser(text):
+    lines = collections.deque(text.split(u'\n'))
+
+    if l.startswith(u'{{Expression'):
+        expression_info = parse_expression(lines)
+
+
+def concept_parser(text):
     sanctioned = {}
     concept = importer.Concept()
     lines = collections.deque(text.split(u'\n'))
@@ -160,7 +182,7 @@ def main():
         for page in site.Categories[category]:
             total += 1
             text = page.text()
-            botted_text = bot(text)
+            botted_text = concept_parser(text)
             if text != botted_text:
                 sys.stdout.write('-')
                 sys.stdout.flush()
@@ -182,7 +204,7 @@ def test():
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
         for page in abba.xpath(u'./page'):
             c = page.find('content')
-            botted_text = bot(c.text)
+            botted_text = concept_parser(c.text)
             if botted_text is not None:
                 abc.write(botted_text.encode('utf8'))
                 abc.write('\n')

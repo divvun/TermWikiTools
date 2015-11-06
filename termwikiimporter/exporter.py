@@ -6,6 +6,7 @@ import collections
 from lxml import etree
 import mwclient
 
+import bot
 
 def parse_options():
     parser = argparse.ArgumentParser(
@@ -24,9 +25,8 @@ def write_to_termwiki():
     args = parse_options()
 
     # Initialize Site object
-    password = raw_input('Write password: ')
-    site = mwclient.Site('gtsvn.uit.no', path='/termwiki/')
-    site.login('SDTermImporter', password)
+    print('Logging in …')
+    site = bot.get_site()
 
     page_titles = collections.defaultdict(int)
     all_pages = etree.Element('all_pages')

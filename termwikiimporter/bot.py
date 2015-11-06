@@ -49,13 +49,13 @@ def parse_related_expression(lines, sanctioned):
     template_contents[u'sanctioned'] = 'No'
     template_contents[u'is_typo'] = 'No'
     template_contents[u'has_illegal_char'] = 'No'
-    template_contents[u'pos'] = ''
     template_contents[u'collection'] = ''
     template_contents[u'status'] = ''
     template_contents[u'note'] = ''
     template_contents[u'equivalence'] = ''
 
     key = ''
+    pos = 'N/A'
     while len(lines) > 0:
         l = lines.popleft().strip()
         if l.startswith('|'):
@@ -63,9 +63,10 @@ def parse_related_expression(lines, sanctioned):
             if key == 'in_header':
                 pass
             else:
-                if key == 'wordclass':
-                    key = 'pos'
-                template_contents[key] = info
+                if key == 'wordclass' or key == 'pos':
+                    pos = info
+                else:
+                    template_contents[key] = info
 
         elif l.startswith('}}'):
             if template_contents['sanctioned'] == 'No':
@@ -77,7 +78,7 @@ def parse_related_expression(lines, sanctioned):
 
             try:
                 template_contents['expression']
-                return importer.ExpressionInfo(**template_contents)
+                return (importer.ExpressionInfo(**template_contents), pos)
             except KeyError:
                 raise BotException('expression not set in Related expression template')
         else:
@@ -160,7 +161,9 @@ def concept_parser(text):
             if (l.startswith(u'{{Related expression') or
                     l.startswith(u'{{Related_expression')):
                 try:
-                    concept.add_expression(parse_related_expression(lines, sanctioned))
+                    (expression_info, pos) = parse_related_expression(lines, sanctioned)
+                    concept.add_expression(expression_info)
+                    concept.expression_infos.pos = pos
                 except BotException:
                     pass
             elif l.startswith(u'{{Related concept'):

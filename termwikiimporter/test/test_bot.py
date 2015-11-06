@@ -8,54 +8,56 @@ from termwikiimporter import bot
 class TestBot(unittest.TestCase):
     def test_bot1(self):
         self.maxDiff = None
-        c = (
-            u'{{Concept\n'
-            u'|definition_se=ađaiduvvat\n'
-            u'|explanation_se=omd\n'
-            u' 1. it don gal dainna bargguin ađaiduva\n'
-            u'|more_info_se=\n'
-            u'|reviewed_se=No\n'
-            u'|definition_nb=bli fetere\n'
-            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe\n'
-            u' 1. du blir nok ikke fet av det arbeidet\n'
-            u'|more_info_nb=\n'
-            u'|reviewed_nb=No\n'
-            u'|sources=\n'
-            u'|category=\n'
-            u'|no picture=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=se\n'
-            u'|expression=ađaiduvvat\n'
-            u'|in_header=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=nb\n'
-            u'|expression=bli fetere\n'
-            u'|in_header=No\n'
+        c = [
+            u'{{Concept',
+            u'|definition_se=ađaiduvvat',
+            u'|explanation_se=omd',
+            u' 1. it don gal dainna bargguin ađaiduva',
+            u'|more_info_se=',
+            u'|reviewed_se=No',
+            u'|definition_nb=bli fetere',
+            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
+            u' 1. du blir nok ikke fet av det arbeidet',
+            u'|more_info_nb=',
+            u'|reviewed_nb=No',
+            u'|sources=',
+            u'|category=',
+            u'|no picture=No',
+            u'}}',
+            u'{{Related expression',
+            u'|language=nb',
+            u'|expression=bli fetere',
+            u'|in_header=No',
+            u'}}',
+            u'{{Related expression',
+            u'|language=se',
+            u'|expression=ađaiduvvat',
+            u'|in_header=No',
             u'}}'
-        )
+        ]
 
-        want = (
-            u'{{Concept\n'
-            u'|definition_se=ađaiduvvat\n'
-            u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva\n'
-            u'|definition_nb=bli fetere\n'
-            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=nb\n'
-            u'|expression=bli fetere\n'
-            u'|sanctioned=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=se\n'
-            u'|expression=ađaiduvvat\n'
-            u'|sanctioned=No\n'
+        want = [
+            u'{{Concept',
+            u'|definition_se=ađaiduvvat',
+            u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva',
+            u'|definition_nb=bli fetere',
+            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet',
+            u'}}',
+            u'{{Related expression',
+            u'|language=nb',
+            u'|expression=bli fetere',
+            u'|sanctioned=No',
+            u'|pos=MWE',
+            u'}}',
+            u'{{Related expression',
+            u'|language=se',
+            u'|expression=ađaiduvvat',
+            u'|sanctioned=No',
+            u'|pos=N/A',
             u'}}'
-        )
+        ]
 
-        self.assertEqual(bot.concept_parser(c), want)
+        self.assertEqual(bot.concept_parser(u'\n'.join(c)), u'\n'.join(want))
 
     def test_bot2(self):
         self.maxDiff = None
@@ -83,14 +85,14 @@ class TestBot(unittest.TestCase):
             u'|category=\n'
             u'}}\n'
             u'{{Related expression\n'
-            u'|language=se\n'
-            u'|sanctioned=No\n'
-            u'|expression=ađaiduvvat\n'
-            u'}}\n'
-            u'{{Related expression\n'
             u'|language=nb\n'
             u'|sanctioned=No\n'
             u'|expression=bli fetere\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|sanctioned=No\n'
+            u'|expression=ađaiduvvat\n'
             u'}}'
         )
 
@@ -105,11 +107,13 @@ class TestBot(unittest.TestCase):
             u'|language=nb\n'
             u'|expression=bli fetere\n'
             u'|sanctioned=No\n'
+            u'|pos=MWE\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=se\n'
             u'|expression=ađaiduvvat\n'
             u'|sanctioned=No\n'
+            u'|pos=N/A\n'
             u'}}'
         )
 
@@ -139,6 +143,7 @@ class TestBot(unittest.TestCase):
             u'|language=se\n'
             u'|expression=rotnu\n'
             u'|sanctioned=Yes\n'
+            u'|pos=N/A\n'
             u'}}'
         )
         got = bot.concept_parser(c)
@@ -182,29 +187,35 @@ class TestBot(unittest.TestCase):
             u'{{Concept\n'
             u'}}\n'
             u'{{Related expression\n'
-            u'|language=fi\n'
+            u'|language=se\n'
             u'|expression=se\n'
-            u'|sanctioned=Yes\n'
+            u'|sanctioned=No\n'
+            u'|pos=N/A\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=nb\n'
             u'|expression=se\n'
             u'|sanctioned=No\n'
+            u'|pos=N/A\n'
             u'}}\n'
             u'{{Related expression\n'
-            u'|language=se\n'
+            u'|language=fi\n'
             u'|expression=se\n'
-            u'|sanctioned=No\n'
+            u'|sanctioned=Yes\n'
+            u'|pos=N/A\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=smn\n'
             u'|expression=se\n'
             u'|status=recommended\n'
             u'|sanctioned=Yes\n'
+            u'|pos=N/A\n'
             u'}}'
         )
 
         got = bot.concept_parser(c)
+        print(want)
+        print(got)
         self.assertEqual(got, want)
 
     def test_bot6(self):
@@ -243,12 +254,12 @@ class TestBot(unittest.TestCase):
             u'{{Concept',
             u'|definition_se=definition1',
             u'|duplicate_pages=[8], [9]',
-            u'}}',
+            u'}}'
         ])
 
         got = bot.concept_parser('\n'.join(concept))
 
-        self.assertEqual(got, want)
+        self.assertAlmostEqual(got, want)
 
     def test_bot8(self):
         concept = u'''{{Concept
@@ -265,13 +276,13 @@ class TestBot(unittest.TestCase):
 |no picture=No
 }}
 {{Related expression
-|language=se
-|expression=ákšodearri
+|language=nb
+|expression=tynne delen av øks
 |in_header=No
 }}
 {{Related expression
-|language=nb
-|expression=tynne delen av øks
+|language=se
+|expression=ákšodearri
 |in_header=No
 }}'''
         want = u'''{{Concept
@@ -283,11 +294,13 @@ class TestBot(unittest.TestCase):
 |language=nb
 |expression=tynne delen av øks
 |sanctioned=Yes
+|pos=MWE
 }}
 {{Related expression
 |language=se
 |expression=ákšodearri
 |sanctioned=Yes
+|pos=N/A
 }}'''
 
         got = bot.concept_parser(concept)

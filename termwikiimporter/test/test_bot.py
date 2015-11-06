@@ -55,7 +55,7 @@ class TestBot(unittest.TestCase):
             u'}}'
         )
 
-        self.assertEqual(bot.bot(c), want)
+        self.assertEqual(bot.concept_parser(c), want)
 
     def test_bot2(self):
         self.maxDiff = None
@@ -67,7 +67,7 @@ class TestBot(unittest.TestCase):
             u'[[Kategoriija:Concepts]]'
         )
 
-        self.assertEqual(bot.bot(c), want)
+        self.assertEqual(bot.concept_parser(c), want)
 
     def test_bot3(self):
         self.maxDiff = None
@@ -113,7 +113,7 @@ class TestBot(unittest.TestCase):
             u'}}'
         )
 
-        got = bot.bot(c)
+        got = bot.concept_parser(c)
         self.assertEqual(got, want)
 
     def test_bot4(self):
@@ -141,7 +141,7 @@ class TestBot(unittest.TestCase):
             u'|sanctioned=Yes\n'
             u'}}'
         )
-        got = bot.bot(c)
+        got = bot.concept_parser(c)
 
         self.assertEqual(got, want)
 
@@ -204,7 +204,7 @@ class TestBot(unittest.TestCase):
             u'}}'
         )
 
-        got = bot.bot(c)
+        got = bot.concept_parser(c)
         self.assertEqual(got, want)
 
     def test_bot6(self):
@@ -222,7 +222,7 @@ class TestBot(unittest.TestCase):
         ]
 
         want = '\n'.join(concept)
-        got = bot.bot(want)
+        got = bot.concept_parser(want)
 
         self.assertEqual(got, want)
 
@@ -246,7 +246,7 @@ class TestBot(unittest.TestCase):
             u'}}',
         ])
 
-        got = bot.bot('\n'.join(concept))
+        got = bot.concept_parser('\n'.join(concept))
 
         self.assertEqual(got, want)
 
@@ -290,5 +290,5 @@ class TestBot(unittest.TestCase):
 |sanctioned=Yes
 }}'''
 
-        got = bot.bot(concept)
+        got = bot.concept_parser(concept)
         self.assertEqual(got, want)

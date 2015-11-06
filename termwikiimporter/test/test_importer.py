@@ -409,6 +409,7 @@ class TestExcelImporter(unittest.TestCase):
             u'se': [u'davvisámegiella']}
         for lang, expressions in uff.items():
             for expression in expressions:
+                concept.expression_infos.pos = u'N'
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
@@ -428,6 +429,8 @@ class TestExcelImporter(unittest.TestCase):
         self.assertDictEqual(got_concept.concept_info, concept.concept_info)
         self.assertEqual(sorted(got_concept.expression_infos.expressions),
                          sorted(concept.expression_infos.expressions))
+        self.assertEqual(got_concept.expression_infos.pos,
+                         concept.expression_infos.pos)
 
     def test_collect_expressions_test_splitters(self):
         '''Test if legal split chars work as splitters'''

@@ -372,8 +372,7 @@ class ExcelImporter(Importer):
     def resultname(self):
         return self.filename.replace(u'.xlsx', u'.xml')
 
-    def collect_expressions(self, startline, language, counter, collection='',
-                            pos='N/A'):
+    def collect_expressions(self, startline, language, counter, collection=''):
         '''Insert expressions found in startline into a list of ExpressionInfo
 
         startline: the content of an expression line
@@ -468,14 +467,14 @@ class ExcelImporter(Importer):
                                 column=ws_info[u'wordclass']).value is not None):
                     pos = ws.cell(row=row,
                                   column=ws_info[u'wordclass']).value.strip()
+                    c.expression_infos.pos = pos
                 for language, col in ws_info[u'terms'].items():
                     if ws.cell(row=row, column=col).value is not None:
                         expression_line = ws.cell(row=row,
                                                   column=col).value.strip()
                         for e in self.collect_expressions(
                                 expression_line, language, counter,
-                                collection=shortname,
-                                pos=pos):
+                                collection=shortname):
                             c.add_expression(e)
 
                 for info, col in ws_info[u'other_info'].items():

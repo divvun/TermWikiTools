@@ -15,6 +15,10 @@ import sys
 import yaml
 
 
+class ExpressionException(Exception):
+    pass
+
+
 class ExternalCommandRunner(object):
 
     '''Class to run external command through subprocess
@@ -46,7 +50,7 @@ class ExternalCommandRunner(object):
 class ExpressionInfo(
     collections.namedtuple(
         u'ExpressionInfo',
-        u'language expression is_typo has_illegal_char collection pos status note '
+        u'language expression is_typo has_illegal_char collection status note '
         u'sanctioned equivalence')):
     '''Information bound to an expression
 
@@ -67,19 +71,61 @@ class ExpressionInfo(
     '''
     __slots__ = ()
 
+
+class ExpressionInfos(object):
+    def __init__(self):
+        self.expressions = []
+        self._pos = u'N/A'
+
     def __str__(self):
-        strings = [u'{{Related expression']
-        for key, value in self._asdict().items():
+        for expression in self.expressions:
+            strings = [u'{{Related expression']
+            for key, value in expression._asdict().items():
                 if (value == u'' or
                     (value == 'No' and (key == 'is_typo' or
                                         key == 'has_illegal_char'))):
                     pass
                 else:
                     strings.append(u'|' + key + u'=' + value)
+            if ' ' in expression.expression:
+                strings.append(u'|pos=MWE')
+            else:
+                strings.append(u'|pos=' + self.pos)
 
-        strings.append(u'}}')
+            strings.append(u'}}')
 
         return u'\n'.join(strings)
+
+    def add_expression(self, expression_info):
+        if expression_info not in self.expressions:
+            self.expressions.append(expression_info)
+
+    def get_expressions_set(self, lang):
+        return sorted(set(
+            [e.expression for e in self.expressions
+             if e.language == lang]))
+
+    @property
+    def lang_set(self):
+        return set([e.language for e in self.expressions])
+
+    @property
+    def is_empty(self):
+        return len(self.expressions) == 0
+
+    @property
+    def pos(self):
+        return self._pos
+
+    @pos.setter
+    def pos(self, pos):
+        if not pos in [u'N', u'A', u'Adv', u'V', u'Pron', u'CS', u'CC', u'Adp', u'Po',
+                       u'Pr', u'Interj', u'Pcle', u'Num', u'ABBR', u'MWE']:
+            raise ExpressionException(u'Illegal value', pos)
+        elif self._pos == u'N/A':
+            self._pos = pos
+        elif self._pos != pos:
+            raise ExpressionException(u'Trying to set conflicting pos', self.pos, pos)
 
 
 class RelatedConceptInfo(collections.namedtuple(u'RelatedConceptInfo',
@@ -119,13 +165,12 @@ class Concept(object):
         self.main_category = main_category
         self.concept_info = OrderedDefaultDict()
         self.concept_info.default_factory = set
-        self.expressions = []
+        self.expression_infos = ExpressionInfos()
         self.related_concepts = []
         self.pages = set()
 
     def add_expression(self, expression_info):
-        if expression_info not in self.expressions:
-            self.expressions.append(expression_info)
+        self.expressions.add_expression(expression_info)
 
     def add_related_concept(self, concept_info):
         if concept_info not in self.related_concepts:
@@ -138,21 +183,19 @@ class Concept(object):
         self.pages.add(page)
 
     def get_expressions_set(self, lang):
-        return set(
-            [e.expression for e in self.expressions
-             if e.language == lang])
+        return self.expression_infos.get_expressions_set(lang)
 
     def get_pagename(self, pagenames):
         for lang in [u'sms', u'smn', u'sma', u'smj', u'se', u'fi', u'nb', u'sv', u'en', u'lat']:
             if lang in self.lang_set:
-                for expression in sorted(self.get_expressions_set(lang)):
+                for expression in self.get_expressions_set(lang):
                     pagename = u':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename
 
     @property
     def lang_set(self):
-        return set([e.language for e in self.expressions])
+        return self.expression_infos.lang_set
 
     @property
     def dupe_string(self):
@@ -185,7 +228,7 @@ class Concept(object):
 
     @property
     def is_empty(self):
-        return (len(self.expressions) == 0 and len(self.concept_info) == 0)
+        return (self.expression_infos.is_empty and len(self.concept_info) == 0)
 
 
 class TermWiki(object):

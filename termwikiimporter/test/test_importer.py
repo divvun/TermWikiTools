@@ -7,52 +7,80 @@ import unittest
 from termwikiimporter import importer
 
 
-class TestExpressionInfo(unittest.TestCase):
+class TestExpressionInfos(unittest.TestCase):
     def test_str_is_typo_false(self):
-        e = importer.ExpressionInfo(expression=u'test1',
+        info = importer.ExpressionInfo(expression=u'test1',
                                     language=u'se',
                                     is_typo=u'No',
                                     has_illegal_char=u'Yes',
                                     collection=u'Example coll',
-                                    pos=u'N',
                                     status=u'',
                                     note=u'',
                                     equivalence=u'',
                                     sanctioned=u'Yes')
+        infos = importer.ExpressionInfos()
+        infos.pos = u'N'
+        infos.add_expression(info)
         want = [
             u'{{Related expression',
             u'|language=se',
             u'|expression=test1',
             u'|has_illegal_char=Yes',
             u'|collection=Example coll',
-            u'|pos=N',
             u'|sanctioned=Yes',
+            u'|pos=N',
             u'}}']
 
-        self.assertEqual(u'\n'.join(want), str(e))
+        self.assertEqual(u'\n'.join(want), str(infos))
 
     def test_str_has_illegal_char_is_false(self):
-        e = importer.ExpressionInfo(expression=u'test1',
+        info = importer.ExpressionInfo(expression=u'test1',
                                     language=u'se',
                                     is_typo=u'Yes',
                                     has_illegal_char=u'No',
                                     collection=u'Example coll',
-                                    pos=u'N',
                                     status=u'',
                                     note=u'',
                                     equivalence=u'',
                                     sanctioned=u'Yes')
+        infos = importer.ExpressionInfos()
+        infos.pos = u'N'
+        infos.add_expression(info)
         want = [
             u'{{Related expression',
             u'|language=se',
             u'|expression=test1',
             u'|is_typo=Yes',
             u'|collection=Example coll',
-            u'|pos=N',
             u'|sanctioned=Yes',
+            u'|pos=N',
             u'}}']
 
-        self.assertEqual(u'\n'.join(want), str(e))
+        self.assertEqual(u'\n'.join(want), str(infos))
+
+    def test_pos_default(self):
+        infos = importer.ExpressionInfos()
+
+        self.assertEqual(infos.pos, u'N/A')
+
+    def test_pos_set(self):
+        infos = importer.ExpressionInfos()
+        infos.pos = 'N'
+
+        self.assertEqual(infos.pos, u'N')
+
+    def test_pos_set_conflicting(self):
+        infos = importer.ExpressionInfos()
+        infos.pos = 'N'
+
+        with self.assertRaises(importer.ExpressionException):
+            infos.pos = 'MWE'
+
+    def test_pos_set_illegal(self):
+        infos = importer.ExpressionInfos()
+
+        with self.assertRaises(importer.ExpressionException):
+            infos.pos = 'bogus'
 
 
 class TestRelatedConceptInfo(unittest.TestCase):

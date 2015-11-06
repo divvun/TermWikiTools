@@ -118,7 +118,7 @@ class TestBot(unittest.TestCase):
         )
 
         got = bot.concept_parser(c)
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_bot4(self):
         self.maxDiff = None
@@ -148,7 +148,7 @@ class TestBot(unittest.TestCase):
         )
         got = bot.concept_parser(c)
 
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_bot5(self):
         self.maxDiff = None
@@ -216,7 +216,7 @@ class TestBot(unittest.TestCase):
         got = bot.concept_parser(c)
         print(want)
         print(got)
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_bot6(self):
         self.maxDiff = None
@@ -235,7 +235,7 @@ class TestBot(unittest.TestCase):
         want = '\n'.join(concept)
         got = bot.concept_parser(want)
 
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)
 
     def test_bot7(self):
         self.maxDiff = None
@@ -304,4 +304,4 @@ class TestBot(unittest.TestCase):
 }}'''
 
         got = bot.concept_parser(concept)
-        self.assertEqual(got, want)
+        self.assertEqual(want, got)

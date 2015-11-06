@@ -276,6 +276,8 @@ def main():
                     sys.stdout.flush()
             except importer.ExpressionException as e:
                 print(page.name, str(e), file=sys.stderr)
+            except KeyError as e:
+                print(page.name, str(e), file=sys.stderr)
 
         print(u'\n' + category + u':', unicode(saves) + u'/' + unicode(total))
 

@@ -11,6 +11,32 @@ import os
 import sys
 
 import bot
+import importer
+
+
+categories = [
+    u'Boazodoallu‎',
+    u'Dihtorteknologiija ja diehtoteknihkka',
+    u'Dáidda ja girjjálašvuohta‎',
+    u'Eanandoallu‎',
+    u'Ekologiija ja biras‎',
+    u'Ekonomiija ja gávppašeapmi',
+    u'Geografiija‎',
+    u'Gielladieđa‎',
+    u'Gulahallanteknihkka‎',
+    u'Guolástus‎',
+    u'Huksenteknihkka‎',
+    u'Juridihkka',
+    u'Luonddudieđa ja matematihkka‎',
+    u'Medisiidna‎',
+    u'Mášenteknihkka‎',
+    u'Ođđa sánit‎',
+    u'Servodatdieđa‎',
+    u'Stáda, almmolaš hálddašeapmi‎',
+    u'Teknihkka, industriija, duodji‎',
+    u'Álšateknihkka‎',
+    u'Ásttoáigi ja faláštallan‎',
+    u'Ávnnasindustriija‎']
 
 
 def parse_options():
@@ -45,29 +71,6 @@ def move_termwiki():
     print('contacting')
     counter = 0
     pages = etree.Element('pages')
-    categories = [
-        u'Boazodoallu‎',
-        u'Dihtorteknologiija ja diehtoteknihkka',
-        u'Dáidda ja girjjálašvuohta‎',
-        u'Eanandoallu‎',
-        u'Ekologiija ja biras‎',
-        u'Ekonomiija ja gávppašeapmi',
-        u'Geografiija‎',
-        u'Gielladieđa‎',
-        u'Gulahallanteknihkka‎',
-        u'Guolástus‎',
-        u'Huksenteknihkka‎',
-        u'Juridihkka',
-        u'Luonddudieđa ja matematihkka‎',
-        u'Medisiidna‎',
-        u'Mášenteknihkka‎',
-        u'Ođđa sánit‎',
-        u'Servodatdieđa‎',
-        u'Stáda, almmolaš hálddašeapmi‎',
-        u'Teknihkka, industriija, duodji‎',
-        u'Álšateknihkka‎',
-        u'Ásttoáigi ja faláštallan‎',
-        u'Ávnnasindustriija‎']
     for category in categories:
         sys.stdout.write('\n' + category + '\n')
         for page in site.Categories[category]:
@@ -163,9 +166,29 @@ def parse_expression():
 
 
 def parse_dump(filename):
+    '''Read the TermWiki dump.xml file, let concept_parser change the content
+
+    Write the output to another file.
+
+    This is used to get an overview at the changes done by concept_parser
+    to find test examples.
+    '''
     dump_element = etree.parse(filename)
-    for page in dump_element.xpath('./page'):
-        text = page.find('text').text
+    print(bot.lineno(), filename)
+    for element in dump_element.xpath('.//page'):
+        category = element.find('title').text.split(':')[0]
+        if category in categories:
+            try:
+                c_text = element.find('.//text')
+                b_text = bot.concept_parser(c_text.text)
+                if c_text.text != b_text:
+                    c_text.text = b_text
+            except importer.ExpressionException as e:
+                print(unicode(e), file=sys.stderr)
+                print(element.find('title').text, file=sys.stderr)
+                print(element.find('.//text').text, file=sys.stderr)
+
+    dump_element.write('dump1.xml', encoding='utf8')
 
 
 def main():

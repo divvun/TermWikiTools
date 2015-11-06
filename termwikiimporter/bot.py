@@ -103,24 +103,46 @@ def parse_related_concept(lines):
 
 def parse_expression(lines):
     expression_contents = {}
+    counter = collections.defaultdict(int)
 
     key = ''
     while len(lines) > 0:
         l = lines.popleft().strip()
-        if l.startswith('|'):
-            (key, info) = l[1:].split('=')
+        if l.startswith(u'|pos'):
+            (key, info) = l[1:].split(u'=')
             expression_contents[key] = info
-
-        elif l.startswith('}}'):
-            return importer.RelatedConceptInfo(**expression_contents)
+            if not info in ['N', 'V', 'A', 'Adv', 'Pron', 'Interj']:
+                raise BotException('wrong pos', info)
+        elif l.startswith(u'|language'):
+            (key, info) = l[1:].split(u'=')
+            expression_contents[key] = info
+            if not info in ['se', 'sma', 'smj', 'sms', 'sms', 'en', 'nb', 'nb', 'sv', 'lat', 'fi', 'smn', 'nn']:
+                raise BotException('wrong language', info)
+            #print(lineno(), l)
+        elif l.startswith(u'|sources') or l.startswith(u'|monikko') or l.startswith(u'|sanamuoto') or l.startswith(u'|origin') or l.startswith(u'|perussanatyyppi') or l.startswith(u'|wordclass') or l.startswith('|sanaluokka'):
+            (key, info) = l[1:].split(u'=')
+            counter[key] += 1
+            #print(lineno(), l)
+        elif l.startswith(u'}}'):
+            return counter
+            #return importer.RelatedConceptInfo(**expression_contents)
         else:
-            expression_contents[key] = expression_contents[key] + u' ' + l.strip()
+            raise BotException(u'Unknown:', l)
+
+    print(lineno())
 
 def expression_parser(text):
     lines = collections.deque(text.split(u'\n'))
+    counter = collections.defaultdict(int)
+    while len(lines) > 0:
+        l = lines.popleft().strip()
+        if l.startswith(u'{{Expression'):
+            c = parse_expression(lines)
+            if c is not None:
+                for key, value in c.iteritems():
+                    counter[key] += value
 
-    if l.startswith(u'{{Expression'):
-        expression_info = parse_expression(lines)
+    return counter
 
 
 def concept_parser(text):

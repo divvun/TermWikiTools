@@ -7,6 +7,7 @@ import argparse
 import collections
 from lxml import etree
 import mwclient
+import os
 import sys
 
 import bot
@@ -142,5 +143,25 @@ def get_expressions():
     with open('expressions.txt', 'w') as expressions:
         expressions.write(etree.tostring(all_pages, pretty_print=True))
 
+
+def parse_expression():
+    expressions_element = etree.parse(os.path.join('termwikiimporter', 'test',
+                                                    'expressions.txt'))
+    counter = collections.defaultdict(int)
+    for expression in expressions_element.xpath('page'):
+        try:
+            c = bot.expression_parser(expression.find('content').text)
+            for key, value in c.iteritems():
+                counter[key] += value
+        except bot.BotException as e:
+            print(expression.get('title'), unicode(e))
+        except AttributeError as e:
+            print(u'empty page', expression.get('title'))
+
+    for key, value in counter.iteritems():
+        print(key, value)
+
+
 def main():
-    get_expressions()
+    #get_expressions()
+    parse_expression()

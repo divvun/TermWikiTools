@@ -260,18 +260,22 @@ def main():
         for page in site.Categories[category]:
             total += 1
             text = page.text()
-            botted_text = concept_parser(text)
-            if text != botted_text:
-                sys.stdout.write('-')
-                sys.stdout.flush()
-                saves += 1
-                try:
-                    page.save(botted_text, summary='Fixing content')
-                except mwclient.errors.APIError as e:
-                    print(page.name, text, unicode(e), file=sys.stderr)
-            else:
-                sys.stdout.write('|')
-                sys.stdout.flush()
+            try:
+                botted_text = concept_parser(text)
+                if text != botted_text:
+                    sys.stdout.write('-')
+                    sys.stdout.flush()
+                    saves += 1
+                    try:
+                        page.save(botted_text, summary='Fixing content')
+                    except mwclient.errors.APIError as e:
+                        print(page.name, text, unicode(e), file=sys.stderr)
+
+                else:
+                    sys.stdout.write('|')
+                    sys.stdout.flush()
+            except importer.ExpressionException as e:
+                print(page.name, str(e), file=sys.stderr)
 
         print(u'\n' + category + u':', unicode(saves) + u'/' + unicode(total))
 

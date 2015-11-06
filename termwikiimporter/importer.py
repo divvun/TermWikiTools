@@ -128,7 +128,8 @@ class ExpressionInfos(object):
         elif self._pos == u'N/A':
             self._pos = pos
         elif self._pos != pos:
-            raise ExpressionException(u'Trying to set conflicting pos', self.pos, pos)
+            raise ExpressionException(u'Trying to set conflicting pos {} {}'.format(
+                self.pos, pos))
 
 
 class RelatedConceptInfo(collections.namedtuple(u'RelatedConceptInfo',

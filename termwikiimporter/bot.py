@@ -11,6 +11,7 @@ import sys
 from termwikiimporter import importer
 import yaml
 
+import importer
 
 class BotException(Exception):
     pass
@@ -44,7 +45,48 @@ def parse_concept(lines):
             template_contents[key] = template_contents[key] + u' ' + l.strip()
 
 
+def get_pos(expression, language):
+    '''Use lookup to determine the part of speech of an expression'''
+    command = ['lookup', u'-q', u'-flags', u'mbTT',
+               os.path.join(os.getenv(u'GTHOME'), u'langs', language,
+                            u'src', u'analyser-gt-norm.xfst')]
+    runner = importer.ExternalCommandRunner()
+    runner.run(command, to_stdin=expression)
+
+    for analysis in runner.stdout.split('\n'):
+        if (analysis.endswith('+N+Sg+Nom') or
+                analysis.endswith('+N+G3+Sg+Nom') or
+                analysis.endswith('+N+NomAg+Sg+Nom') or
+                analysis.endswith('+N+Pl+Nom')):
+            return u'N'
+        elif (analysis.endswith('+V+TV+Inf') or
+              analysis.endswith('+V+IV+Inf') or
+              analysis.endswith('+V+IV+Pass+Inf')):
+            return u'V'
+        elif analysis.endswith('+A+Attr') or analysis.endswith('+A+Sg+Nom'):
+            return u'A'
+        elif analysis.endswith('+Adv'):
+            return u'Adv'
+        elif analysis.endswith('?'):
+            return u'?'
+
+    raise BotException(u'Unknown\n' + runner.stdout.decode('utf8'))
+
+
+def set_sanctioned(template_contents, sanctioned):
+    if template_contents['sanctioned'] == 'No':
+        try:
+            if sanctioned[template_contents['language']] == 'Yes':
+                template_contents['sanctioned'] = 'Yes'
+        except KeyError:
+            pass
+
+
 def parse_related_expression(lines, sanctioned):
+    '''Parse a Related expression template
+
+    Determine the part of speech if it is not set inside the template.
+    '''
     template_contents = {}
     template_contents[u'sanctioned'] = 'No'
     template_contents[u'is_typo'] = 'No'
@@ -69,18 +111,26 @@ def parse_related_expression(lines, sanctioned):
                     template_contents[key] = info
 
         elif l.startswith('}}'):
-            if template_contents['sanctioned'] == 'No':
-                try:
-                    if sanctioned[template_contents['language']] == 'Yes':
-                        template_contents['sanctioned'] = 'Yes'
-                except KeyError:
-                    pass
-
+            set_sanctioned(template_contents, sanctioned)
             try:
                 template_contents['expression']
-                return (importer.ExpressionInfo(**template_contents), pos)
             except KeyError:
                 raise BotException('expression not set in Related expression template')
+            else:
+                if pos == 'N/A':
+                    language = template_contents['language']
+                    if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
+                        if language == 'se':
+                            language = 'sme'
+                        try:
+                            ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
+                            if ppos == u'?':
+                                template_contents[u'is_typo'] = 'Yes'
+                            else:
+                                pos = ppos
+                        except BotException as e:
+                            print(lineno(), unicode(e), file=sys.stderr)
+                return (importer.ExpressionInfo(**template_contents), pos)
         else:
             template_contents[key] = template_contents[key] + u' ' + l.strip()
 
@@ -95,7 +145,6 @@ def parse_related_concept(lines):
         if l.startswith('|'):
             (key, info) = l[1:].split('=')
             template_contents[key] = info
-
         elif l.startswith('}}'):
             return importer.RelatedConceptInfo(**template_contents)
         else:
@@ -157,6 +206,7 @@ def concept_parser(text):
         (concept_info, sanctioned) = parse_concept(lines)
         for key, info in concept_info.iteritems():
             concept.add_concept_info(key, info)
+        #print(lineno())
         while len(lines) > 0:
             l = lines.popleft()
             if (l.startswith(u'{{Related expression') or
@@ -165,12 +215,13 @@ def concept_parser(text):
                     (expression_info, pos) = parse_related_expression(lines, sanctioned)
                     concept.add_expression(expression_info)
                     concept.expression_infos.pos = pos
-                except BotException:
-                    pass
+                except BotException as e:
+                    print(unicode(e), file=sys.stderr)
             elif l.startswith(u'{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:
                 raise BotException('unhandled', l.strip())
+        #print(lineno())
         if not concept.is_empty:
             return unicode(concept)
     else:

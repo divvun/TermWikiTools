@@ -122,14 +122,11 @@ def parse_related_expression(lines, sanctioned):
                     if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
                         if language == 'se':
                             language = 'sme'
-                        try:
-                            ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
-                            if ppos == u'?':
-                                template_contents[u'is_typo'] = 'Yes'
-                            else:
-                                pos = ppos
-                        except BotException as e:
-                            print(lineno(), unicode(e), file=sys.stderr)
+                        ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
+                        if ppos == u'?':
+                            template_contents[u'is_typo'] = 'Yes'
+                        else:
+                            pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
             template_contents[key] = template_contents[key] + u' ' + l.strip()
@@ -211,12 +208,9 @@ def concept_parser(text):
             l = lines.popleft()
             if (l.startswith(u'{{Related expression') or
                     l.startswith(u'{{Related_expression')):
-                try:
-                    (expression_info, pos) = parse_related_expression(lines, sanctioned)
-                    concept.add_expression(expression_info)
-                    concept.expression_infos.pos = pos
-                except BotException as e:
-                    print(unicode(e), file=sys.stderr)
+                (expression_info, pos) = parse_related_expression(lines, sanctioned)
+                concept.add_expression(expression_info)
+                concept.expression_infos.pos = pos
             elif l.startswith(u'{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:
@@ -278,6 +272,8 @@ def main():
                 print(page.name, str(e), file=sys.stderr)
             except KeyError as e:
                 print(page.name, str(e), file=sys.stderr)
+            except BotException as e:
+                print(page.name, unicode(e), file=sys.stderr)
 
         print(u'\n' + category + u':', unicode(saves) + u'/' + unicode(total))
 

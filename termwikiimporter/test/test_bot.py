@@ -8,47 +8,27 @@ from termwikiimporter import importer
 
 class TestBot(unittest.TestCase):
     def test_bot1(self):
+        '''Check that continued lines in Concept is flattened'''
         self.maxDiff = None
         c = [
             u'{{Concept',
-            u'|definition_se=ađaiduvvat',
             u'|explanation_se=omd',
             u' 1. it don gal dainna bargguin ađaiduva',
-            u'|more_info_se=',
-            u'|reviewed_se=No',
-            u'|definition_nb=bli fetere',
             u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
             u' 1. du blir nok ikke fet av det arbeidet',
-            u'|more_info_nb=',
-            u'|reviewed_nb=No',
-            u'|sources=',
-            u'|category=',
-            u'|no picture=No',
-            u'}}',
-            u'{{Related expression',
-            u'|language=nb',
-            u'|expression=bli fetere',
-            u'|in_header=No',
             u'}}',
             u'{{Related expression',
             u'|language=se',
             u'|expression=ađaiduvvat',
-            u'|in_header=No',
+            u'|sanctioned=No',
+            u'|pos=V',
             u'}}'
         ]
 
         want = [
             u'{{Concept',
-            u'|definition_se=ađaiduvvat',
             u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva',
-            u'|definition_nb=bli fetere',
             u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet',
-            u'}}',
-            u'{{Related expression',
-            u'|language=nb',
-            u'|expression=bli fetere',
-            u'|sanctioned=No',
-            u'|pos=MWE',
             u'}}',
             u'{{Related expression',
             u'|language=se',
@@ -73,17 +53,14 @@ class TestBot(unittest.TestCase):
         self.assertEqual(bot.concept_parser(c), want)
 
     def test_bot3(self):
+        '''Check that pos is set
+
+        Verb should be set to V, expression containg space is MWE
+        '''
         self.maxDiff = None
         c = (
             u'{{Concept\n'
             u'|definition_se=ađaiduvvat\n'
-            u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva\n'
-            u'|more_info_se=\n'
-            u'|definition_nb=bli fetere\n'
-            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet\n'
-            u'|more_info_nb=\n'
-            u'|sources=\n'
-            u'|category=\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=nb\n'
@@ -100,9 +77,6 @@ class TestBot(unittest.TestCase):
         want = (
             u'{{Concept\n'
             u'|definition_se=ađaiduvvat\n'
-            u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva\n'
-            u'|definition_nb=bli fetere\n'
-            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=nb\n'
@@ -122,28 +96,26 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot4(self):
+        '''Check that sanctioned=No is set default'''
         self.maxDiff = None
         c = (
             u'{{Concept\n'
             u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
-            u'|explanation_se=Njiŋŋálas bohcco gohčodit rotnun leaš dal reiton dahje massán miesis, dahje ii leat oppa leamašge čoavjjis\n'
-            u'|reviewed=No\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=se\n'
             u'|expression=rotnu\n'
-            u'|sanctioned=Yes\n'
+            u'|pos=N\n'
             u'}}'
         )
         want = (
             u'{{Concept\n'
             u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
-            u'|explanation_se=Njiŋŋálas bohcco gohčodit rotnun leaš dal reiton dahje massán miesis, dahje ii leat oppa leamašge čoavjjis\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|language=se\n'
             u'|expression=rotnu\n'
-            u'|sanctioned=Yes\n'
+            u'|sanctioned=No\n'
             u'|pos=N\n'
             u'}}'
         )
@@ -152,35 +124,16 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot5(self):
+        '''Check reviewed_lang=Yes wins over sanctioned=No in lang'''
         self.maxDiff = None
         c = (
             u'{{Concept\n'
-            u'|reviewed=No\n'
-            u'|reviewed_se=No\n'
-            u'|reviewed_nb=No\n'
             u'|reviewed_fi=Yes\n'
-            u'|no picture=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|expression=se\n'
-            u'|language=se\n'
-            u'|sanctioned=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|expression=se\n'
-            u'|language=nb\n'
-            u'|sanctioned=No\n'
             u'}}\n'
             u'{{Related expression\n'
             u'|expression=se\n'
             u'|language=fi\n'
             u'|sanctioned=No\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|expression=se\n'
-            u'|language=smn\n'
-            u'|status=recommended\n'
-            u'|sanctioned=Yes\n'
             u'}}'
         )
 
@@ -188,28 +141,8 @@ class TestBot(unittest.TestCase):
             u'{{Concept\n'
             u'}}\n'
             u'{{Related expression\n'
-            u'|language=se\n'
-            u'|expression=se\n'
-            u'|is_typo=Yes\n'
-            u'|sanctioned=No\n'
-            u'|pos=N/A\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=nb\n'
-            u'|expression=se\n'
-            u'|sanctioned=No\n'
-            u'|pos=N/A\n'
-            u'}}\n'
-            u'{{Related expression\n'
             u'|language=fi\n'
             u'|expression=se\n'
-            u'|sanctioned=Yes\n'
-            u'|pos=N/A\n'
-            u'}}\n'
-            u'{{Related expression\n'
-            u'|language=smn\n'
-            u'|expression=se\n'
-            u'|status=recommended\n'
             u'|sanctioned=Yes\n'
             u'|pos=N/A\n'
             u'}}'
@@ -219,6 +152,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot6(self):
+        '''Check that Related concept is parsed correctly'''
         self.maxDiff = None
 
         concept = [
@@ -238,6 +172,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot7(self):
+        '''Check that an exception is raised when expression is not defined'''
         self.maxDiff = None
 
         concept = [
@@ -257,11 +192,11 @@ class TestBot(unittest.TestCase):
             u'}}'
         ])
 
-        got = bot.concept_parser('\n'.join(concept))
-
-        self.assertAlmostEqual(got, want)
+        with self.assertRaises(bot.BotException):
+            got = bot.concept_parser('\n'.join(concept))
 
     def test_bot8(self):
+        '''Check that empty and unwanted attributes in Concept are removed'''
         concept = u'''{{Concept
 |definition_se=ákšodearri
 |explanation_se=
@@ -270,20 +205,16 @@ class TestBot(unittest.TestCase):
 |definition_nb=tynne delen av øks
 |explanation_nb=Den tynne del av ei øks (den slipes til egg)
 |more_info_nb=
-|reviewed_nb=Yes
 |sources=
 |category=
 |no picture=No
 }}
 {{Related expression
-|language=nb
-|expression=tynne delen av øks
-|in_header=No
-}}
-{{Related expression
 |language=se
 |expression=ákšodearri
-|in_header=No
+|sanctioned=Yes
+|pos=N
+|expression=ákšodearri
 }}'''
         want = u'''{{Concept
 |definition_se=ákšodearri
@@ -291,15 +222,160 @@ class TestBot(unittest.TestCase):
 |explanation_nb=Den tynne del av ei øks (den slipes til egg)
 }}
 {{Related expression
-|language=nb
-|expression=tynne delen av øks
+|language=se
+|expression=ákšodearri
 |sanctioned=Yes
-|pos=MWE
+|pos=N
+}}'''
+
+        got = bot.concept_parser(concept)
+        self.assertEqual(want, got)
+
+    def test_bot10(self):
+        '''Check that reviewed is removed'''
+        self.maxDiff = None
+        c = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'|reviewed=No\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        want = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        got = bot.concept_parser(c)
+
+        self.assertEqual(want, got)
+
+    def test_bot11(self):
+        '''Check that continued lines in Concept is flattened'''
+        self.maxDiff = None
+        c = [
+            u'{{Concept',
+            u'|explanation_se=omd',
+            u' 1. it don gal dainna bargguin ađaiduva',
+            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
+            u' 1. du blir nok ikke fet av det arbeidet',
+            u'}}',
+            u'{{Related expression',
+            u'|language=se',
+            u'|expression=ađaiduvvat',
+            u'|sanctioned=No',
+            u'|pos=V',
+            u'}}'
+        ]
+
+        want = [
+            u'{{Concept',
+            u'|explanation_se=omd 1. it don gal dainna bargguin ađaiduva',
+            u'|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet',
+            u'}}',
+            u'{{Related expression',
+            u'|language=se',
+            u'|expression=ađaiduvvat',
+            u'|sanctioned=No',
+            u'|pos=V',
+            u'}}'
+        ]
+
+        self.assertEqual(u'\n'.join(want), bot.concept_parser(u'\n'.join(c)))
+
+    def test_bot12(self):
+        '''Check that sanctioned=Yes in lang when reviewed_lang=Yes in Concept is set'''
+        self.maxDiff = None
+        c = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'|reviewed_se=Yes\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        want = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        got = bot.concept_parser(c)
+
+        self.assertEqual(want, got)
+
+    def test_bot13(self):
+        '''Check that sanctioned=Yes survives reviewed_lang=No in Concept
+
+        reviewed_lang was set when imported from risten.no, and not used after that.
+        sanctioned is actively set by the user later, and should therefore "win" over
+        reviewed_lang
+        '''
+        self.maxDiff = None
+        c = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'|reviewed_se=Yes\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        want = (
+            u'{{Concept\n'
+            u'|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
+            u'}}\n'
+            u'{{Related expression\n'
+            u'|language=se\n'
+            u'|expression=rotnu\n'
+            u'|sanctioned=Yes\n'
+            u'|pos=N\n'
+            u'}}'
+        )
+        got = bot.concept_parser(c)
+
+        self.assertEqual(want, got)
+
+    def test_bot14(self):
+        '''Check that empty and unwanted attributes in Related expression are removed'''
+        concept = u'''{{Concept
+|definition_nb=tynne delen av øks
 }}
 {{Related expression
 |language=se
 |expression=ákšodearri
-|sanctioned=Yes
+|in_header=No
+|sanctioned=No
+|pos=N
+}}'''
+        want = u'''{{Concept
+|definition_nb=tynne delen av øks
+}}
+{{Related expression
+|language=se
+|expression=ákšodearri
+|sanctioned=No
 |pos=N
 }}'''
 
@@ -309,118 +385,19 @@ class TestBot(unittest.TestCase):
     def test_set_sanctioned_correctly(self):
         self.maxDiff = None
         concept = u'''{{Concept
-|definition_se=boađa lea njuolggadus, man mielde geavaheaddji beassá geavahit dihtora
-|explanation_se=Mo beassat sisa dihtorii
-|definition_sma=juktie riektiem åadtjodh, man mietie utnije fijhkie datovrem utnedh
-|explanation_sma=guktie datovren sïjse fijhkedh
 |definition_smj=bessam, gå besa jali oattjo máhttelisvuodav sirddet diedojt - sierraláhká datåvrån/dáhtámasjijnan
-|definition_nb=tilgang/adgang, er det å få tak i eller plassere data eller instruksjoner i en av maskinsystemets lagerenheter, aksess
-|explanation_nb=(fra lat. egentlig 'adgang') særlig i edb: adgang, mulighet til å overføre informasjon, tilgang
-|sources=http://risten.no
-}}
-{{Related expression
-|language=fi
-|expression=pääsy
-|sanctioned=No
-}}
-{{Related expression
-|language=fi
-|expression=väylä
-|sanctioned=No
-}}
-{{Related expression
-|language=nb
-|expression=adgang
-|status=recommended
-|sanctioned=No
-}}
-{{Related expression
-|language=nb
-|expression=tilgang
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=boađa
-|sanctioned=No
 }}
 {{Related expression
 |language=smj
 |expression=bessam
-|status=recommended
-|note=Sáme Giellagálldo, dåhkkidum javllamáno 10-11 b. 2013
-|sanctioned=No
-}}
-{{Related expression
-|language=sma
-|expression=baahtseme
-|status=recommended
-|sanctioned=No
-}}
-{{Related expression
-|language=sv
-|expression=tillgång
 |sanctioned=No
 }}'''
         want = u'''{{Concept
-|definition_se=boađa lea njuolggadus, man mielde geavaheaddji beassá geavahit dihtora
-|explanation_se=Mo beassat sisa dihtorii
-|definition_sma=juktie riektiem åadtjodh, man mietie utnije fijhkie datovrem utnedh
-|explanation_sma=guktie datovren sïjse fijhkedh
 |definition_smj=bessam, gå besa jali oattjo máhttelisvuodav sirddet diedojt - sierraláhká datåvrån/dáhtámasjijnan
-|definition_nb=tilgang/adgang, er det å få tak i eller plassere data eller instruksjoner i en av maskinsystemets lagerenheter, aksess
-|explanation_nb=(fra lat. egentlig 'adgang') særlig i edb: adgang, mulighet til å overføre informasjon, tilgang
-|sources=http://risten.no
-}}
-{{Related expression
-|language=fi
-|expression=pääsy
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=fi
-|expression=väylä
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=nb
-|expression=adgang
-|status=recommended
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=nb
-|expression=tilgang
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=se
-|expression=boađa
-|sanctioned=No
-|pos=N
 }}
 {{Related expression
 |language=smj
 |expression=bessam
-|status=recommended
-|note=Sáme Giellagálldo, dåhkkidum javllamáno 10-11 b. 2013
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=sma
-|expression=baahtseme
-|status=recommended
-|sanctioned=No
-|pos=N
-}}
-{{Related expression
-|language=sv
-|expression=tillgång
 |sanctioned=No
 |pos=N
 }}'''
@@ -428,58 +405,17 @@ class TestBot(unittest.TestCase):
         got = bot.concept_parser(concept)
         self.assertEqual(want, got)
 
-    def test_unchanged_concept_when_no_pos_is_found(self):
+    def test_unchanged_concept_when_pos_is_unknown(self):
         concept = u'''{{Concept
 |more_info_se=Erklære seg uvillig : cealkit iežas vuostemielas.
 }}
 {{Related expression
-|language=fi
-|expression=haluton
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
-}}
-{{Related expression
-|language=nb
-|expression=uvillig
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
-}}
-{{Related expression
 |language=se
 |expression=vuostemielas
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
-}}'''
-        want = u'''{{Concept
-|more_info_se=Erklære seg uvillig : cealkit iežas vuostemielas.
-}}
-{{Related expression
-|language=fi
-|expression=haluton
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
-}}
-{{Related expression
-|language=nb
-|expression=uvillig
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
-}}
-{{Related expression
-|language=se
-|expression=vuostemielas
-|collection=jurdihkalas_tearbmalistu_2011-seg
-|sanctioned=Yes
-|pos=N/A
 }}'''
 
-        got = bot.concept_parser(concept)
-        self.assertEqual(want, got)
+        with self.assertRaises(bot.BotException):
+            bot.concept_parser(concept)
 
     def test_exception_raised_when_conflicting_pos_is_set(self):
         concept = u'''{{Concept
@@ -487,22 +423,6 @@ class TestBot(unittest.TestCase):
 |more_info_se=Davvisámegiela juogus dohkkehan 11.-12.12.2014
 }}
 {{Related expression
-|language=fi
-|expression=järjestelmäasetukset
-|sanctioned=No
-}}
-{{Related expression
-|language=nb
-|expression=systeminnstillinger
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=fierahit
-|note=synonyma
-|sanctioned=No
-}}
-{{Related expression
 |language=se
 |expression=jorahit
 |note=synonyma
@@ -512,50 +432,8 @@ class TestBot(unittest.TestCase):
 |language=se
 |expression=vuogádatválljejumit
 |status=proposed
-|sanctioned=No
-}}
-{{Related expression
-|language=sv
-|expression=systeminställningar
-|sanctioned=No
-}}'''
-        want = u'''{{Concept
-|definition_se=vuogádat maid geavaheaddji ieš mearrida mo doaibmá
-|more_info_se=Davvisámegiela juogus dohkkehan 11.-12.12.2014
-}}
-{{Related expression
-|language=fi
-|expression=järjestelmäasetukset
-|sanctioned=No
-}}
-{{Related expression
-|language=nb
-|expression=systeminnstillinger
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=fierahit
-|note=synonyma
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=jorahit
-|note=synonyma
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=vuogádatválljejumit
-|status=proposed
-|sanctioned=No
-}}
-{{Related expression
-|language=sv
-|expression=systeminställningar
 |sanctioned=No
 }}'''
 
         with self.assertRaises(importer.ExpressionException):
-            got = bot.concept_parser(concept)
+            bot.concept_parser(concept)

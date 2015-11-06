@@ -162,6 +162,13 @@ def parse_expression():
         print(key, value)
 
 
+def parse_dump(filename):
+    dump_element = etree.parse(filename)
+    for page in dump_element.xpath('./page'):
+        text = page.find('text').text
+
+
 def main():
-    #get_expressions()
-    parse_expression()
+    # get_expressions()
+    # parse_expression()
+    parse_dump(sys.argv[1])

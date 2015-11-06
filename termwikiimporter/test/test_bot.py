@@ -426,3 +426,56 @@ class TestBot(unittest.TestCase):
 
         got = bot.concept_parser(concept)
         self.assertEqual(want, got)
+
+    def test_unchanged_concept_when_no_pos_is_found(self):
+        concept = u'''{{Concept
+|more_info_se=Erklære seg uvillig : cealkit iežas vuostemielas.
+}}
+{{Related expression
+|language=fi
+|expression=haluton
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}
+{{Related expression
+|language=nb
+|expression=uvillig
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}
+{{Related expression
+|language=se
+|expression=vuostemielas
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}'''
+        want = u'''{{Concept
+|more_info_se=Erklære seg uvillig : cealkit iežas vuostemielas.
+}}
+{{Related expression
+|language=fi
+|expression=haluton
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}
+{{Related expression
+|language=nb
+|expression=uvillig
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}
+{{Related expression
+|language=se
+|expression=vuostemielas
+|collection=jurdihkalas_tearbmalistu_2011-seg
+|sanctioned=Yes
+|pos=N/A
+}}'''
+
+        got = bot.concept_parser(concept)
+        self.assertEqual(want, got)

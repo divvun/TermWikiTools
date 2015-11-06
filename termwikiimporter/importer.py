@@ -221,7 +221,9 @@ class Concept(object):
 
         strings.append(u'}}')
 
-        strings.append(unicode(self.expression_infos))
+        expressions = unicode(self.expression_infos)
+        if len(expressions) > 0:
+            strings.append(expressions)
 
         strings.extend([unicode(related_concept)
                         for related_concept in sorted(self.related_concepts)])

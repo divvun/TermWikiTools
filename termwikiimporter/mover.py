@@ -52,6 +52,19 @@ def parse_options():
     return args
 
 
+def rename_category(oldname, newname):
+    '''Rename a category and all the pages belonging to it'''
+    print('Logging in …')
+    site = bot.get_site()
+
+    print('Changing the category in pages')
+    for page in site.Categories[oldname]:
+        print(page.name)
+        page.save(page.text().replace(oldname, newname),
+                  summary='Rename category {} -> {}'.format(
+                      oldname, newname))
+
+
 def get_new_page_title(site, new_page_title):
     new_title = new_page_title
     new_page = site.Pages[new_title]

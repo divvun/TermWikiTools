@@ -57,7 +57,9 @@ def get_pos(expression, language):
         if (analysis.endswith('+N+Sg+Nom') or
                 analysis.endswith('+N+G3+Sg+Nom') or
                 analysis.endswith('+N+NomAg+Sg+Nom') or
-                analysis.endswith('+N+Pl+Nom')):
+                analysis.endswith('+N+Pl+Nom') or
+                analysis.endswith('+N+Prop+Sem/Plc+Sg+Nom') or
+                analysis.endswith('+N+Der/heapmi+A+Comp+Sg+Nom')):
             return u'N'
         elif (analysis.endswith('+V+TV+Inf') or
               analysis.endswith('+V+IV+Inf') or
@@ -67,6 +69,8 @@ def get_pos(expression, language):
             return u'A'
         elif analysis.endswith('+Adv'):
             return u'Adv'
+        elif analysis.endswith('+Num+Sg+Nom'):
+            return u'Num'
         elif analysis.endswith('?'):
             return u'?'
 

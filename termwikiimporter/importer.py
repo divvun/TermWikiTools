@@ -135,7 +135,7 @@ class ExpressionInfos(object):
 
 
 class RelatedConceptInfo(collections.namedtuple(u'RelatedConceptInfo',
-                                                u'concept relation')):
+                                                [u'concept', u'relation'])):
     __slots__ = ()
 
     def __str__(self):

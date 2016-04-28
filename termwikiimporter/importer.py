@@ -50,8 +50,10 @@ class ExternalCommandRunner(object):
 class ExpressionInfo(
     collections.namedtuple(
         u'ExpressionInfo',
-        u'language expression is_typo has_illegal_char collection status note '
-        u'sanctioned equivalence')):
+        [
+            u'language', u'expression', u'is_typo', u'has_illegal_char',
+            u'collection', u'status', u'note', u'sanctioned',
+            u'equivalence'])):
     '''Information bound to an expression
 
     expression is a string

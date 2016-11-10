@@ -23,6 +23,11 @@ def lineno():
 
 
 def parse_concept(lines):
+    '''Parse a concept.
+
+    Arguments:
+        lines (list of str): the content of the termwiki page.
+    '''
     template_contents = collections.OrderedDict()
     sanctioned = {}
     key = ''
@@ -46,7 +51,19 @@ def parse_concept(lines):
 
 
 def get_pos(expression, language):
-    '''Use lookup to determine the part of speech of an expression'''
+    '''Use lookup to determine the part of speech of an expression
+
+    Arguments:
+        expression (str): an expression
+        language (str): language of the expression
+
+    Returns:
+        str: the wordclass
+
+    Raises:
+        BotException: If the output of lookup is unknown, raise
+            this exception.
+    '''
     command = ['lookup', u'-q', u'-flags', u'mbTT',
                os.path.join(os.getenv(u'GTHOME'), u'langs', language,
                             u'src', u'analyser-gt-norm.xfst')]
@@ -137,6 +154,11 @@ def parse_related_expression(lines, sanctioned):
 
 
 def parse_related_concept(lines):
+    '''Parse the related concept part of a termwiki concept page.
+
+    Arguments:
+        lines (list of str): the content of the termwiki page.
+    '''
     template_contents = {}
     template_contents['relation'] = ''
 
@@ -153,6 +175,11 @@ def parse_related_concept(lines):
 
 
 def parse_expression(lines):
+    '''Parse the content of an expression page.
+
+    Arguments:
+        lines (list of str): the content of the expression page
+    '''
     expression_contents = {}
     counter = collections.defaultdict(int)
 
@@ -184,6 +211,11 @@ def parse_expression(lines):
 
 
 def expression_parser(text):
+    '''Parse a expression page.
+
+    Arguments:
+        text (str): The content of an expression page.
+    '''
     lines = collections.deque(text.split(u'\n'))
     counter = collections.defaultdict(int)
     while len(lines) > 0:
@@ -198,6 +230,15 @@ def expression_parser(text):
 
 
 def concept_parser(text):
+    '''Parse a wiki page.
+
+    Arguments:
+        text (str): content of a wiki page
+
+    Returns:
+        str: the content of the page or the string representation
+            of the concept
+    '''
     sanctioned = {}
     concept = importer.Concept()
     lines = collections.deque(text.split(u'\n'))

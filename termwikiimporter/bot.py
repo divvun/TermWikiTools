@@ -138,16 +138,16 @@ def parse_related_expression(lines, sanctioned):
             except KeyError:
                 raise BotException('expression not set in Related expression template')
             else:
-                #if pos == 'N/A':
-                    #language = template_contents['language']
-                    #if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
-                        #if language == 'se':
-                            #language = 'sme'
-                        #ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
-                        #if ppos == u'?':
-                            #template_contents[u'is_typo'] = 'Yes'
-                        #else:
-                            #pos = ppos
+                if pos == 'N/A':
+                    language = template_contents['language']
+                    if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
+                        if language == 'se':
+                            language = 'sme'
+                        ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
+                        if ppos == u'?':
+                            template_contents[u'is_typo'] = 'Yes'
+                        else:
+                            pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
             template_contents[key] = template_contents[key] + u' ' + l.strip()

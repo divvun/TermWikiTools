@@ -5,7 +5,7 @@
 
 
 import argparse
-import collections
+from collections import OrderedDict, defaultdict, namedtuple
 from lxml import etree
 import openpyxl
 import os
@@ -48,7 +48,7 @@ class ExternalCommandRunner(object):
 
 
 class ExpressionInfo(
-    collections.namedtuple(
+    namedtuple(
         'ExpressionInfo',
         [
             'language', 'expression', 'is_typo', 'has_illegal_char',
@@ -134,7 +134,7 @@ class ExpressionInfos(object):
                 self.pos, pos))
 
 
-class RelatedConceptInfo(collections.namedtuple('RelatedConceptInfo',
+class RelatedConceptInfo(namedtuple('RelatedConceptInfo',
                                                 ['concept', 'relation'])):
     __slots__ = ()
 
@@ -251,8 +251,8 @@ class TermWiki(object):
     that page. This effictively mimics the Concept pages on the TermWiki.
     '''
     def __init__(self):
-        self.expressions = collections.defaultdict(dict)
-        self.pages = collections.defaultdict(dict)
+        self.expressions = defaultdict(dict)
+        self.pages = defaultdict(dict)
 
     @property
     def term_home(self):
@@ -266,7 +266,7 @@ class TermWiki(object):
         for term_file in os.listdir(self.term_home):
             if term_file.startswith('terms-'):
                 lang = term_file[term_file.find('-') + 1:term_file.find('.')]
-                expressions = collections.defaultdict(set)
+                expressions = defaultdict(set)
                 l_elements = etree.parse(
                     os.path.join(self.term_home,
                                  term_file)).xpath('.//e/lg/l')
@@ -310,7 +310,7 @@ class TermWiki(object):
                 hits += 1
 
         if hits > 1:
-            termwiki_pages = collections.defaultdict(set)
+            termwiki_pages = defaultdict(set)
             for lang in concept.lang_set:
                 for expression in concept.get_expressions_set(lang):
                     termwiki_pages[lang].update(self.expressions[lang][expression])
@@ -455,10 +455,10 @@ class ExcelImporter(Importer):
             return yaml.load(yamlfile)
 
     def get_concepts(self):
-        totalcounter = collections.defaultdict(int)
+        totalcounter = defaultdict(int)
 
         shortname = os.path.splitext(os.path.basename(self.filename))[0]
-        counter = collections.defaultdict(int)
+        counter = defaultdict(int)
         workbook = openpyxl.load_workbook(self.filename)
 
         print(shortname)

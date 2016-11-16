@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-
+"""Move pages in the termwiki."""
 
 
 import argparse
@@ -11,7 +11,7 @@ import sys
 import mwclient
 from lxml import etree
 
-from . import bot, importer
+from termwikiimporter import bot, importer
 
 categories = [
     'Boazodoallu‎',
@@ -39,6 +39,7 @@ categories = [
 
 
 def parse_options():
+    """Parse the options given to the program."""
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
 
@@ -52,7 +53,7 @@ def parse_options():
 
 
 def rename_category(oldname, newname):
-    '''Rename a category and all the pages belonging to it'''
+    """Rename a category and all the pages belonging to it."""
     print('Logging in …')
     site = bot.get_site()
 
@@ -65,6 +66,7 @@ def rename_category(oldname, newname):
 
 
 def get_new_page_title(site, new_page_title):
+    """Get the new title for the page."""
     new_title = new_page_title
     new_page = site.Pages[new_title]
     counter = 0
@@ -77,6 +79,7 @@ def get_new_page_title(site, new_page_title):
 
 
 def move_termwiki():
+    """Move pages in the termwiki."""
     print('Logging in …')
     site = bot.get_site()
 
@@ -101,6 +104,7 @@ def move_termwiki():
 
 
 def move_termwiki_old():
+    """Old version of the move_termwiki function."""
     args = parse_options()
 
     site = bot.get_site()
@@ -138,8 +142,9 @@ def move_termwiki_old():
                 counter += 1
             print('pages len', len(pages))
 
+
 def get_expressions():
-    '''Get all expression pages, write them to a xmlish file'''
+    """Get all expression pages, write them to a xmlish file."""
     print('Logging in …')
     site = bot.get_site()
 
@@ -160,8 +165,9 @@ def get_expressions():
 
 
 def parse_expression():
+    """Parse expressions found in a file."""
     expressions_element = etree.parse(os.path.join('termwikiimporter', 'test',
-                                                    'expressions.txt'))
+                                                   'expressions.txt'))
     counter = collections.defaultdict(int)
     for expression in expressions_element.xpath('page'):
         try:
@@ -178,13 +184,13 @@ def parse_expression():
 
 
 def parse_dump(filename):
-    '''Read the TermWiki dump.xml file, let concept_parser change the content
+    """Read the TermWiki dump.xml file, let concept_parser change the content.
 
     Write the output to another file.
 
     This is used to get an overview at the changes done by concept_parser
     to find test examples.
-    '''
+    """
     dump_element = etree.parse(filename)
     print(bot.lineno(), filename)
     for element in dump_element.xpath('.//page'):
@@ -204,6 +210,7 @@ def parse_dump(filename):
 
 
 def main():
+    """The main function of the script."""
     # get_expressions()
     # parse_expression()
     parse_dump(sys.argv[1])

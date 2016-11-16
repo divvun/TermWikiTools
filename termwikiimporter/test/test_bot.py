@@ -2,13 +2,12 @@
 
 import unittest
 
-from termwikiimporter import bot
-from termwikiimporter import importer
+from termwikiimporter import bot, importer
 
 
 class TestBot(unittest.TestCase):
     def test_bot1(self):
-        '''Check that continued lines in Concept is flattened'''
+        """Check that continued lines in Concept is flattened."""
         self.maxDiff = None
         c = [
             '{{Concept',
@@ -53,10 +52,10 @@ class TestBot(unittest.TestCase):
         self.assertEqual(bot.concept_parser(c), want)
 
     def test_bot3(self):
-        '''Check that pos is set
+        """Check that pos is set.
 
         Verb should be set to V, expression containg space is MWE
-        '''
+        """
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -96,7 +95,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot4(self):
-        '''Check that sanctioned=No is set default'''
+        """Check that sanctioned=No is set default."""
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -124,7 +123,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot5(self):
-        '''Check reviewed_lang=Yes wins over sanctioned=No in lang'''
+        """Check reviewed_lang=Yes wins over sanctioned=No in lang."""
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -152,7 +151,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot6(self):
-        '''Check that Related concept is parsed correctly'''
+        """Check that Related concept is parsed correctly."""
         self.maxDiff = None
 
         concept = [
@@ -172,7 +171,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot7(self):
-        '''Check that an exception is raised when expression is not defined'''
+        """Check that an exception is raised when expression is not defined."""
         self.maxDiff = None
 
         concept = [
@@ -196,7 +195,7 @@ class TestBot(unittest.TestCase):
             got = bot.concept_parser('\n'.join(concept))
 
     def test_bot8(self):
-        '''Check that empty and unwanted attributes in Concept are removed'''
+        """Check that empty and unwanted attributes in Concept are removed."""
         concept = '''{{Concept
 |definition_se=ákšodearri
 |explanation_se=
@@ -232,7 +231,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot10(self):
-        '''Check that reviewed is removed'''
+        """Check that reviewed is removed."""
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -262,7 +261,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot11(self):
-        '''Check that continued lines in Concept is flattened'''
+        """Check that continued lines in Concept is flattened."""
         self.maxDiff = None
         c = [
             '{{Concept',
@@ -295,7 +294,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual('\n'.join(want), bot.concept_parser('\n'.join(c)))
 
     def test_bot12(self):
-        '''Check that sanctioned=Yes in lang when reviewed_lang=Yes in Concept is set'''
+        """Check that sanctioned=Yes in lang when reviewed_lang=Yes in Concept is set."""
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -324,12 +323,12 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot13(self):
-        '''Check that sanctioned=Yes survives reviewed_lang=No in Concept
+        """Check that sanctioned=Yes survives reviewed_lang=No in Concept
 
         reviewed_lang was set when imported from risten.no, and not used after that.
         sanctioned is actively set by the user later, and should therefore "win" over
         reviewed_lang
-        '''
+        """
         self.maxDiff = None
         c = (
             '{{Concept\n'
@@ -358,7 +357,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot14(self):
-        '''Check that empty and unwanted attributes in Related expression are removed'''
+        """Check that empty and unwanted attributes in Related expression are removed."""
         concept = '''{{Concept
 |definition_nb=tynne delen av øks
 }}

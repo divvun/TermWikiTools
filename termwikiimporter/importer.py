@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-
-
+"""Import/convert term files to termwiki."""
 
 
 import argparse
@@ -22,16 +20,16 @@ class ExpressionException(Exception):
 
 class ExternalCommandRunner(object):
 
-    '''Class to run external command through subprocess
+    """Class to run external command through subprocess.
 
     Save output, error and returnvalue
-    '''
+    """
 
     def __init__(self):
         self.returncode = None
 
     def run(self, command, cwd=None, to_stdin=None):
-        '''Run the command, save the result'''
+        """Run the command, save the result."""
         try:
             subp = subprocess.Popen(command,
                                     stdin=subprocess.PIPE,
@@ -75,7 +73,8 @@ class ExpressionInfo(
             'language', 'expression', 'is_typo', 'has_illegal_char',
             'collection', 'status', 'note', 'sanctioned',
             'equivalence'])):
-    '''Information bound to an expression
+
+    """Information bound to an expression
 
     expression is a string
 
@@ -91,11 +90,12 @@ class ExpressionInfo(
 
     collection is a string that points to the collection the expression belongs to
     pos is a string informing what part of speech the word is
-    '''
+    """
     __slots__ = ()
 
 
 class ExpressionInfos(object):
+
     def __init__(self):
         self.expressions = []
         self._pos = 'N/A'
@@ -156,7 +156,7 @@ class ExpressionInfos(object):
 
 
 class RelatedConceptInfo(namedtuple('RelatedConceptInfo',
-                                                ['concept', 'relation'])):
+                                    ['concept', 'relation'])):
     __slots__ = ()
 
     def __str__(self):
@@ -174,6 +174,7 @@ class RelatedConceptInfo(namedtuple('RelatedConceptInfo',
 
 class OrderedDefaultDict(OrderedDict):
     # Source: http://stackoverflow.com/a/6190500/562769
+
     def __init__(self, default_factory=None, *a, **kw):
         if (default_factory is not None and
            not isinstance(default_factory, Callable)):
@@ -217,7 +218,8 @@ class OrderedDefaultDict(OrderedDict):
 
 
 class Concept(object):
-    '''Model the TermWiki concept
+
+    """Model the TermWiki concept
 
     concept_info is a dict
     The concept information is key, the value is a set containing the
@@ -226,7 +228,8 @@ class Concept(object):
     expressions is a list containing ExpressionInfos
 
     pages is a set of TermWiki pages that may be duplicates of this concept
-    '''
+    """
+
     def __init__(self, main_category=''):
         self.main_category = main_category
         self.concept_info = OrderedDefaultDict()
@@ -299,7 +302,8 @@ class Concept(object):
 
 
 class TermWiki(object):
-    '''Represent the termwiki xml files
+
+    """Represent the termwiki xml files
 
     expressions is a dict where language is the key and the value is a dict
     The key in this subdict an expression and the value is a set containing
@@ -309,7 +313,8 @@ class TermWiki(object):
     pages is a dict where the termwiki pagename is the key and the value is a dict
     The key in this subdict is language and the value is the set of expressions on
     that page. This effictively mimics the Concept pages on the TermWiki.
-    '''
+    """
+
     def __init__(self):
         self.expressions = defaultdict(dict)
         self.pages = defaultdict(dict)
@@ -353,7 +358,7 @@ class TermWiki(object):
         return set(self.expressions[lang].keys())
 
     def get_pages_where_concept_probably_exists(self, concept):
-        '''Check if a Concept already exists in TermWiki
+        """Check if a Concept already exists in TermWiki
 
         A concept is possibly part of the termwiki if one expression from two
         different languages is part of a page.
@@ -361,7 +366,7 @@ class TermWiki(object):
         concept: is a Concept
         return: a set of the pages containing at least one expression from two
         different languages
-        '''
+        """
         common_pages = set()
         hits = 0
         for lang in concept.lang_set:
@@ -373,7 +378,8 @@ class TermWiki(object):
             termwiki_pages = defaultdict(set)
             for lang in concept.lang_set:
                 for expression in concept.get_expressions_set(lang):
-                    termwiki_pages[lang].update(self.expressions[lang][expression])
+                    termwiki_pages[lang].update(
+                        self.expressions[lang][expression])
 
             for lang1, pages1 in list(termwiki_pages.items()):
                 for lang2, pages2 in list(termwiki_pages.items()):
@@ -384,22 +390,37 @@ class TermWiki(object):
 
 
 class Importer(object):
+    """The import class.
+
+    Attributes:
+        filename (str): path to the file that should be imported
+            to the termwiki
+        termwiki (str): url to the termwiki
+        concepts (list of ConceptInfo): all the concepts that have been
+            found in filename
+    """
     def __init__(self, filename, termwiki):
+        """Initialise the Importer class."""
         self.filename = filename
         self.termwiki = termwiki
         self.concepts = []
 
     def run_external_command(self, command, input):
-        '''Run the command with input using subprocess'''
+        """Run the command with input using subprocess."""
         runner = ExternalCommandRunner()
         runner.run(command, to_stdin=input)
 
         return runner.stdout
 
     def is_expression_typo(self, expression, lang):
-        """Runs lookup on the expression
+        """Runs lookup on the expression.
 
-        Returns the output of preprocess
+        Arguments:
+            expression (str): an term expression
+            lang (str): language of the expression
+
+        Returns:
+            bool: True if expression is known to lookup, False otherwise.
         """
         if lang in ['se', 'sma', 'smj']:
             if lang == 'se':
@@ -415,6 +436,13 @@ class Importer(object):
         return False
 
     def write(self, pagecounter):
+        """Write the result of the conversion.
+
+        Write the concepts found to an xml file.
+
+        Arguments:
+            pagecounter ():
+        """
         pages = etree.Element('pages')
         for concept in self.concepts:
             content = etree.Element('content')
@@ -425,7 +453,7 @@ class Importer(object):
                 page.set('title', concept.get_pagename(self.termwiki.pagenames))
             except TypeError:
                 page.set('title', ':'.join([concept.main_category,
-                                              'page_' + str(pagecounter.number)]))
+                                            'page_' + str(pagecounter.number)]))
             page.append(content)
             pages.append(page)
 
@@ -439,13 +467,14 @@ class Importer(object):
 
 
 class ExcelImporter(Importer):
+
     def collect_expressions(self, startline, language, counter, collection=''):
-        '''Insert expressions found in startline into a list of ExpressionInfo
+        """Insert expressions found in startline into a list of ExpressionInfo
 
         startline: the content of an expression line
         language: the language of the expression line
         collection: the basename of the file where the expression comes from
-        '''
+        """
         expressions = []
         if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
             counter['has_illegal_char'] += 1
@@ -563,6 +592,7 @@ class ExcelImporter(Importer):
 
 
 class ArbeidImporter(Importer):
+
     def __init__(self):
         super().__init__()
 
@@ -582,19 +612,25 @@ class ArbeidImporter(Importer):
                     if line.startswith('se: '):
                         c.concepts['se'].expressions = self.collect_expressions(
                             line[len('se: '):].strip())
-                        self.do_expressions_exist(c.concepts['se'].expressions, 'se')
+                        self.do_expressions_exist(
+                            c.concepts['se'].expressions, 'se')
                     elif line.startswith('MRKN: '):
-                        c.concepts['se'].explanation = line[len('MRKN: '):].strip()
+                        c.concepts['se'].explanation = line[
+                            len('MRKN: '):].strip()
                     elif line.startswith('DEF1: '):
-                        c.concepts['se'].definition = line[len('DEF1: '):].strip()
+                        c.concepts['se'].definition = line[
+                            len('DEF1: '):].strip()
                     elif line.startswith('nb: '):
                         c.concepts['nb'].expressions = self.collect_expressions(
                             line[len('nb: '):].strip())
-                        self.do_expressions_exist(c.concepts['nb'].expressions, 'nb')
+                        self.do_expressions_exist(
+                            c.concepts['nb'].expressions, 'nb')
                     elif line.startswith('nbMRKN: '):
-                        c.concepts['nb'].explanation = line[len('nbMRKN: '):].strip()
+                        c.concepts['nb'].explanation = line[
+                            len('nbMRKN: '):].strip()
                     elif line.startswith('nbDEF1: '):
-                        c.concepts['nb'].definition = line[len('nbDEF1: '):].strip()
+                        c.concepts['nb'].definition = line[
+                            len('nbDEF1: '):].strip()
                     elif not line.startswith('klass'):
                         print(line.strip())
 
@@ -616,6 +652,7 @@ class ArbeidImporter(Importer):
 
 
 class PageCounter(object):
+
     def __init__(self):
         self.counter = 0
 

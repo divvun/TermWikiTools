@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""Export content of files to the termwiki."""
 
 import argparse
 import collections
@@ -7,10 +7,11 @@ import collections
 import mwclient
 from lxml import etree
 
-from . import bot
+from termwikiimporter import bot
 
 
 def parse_options():
+    """Parse commandline options."""
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
 
@@ -24,6 +25,7 @@ def parse_options():
 
 
 def write_to_termwiki():
+    """Write the content of the given files to the termwiki."""
     args = parse_options()
 
     # Initialize Site object

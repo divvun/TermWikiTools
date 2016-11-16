@@ -13,8 +13,6 @@ from lxml import etree
 
 from termwikiimporter import importer
 
-from . import importer
-
 
 class BotException(Exception):
     pass
@@ -26,11 +24,15 @@ def lineno():
 
 
 def parse_concept(lines):
-    '''Parse a concept.
+    """Parse a concept.
 
     Arguments:
         lines (list of str): the content of the termwiki page.
-    '''
+
+    Returns:
+        tuple (OrderedDict, dict): The OrderedDict contains the concept,
+            sanctioned contains the langs that have been reviewed.
+    """
     template_contents = collections.OrderedDict()
     sanctioned = {}
     key = ''
@@ -54,7 +56,7 @@ def parse_concept(lines):
 
 
 def get_pos(expression, language):
-    '''Use lookup to determine the part of speech of an expression
+    """Use lookup to determine the part of speech of an expression
 
     Arguments:
         expression (str): an expression
@@ -66,7 +68,7 @@ def get_pos(expression, language):
     Raises:
         BotException: If the output of lookup is unknown, raise
             this exception.
-    '''
+    """
     command = ['lookup', '-q', '-flags', 'mbTT',
                os.path.join(os.getenv('GTHOME'), 'langs', language,
                             'src', 'analyser-gt-norm.xfst')]
@@ -98,6 +100,14 @@ def get_pos(expression, language):
 
 
 def set_sanctioned(template_contents, sanctioned):
+    """Set the sanctioned key.
+
+    Arguments:
+        template_contents (dict): the content of related expressions of
+            a termwiki page.
+        sanctioned (dict): a dict containing the languages that have been
+            reviewed in a termwiki concept.
+    """
     if template_contents['sanctioned'] == 'No':
         try:
             if sanctioned[template_contents['language']] == 'Yes':
@@ -107,10 +117,22 @@ def set_sanctioned(template_contents, sanctioned):
 
 
 def parse_related_expression(lines, sanctioned):
-    '''Parse a Related expression template
+    """Parse a Related expression template
 
     Determine the part of speech if it is not set inside the template.
-    '''
+
+    Arguments:
+        lines (list of str): contains the related expressions found
+            in a concept page of a termwiki page.
+        sanctioned (dict): The set of languages that have been
+            reviewed in the concept of the termwiki page.
+
+    Returns:
+        importer.ExpressionInfo: The content of the related expression.
+
+    Raises:
+        BotException: Raised when the expression is not set.
+    """
     template_contents = {}
     template_contents['sanctioned'] = 'No'
     template_contents['is_typo'] = 'No'
@@ -157,11 +179,14 @@ def parse_related_expression(lines, sanctioned):
 
 
 def parse_related_concept(lines):
-    '''Parse the related concept part of a termwiki concept page.
+    """Parse the related concept part of a termwiki concept page.
 
     Arguments:
         lines (list of str): the content of the termwiki page.
-    '''
+
+    Returns:
+        importer.RelatedConceptInfo: The content of the related concept.
+    """
     template_contents = {}
     template_contents['relation'] = ''
 
@@ -178,11 +203,18 @@ def parse_related_concept(lines):
 
 
 def parse_expression(lines):
-    '''Parse the content of an expression page.
+    """Parse the content of an expression page.
 
     Arguments:
         lines (list of str): the content of the expression page
-    '''
+
+    Raises:
+        BotException: raised when there is either
+            * an invalid part-of-speech is encountered
+            * an unknown language is encountered
+            * an potential invalid line is encountered
+
+    """
     expression_contents = {}
     counter = collections.defaultdict(int)
 
@@ -214,11 +246,11 @@ def parse_expression(lines):
 
 
 def expression_parser(text):
-    '''Parse a expression page.
+    """Parse an expression page.
 
     Arguments:
         text (str): The content of an expression page.
-    '''
+    """
     lines = collections.deque(text.split('\n'))
     counter = collections.defaultdict(int)
     while len(lines) > 0:
@@ -233,7 +265,7 @@ def expression_parser(text):
 
 
 def concept_parser(text):
-    '''Parse a wiki page.
+    """Parse a wiki page.
 
     Arguments:
         text (str): content of a wiki page
@@ -241,7 +273,7 @@ def concept_parser(text):
     Returns:
         str: the content of the page or the string representation
             of the concept
-    '''
+    """
     sanctioned = {}
     concept = importer.Concept()
     lines = collections.deque(text.split('\n'))

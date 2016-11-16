@@ -224,21 +224,21 @@ class TestConcept(unittest.TestCase):
         self.assertEqual('\n'.join(concept), got)
 
     def test_is_empty1(self):
-        '''Both expressions and concept_info are empty'''
+        """Both expressions and concept_info are empty."""
         self.assertTrue(self.concept.is_empty)
 
     def test_is_empty2(self):
-        '''concept_info is empty'''
+        """concept_info is empty."""
         self.add_expression()
         self.assertFalse(self.concept.is_empty)
 
     def test_is_empty3(self):
-        '''expressions is empty'''
+        """expressions is empty."""
         self.add_concept_info()
         self.assertFalse(self.concept.is_empty)
 
     def test_is_empty4(self):
-        '''Both expressions and concept_info are non-empty'''
+        """Both expressions and concept_info are non-empty."""
         self.add_concept_info()
         self.add_expression()
         self.assertFalse(self.concept.is_empty)
@@ -328,7 +328,7 @@ class TestTermwiki(unittest.TestCase):
                                 self.termwiki.get_expressions_set(lang))
 
     def test_get_pages_where_concept_probably_exists1(self):
-        '''No common expressions'''
+        """No common expressions."""
         concept = importer.Concept(main_category='TestCategory')
         uff = {
             'se': ['sámi1', 'sámi2'],
@@ -351,7 +351,7 @@ class TestTermwiki(unittest.TestCase):
             set())
 
     def test_get_pages_where_concept_probably_exists2(self):
-        '''Common expressions in one language'''
+        """Common expressions in one language."""
         concept = importer.Concept(main_category='TestCategory')
         uff = {
             'se': ['Brasil', 'sámi2'],
@@ -374,7 +374,7 @@ class TestTermwiki(unittest.TestCase):
             set())
 
     def test_get_pages_where_concept_probably_exists3(self):
-        '''Common expressions in two languages'''
+        """Common expressions in two languages."""
         concept = importer.Concept(main_category='TestCategory')
         uff = {
             'se': ['bealjoštelefovdna', 'belljosat'],
@@ -398,7 +398,7 @@ class TestTermwiki(unittest.TestCase):
                  'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
 
     def test_pagenames(self):
-        '''Check if the property pagenames returns what it is supposed to'''
+        """Check if the property pagenames returns what it is supposed to."""
         self.assertEqual(self.termwiki.pagenames,
                          ['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
                           'Dihtorteknologiija ja diehtoteknihkka:belljosat',
@@ -449,7 +449,7 @@ class TestExcelImporter(unittest.TestCase):
                          concept.expression_infos.pos)
 
     def test_collect_expressions_test_splitters(self):
-        '''Test if legal split chars work as splitters'''
+        """Test if legal split chars work as splitters."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
@@ -480,7 +480,7 @@ class TestExcelImporter(unittest.TestCase):
                 ], got)
 
     def test_collect_expressions_illegal_chars(self):
-        '''Check that illegal chars in startline is handled correctly'''
+        """Check that illegal chars in startline is handled correctly."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         for startline in '()-~?':
@@ -501,7 +501,7 @@ class TestExcelImporter(unittest.TestCase):
                 ], got)
 
     def test_collect_expressions_illegal_chars_with_newline(self):
-        '''Check that illegal chars in startline is handled correctly'''
+        """Check that illegal chars in startline is handled correctly."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         startline = 'a-a;\nb=b;\nc?c'
@@ -522,7 +522,7 @@ class TestExcelImporter(unittest.TestCase):
             ], got)
 
     def test_collect_expressions_multiword_expression(self):
-        '''Handle multiword expression'''
+        """Handle multiword expression."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         got = ei.collect_expressions('a b', 'se', counter, collection='example')
@@ -542,7 +542,7 @@ class TestExcelImporter(unittest.TestCase):
             ], got)
 
     def test_collect_expressions_typo(self):
-        '''Handle typo expression'''
+        """Handle typo expression."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         got = ei.collect_expressions('asdfg', 'se', counter, collection='example')

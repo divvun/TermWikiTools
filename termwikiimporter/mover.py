@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import print_function
+
 
 import argparse
 import collections
@@ -10,33 +10,33 @@ import mwclient
 import os
 import sys
 
-import bot
-import importer
+from . import bot
+from . import importer
 
 
 categories = [
-    u'Boazodoallu‎',
-    u'Dihtorteknologiija ja diehtoteknihkka',
-    u'Dáidda ja girjjálašvuohta‎',
-    u'Eanandoallu‎',
-    u'Ekologiija ja biras‎',
-    u'Ekonomiija ja gávppašeapmi',
-    u'Geografiija‎',
-    u'Gielladieđa‎',
-    u'Gulahallanteknihkka‎',
-    u'Guolástus‎',
-    u'Huksenteknihkka‎',
-    u'Juridihkka',
-    u'Luonddudieđa ja matematihkka‎',
-    u'Medisiidna‎',
-    u'Mášenteknihkka‎',
-    u'Ođđa sánit‎',
-    u'Servodatdieđa‎',
-    u'Stáda, almmolaš hálddašeapmi‎',
-    u'Teknihkka, industriija, duodji‎',
-    u'Álšateknihkka‎',
-    u'Ásttoáigi ja faláštallan‎',
-    u'Ávnnasindustriija‎']
+    'Boazodoallu‎',
+    'Dihtorteknologiija ja diehtoteknihkka',
+    'Dáidda ja girjjálašvuohta‎',
+    'Eanandoallu‎',
+    'Ekologiija ja biras‎',
+    'Ekonomiija ja gávppašeapmi',
+    'Geografiija‎',
+    'Gielladieđa‎',
+    'Gulahallanteknihkka‎',
+    'Guolástus‎',
+    'Huksenteknihkka‎',
+    'Juridihkka',
+    'Luonddudieđa ja matematihkka‎',
+    'Medisiidna‎',
+    'Mášenteknihkka‎',
+    'Ođđa sánit‎',
+    'Servodatdieđa‎',
+    'Stáda, almmolaš hálddašeapmi‎',
+    'Teknihkka, industriija, duodji‎',
+    'Álšateknihkka‎',
+    'Ásttoáigi ja faláštallan‎',
+    'Ávnnasindustriija‎']
 
 
 def parse_options():
@@ -115,7 +115,7 @@ def move_termwiki_old():
             all_pages.append(wikipage)
             page_titles[wikipage.get('title')] += 1
 
-    for page_title, count in page_titles.items():
+    for page_title, count in list(page_titles.items()):
         if count > 1:
             pages = all_pages.xpath('.//page[@title="' + page_title + '"]')
             print(page_title, count, len(pages))
@@ -167,14 +167,14 @@ def parse_expression():
     for expression in expressions_element.xpath('page'):
         try:
             c = bot.expression_parser(expression.find('content').text)
-            for key, value in c.iteritems():
+            for key, value in c.items():
                 counter[key] += value
         except bot.BotException as e:
-            print(expression.get('title'), unicode(e))
+            print(expression.get('title'), str(e))
         except AttributeError as e:
-            print(u'empty page', expression.get('title'))
+            print('empty page', expression.get('title'))
 
-    for key, value in counter.iteritems():
+    for key, value in counter.items():
         print(key, value)
 
 
@@ -197,7 +197,7 @@ def parse_dump(filename):
                 if c_text.text != b_text:
                     c_text.text = b_text
             except importer.ExpressionException as e:
-                print(unicode(e), file=sys.stderr)
+                print(str(e), file=sys.stderr)
                 print(element.find('title').text, file=sys.stderr)
                 print(element.find('.//text').text, file=sys.stderr)
 

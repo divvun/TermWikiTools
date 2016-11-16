@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import print_function
+
 import collections
 from lxml import etree
 import inspect
@@ -11,7 +11,7 @@ import sys
 from termwikiimporter import importer
 import yaml
 
-import importer
+from . import importer
 
 class BotException(Exception):
     pass
@@ -34,9 +34,9 @@ def parse_concept(lines):
 
     while len(lines) > 0:
         l = lines.popleft().strip()
-        if l.startswith(u'|reviewed_'):
-            lang = l.split(u'=')[0].replace(u'|reviewed_', u'')
-            bool = l.strip().split(u'=')[1]
+        if l.startswith('|reviewed_'):
+            lang = l.split('=')[0].replace('|reviewed_', '')
+            bool = l.strip().split('=')[1]
             sanctioned[lang] = bool
         elif l.startswith('|'):
             if l.startswith('|reviewed=') or l.startswith('|no picture'):
@@ -47,7 +47,7 @@ def parse_concept(lines):
         elif l.startswith('}}'):
             return (template_contents, sanctioned)
         else:
-            template_contents[key] = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + l.strip()
 
 
 def get_pos(expression, language):
@@ -64,9 +64,9 @@ def get_pos(expression, language):
         BotException: If the output of lookup is unknown, raise
             this exception.
     '''
-    command = ['lookup', u'-q', u'-flags', u'mbTT',
-               os.path.join(os.getenv(u'GTHOME'), u'langs', language,
-                            u'src', u'analyser-gt-norm.xfst')]
+    command = ['lookup', '-q', '-flags', 'mbTT',
+               os.path.join(os.getenv('GTHOME'), 'langs', language,
+                            'src', 'analyser-gt-norm.xfst')]
     runner = importer.ExternalCommandRunner()
     runner.run(command, to_stdin=expression)
 
@@ -77,21 +77,21 @@ def get_pos(expression, language):
                 analysis.endswith('+N+Pl+Nom') or
                 analysis.endswith('+N+Prop+Sem/Plc+Sg+Nom') or
                 analysis.endswith('+N+Der/heapmi+A+Comp+Sg+Nom')):
-            return u'N'
+            return 'N'
         elif (analysis.endswith('+V+TV+Inf') or
               analysis.endswith('+V+IV+Inf') or
               analysis.endswith('+V+IV+Pass+Inf')):
-            return u'V'
+            return 'V'
         elif analysis.endswith('+A+Attr') or analysis.endswith('+A+Sg+Nom'):
-            return u'A'
+            return 'A'
         elif analysis.endswith('+Adv'):
-            return u'Adv'
+            return 'Adv'
         elif analysis.endswith('+Num+Sg+Nom'):
-            return u'Num'
+            return 'Num'
         elif analysis.endswith('?'):
-            return u'?'
+            return '?'
 
-    raise BotException(u'Unknown\n' + runner.stdout.decode('utf8'))
+    raise BotException('Unknown\n' + runner.stdout.decode('utf8'))
 
 
 def set_sanctioned(template_contents, sanctioned):
@@ -109,13 +109,13 @@ def parse_related_expression(lines, sanctioned):
     Determine the part of speech if it is not set inside the template.
     '''
     template_contents = {}
-    template_contents[u'sanctioned'] = 'No'
-    template_contents[u'is_typo'] = 'No'
-    template_contents[u'has_illegal_char'] = 'No'
-    template_contents[u'collection'] = ''
-    template_contents[u'status'] = ''
-    template_contents[u'note'] = ''
-    template_contents[u'equivalence'] = ''
+    template_contents['sanctioned'] = 'No'
+    template_contents['is_typo'] = 'No'
+    template_contents['has_illegal_char'] = 'No'
+    template_contents['collection'] = ''
+    template_contents['status'] = ''
+    template_contents['note'] = ''
+    template_contents['equivalence'] = ''
 
     key = ''
     pos = 'N/A'
@@ -144,13 +144,13 @@ def parse_related_expression(lines, sanctioned):
                         if language == 'se':
                             language = 'sme'
                         ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
-                        if ppos == u'?':
-                            template_contents[u'is_typo'] = 'Yes'
+                        if ppos == '?':
+                            template_contents['is_typo'] = 'Yes'
                         else:
                             pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
-            template_contents[key] = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + l.strip()
 
 
 def parse_related_concept(lines):
@@ -171,7 +171,7 @@ def parse_related_concept(lines):
         elif l.startswith('}}'):
             return importer.RelatedConceptInfo(**template_contents)
         else:
-            template_contents[key] = template_contents[key] + u' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + l.strip()
 
 
 def parse_expression(lines):
@@ -186,26 +186,26 @@ def parse_expression(lines):
     key = ''
     while len(lines) > 0:
         l = lines.popleft().strip()
-        if l.startswith(u'|pos'):
-            (key, info) = l[1:].split(u'=')
+        if l.startswith('|pos'):
+            (key, info) = l[1:].split('=')
             expression_contents[key] = info
             if info not in ['N', 'V', 'A', 'Adv', 'Pron', 'Interj']:
                 raise BotException('wrong pos', info)
-        elif l.startswith(u'|language'):
-            (key, info) = l[1:].split(u'=')
+        elif l.startswith('|language'):
+            (key, info) = l[1:].split('=')
             expression_contents[key] = info
             if info not in ['se', 'sma', 'smj', 'sms', 'sms', 'en', 'nb', 'nb', 'sv', 'lat', 'fi', 'smn', 'nn']:
                 raise BotException('wrong language', info)
             # print(lineno(), l)
-        elif l.startswith(u'|sources') or l.startswith(u'|monikko') or l.startswith(u'|sanamuoto') or l.startswith(u'|origin') or l.startswith(u'|perussanatyyppi') or l.startswith(u'|wordclass') or l.startswith('|sanaluokka'):
-            (key, info) = l[1:].split(u'=')
+        elif l.startswith('|sources') or l.startswith('|monikko') or l.startswith('|sanamuoto') or l.startswith('|origin') or l.startswith('|perussanatyyppi') or l.startswith('|wordclass') or l.startswith('|sanaluokka'):
+            (key, info) = l[1:].split('=')
             counter[key] += 1
             # print(lineno(), l)
-        elif l.startswith(u'}}'):
+        elif l.startswith('}}'):
             return counter
             # return importer.RelatedConceptInfo(**expression_contents)
         else:
-            raise BotException(u'Unknown:', l)
+            raise BotException('Unknown:', l)
 
     print(lineno())
 
@@ -216,14 +216,14 @@ def expression_parser(text):
     Arguments:
         text (str): The content of an expression page.
     '''
-    lines = collections.deque(text.split(u'\n'))
+    lines = collections.deque(text.split('\n'))
     counter = collections.defaultdict(int)
     while len(lines) > 0:
         l = lines.popleft().strip()
-        if l.startswith(u'{{Expression'):
+        if l.startswith('{{Expression'):
             c = parse_expression(lines)
             if c is not None:
-                for key, value in c.iteritems():
+                for key, value in c.items():
                     counter[key] += value
 
     return counter
@@ -241,28 +241,28 @@ def concept_parser(text):
     '''
     sanctioned = {}
     concept = importer.Concept()
-    lines = collections.deque(text.split(u'\n'))
+    lines = collections.deque(text.split('\n'))
 
     l = lines.popleft()
-    if l.startswith(u'{{Concept'):
+    if l.startswith('{{Concept'):
         (concept_info, sanctioned) = parse_concept(lines)
-        for key, info in concept_info.iteritems():
+        for key, info in concept_info.items():
             concept.add_concept_info(key, info)
         #print(lineno())
         while len(lines) > 0:
             l = lines.popleft()
-            if (l.startswith(u'{{Related expression') or
-                    l.startswith(u'{{Related_expression')):
+            if (l.startswith('{{Related expression') or
+                    l.startswith('{{Related_expression')):
                 (expression_info, pos) = parse_related_expression(lines, sanctioned)
                 concept.add_expression(expression_info)
                 concept.expression_infos.pos = pos
-            elif l.startswith(u'{{Related concept'):
+            elif l.startswith('{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:
                 raise BotException('unhandled', l.strip())
         #print(lineno())
         if not concept.is_empty:
-            return unicode(concept)
+            return str(concept)
     else:
         return text
 
@@ -281,15 +281,15 @@ def main():
     print('Logging in …')
     site = get_site()
     categories = [
-        u'Boazodoallu', u'Dihtorteknologiija ja diehtoteknihkka',
-        u'Dáidda ja girjjálašvuohta', u'Eanandoallu',
-        u'Ekologiija ja biras', u'Ekonomiija ja gávppašeapmi',
-        u'Geografiija', u'Gielladieđa', u'Gulahallanteknihkka',
-        u'Guolástus', u'Huksenteknihkka', u'Juridihkka',
-        u'Luonddudieđa ja matematihkka', u'Medisiidna',
-        u'Mášenteknihkka', u'Ođđa sánit', u'Servodatdieđa',
-        u'Stáda, almmolaš hálddašeapmi', u'Teknihkka, industriija, duodji',
-        u'Álšateknihkka', u'Ásttoáigi ja faláštallan', u'Ávnnasindustriija']
+        'Boazodoallu', 'Dihtorteknologiija ja diehtoteknihkka',
+        'Dáidda ja girjjálašvuohta', 'Eanandoallu',
+        'Ekologiija ja biras', 'Ekonomiija ja gávppašeapmi',
+        'Geografiija', 'Gielladieđa', 'Gulahallanteknihkka',
+        'Guolástus', 'Huksenteknihkka', 'Juridihkka',
+        'Luonddudieđa ja matematihkka', 'Medisiidna',
+        'Mášenteknihkka', 'Ođđa sánit', 'Servodatdieđa',
+        'Stáda, almmolaš hálddašeapmi', 'Teknihkka, industriija, duodji',
+        'Álšateknihkka', 'Ásttoáigi ja faláštallan', 'Ávnnasindustriija']
 
     print('About to iterate categories')
     for category in categories:
@@ -308,7 +308,7 @@ def main():
                     try:
                         page.save(botted_text, summary='Fixing content')
                     except mwclient.errors.APIError as e:
-                        print(page.name, text, unicode(e), file=sys.stderr)
+                        print(page.name, text, str(e), file=sys.stderr)
 
                 else:
                     sys.stdout.write('|')
@@ -318,16 +318,16 @@ def main():
             except KeyError as e:
                 print(page.name, str(e), file=sys.stderr)
             except BotException as e:
-                print(page.name, unicode(e), file=sys.stderr)
+                print(page.name, str(e), file=sys.stderr)
 
-        print(u'\n' + category + u':', unicode(saves) + u'/' + unicode(total))
+        print('\n' + category + ':', str(saves) + '/' + str(total))
 
 
 def test():
     abba = etree.parse(os.path.join('termwikiimporter', 'test', 'abba.txt'))
 
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
-        for page in abba.xpath(u'./page'):
+        for page in abba.xpath('./page'):
             c = page.find('content')
             botted_text = concept_parser(c.text)
             if botted_text is not None:

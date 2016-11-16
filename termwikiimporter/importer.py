@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from __future__ import print_function
+
 
 
 import argparse
@@ -40,7 +40,7 @@ class ExternalCommandRunner(object):
                                     stderr=subprocess.PIPE,
                                     cwd=cwd)
         except OSError:
-            print(u'Please install {}'.format(command[0]))
+            print('Please install {}'.format(command[0]))
             raise
 
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
@@ -49,11 +49,11 @@ class ExternalCommandRunner(object):
 
 class ExpressionInfo(
     collections.namedtuple(
-        u'ExpressionInfo',
+        'ExpressionInfo',
         [
-            u'language', u'expression', u'is_typo', u'has_illegal_char',
-            u'collection', u'status', u'note', u'sanctioned',
-            u'equivalence'])):
+            'language', 'expression', 'is_typo', 'has_illegal_char',
+            'collection', 'status', 'note', 'sanctioned',
+            'equivalence'])):
     '''Information bound to an expression
 
     expression is a string
@@ -77,27 +77,27 @@ class ExpressionInfo(
 class ExpressionInfos(object):
     def __init__(self):
         self.expressions = []
-        self._pos = u'N/A'
+        self._pos = 'N/A'
 
     def __str__(self):
         strings = []
         for expression in self.expressions:
-            strings.append(u'{{Related expression')
-            for key, value in expression._asdict().items():
-                if (value == u'' or
+            strings.append('{{Related expression')
+            for key, value in list(expression._asdict().items()):
+                if (value == '' or
                     (value == 'No' and (key == 'is_typo' or
                                         key == 'has_illegal_char'))):
                     pass
                 else:
-                    strings.append(u'|' + key + u'=' + value)
+                    strings.append('|' + key + '=' + value)
             if ' ' in expression.expression:
-                strings.append(u'|pos=MWE')
+                strings.append('|pos=MWE')
             else:
-                strings.append(u'|pos=' + self.pos)
+                strings.append('|pos=' + self.pos)
 
-            strings.append(u'}}')
+            strings.append('}}')
 
-        return u'\n'.join(strings)
+        return '\n'.join(strings)
 
     def add_expression(self, expression_info):
         if expression_info not in self.expressions:
@@ -122,33 +122,33 @@ class ExpressionInfos(object):
 
     @pos.setter
     def pos(self, pos):
-        if pos not in [u'N', u'A', u'Adv', u'V', u'Pron', u'CS', u'CC', u'Adp', u'Po',
-                       u'Pr', u'Interj', u'Pcle', u'Num', u'ABBR', u'MWE', u'N/A']:
-            raise ExpressionException(u'Illegal value', pos)
+        if pos not in ['N', 'A', 'Adv', 'V', 'Pron', 'CS', 'CC', 'Adp', 'Po',
+                       'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A']:
+            raise ExpressionException('Illegal value', pos)
         elif pos in ['MWE', 'N/A']:
             pass
-        elif self._pos == u'N/A':
+        elif self._pos == 'N/A':
             self._pos = pos
         elif self._pos != pos:
-            raise ExpressionException(u'Trying to set conflicting pos {} {}'.format(
+            raise ExpressionException('Trying to set conflicting pos {} {}'.format(
                 self.pos, pos))
 
 
-class RelatedConceptInfo(collections.namedtuple(u'RelatedConceptInfo',
-                                                [u'concept', u'relation'])):
+class RelatedConceptInfo(collections.namedtuple('RelatedConceptInfo',
+                                                ['concept', 'relation'])):
     __slots__ = ()
 
     def __str__(self):
-        strings = [u'{{Related concept']
-        for key, value in self._asdict().items():
-                if value == u'':
+        strings = ['{{Related concept']
+        for key, value in list(self._asdict().items()):
+                if value == '':
                     pass
                 else:
-                    strings.append(u'|' + key + u'=' + value)
+                    strings.append('|' + key + '=' + value)
 
-        strings.append(u'}}')
+        strings.append('}}')
 
-        return u'\n'.join(strings)
+        return '\n'.join(strings)
 
 
 class OrderedDefaultDict(collections.OrderedDict, collections.defaultdict):
@@ -192,10 +192,10 @@ class Concept(object):
         return self.expression_infos.get_expressions_set(lang)
 
     def get_pagename(self, pagenames):
-        for lang in [u'sms', u'smn', u'sma', u'smj', u'se', u'fi', u'nb', u'sv', u'en', u'lat']:
+        for lang in ['sms', 'smn', 'sma', 'smj', 'se', 'fi', 'nb', 'sv', 'en', 'lat']:
             if lang in self.lang_set:
                 for expression in self.get_expressions_set(lang):
-                    pagename = u':'.join([self.main_category, expression])
+                    pagename = ':'.join([self.main_category, expression])
                     if pagename not in pagenames:
                         return pagename
 
@@ -205,33 +205,33 @@ class Concept(object):
 
     @property
     def dupe_string(self):
-        dupe = u'|duplicate_pages='
-        dupe += u', '.join(
-            [u'[' + page + u']' for page in sorted(self.pages)])
+        dupe = '|duplicate_pages='
+        dupe += ', '.join(
+            ['[' + page + ']' for page in sorted(self.pages)])
 
         return dupe
 
     def __str__(self):
-        strings = [u'{{Concept']
-        for key, values in self.concept_info.iteritems():
+        strings = ['{{Concept']
+        for key, values in self.concept_info.items():
             strings.extend(
-                [u'|' + key + u'=' + value
+                ['|' + key + '=' + value
                  for value in values
                  if len(value.strip()) > 0])
 
         if len(self.pages) > 0:
             strings.append(self.dupe_string)
 
-        strings.append(u'}}')
+        strings.append('}}')
 
-        expressions = unicode(self.expression_infos)
+        expressions = str(self.expression_infos)
         if len(expressions) > 0:
             strings.append(expressions)
 
-        strings.extend([unicode(related_concept)
+        strings.extend([str(related_concept)
                         for related_concept in sorted(self.related_concepts)])
 
-        return u'\n'.join(strings)
+        return '\n'.join(strings)
 
     @property
     def is_empty(self):
@@ -256,7 +256,7 @@ class TermWiki(object):
 
     @property
     def term_home(self):
-        return os.path.join(os.getenv(u'GTHOME'), u'words/terms/termwiki/terms')
+        return os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/terms')
 
     @property
     def pagenames(self):
@@ -264,30 +264,30 @@ class TermWiki(object):
 
     def get_expressions(self):
         for term_file in os.listdir(self.term_home):
-            if term_file.startswith(u'terms-'):
-                lang = term_file[term_file.find(u'-') + 1:term_file.find(u'.')]
+            if term_file.startswith('terms-'):
+                lang = term_file[term_file.find('-') + 1:term_file.find('.')]
                 expressions = collections.defaultdict(set)
                 l_elements = etree.parse(
                     os.path.join(self.term_home,
-                                 term_file)).xpath(u'.//e/lg/l')
+                                 term_file)).xpath('.//e/lg/l')
                 for l in l_elements:
                     expressions[l.text].update(
-                        set([mg.get(u'idref')
-                             for mg in l.getparent().getparent().xpath(u'.//mg')]))
+                        set([mg.get('idref')
+                             for mg in l.getparent().getparent().xpath('.//mg')]))
 
                 self.expressions[lang] = expressions
 
     def get_pages(self):
         for term_file in os.listdir(self.term_home):
-            if term_file.startswith(u'terms-'):
-                lang = term_file[term_file.find(u'-') + 1:term_file.find(u'.')]
+            if term_file.startswith('terms-'):
+                lang = term_file[term_file.find('-') + 1:term_file.find('.')]
                 mg_elements = etree.parse(
                     os.path.join(self.term_home,
-                                 term_file)).xpath(u'.//e/mg')
+                                 term_file)).xpath('.//e/mg')
                 for mg in mg_elements:
-                    page = mg.get(u'idref')
+                    page = mg.get('idref')
                     self.pages[page].setdefault(lang, set()).update(
-                        set([l.text for l in mg.getparent().xpath(u'./lg/l')]))
+                        set([l.text for l in mg.getparent().xpath('./lg/l')]))
 
     def get_expressions_set(self, lang):
         return set(self.expressions[lang].keys())
@@ -315,8 +315,8 @@ class TermWiki(object):
                 for expression in concept.get_expressions_set(lang):
                     termwiki_pages[lang].update(self.expressions[lang][expression])
 
-            for lang1, pages1 in termwiki_pages.items():
-                for lang2, pages2 in termwiki_pages.items():
+            for lang1, pages1 in list(termwiki_pages.items()):
+                for lang2, pages2 in list(termwiki_pages.items()):
                     if lang1 != lang2:
                         common_pages.update(pages1.intersection(pages2))
 
@@ -341,41 +341,41 @@ class Importer(object):
 
         Returns the output of preprocess
         """
-        if lang in [u'se', u'sma', u'smj']:
-            if lang == u'se':
-                lang = u'sme'
-            lookup_command = ['lookup', u'-q', u'-flags', u'mbTT',
-                              os.path.join(os.getenv(u'GTHOME'), u'langs', lang,
-                                           u'src', u'analyser-gt-norm.xfst')]
+        if lang in ['se', 'sma', 'smj']:
+            if lang == 'se':
+                lang = 'sme'
+            lookup_command = ['lookup', '-q', '-flags', 'mbTT',
+                              os.path.join(os.getenv('GTHOME'), 'langs', lang,
+                                           'src', 'analyser-gt-norm.xfst')]
 
             if b'?' in self.run_external_command(lookup_command,
-                                                 expression.encode(u'utf8')):
+                                                 expression.encode('utf8')):
                 return True
 
         return False
 
     def write(self, pagecounter):
-        pages = etree.Element(u'pages')
+        pages = etree.Element('pages')
         for concept in self.concepts:
-            content = etree.Element(u'content')
+            content = etree.Element('content')
             content.text = str(concept)
 
-            page = etree.Element(u'page')
+            page = etree.Element('page')
             try:
-                page.set(u'title', concept.get_pagename(self.termwiki.pagenames))
+                page.set('title', concept.get_pagename(self.termwiki.pagenames))
             except TypeError:
-                page.set(u'title', u':'.join([concept.main_category,
-                                              u'page_' + str(pagecounter.number)]))
+                page.set('title', ':'.join([concept.main_category,
+                                              'page_' + str(pagecounter.number)]))
             page.append(content)
             pages.append(page)
 
-        with open(self.resultname, u'w') as to_file:
+        with open(self.resultname, 'w') as to_file:
             to_file.write(etree.tostring(pages, pretty_print=True,
                                          encoding='unicode'))
 
     @property
     def resultname(self):
-        return self.filename.replace(u'.xlsx', u'.xml')
+        return self.filename.replace('.xlsx', '.xml')
 
 
 class ExcelImporter(Importer):
@@ -387,70 +387,70 @@ class ExcelImporter(Importer):
         collection: the basename of the file where the expression comes from
         '''
         expressions = []
-        if u'~' in startline or u'?' in startline or re.search(u'[()-]', startline) is not None:
-            counter[u'has_illegal_char'] += 1
+        if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
+            counter['has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
-                    expression=unicode(startline.replace(u'\n', u' ')),
+                    expression=str(startline.replace('\n', ' ')),
                     language=language,
                     is_typo='No',
                     has_illegal_char='Yes',
                     collection=collection,
                     status='',
-                    note=u'',
-                    equivalence=u'',
+                    note='',
+                    equivalence='',
                     sanctioned='No'))
         else:
             splitters = re.compile(r'[,;\n\/]')
 
             for token in splitters.split(startline):
-                finaltoken = unicode(token.strip().lower())
+                finaltoken = str(token.strip().lower())
                 if len(finaltoken) > 0:
-                    if u' ' in finaltoken:
-                        counter[u'mwe'] += 1
+                    if ' ' in finaltoken:
+                        counter['mwe'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=u'No',
-                                has_illegal_char=u'No',
+                                is_typo='No',
+                                has_illegal_char='No',
                                 collection=collection,
                                 status='',
-                                note=u'',
-                                equivalence=u'',
-                                sanctioned=u'Yes'))
+                                note='',
+                                equivalence='',
+                                sanctioned='Yes'))
                     elif self.is_expression_typo(finaltoken, language):
-                        counter[u'is_typo'] += 1
+                        counter['is_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=u'Yes',
-                                has_illegal_char=u'No',
+                                is_typo='Yes',
+                                has_illegal_char='No',
                                 collection=collection,
                                 status='',
-                                note=u'',
-                                equivalence=u'',
-                                sanctioned=u'No'))
+                                note='',
+                                equivalence='',
+                                sanctioned='No'))
                     else:
-                        counter[u'non_typo'] += 1
+                        counter['non_typo'] += 1
                         expressions.append(
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo=u'No',
-                                has_illegal_char=u'No',
+                                is_typo='No',
+                                has_illegal_char='No',
                                 collection=collection,
                                 status='',
-                                note=u'',
-                                equivalence=u'',
-                                sanctioned=u'Yes'))
+                                note='',
+                                equivalence='',
+                                sanctioned='Yes'))
 
         return expressions
 
     @property
     def fileinfo(self):
-        yamlname = self.filename.replace(u'.xlsx', u'.yaml')
+        yamlname = self.filename.replace('.xlsx', '.yaml')
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
@@ -462,20 +462,20 @@ class ExcelImporter(Importer):
         workbook = openpyxl.load_workbook(self.filename)
 
         print(shortname)
-        for ws_title, ws_info in self.fileinfo.items():
+        for ws_title, ws_info in list(self.fileinfo.items()):
             ws = workbook.get_sheet_by_name(ws_title)
 
             for row in range(2, ws.max_row + 1):
-                counter[u'concepts'] += 1
-                c = Concept(ws_info[u'main_category'])
-                pos = u'N/A'
-                if (ws_info[u'wordclass'] != 0 and
+                counter['concepts'] += 1
+                c = Concept(ws_info['main_category'])
+                pos = 'N/A'
+                if (ws_info['wordclass'] != 0 and
                         ws.cell(row=row,
-                                column=ws_info[u'wordclass']).value is not None):
+                                column=ws_info['wordclass']).value is not None):
                     pos = ws.cell(row=row,
-                                  column=ws_info[u'wordclass']).value.strip()
+                                  column=ws_info['wordclass']).value.strip()
                     c.expression_infos.pos = pos
-                for language, col in ws_info[u'terms'].items():
+                for language, col in list(ws_info['terms'].items()):
                     if ws.cell(row=row, column=col).value is not None:
                         expression_line = ws.cell(row=row,
                                                   column=col).value.strip()
@@ -484,7 +484,7 @@ class ExcelImporter(Importer):
                                 collection=shortname):
                             c.add_expression(e)
 
-                for info, col in ws_info[u'other_info'].items():
+                for info, col in list(ws_info['other_info'].items()):
                     if ws.cell(row=row, column=col).value is not None:
                         c.add_concept_info(info,
                                            ws.cell(row=row, column=col).value.strip())
@@ -493,13 +493,13 @@ class ExcelImporter(Importer):
                     self.termwiki.get_pages_where_concept_probably_exists(c)
                 if len(common_pages) > 0:
                     c.possible_duplicate = common_pages
-                    counter[u'possible_duplicates'] += 1
+                    counter['possible_duplicates'] += 1
 
                 if not c.is_empty:
                     self.concepts.append(c)
 
-        for key, count in counter.items():
-            print(u'\t', key, count, )
+        for key, count in list(counter.items()):
+            print('\t', key, count, )
 
 
 class ArbeidImporter(Importer):
@@ -507,35 +507,35 @@ class ArbeidImporter(Importer):
         super().__init__()
 
     def get_arbeid_concepts(self):
-        filename = u'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
+        filename = 'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
         with open(filename) as arbeid:
             all_concepts = []
-            c = Concepts({'nb': Concept(), u'se': Concept()})
-            start = re.compile(u'\w\w\w$')
+            c = Concepts({'nb': Concept(), 'se': Concept()})
+            start = re.compile('\w\w\w$')
             i = 0
             total = 0
             for line in arbeid:
                 if start.match(line):
                     all_concepts.append(c)
-                    c = Concepts({'nb': Concept(), u'se': Concept()})
+                    c = Concepts({'nb': Concept(), 'se': Concept()})
                 else:
-                    if line.startswith(u'se: '):
-                        c.concepts[u'se'].expressions = self.collect_expressions(
-                            line[len(u'se: '):].strip())
-                        self.do_expressions_exist(c.concepts[u'se'].expressions, u'se')
-                    elif line.startswith(u'MRKN: '):
-                        c.concepts[u'se'].explanation = line[len(u'MRKN: '):].strip()
-                    elif line.startswith(u'DEF1: '):
-                        c.concepts[u'se'].definition = line[len(u'DEF1: '):].strip()
-                    elif line.startswith(u'nb: '):
-                        c.concepts[u'nb'].expressions = self.collect_expressions(
-                            line[len(u'nb: '):].strip())
-                        self.do_expressions_exist(c.concepts[u'nb'].expressions, u'nb')
-                    elif line.startswith(u'nbMRKN: '):
-                        c.concepts[u'nb'].explanation = line[len(u'nbMRKN: '):].strip()
-                    elif line.startswith(u'nbDEF1: '):
-                        c.concepts[u'nb'].definition = line[len(u'nbDEF1: '):].strip()
-                    elif not line.startswith(u'klass'):
+                    if line.startswith('se: '):
+                        c.concepts['se'].expressions = self.collect_expressions(
+                            line[len('se: '):].strip())
+                        self.do_expressions_exist(c.concepts['se'].expressions, 'se')
+                    elif line.startswith('MRKN: '):
+                        c.concepts['se'].explanation = line[len('MRKN: '):].strip()
+                    elif line.startswith('DEF1: '):
+                        c.concepts['se'].definition = line[len('DEF1: '):].strip()
+                    elif line.startswith('nb: '):
+                        c.concepts['nb'].expressions = self.collect_expressions(
+                            line[len('nb: '):].strip())
+                        self.do_expressions_exist(c.concepts['nb'].expressions, 'nb')
+                    elif line.startswith('nbMRKN: '):
+                        c.concepts['nb'].explanation = line[len('nbMRKN: '):].strip()
+                    elif line.startswith('nbDEF1: '):
+                        c.concepts['nb'].definition = line[len('nbDEF1: '):].strip()
+                    elif not line.startswith('klass'):
                         print(line.strip())
 
             return all_concepts
@@ -543,12 +543,12 @@ class ArbeidImporter(Importer):
     @staticmethod
     def collect_expressions(startline):
         finaltokens = []
-        for commatoken in startline.split(u','):
-            for semicolontoken in commatoken.split(u';'):
-                if u'<STE>' not in semicolontoken and u'<FRTE>' not in semicolontoken:
-                    finaltoken = semicolontoken.replace(u'<SY>', u'').strip()
-                    finaltoken = re.sub(u'<GRAM.+>', u'', finaltoken)
-                    if u'<' in finaltoken or u'>' in finaltoken:
+        for commatoken in startline.split(','):
+            for semicolontoken in commatoken.split(';'):
+                if '<STE>' not in semicolontoken and '<FRTE>' not in semicolontoken:
+                    finaltoken = semicolontoken.replace('<SY>', '').strip()
+                    finaltoken = re.sub('<GRAM.+>', '', finaltoken)
+                    if '<' in finaltoken or '>' in finaltoken:
                         print(finaltoken, file=sys.stderr)
                     finaltokens.append(finaltoken)
 
@@ -569,7 +569,7 @@ def parse_options():
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
 
-    parser.add_argument(u'termfiles',
+    parser.add_argument('termfiles',
                         nargs='+',
                         help='One or more files containing terms. Each file must have a \
                         yaml file that inform how they should be treated.')

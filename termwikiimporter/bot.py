@@ -3,15 +3,18 @@
 
 
 import collections
-from lxml import etree
 import inspect
-import mwclient
 import os
 import sys
-from termwikiimporter import importer
+
+import mwclient
 import yaml
+from lxml import etree
+
+from termwikiimporter import importer
 
 from . import importer
+
 
 class BotException(Exception):
     pass

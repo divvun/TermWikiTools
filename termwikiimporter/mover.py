@@ -5,14 +5,13 @@
 
 import argparse
 import collections
-from lxml import etree
-import mwclient
 import os
 import sys
 
-from . import bot
-from . import importer
+import mwclient
+from lxml import etree
 
+from . import bot, importer
 
 categories = [
     'Boazodoallu‎',

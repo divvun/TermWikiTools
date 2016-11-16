@@ -5,14 +5,15 @@
 
 
 import argparse
-from collections import OrderedDict, defaultdict, namedtuple
-from lxml import etree
-import openpyxl
 import os
 import re
 import subprocess
 import sys
+from collections import OrderedDict, defaultdict, namedtuple
+
+import openpyxl
 import yaml
+from lxml import etree
 
 
 class ExpressionException(Exception):

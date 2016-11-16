@@ -3,10 +3,12 @@
 
 import argparse
 import collections
-from lxml import etree
+
 import mwclient
+from lxml import etree
 
 from . import bot
+
 
 def parse_options():
     parser = argparse.ArgumentParser(

@@ -27,8 +27,6 @@ class ExternalCommandRunner(object):
     '''
 
     def __init__(self):
-        self.stdout = None
-        self.stderr = None
         self.returncode = None
 
     def run(self, command, cwd=None, to_stdin=None):
@@ -45,6 +43,28 @@ class ExternalCommandRunner(object):
 
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
         self.returncode = subp.returncode
+
+    @property
+    def stdout(self):
+        if self.__stdout is not None:
+            return self.__stdout.decode('utf8')
+        else:
+            return None
+
+    @stdout.setter
+    def stdout(self, value):
+        self.__stdout = value
+
+    @property
+    def stderr(self):
+        if self.__stderr is not None:
+            return self.__stderr.decode('utf8')
+        else:
+            return None
+
+    @stderr.setter
+    def stderr(self, value):
+        self.__stderr = value
 
 
 class ExpressionInfo(

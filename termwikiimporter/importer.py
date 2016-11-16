@@ -368,8 +368,8 @@ class Importer(object):
                               os.path.join(os.getenv('GTHOME'), 'langs', lang,
                                            'src', 'analyser-gt-norm.xfst')]
 
-            if b'?' in self.run_external_command(lookup_command,
-                                                 expression.encode('utf8')):
+            if '?' in self.run_external_command(lookup_command,
+                                                expression.encode('utf8')):
                 return True
 
         return False

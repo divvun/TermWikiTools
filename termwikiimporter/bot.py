@@ -68,7 +68,7 @@ def get_pos(expression, language):
                os.path.join(os.getenv('GTHOME'), 'langs', language,
                             'src', 'analyser-gt-norm.xfst')]
     runner = importer.ExternalCommandRunner()
-    runner.run(command, to_stdin=expression)
+    runner.run(command, to_stdin=expression.encode('utf8'))
 
     for analysis in runner.stdout.split('\n'):
         if (analysis.endswith('+N+Sg+Nom') or
@@ -91,7 +91,7 @@ def get_pos(expression, language):
         elif analysis.endswith('?'):
             return '?'
 
-    raise BotException('Unknown\n' + runner.stdout.decode('utf8'))
+    raise BotException('Unknown\n' + runner.stdout)
 
 
 def set_sanctioned(template_contents, sanctioned):
@@ -143,7 +143,7 @@ def parse_related_expression(lines, sanctioned):
                     if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
                         if language == 'se':
                             language = 'sme'
-                        ppos = get_pos(template_contents['expression'].encode('utf8'), language.encode('utf8'))
+                        ppos = get_pos(template_contents['expression'], language)
                         if ppos == '?':
                             template_contents['is_typo'] = 'Yes'
                         else:

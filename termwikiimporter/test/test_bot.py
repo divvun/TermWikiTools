@@ -323,7 +323,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(want, got)
 
     def test_bot13(self):
-        """Check that sanctioned=Yes survives reviewed_lang=No in Concept
+        """Check that sanctioned=Yes survives reviewed_lang=No in Concept.
 
         reviewed_lang was set when imported from risten.no, and not used after that.
         sanctioned is actively set by the user later, and should therefore "win" over

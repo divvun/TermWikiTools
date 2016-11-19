@@ -22,7 +22,8 @@ class ExternalCommandRunner(object):
 
     """Class to run external command through subprocess.
 
-    Save output, error and returnvalue
+    Attributes:
+        returncode (int): The return code returned by the command.
     """
 
     def __init__(self):
@@ -45,6 +46,7 @@ class ExternalCommandRunner(object):
 
     @property
     def stdout(self):
+        """Return stdout as str."""
         if self.__stdout is not None:
             return self.__stdout.decode('utf8')
         else:
@@ -56,6 +58,7 @@ class ExternalCommandRunner(object):
 
     @property
     def stderr(self):
+        """Return stderr as str."""
         if self.__stderr is not None:
             return self.__stderr.decode('utf8')
         else:
@@ -74,28 +77,38 @@ class ExpressionInfo(
             'collection', 'status', 'note', 'sanctioned',
             'equivalence'])):
 
-    """Information bound to an expression
+    """Information bound to an expression.
 
-    expression is a string
 
-    is_typo, has_illegal_char and sanctioned are booleans
-
-    is_typo is true if an fst does not recognize the expression
-    has_illegal_char is true if the expression contains unwanted characters
-
-    is_typo and has_illegal_char should only written if they are True, as
-    they are only used for debugging/checking TermWiki pages
-
-    sanctioned is true if expressions are recommended by a language organ
-
-    collection is a string that points to the collection the expression belongs to
-    pos is a string informing what part of speech the word is
+    Attributes:
+        languge (str): Indicate which language the expression is.
+        expression (str): The expression.
+        is_typo (boolean): Indicate whether the expression is known by
+            the sámi morphological analysers. Should only written if it
+            is True, as it is only used for debugging/checking TermWiki
+            pages.
+        has_illegal_char (boolean): Indicate whether the expression contains
+            an unwanted character. Should only written if it is True, as it
+            is only used for debugging/checking TermWiki pages.
+        collection (str): Indicates which collection the expression belongs
+            to.
+        sanctioned (boolean): Indicate whether norm groups have sanctioned
+            the expression.
+        status (str): Indicate if the expression is recommended, outdated,
+            etc.
+        note (str): Ad hoc note about the expression
     """
     __slots__ = ()
 
 
 class ExpressionInfos(object):
 
+    """Collection of expressions.
+
+    Attributes:
+        expressions (list of ExpressionInfo):
+        _pos (str): part of speech.
+    """
     def __init__(self):
         self.expressions = []
         self._pos = 'N/A'
@@ -121,16 +134,35 @@ class ExpressionInfos(object):
         return '\n'.join(strings)
 
     def add_expression(self, expression_info):
+        """Add an expression.
+
+        Arguments:
+            expression_info (ExpressionInfo): The expression and its
+                attributes.
+        """
         if expression_info not in self.expressions:
             self.expressions.append(expression_info)
 
     def get_expressions_set(self, lang):
+        """Get the expressions for a specific language.
+
+        Arguments:
+            lang (str): the language of the wanted expressions.
+
+        Returns:
+            set of ExpressionInfo: The expressions of the specified language.
+        """
         return set(
             [e.expression for e in self.expressions
              if e.language == lang])
 
     @property
     def lang_set(self):
+        """Get info on which languages are in self.expressions.
+
+        Returns:
+            set of str: each string represent a language.
+        """
         return set([e.language for e in self.expressions])
 
     @property
@@ -219,15 +251,17 @@ class OrderedDefaultDict(OrderedDict):
 
 class Concept(object):
 
-    """Model the TermWiki concept
+    """Model the TermWiki concept.
 
-    concept_info is a dict
-    The concept information is key, the value is a set containing the
-    definitions, explanations and more_infos
-
-    expressions is a list containing ExpressionInfos
-
-    pages is a set of TermWiki pages that may be duplicates of this concept
+    Attributes:
+        main_category (str): the main category of the concept.
+        concept_info (OrderedDefaultDict): The information that represents
+            the concept.
+        expression_infos (ExpressionInfos): The expression that represent
+            this concept.
+        related_concepts (list of RelatedConceptInfo): Information on
+            related concepts.
+        pages (set): TermWiki pages that may be duplicates of this concept.
     """
 
     def __init__(self, main_category=''):
@@ -239,22 +273,59 @@ class Concept(object):
         self.pages = set()
 
     def add_expression(self, expression_info):
+        """Add an expression to the set.
+
+        Arguments:
+            expression_info (ExpressionInfo): The expression.
+        """
         self.expression_infos.add_expression(expression_info)
 
     def add_related_concept(self, concept_info):
+        """Add a related concept.
+
+        Arguments:
+            concept_info (ConceptInfo): The related concept.
+        """
         if concept_info not in self.related_concepts:
             self.related_concepts.append(concept_info)
 
     def add_concept_info(self, key, info):
+        """Add concept info.
+
+        Arguments:
+            key (str): The key to add info to.
+            value (str): The information that should be added.
+        """
         self.concept_info[key].add(info)
 
     def add_page(self, page):
+        """Add a termwiki page.
+
+        Arguments:
+            page: A termwiki page.
+        """
         self.pages.add(page)
 
     def get_expressions_set(self, lang):
+        """Get the expression of a specific languge.
+
+        Arguments:
+            lang (str): the language of the wanted expressions.
+
+        Returns:
+            set of ExpressionInfo.
+        """
         return self.expression_infos.get_expressions_set(lang)
 
     def get_pagename(self, pagenames):
+        """Termwiki pagename of the concept.
+
+        Arguments:
+            pagenames (list of str): names of existing pages.
+
+        Returns:
+            str: The termwiki pagename.
+        """
         for lang in ['sms', 'smn', 'sma', 'smj', 'se', 'fi', 'nb', 'sv', 'en', 'lat']:
             if lang in self.lang_set:
                 for expression in self.get_expressions_set(lang):
@@ -264,10 +335,16 @@ class Concept(object):
 
     @property
     def lang_set(self):
+        """A set containing the languages of the expressions."""
         return self.expression_infos.lang_set
 
     @property
     def dupe_string(self):
+        """Pages that may be duplicates of this concept.
+
+        Returns:
+            str: wiki links to possible duplicate pages.
+        """
         dupe = '|duplicate_pages='
         dupe += ', '.join(
             ['[' + page + ']' for page in sorted(self.pages)])
@@ -303,7 +380,7 @@ class Concept(object):
 
 class TermWiki(object):
 
-    """Represent the termwiki xml files
+    """Represent the termwiki xml files.
 
     expressions is a dict where language is the key and the value is a dict
     The key in this subdict an expression and the value is a set containing
@@ -312,7 +389,7 @@ class TermWiki(object):
 
     pages is a dict where the termwiki pagename is the key and the value is a dict
     The key in this subdict is language and the value is the set of expressions on
-    that page. This effictively mimics the Concept pages on the TermWiki.
+    that page. This effectively mimics the Concept pages on the TermWiki.
     """
 
     def __init__(self):
@@ -358,7 +435,7 @@ class TermWiki(object):
         return set(self.expressions[lang].keys())
 
     def get_pages_where_concept_probably_exists(self, concept):
-        """Check if a Concept already exists in TermWiki
+        """Check if a Concept already exists in TermWiki.
 
         A concept is possibly part of the termwiki if one expression from two
         different languages is part of a page.
@@ -469,7 +546,7 @@ class Importer(object):
 class ExcelImporter(Importer):
 
     def collect_expressions(self, startline, language, counter, collection=''):
-        """Insert expressions found in startline into a list of ExpressionInfo
+        """Insert expressions found in startline into a list of ExpressionInfo.
 
         startline: the content of an expression line
         language: the language of the expression line

@@ -56,7 +56,7 @@ def parse_concept(lines):
 
 
 def get_pos(expression, language):
-    """Use lookup to determine the part of speech of an expression
+    """Use lookup to determine the part of speech of an expression.
 
     Arguments:
         expression (str): an expression
@@ -117,7 +117,7 @@ def set_sanctioned(template_contents, sanctioned):
 
 
 def parse_related_expression(lines, sanctioned):
-    """Parse a Related expression template
+    """Parse a Related expression template.
 
     Determine the part of speech if it is not set inside the template.
 

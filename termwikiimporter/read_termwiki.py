@@ -11,18 +11,23 @@ sys.path.append(os.path.join(os.getenv('HOME'), 'repos/TermWikiImporter'))
 from termwikiimporter import bot, importer
 
 
-def read_concept(h):
-    concept = importer.OrderedDefaultDict()
-    concept.default_factory = str
-    for line in h:
+def read_semantic_form(text_iterator):
+    """Parse semantic wiki form.
+
+    Arguments:
+        text_iterator (str_iterator): the contents of the termwiki article.
+    """
+    wiki_form = importer.OrderedDefaultDict()
+    wiki_form.default_factory = str
+    for line in text_iterator:
         if line == '}}':
-            return concept
+            return wiki_form
         elif line.startswith('|'):
             parts = line[1:].split('=')
             key = parts[0]
-            concept[key] = parts[1]
+            wiki_form[key] = parts[1]
         else:
-            concept[key] = '\n'.join([concept[key], line])
+            wiki_form[key] = '\n'.join([wiki_form[key], line])
 
 
 def parse_termwiki_concept(text, counter):
@@ -30,87 +35,103 @@ def parse_termwiki_concept(text, counter):
 
     Arguments:
         text (str): content of the termwiki page.
+        counter (collections.defaultdict(int)): keep track of things
 
     Returns:
         dict: contains the content of the termwiki page.
     """
-    h = iter(text.splitlines())
+    text_iterator = iter(text.splitlines())
     expressions = importer.OrderedDefaultDict()
     expressions.default_factory = list
-    concept = {
+    term = {
         'concept': {},
         'related_concepts': []}
-    for line in h:
+    for line in text_iterator:
         if line.startswith('{{Concept'):
             counter['concept'] += 1
             if not line.endswith('}}'):
-                concept['concept'] = read_concept(h)
+                term['concept'] = read_semantic_form(text_iterator)
         elif line.startswith('{{Related expression') or line.startswith('{{Related_expression'):
             counter['expression'] += 1
-            expression = read_concept(h)
+            expression = read_semantic_form(text_iterator)
             expressions[expression['language']].append(expression)
             counter[expression['language']] += 1
         elif line.startswith('{{Related'):
-            concept['related_concepts'].append(read_concept(h))
+            term['related_concepts'].append(read_semantic_form(text_iterator))
             counter['rconc'] += 1
 
-    concept['expressions'] = expressions
+    term['expressions'] = expressions
 
-    return concept
+    return term
 
 
-def clean_up_concept(concept, counter):
+def clean_up_concept(term, counter):
     """Clean up the contents of concept.
+
+    Possibly change the content of term['concept'].
+
+    Remove definitions if they are found in expressions.
+    If the above is a hit, promote explanation to definition,
+    and more_info to explanation.
 
     Arguments:
         concept (dict): The result from parse_termwiki_concept.
+        counter (collections.defaultdict(int)): keep track of things
     """
-    for language in concept['expressions'].keys():
+    for language in term['expressions'].keys():
         d = 'definition_{}'.format(language)
 
-        if concept['concept'].get(d) in [exp['expression'] for exp in concept['expressions'][language]]:
+        if term['concept'].get(d) in [exp['expression'] for exp in term['expressions'][language]]:
             counter['hits'] += 1
-            del concept['concept'][d]
+            del term['concept'][d]
 
         e = 'explanation_{}'.format(language)
-        if concept['concept'].get(d) is None and concept['concept'].get(e) is not None:
+        if term['concept'].get(d) is None and term['concept'].get(e) is not None:
             counter['promote_exp'] += 1
-            concept['concept'][d] = concept['concept'].get(e)
-            del concept['concept'][e]
+            term['concept'][d] = term['concept'].get(e)
+            del term['concept'][e]
 
         m = 'more_info_{}'.format(language)
-        if concept['concept'].get(e) is None and concept['concept'].get(m) is not None:
-            mi = concept['concept'].get(m)
+        if term['concept'].get(e) is None and term['concept'].get(m) is not None:
+            mi = term['concept'].get(m)
             if not ('ohkkeh' in mi or 'dåhkkidum' in mi):
                 counter['promote_more'] += 1
-                concept['concept'][e] = concept['concept'].get(m)
-                del concept['concept'][m]
+                term['concept'][e] = term['concept'].get(m)
+                del term['concept'][m]
 
 
-def concept_to_string(concept):
-    concept_strings = []
-    if concept['concept']:
-        concept_strings.append('{{Concept')
-        for key, value in concept['concept'].items():
-            concept_strings.append('|{}={}'.format(key, value))
-        concept_strings.append('}}')
+def term_to_string(term):
+    """Turn a term dict to a semantic wiki page.
+
+    Arguments:
+        term (dict): the result of clean_up_concept
+
+    Returns:
+        str: term formatted as a semantic wiki page.
+    """
+    term_strings = []
+    if term['concept']:
+        term_strings.append('{{Concept')
+        for key, value in term['concept'].items():
+            term_strings.append('|{}={}'.format(key, value))
+        term_strings.append('}}')
     else:
-        concept_strings.append('{{Concept}}')
+        term_strings.append('{{Concept}}')
 
-    for language in concept['expressions'].keys():
-        for expression in concept['expressions'][language]:
-            concept_strings.append('{{Related expression')
+    for language in term['expressions'].keys():
+        for expression in term['expressions'][language]:
+            term_strings.append('{{Related expression')
             for key, value in expression.items():
-                concept_strings.append('|{}={}'.format(key, value))
-            concept_strings.append('}}')
+                term_strings.append('|{}={}'.format(key, value))
+            term_strings.append('}}')
 
-    for related_concept in concept['related_concepts']:
-        concept_strings.append('{{Related concept')
+    for related_concept in term['related_concepts']:
+        term_strings.append('{{Related concept')
         for key, value in related_concept.items():
-            concept_strings.append('|{}={}'.format(key, value))
-        concept_strings.append('}}')
+            term_strings.append('|{}={}'.format(key, value))
+        term_strings.append('}}')
 
-    return '\n'.join(concept_strings)
+    return '\n'.join(term_strings)
 
 
 def clean_dump():
@@ -139,18 +160,26 @@ def clean_dump():
                     concept = parse_termwiki_concept(text, counter)
                     clean_up_concept(concept, counter)
                     page.find(
-                './/{http://www.mediawiki.org/xml/export-0.10/}text').text = concept_to_string(concept)
+                './/{http://www.mediawiki.org/xml/export-0.10/}text').text = term_to_string(concept)
                 except KeyError:
                     counter['no_exp'] += 1
-                    # print(title.text)
-                    # print(text)
-                    # print()
+                    print(bot.lineno())
+                    print(title.text)
+                    print(text)
+                    print()
+            elif 'STIVREN' in text or 'OMDIRIGERING' in text:
+                counter['redirect'] += 1
             else:
-                counter['fake'] += 1
+                print(bot.lineno())
+                print(title.text)
+                print(text)
+                print()
+                counter['erroneous'] += 1
 
 
     tree.write(DUMP, pretty_print=True, encoding='utf8')
-    print(counter)
+    for key in sorted(counter):
+        print(key, counter[key])
 
 
 if __name__ == "__main__":

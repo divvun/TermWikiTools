@@ -155,20 +155,31 @@ def handle_page(text, counter):
         raise bot.BotError()
 
 
-def clean_dump():
+def dump_pages(mediawiki_ns):
     DUMP = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
 
-    counter = collections.defaultdict(int)
     tree = etree.parse(DUMP)
 
-    for page in tree.getroot().iter('{http://www.mediawiki.org/xml/export-0.10/}page'):
-        title = page.find('./{http://www.mediawiki.org/xml/export-0.10/}title')
+    for page in tree.getroot().iter('{}page'.format(mediawiki_ns)):
+        title = page.find('./{}title'.format(mediawiki_ns))
         if not title.text.startswith('Expression:') and not title.text.startswith('Collection'):
+            yield title, page
+
+    tree.write(DUMP, pretty_print=True, encoding='utf8')
+
+
+def clean_dump():
+    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
+    counter = collections.defaultdict(int)
+
+
+    for title, page in dump_pages(mediawiki_ns):
+        text = page.find('.//{}text'.format(mediawiki_ns)).text
+        if text is not None:
             try:
-                text = page.find(
-                    './/{http://www.mediawiki.org/xml/export-0.10/}text').text
-                page.find(
-        './/{http://www.mediawiki.org/xml/export-0.10/}text').text = handle_page(text, counter)
+                page.find('.//{}text'.format(mediawiki_ns)).text = handle_page(
+                    text,
+                    counter)
             except KeyError:
                 counter['no_exp'] += 1
                 print(bot.lineno())
@@ -181,8 +192,9 @@ def clean_dump():
                 print(text)
                 print()
                 counter['erroneous'] += 1
+        else:
+            counter['deleted'] += 1
 
-    tree.write(DUMP, pretty_print=True, encoding='utf8')
     for key in sorted(counter):
         print(key, counter[key])
 

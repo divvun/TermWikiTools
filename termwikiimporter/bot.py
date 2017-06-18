@@ -14,7 +14,7 @@ from lxml import etree
 from termwikiimporter import importer
 
 
-class BotException(Exception):
+class BotError(Exception):
     pass
 
 
@@ -66,7 +66,7 @@ def get_pos(expression, language):
         str: the wordclass
 
     Raises:
-        BotException: If the output of lookup is unknown, raise
+        BotError: If the output of lookup is unknown, raise
             this exception.
     """
     command = ['lookup', '-q', '-flags', 'mbTT',
@@ -96,7 +96,7 @@ def get_pos(expression, language):
         elif analysis.endswith('?'):
             return '?'
 
-    raise BotException('Unknown\n' + runner.stdout)
+    raise BotError('Unknown\n' + runner.stdout)
 
 
 def set_sanctioned(template_contents, sanctioned):
@@ -131,7 +131,7 @@ def parse_related_expression(lines, sanctioned):
         importer.ExpressionInfo: The content of the related expression.
 
     Raises:
-        BotException: Raised when the expression is not set.
+        BotError: Raised when the expression is not set.
     """
     template_contents = {}
     template_contents['sanctioned'] = 'No'
@@ -161,7 +161,7 @@ def parse_related_expression(lines, sanctioned):
             try:
                 template_contents['expression']
             except KeyError:
-                raise BotException('expression not set in Related expression template')
+                raise BotError('expression not set in Related expression template')
             else:
                 if pos == 'N/A':
                     language = template_contents['language']
@@ -209,7 +209,7 @@ def parse_expression(lines):
         lines (list of str): the content of the expression page
 
     Raises:
-        BotException: raised when there is either
+        BotError: raised when there is either
             * an invalid part-of-speech is encountered
             * an unknown language is encountered
             * an potential invalid line is encountered
@@ -225,12 +225,12 @@ def parse_expression(lines):
             (key, info) = l[1:].split('=')
             expression_contents[key] = info
             if info not in ['N', 'V', 'A', 'Adv', 'Pron', 'Interj']:
-                raise BotException('wrong pos', info)
+                raise BotError('wrong pos', info)
         elif l.startswith('|language'):
             (key, info) = l[1:].split('=')
             expression_contents[key] = info
             if info not in ['se', 'sma', 'smj', 'sms', 'sms', 'en', 'nb', 'nb', 'sv', 'lat', 'fi', 'smn', 'nn']:
-                raise BotException('wrong language', info)
+                raise BotError('wrong language', info)
             # print(lineno(), l)
         elif l.startswith('|sources') or l.startswith('|monikko') or l.startswith('|sanamuoto') or l.startswith('|origin') or l.startswith('|perussanatyyppi') or l.startswith('|wordclass') or l.startswith('|sanaluokka'):
             (key, info) = l[1:].split('=')
@@ -240,7 +240,7 @@ def parse_expression(lines):
             return counter
             # return importer.RelatedConceptInfo(**expression_contents)
         else:
-            raise BotException('Unknown:', l)
+            raise BotError('Unknown:', l)
 
     print(lineno())
 
@@ -294,7 +294,7 @@ def concept_parser(text):
             elif l.startswith('{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:
-                raise BotException('unhandled', l.strip())
+                raise BotError('unhandled', l.strip())
         #print(lineno())
         if not concept.is_empty:
             return str(concept)
@@ -348,11 +348,11 @@ def main():
                 else:
                     sys.stdout.write('|')
                     sys.stdout.flush()
-            except importer.ExpressionException as e:
+            except importer.ExpressionError as e:
                 print(page.name, str(e), file=sys.stderr)
             except KeyError as e:
                 print(page.name, str(e), file=sys.stderr)
-            except BotException as e:
+            except BotError as e:
                 print(page.name, str(e), file=sys.stderr)
 
         print('\n' + category + ':', str(saves) + '/' + str(total))

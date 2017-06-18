@@ -191,7 +191,7 @@ class TestBot(unittest.TestCase):
             '}}'
         ])
 
-        with self.assertRaises(bot.BotException):
+        with self.assertRaises(bot.BotError):
             got = bot.concept_parser('\n'.join(concept))
 
     def test_bot8(self):
@@ -413,7 +413,7 @@ class TestBot(unittest.TestCase):
 |expression=vuostemielas
 }}'''
 
-        with self.assertRaises(bot.BotException):
+        with self.assertRaises(bot.BotError):
             bot.concept_parser(concept)
 
     def test_exception_raised_when_conflicting_pos_is_set(self):
@@ -434,5 +434,5 @@ class TestBot(unittest.TestCase):
 |sanctioned=No
 }}'''
 
-        with self.assertRaises(importer.ExpressionException):
+        with self.assertRaises(importer.ExpressionError):
             bot.concept_parser(concept)

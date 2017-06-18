@@ -89,13 +89,13 @@ class TestExpressionInfos(unittest.TestCase):
         infos = importer.ExpressionInfos()
         infos.pos = 'N'
 
-        with self.assertRaises(importer.ExpressionException):
+        with self.assertRaises(importer.ExpressionError):
             infos.pos = 'ABBR'
 
     def test_pos_set_illegal(self):
         infos = importer.ExpressionInfos()
 
-        with self.assertRaises(importer.ExpressionException):
+        with self.assertRaises(importer.ExpressionError):
             infos.pos = 'bogus'
 
     def test_pos_set_mwe(self):

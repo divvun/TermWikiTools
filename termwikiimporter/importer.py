@@ -14,7 +14,7 @@ import yaml
 from lxml import etree
 
 
-class ExpressionException(Exception):
+class ExpressionError(Exception):
     pass
 
 
@@ -177,13 +177,13 @@ class ExpressionInfos(object):
     def pos(self, pos):
         if pos not in ['N', 'A', 'Adv', 'V', 'Pron', 'CS', 'CC', 'Adp', 'Po',
                        'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A']:
-            raise ExpressionException('Illegal value: {}'.format(pos))
+            raise ExpressionError('Illegal value: {}'.format(pos))
         elif pos in ['MWE', 'N/A']:
             pass
         elif self._pos == 'N/A':
             self._pos = pos
         elif self._pos != pos:
-            raise ExpressionException('Trying to set conflicting pos {} {}'.format(
+            raise ExpressionError('Trying to set conflicting pos {} {}'.format(
                 self.pos, pos))
 
 

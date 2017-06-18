@@ -174,7 +174,7 @@ def parse_expression():
             c = bot.expression_parser(expression.find('content').text)
             for key, value in c.items():
                 counter[key] += value
-        except bot.BotException as e:
+        except bot.BotError as e:
             print(expression.get('title'), str(e))
         except AttributeError as e:
             print('empty page', expression.get('title'))
@@ -201,7 +201,7 @@ def parse_dump(filename):
                 b_text = bot.concept_parser(c_text.text)
                 if c_text.text != b_text:
                     c_text.text = b_text
-            except importer.ExpressionException as e:
+            except importer.ExpressionError as e:
                 print(str(e), file=sys.stderr)
                 print(element.find('title').text, file=sys.stderr)
                 print(element.find('.//text').text, file=sys.stderr)

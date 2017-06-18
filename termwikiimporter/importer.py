@@ -38,8 +38,8 @@ class ExternalCommandRunner(object):
                                     stderr=subprocess.PIPE,
                                     cwd=cwd)
         except OSError:
-            print('Please install {}'.format(command[0]))
-            raise
+            raise SystemExit(
+                'Please install {}'.format(command[0]))
 
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
         self.returncode = subp.returncode

@@ -6,12 +6,13 @@ import collections
 import inspect
 import os
 import sys
+import traceback
 
 import mwclient
 import yaml
 from lxml import etree
 
-from termwikiimporter import importer
+from termwikiimporter import importer, read_termwiki
 
 
 class BotError(Exception):
@@ -81,11 +82,15 @@ def get_pos(expression, language):
                 analysis.endswith('+N+NomAg+Sg+Nom') or
                 analysis.endswith('+N+Pl+Nom') or
                 analysis.endswith('+N+Prop+Sem/Plc+Sg+Nom') or
-                analysis.endswith('+N+Der/heapmi+A+Comp+Sg+Nom')):
+                analysis.endswith('+N+Prop+Sem/Plc+Pl+Nom') or
+                analysis.endswith('+N+Prop+Sem/Plc+Der/lasj+A+Sg+Nom') or
+                analysis.endswith('+N+Der/heapmi+A+Comp+Sg+Nom') or
+                analysis.endswith('+N+ACR+Sg+Nom')):
             return 'N'
         elif (analysis.endswith('+V+TV+Inf') or
               analysis.endswith('+V+IV+Inf') or
-              analysis.endswith('+V+IV+Pass+Inf')):
+              analysis.endswith('+V+IV+Pass+Inf') or
+              analysis.endswith('+V+TV+Der/InchL+V+Inf')):
             return 'V'
         elif analysis.endswith('+A+Attr') or analysis.endswith('+A+Sg+Nom'):
             return 'A'
@@ -96,7 +101,8 @@ def get_pos(expression, language):
         elif analysis.endswith('?'):
             return '?'
 
-    raise BotError('Unknown\n' + runner.stdout)
+    print('Unknown\n' + runner.stdout)
+    return '?'
 
 
 def set_sanctioned(template_contents, sanctioned):
@@ -147,7 +153,9 @@ def parse_related_expression(lines, sanctioned):
     while len(lines) > 0:
         l = lines.popleft().strip()
         if l.startswith('|'):
-            (key, info) = l[1:].split('=')
+            equal_splits = l[1:].split('=')
+            key = equal_splits[0]
+            info = '='.join(equal_splits[1:])
             if key == 'in_header':
                 pass
             else:
@@ -280,9 +288,10 @@ def concept_parser(text):
 
     l = lines.popleft()
     if l.startswith('{{Concept'):
-        (concept_info, sanctioned) = parse_concept(lines)
-        for key, info in concept_info.items():
-            concept.add_concept_info(key, info)
+        if not l.endswith('}}'):
+            (concept_info, sanctioned) = parse_concept(lines)
+            for key, info in concept_info.items():
+                concept.add_concept_info(key, info)
         #print(lineno())
         while len(lines) > 0:
             l = lines.popleft()
@@ -312,50 +321,124 @@ def get_site():
         return site
 
 
+def text_yielder(text):
+    for line in text.split('\n'):
+        if ('|collection') in line and 'Collection:' not in line:
+            yield line.replace('=', '=Collection:')
+        else:
+            yield line
+
+
+def fix_collection(category, counter):
+    if 'Expression' not in category.name:
+        for page in category:
+            counter['total'] += 1
+            orig_text = page.text()
+            if 'collection=' in orig_text and not '=Collection:' in orig_text:
+                counter['collection'] += 1
+                print('+', end='')
+            else:
+                print('.', end='')
+            sys.stdout.flush()
+
+            new_text = '\n'.join([line for line in text_yielder(page.text())])
+            if new_text != orig_text:
+                print()
+                print('\t' + page.name)
+                print()
+                page.save(new_text,
+                          summary='Add Collection: to collection lines')
+
+
+def fix_other_issues(category, counter):
+    for page in category:
+        try:
+            text = page.text()
+            botted_text = concept_parser(text)
+            cleaned_botted_text = read_termwiki.handle_page(
+                botted_text, counter)
+            if text != cleaned_botted_text:
+                sys.stdout.write('-')
+                counter['saves'] += 1
+                try:
+                    page.save(cleaned_botted_text, summary='Fixing content')
+                except mwclient.errors.APIError as e:
+                    print(page.name, text, str(e), file=sys.stderr)
+
+            else:
+                sys.stdout.write('|')
+            sys.stdout.flush()
+        except importer.ExpressionError as e:
+            print('\n', lineno(), page.name, str(e), '\n', text,
+                  file=sys.stderr)
+        except KeyError as e:
+            print('\n', lineno(), page.name, str(e), '\n', text,
+                  file=sys.stderr)
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print("*** print_tb:")
+            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
+            print("*** print_exception:")
+            traceback.print_exception(exc_type, exc_value, exc_traceback,
+                                      limit=2, file=sys.stdout)
+            print("*** print_exc:")
+            traceback.print_exc(limit=2, file=sys.stdout)
+            print("*** format_exc, first and last line:")
+            formatted_lines = traceback.format_exc().splitlines()
+            print(formatted_lines[0])
+            print(formatted_lines[-1])
+            print("*** format_exception:")
+            print(repr(traceback.format_exception(exc_type, exc_value,
+                                                exc_traceback)))
+            print("*** extract_tb:")
+            print(repr(traceback.extract_tb(exc_traceback)))
+            print("*** format_tb:")
+            print(repr(traceback.format_tb(exc_traceback)))
+            print("*** tb_lineno:", exc_traceback.tb_lineno)
+        except BotError as e:
+            if 'Expression' not in page.name:
+                print('\n', lineno(), page.name, str(e), '\n', text,
+                      file=sys.stderr)
+        except ValueError as e:
+            print('\n', lineno(), page.name, str(e), '\n', text,
+                  file=sys.stderr)
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print("*** print_tb:")
+            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
+            print("*** print_exception:")
+            traceback.print_exception(exc_type, exc_value, exc_traceback,
+                                      limit=2, file=sys.stdout)
+            print("*** print_exc:")
+            traceback.print_exc(limit=2, file=sys.stdout)
+            print("*** format_exc, first and last line:")
+            formatted_lines = traceback.format_exc().splitlines()
+            print(formatted_lines[0])
+            print(formatted_lines[-1])
+            print("*** format_exception:")
+            print(repr(traceback.format_exception(exc_type, exc_value,
+                                                  exc_traceback)))
+            print("*** extract_tb:")
+            print(repr(traceback.extract_tb(exc_traceback)))
+            print("*** format_tb:")
+            print(repr(traceback.format_tb(exc_traceback)))
+            print("*** tb_lineno:", exc_traceback.tb_lineno)
+        except TypeError as error:
+            print('\n', lineno(), page.name, page.text)
+
+
 def main():
+    counter = collections.defaultdict(int)
     print('Logging in …')
     site = get_site()
-    categories = [
-        'Boazodoallu', 'Dihtorteknologiija ja diehtoteknihkka',
-        'Dáidda ja girjjálašvuohta', 'Eanandoallu',
-        'Ekologiija ja biras', 'Ekonomiija ja gávppašeapmi',
-        'Geografiija', 'Gielladieđa', 'Gulahallanteknihkka',
-        'Guolástus', 'Huksenteknihkka', 'Juridihkka',
-        'Luonddudieđa ja matematihkka', 'Medisiidna',
-        'Mášenteknihkka', 'Ođđa sánit', 'Servodatdieđa',
-        'Stáda, almmolaš hálddašeapmi', 'Teknihkka, industriija, duodji',
-        'Álšateknihkka', 'Ásttoáigi ja faláštallan', 'Ávnnasindustriija']
-
     print('About to iterate categories')
-    for category in categories:
-        print(category, end=' ')
-        saves = 0
-        total = 0
-        for page in site.Categories[category]:
-            total += 1
-            text = page.text()
-            try:
-                botted_text = concept_parser(text)
-                if text != botted_text:
-                    sys.stdout.write('-')
-                    sys.stdout.flush()
-                    saves += 1
-                    try:
-                        page.save(botted_text, summary='Fixing content')
-                    except mwclient.errors.APIError as e:
-                        print(page.name, text, str(e), file=sys.stderr)
+    for category in site.allcategories():
+        print()
+        print(category.name)
+        if 'Expression' not in category.name:
+            # fix_collection(category, counter)
+            fix_other_issues(category, counter)
 
-                else:
-                    sys.stdout.write('|')
-                    sys.stdout.flush()
-            except importer.ExpressionError as e:
-                print(page.name, str(e), file=sys.stderr)
-            except KeyError as e:
-                print(page.name, str(e), file=sys.stderr)
-            except BotError as e:
-                print(page.name, str(e), file=sys.stderr)
-
-        print('\n' + category + ':', str(saves) + '/' + str(total))
+    for key in sorted(counter):
+        print(key, counter[key])
 
 
 def test():

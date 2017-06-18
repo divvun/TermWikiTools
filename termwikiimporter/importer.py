@@ -176,14 +176,15 @@ class ExpressionInfos(object):
     @pos.setter
     def pos(self, pos):
         if pos not in ['N', 'A', 'Adv', 'V', 'Pron', 'CS', 'CC', 'Adp', 'Po',
-                       'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A']:
+                       'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A',
+                       'A/N']:
             raise ExpressionError('Illegal value: {}'.format(pos))
         elif pos in ['MWE', 'N/A']:
             pass
         elif self._pos == 'N/A':
             self._pos = pos
         elif self._pos != pos:
-            raise ExpressionError('Trying to set conflicting pos {} {}'.format(
+            print('Trying to set conflicting pos {} {}'.format(
                 self.pos, pos))
 
 

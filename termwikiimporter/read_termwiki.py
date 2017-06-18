@@ -6,8 +6,6 @@ import sys
 
 import lxml.etree as etree
 
-sys.path.append(os.path.join(os.getenv('HOME'), 'repos/TermWikiImporter'))
-
 from termwikiimporter import bot, importer
 
 
@@ -171,7 +169,6 @@ def dump_pages(mediawiki_ns):
 def clean_dump():
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
     counter = collections.defaultdict(int)
-
 
     for title, page in dump_pages(mediawiki_ns):
         text = page.find('.//{}text'.format(mediawiki_ns)).text

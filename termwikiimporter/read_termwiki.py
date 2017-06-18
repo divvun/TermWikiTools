@@ -134,6 +134,27 @@ def term_to_string(term):
     return '\n'.join(term_strings)
 
 
+def handle_page(text, counter):
+    if '{{Concept' in text and ('{{Related expression' in text or '{{Related_expression' in text):
+        before = text.find('{{')
+        if before > 0:
+            print('text before {{')
+            print(text[:before])
+        after = text.rfind('}}')
+        if 0 < after + 2 < len(text):
+            print('text after')
+            print(text[after:])
+        counter['real'] += 1
+
+        concept = parse_termwiki_concept(text, counter)
+        clean_up_concept(concept, counter)
+        return term_to_string(concept)
+    elif 'STIVREN' in text or 'OMDIRIGERING' in text:
+        counter['redirect'] += 1
+    else:
+        raise bot.BotError()
+
+
 def clean_dump():
     DUMP = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
 
@@ -143,39 +164,23 @@ def clean_dump():
     for page in tree.getroot().iter('{http://www.mediawiki.org/xml/export-0.10/}page'):
         title = page.find('./{http://www.mediawiki.org/xml/export-0.10/}title')
         if not title.text.startswith('Expression:') and not title.text.startswith('Collection'):
-
-            text = page.find(
-                './/{http://www.mediawiki.org/xml/export-0.10/}text').text
-            if '{{Concept' in text and ('{{Related expression' in text or '{{Related_expression' in text):
-                before = text.find('{{')
-                if before > 0:
-                    print('text before {{')
-                    print(text[:before])
-                after = text.rfind('}}')
-                if 0 < after + 2 < len(text):
-                    print('text after')
-                    print(text[after:])
-                counter['real'] += 1
-                try:
-                    concept = parse_termwiki_concept(text, counter)
-                    clean_up_concept(concept, counter)
-                    page.find(
-                './/{http://www.mediawiki.org/xml/export-0.10/}text').text = term_to_string(concept)
-                except KeyError:
-                    counter['no_exp'] += 1
-                    print(bot.lineno())
-                    print(title.text)
-                    print(text)
-                    print()
-            elif 'STIVREN' in text or 'OMDIRIGERING' in text:
-                counter['redirect'] += 1
-            else:
+            try:
+                text = page.find(
+                    './/{http://www.mediawiki.org/xml/export-0.10/}text').text
+                page.find(
+        './/{http://www.mediawiki.org/xml/export-0.10/}text').text = handle_page(text, counter)
+            except KeyError:
+                counter['no_exp'] += 1
+                print(bot.lineno())
+                print(title.text)
+                print(text)
+                print()
+            except bot.BotError:
                 print(bot.lineno())
                 print(title.text)
                 print(text)
                 print()
                 counter['erroneous'] += 1
-
 
     tree.write(DUMP, pretty_print=True, encoding='utf8')
     for key in sorted(counter):

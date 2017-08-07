@@ -315,7 +315,7 @@ def get_site():
     config_file = os.path.join(os.getenv('HOME'), '.config', 'term_config.yaml')
     with open(config_file) as config_stream:
         config = yaml.load(config_stream)
-        site = mwclient.Site('gtsvn.uit.no', path='/termwiki/')
+        site = mwclient.Site('satni.uit.no', path='/termwiki/')
         site.login(config['username'], config['password'])
 
         return site

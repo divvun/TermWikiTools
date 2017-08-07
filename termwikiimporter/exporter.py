@@ -4,7 +4,6 @@
 import argparse
 import collections
 
-import mwclient
 from lxml import etree
 
 from termwikiimporter import bot
@@ -53,9 +52,9 @@ def write_to_termwiki():
             if site_text != '':
                 print(('\t removing from list', new_page_title))
                 for page in pages:
-                        for page in pages:
-                            if site_text == page.find('./content').text:
-                                pages.remove(page)
+                    for page in pages:
+                        if site_text == page.find('./content').text:
+                            pages.remove(page)
             else:
                 print(('\t adding content', new_page_title))
                 site_page.save(pages.pop().find('./content').text,

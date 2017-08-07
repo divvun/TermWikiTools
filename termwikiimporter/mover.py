@@ -8,12 +8,11 @@ import collections
 import os
 import sys
 
-import mwclient
 from lxml import etree
 
 from termwikiimporter import bot, importer
 
-categories = [
+CATEGORIES = [
     'Boazodoallu‎',
     'Dihtorteknologiija ja diehtoteknihkka',
     'Dáidda ja girjjálašvuohta‎',
@@ -86,16 +85,16 @@ def move_termwiki():
     print('contacting')
     counter = 0
     pages = etree.Element('pages')
-    for category in categories:
+    for category in CATEGORIES:
         sys.stdout.write('\n' + category + '\n')
         for page in site.Categories[category]:
             sys.stdout.write('.')
-            p = etree.Element('page')
-            p.set('title', page.name)
+            page_elt = etree.Element('page')
+            page_elt.set('title', page.name)
             content = etree.Element('content')
             content.text = page.text()
-            p.append(content)
-            pages.append(p)
+            page_elt.append(content)
+            pages.append(page_elt)
             counter += 1
 
     with open('abba.txt', 'w') as abba:
@@ -131,9 +130,9 @@ def move_termwiki_old():
                 if site_text != '':
                     print('\t removing from list', new_page_title)
                     for page in pages:
-                            for page in pages:
-                                if site_text == page.find('./content').text:
-                                    pages.remove(page)
+                        for page in pages:
+                            if site_text == page.find('./content').text:
+                                pages.remove(page)
                 else:
                     print('\t adding content', new_page_title)
                     site_page.save(pages.pop().find('./content').text,
@@ -171,12 +170,12 @@ def parse_expression():
     counter = collections.defaultdict(int)
     for expression in expressions_element.xpath('page'):
         try:
-            c = bot.expression_parser(expression.find('content').text)
-            for key, value in c.items():
+            content = bot.expression_parser(expression.find('content').text)
+            for key, value in content.items():
                 counter[key] += value
-        except bot.BotError as e:
-            print(expression.get('title'), str(e))
-        except AttributeError as e:
+        except bot.BotError as error:
+            print(expression.get('title'), str(error))
+        except AttributeError:
             print('empty page', expression.get('title'))
 
     for key, value in counter.items():
@@ -195,14 +194,14 @@ def parse_dump(filename):
     print(bot.lineno(), filename)
     for element in dump_element.xpath('.//page'):
         category = element.find('title').text.split(':')[0]
-        if category in categories:
+        if category in CATEGORIES:
             try:
                 c_text = element.find('.//text')
                 b_text = bot.concept_parser(c_text.text)
                 if c_text.text != b_text:
                     c_text.text = b_text
-            except importer.ExpressionError as e:
-                print(str(e), file=sys.stderr)
+            except importer.ExpressionError as error:
+                print(str(error), file=sys.stderr)
                 print(element.find('title').text, file=sys.stderr)
                 print(element.find('.//text').text, file=sys.stderr)
 

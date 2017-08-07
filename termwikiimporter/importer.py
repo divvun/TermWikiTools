@@ -8,9 +8,9 @@ import re
 import subprocess
 import sys
 from collections import OrderedDict, defaultdict, namedtuple
+import yaml
 
 import openpyxl
-import yaml
 from lxml import etree
 
 
@@ -19,7 +19,6 @@ class ExpressionError(Exception):
 
 
 class ExternalCommandRunner(object):
-
     """Class to run external command through subprocess.
 
     Attributes:
@@ -70,13 +69,12 @@ class ExternalCommandRunner(object):
 
 
 class ExpressionInfo(
-    namedtuple(
-        'ExpressionInfo',
-        [
-            'language', 'expression', 'is_typo', 'has_illegal_char',
-            'collection', 'status', 'note', 'sanctioned',
-            'equivalence'])):
-
+        namedtuple(
+            'ExpressionInfo',
+            [
+                'language', 'expression', 'is_typo', 'has_illegal_char',
+                'collection', 'status', 'note', 'sanctioned',
+                'equivalence'])):
     """Information bound to an expression.
 
 
@@ -119,8 +117,8 @@ class ExpressionInfos(object):
             strings.append('{{Related expression')
             for key, value in list(expression._asdict().items()):
                 if (value == '' or
-                    (value == 'No' and (key == 'is_typo' or
-                                        key == 'has_illegal_char'))):
+                        (value == 'No' and (key == 'is_typo' or
+                                            key == 'has_illegal_char'))):
                     pass
                 else:
                     strings.append('|' + key + '=' + value)
@@ -167,14 +165,29 @@ class ExpressionInfos(object):
 
     @property
     def is_empty(self):
+        """True if there are no expression, otherwise false.
+
+        Returns:
+            boolean
+        """
         return len(self.expressions) == 0
 
     @property
     def pos(self):
+        """The part of speech.
+
+        Returns:
+            str
+        """
         return self._pos
 
     @pos.setter
     def pos(self, pos):
+        """Set the part of speech.
+
+        Arguments:
+            pos (str): The part of speech.
+        """
         if pos not in ['N', 'A', 'Adv', 'V', 'Pron', 'CS', 'CC', 'Adp', 'Po',
                        'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A',
                        'A/N']:
@@ -195,10 +208,10 @@ class RelatedConceptInfo(namedtuple('RelatedConceptInfo',
     def __str__(self):
         strings = ['{{Related concept']
         for key, value in list(self._asdict().items()):
-                if value == '':
-                    pass
-                else:
-                    strings.append('|' + key + '=' + value)
+            if value == '':
+                pass
+            else:
+                strings.append('|' + key + '=' + value)
 
         strings.append('}}')
 
@@ -210,7 +223,7 @@ class OrderedDefaultDict(OrderedDict):
 
     def __init__(self, default_factory=None, *a, **kw):
         if (default_factory is not None and
-           not isinstance(default_factory, Callable)):
+                not isinstance(default_factory, Callable)):
             raise TypeError('first argument must be callable')
         OrderedDict.__init__(self, *a, **kw)
         self.default_factory = default_factory
@@ -251,7 +264,6 @@ class OrderedDefaultDict(OrderedDict):
 
 
 class Concept(object):
-
     """Model the TermWiki concept.
 
     Attributes:
@@ -376,7 +388,7 @@ class Concept(object):
 
     @property
     def is_empty(self):
-        return (self.expression_infos.is_empty and len(self.concept_info) == 0)
+        return self.expression_infos.is_empty and len(self.concept_info) == 0
 
 
 class TermWiki(object):
@@ -413,10 +425,10 @@ class TermWiki(object):
                 l_elements = etree.parse(
                     os.path.join(self.term_home,
                                  term_file)).xpath('.//e/lg/l')
-                for l in l_elements:
-                    expressions[l.text].update(
+                for lemma in l_elements:
+                    expressions[lemma.text].update(
                         set([mg.get('idref')
-                             for mg in l.getparent().getparent().xpath('.//mg')]))
+                             for mg in lemma.getparent().getparent().xpath('.//mg')]))
 
                 self.expressions[lang] = expressions
 
@@ -427,10 +439,10 @@ class TermWiki(object):
                 mg_elements = etree.parse(
                     os.path.join(self.term_home,
                                  term_file)).xpath('.//e/mg')
-                for mg in mg_elements:
-                    page = mg.get('idref')
+                for meaning_group in mg_elements:
+                    page = meaning_group.get('idref')
                     self.pages[page].setdefault(lang, set()).update(
-                        set([l.text for l in mg.getparent().xpath('./lg/l')]))
+                        set([l.text for l in meaning_group.getparent().xpath('./lg/l')]))
 
     def get_expressions_set(self, lang):
         return set(self.expressions[lang].keys())
@@ -483,10 +495,11 @@ class Importer(object):
         self.termwiki = termwiki
         self.concepts = []
 
-    def run_external_command(self, command, input):
+    @staticmethod
+    def run_external_command(command, content):
         """Run the command with input using subprocess."""
         runner = ExternalCommandRunner()
-        runner.run(command, to_stdin=input)
+        runner.run(command, to_stdin=content)
 
         return runner.stdout
 
@@ -622,48 +635,48 @@ class ExcelImporter(Importer):
             return yaml.load(yamlfile)
 
     def get_concepts(self):
-        totalcounter = defaultdict(int)
-
         shortname = os.path.splitext(os.path.basename(self.filename))[0]
         counter = defaultdict(int)
         workbook = openpyxl.load_workbook(self.filename)
 
         print(shortname)
         for ws_title, ws_info in list(self.fileinfo.items()):
-            ws = workbook.get_sheet_by_name(ws_title)
+            sheet = workbook.get_sheet_by_name(ws_title)
 
-            for row in range(2, ws.max_row + 1):
+            for row in range(2, sheet.max_row + 1):
                 counter['concepts'] += 1
-                c = Concept(ws_info['main_category'])
+                concept = Concept(ws_info['main_category'])
                 pos = 'N/A'
                 if (ws_info['wordclass'] != 0 and
-                        ws.cell(row=row,
-                                column=ws_info['wordclass']).value is not None):
-                    pos = ws.cell(row=row,
-                                  column=ws_info['wordclass']).value.strip()
-                    c.expression_infos.pos = pos
+                        sheet.cell(
+                            row=row,
+                            column=ws_info['wordclass']).value is not None):
+                    pos = sheet.cell(
+                        row=row, column=ws_info['wordclass']).value.strip()
+                    concept.expression_infos.pos = pos
                 for language, col in list(ws_info['terms'].items()):
-                    if ws.cell(row=row, column=col).value is not None:
-                        expression_line = ws.cell(row=row,
-                                                  column=col).value.strip()
-                        for e in self.collect_expressions(
+                    if sheet.cell(row=row, column=col).value is not None:
+                        expression_line = sheet.cell(
+                            row=row, column=col).value.strip()
+                        for expression in self.collect_expressions(
                                 expression_line, language, counter,
                                 collection=shortname):
-                            c.add_expression(e)
+                            concept.add_expression(expression)
 
                 for info, col in list(ws_info['other_info'].items()):
-                    if ws.cell(row=row, column=col).value is not None:
-                        c.add_concept_info(info,
-                                           ws.cell(row=row, column=col).value.strip())
+                    if sheet.cell(row=row, column=col).value is not None:
+                        concept.add_concept_info(
+                            info, sheet.cell(row=row,
+                                             column=col).value.strip())
 
                 common_pages = \
-                    self.termwiki.get_pages_where_concept_probably_exists(c)
+                    self.termwiki.get_pages_where_concept_probably_exists(concept)
                 if len(common_pages) > 0:
-                    c.possible_duplicate = common_pages
+                    concept.possible_duplicate = common_pages
                     counter['possible_duplicates'] += 1
 
-                if not c.is_empty:
-                    self.concepts.append(c)
+                if not concept.is_empty:
+                    self.concepts.append(concept)
 
         for key, count in list(counter.items()):
             print('\t', key, count, )
@@ -678,36 +691,34 @@ class ArbeidImporter(Importer):
         filename = 'sgl_dohkkehuvvon_listtut/arbeidsliv_godkjent_av_termgr.txt'
         with open(filename) as arbeid:
             all_concepts = []
-            c = Concepts({'nb': Concept(), 'se': Concept()})
-            start = re.compile('\w\w\w$')
-            i = 0
-            total = 0
+            concepts = Concepts({'nb': Concept(), 'se': Concept()})
+            start = re.compile(r'\w\w\w$')
             for line in arbeid:
                 if start.match(line):
-                    all_concepts.append(c)
-                    c = Concepts({'nb': Concept(), 'se': Concept()})
+                    all_concepts.append(concepts)
+                    concepts = Concepts({'nb': Concept(), 'se': Concept()})
                 else:
                     if line.startswith('se: '):
-                        c.concepts['se'].expressions = self.collect_expressions(
+                        concepts.concepts['se'].expressions = self.collect_expressions(
                             line[len('se: '):].strip())
                         self.do_expressions_exist(
-                            c.concepts['se'].expressions, 'se')
+                            concepts.concepts['se'].expressions, 'se')
                     elif line.startswith('MRKN: '):
-                        c.concepts['se'].explanation = line[
+                        concepts.concepts['se'].explanation = line[
                             len('MRKN: '):].strip()
                     elif line.startswith('DEF1: '):
-                        c.concepts['se'].definition = line[
+                        concepts.concepts['se'].definition = line[
                             len('DEF1: '):].strip()
                     elif line.startswith('nb: '):
-                        c.concepts['nb'].expressions = self.collect_expressions(
+                        concepts.concepts['nb'].expressions = self.collect_expressions(
                             line[len('nb: '):].strip())
                         self.do_expressions_exist(
-                            c.concepts['nb'].expressions, 'nb')
+                            concepts.concepts['nb'].expressions, 'nb')
                     elif line.startswith('nbMRKN: '):
-                        c.concepts['nb'].explanation = line[
+                        concepts.concepts['nb'].explanation = line[
                             len('nbMRKN: '):].strip()
                     elif line.startswith('nbDEF1: '):
-                        c.concepts['nb'].definition = line[
+                        concepts.concepts['nb'].definition = line[
                             len('nbDEF1: '):].strip()
                     elif not line.startswith('klass'):
                         print(line.strip())
@@ -741,6 +752,7 @@ class PageCounter(object):
 
 
 def parse_options():
+    """Parse options given to the script."""
     parser = argparse.ArgumentParser(
         description='Convert files containing terms to TermWiki mediawiki format')
 
@@ -755,6 +767,7 @@ def parse_options():
 
 
 def main():
+    """Convert files to termwiki format."""
     args = parse_options()
 
     pagecounter = PageCounter()

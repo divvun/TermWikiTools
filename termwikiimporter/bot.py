@@ -7,9 +7,9 @@ import inspect
 import os
 import sys
 import traceback
+import yaml
 
 import mwclient
-import yaml
 from lxml import etree
 
 from termwikiimporter import importer, read_termwiki
@@ -39,21 +39,21 @@ def parse_concept(lines):
     key = ''
 
     while len(lines) > 0:
-        l = lines.popleft().strip()
-        if l.startswith('|reviewed_'):
-            lang = l.split('=')[0].replace('|reviewed_', '')
-            bool = l.strip().split('=')[1]
-            sanctioned[lang] = bool
-        elif l.startswith('|'):
-            if l.startswith('|reviewed=') or l.startswith('|no picture'):
+        line = lines.popleft().strip()
+        if line.startswith('|reviewed_'):
+            lang = line.split('=')[0].replace('|reviewed_', '')
+            is_reviewed = line.strip().split('=')[1]
+            sanctioned[lang] = is_reviewed
+        elif line.startswith('|'):
+            if line.startswith('|reviewed=') or line.startswith('|no picture'):
                 pass
             else:
-                (key, info) = l[1:].split('=', 1)
+                (key, info) = line[1:].split('=', 1)
                 template_contents[key] = info
-        elif l.startswith('}}'):
+        elif line.startswith('}}'):
             return (template_contents, sanctioned)
         else:
-            template_contents[key] = template_contents[key] + ' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + line.strip()
 
 
 def get_pos(expression, language):
@@ -151,9 +151,9 @@ def parse_related_expression(lines, sanctioned):
     key = ''
     pos = 'N/A'
     while len(lines) > 0:
-        l = lines.popleft().strip()
-        if l.startswith('|'):
-            equal_splits = l[1:].split('=')
+        line = lines.popleft().strip()
+        if line.startswith('|'):
+            equal_splits = line[1:].split('=')
             key = equal_splits[0]
             info = '='.join(equal_splits[1:])
             if key == 'in_header':
@@ -164,7 +164,7 @@ def parse_related_expression(lines, sanctioned):
                 else:
                     template_contents[key] = info
 
-        elif l.startswith('}}'):
+        elif line.startswith('}}'):
             set_sanctioned(template_contents, sanctioned)
             try:
                 template_contents['expression']
@@ -173,7 +173,8 @@ def parse_related_expression(lines, sanctioned):
             else:
                 if pos == 'N/A':
                     language = template_contents['language']
-                    if language in ['se', 'sma', 'smj'] and ' ' not in template_contents['expression']:
+                    if (language in ['se', 'sma', 'smj'] and
+                            ' ' not in template_contents['expression']):
                         if language == 'se':
                             language = 'sme'
                         ppos = get_pos(template_contents['expression'], language)
@@ -183,7 +184,7 @@ def parse_related_expression(lines, sanctioned):
                             pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
-            template_contents[key] = template_contents[key] + ' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + line.strip()
 
 
 def parse_related_concept(lines):
@@ -200,14 +201,14 @@ def parse_related_concept(lines):
 
     key = ''
     while len(lines) > 0:
-        l = lines.popleft().strip()
-        if l.startswith('|'):
-            (key, info) = l[1:].split('=')
+        line = lines.popleft().strip()
+        if line.startswith('|'):
+            (key, info) = line[1:].split('=')
             template_contents[key] = info
-        elif l.startswith('}}'):
+        elif line.startswith('}}'):
             return importer.RelatedConceptInfo(**template_contents)
         else:
-            template_contents[key] = template_contents[key] + ' ' + l.strip()
+            template_contents[key] = template_contents[key] + ' ' + line.strip()
 
 
 def parse_expression(lines):
@@ -228,27 +229,34 @@ def parse_expression(lines):
 
     key = ''
     while len(lines) > 0:
-        l = lines.popleft().strip()
-        if l.startswith('|pos'):
-            (key, info) = l[1:].split('=')
+        line = lines.popleft().strip()
+        if line.startswith('|pos'):
+            (key, info) = line[1:].split('=')
             expression_contents[key] = info
             if info not in ['N', 'V', 'A', 'Adv', 'Pron', 'Interj']:
                 raise BotError('wrong pos', info)
-        elif l.startswith('|language'):
-            (key, info) = l[1:].split('=')
+        elif line.startswith('|language'):
+            (key, info) = line[1:].split('=')
             expression_contents[key] = info
-            if info not in ['se', 'sma', 'smj', 'sms', 'sms', 'en', 'nb', 'nb', 'sv', 'lat', 'fi', 'smn', 'nn']:
+            if info not in ['se', 'sma', 'smj', 'sms', 'en', 'nb',
+                            'sv', 'lat', 'fi', 'smn', 'nn']:
                 raise BotError('wrong language', info)
             # print(lineno(), l)
-        elif l.startswith('|sources') or l.startswith('|monikko') or l.startswith('|sanamuoto') or l.startswith('|origin') or l.startswith('|perussanatyyppi') or l.startswith('|wordclass') or l.startswith('|sanaluokka'):
-            (key, info) = l[1:].split('=')
+        elif (line.startswith('|sources') or
+              line.startswith('|monikko') or
+              line.startswith('|sanamuoto') or
+              line.startswith('|origin') or
+              line.startswith('|perussanatyyppi') or
+              line.startswith('|wordclass') or
+              line.startswith('|sanaluokka')):
+            (key, info) = line[1:].split('=')
             counter[key] += 1
             # print(lineno(), l)
-        elif l.startswith('}}'):
+        elif line.startswith('}}'):
             return counter
             # return importer.RelatedConceptInfo(**expression_contents)
         else:
-            raise BotError('Unknown:', l)
+            raise BotError('Unknown:', line)
 
     print(lineno())
 
@@ -262,11 +270,11 @@ def expression_parser(text):
     lines = collections.deque(text.split('\n'))
     counter = collections.defaultdict(int)
     while len(lines) > 0:
-        l = lines.popleft().strip()
-        if l.startswith('{{Expression'):
-            c = parse_expression(lines)
-            if c is not None:
-                for key, value in c.items():
+        line = lines.popleft().strip()
+        if line.startswith('{{Expression'):
+            content = parse_expression(lines)
+            if content is not None:
+                for key, value in content.items():
                     counter[key] += value
 
     return counter
@@ -286,25 +294,25 @@ def concept_parser(text):
     concept = importer.Concept()
     lines = collections.deque(text.split('\n'))
 
-    l = lines.popleft()
-    if l.startswith('{{Concept'):
-        if not l.endswith('}}'):
+    line = lines.popleft()
+    if line.startswith('{{Concept'):
+        if not line.endswith('}}'):
             (concept_info, sanctioned) = parse_concept(lines)
             for key, info in concept_info.items():
                 concept.add_concept_info(key, info)
-        #print(lineno())
+        # print(lineno())
         while len(lines) > 0:
-            l = lines.popleft()
-            if (l.startswith('{{Related expression') or
-                    l.startswith('{{Related_expression')):
+            line = lines.popleft()
+            if (line.startswith('{{Related expression') or
+                    line.startswith('{{Related_expression')):
                 (expression_info, pos) = parse_related_expression(lines, sanctioned)
                 concept.add_expression(expression_info)
                 concept.expression_infos.pos = pos
-            elif l.startswith('{{Related concept'):
+            elif line.startswith('{{Related concept'):
                 concept.add_related_concept(parse_related_concept(lines))
             else:
-                raise BotError('unhandled', l.strip())
-        #print(lineno())
+                raise BotError('unhandled', line.strip())
+        # print(lineno())
         if not concept.is_empty:
             return str(concept)
     else:
@@ -323,7 +331,7 @@ def get_site():
 
 def text_yielder(text):
     for line in text.split('\n'):
-        if ('|collection') in line and 'Collection:' not in line:
+        if '|collection' in line and 'Collection:' not in line:
             yield line.replace('=', '=Collection:')
         else:
             yield line
@@ -334,7 +342,7 @@ def fix_collection(category, counter):
         for page in category:
             counter['total'] += 1
             orig_text = page.text()
-            if 'collection=' in orig_text and not '=Collection:' in orig_text:
+            if 'collection=' in orig_text and '=Collection:' not in orig_text:
                 counter['collection'] += 1
                 print('+', end='')
             else:
@@ -362,44 +370,17 @@ def fix_other_issues(category, counter):
                 counter['saves'] += 1
                 try:
                     page.save(cleaned_botted_text, summary='Fixing content')
-                except mwclient.errors.APIError as e:
-                    print(page.name, text, str(e), file=sys.stderr)
+                except mwclient.errors.APIError as error:
+                    print(page.name, text, str(error), file=sys.stderr)
 
             else:
                 sys.stdout.write('|')
             sys.stdout.flush()
-        except importer.ExpressionError as e:
-            print('\n', lineno(), page.name, str(e), '\n', text,
+        except importer.ExpressionError as error:
+            print('\n', lineno(), page.name, str(error), '\n', text,
                   file=sys.stderr)
-        except KeyError as e:
-            print('\n', lineno(), page.name, str(e), '\n', text,
-                  file=sys.stderr)
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print("*** print_tb:")
-            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
-            print("*** print_exception:")
-            traceback.print_exception(exc_type, exc_value, exc_traceback,
-                                      limit=2, file=sys.stdout)
-            print("*** print_exc:")
-            traceback.print_exc(limit=2, file=sys.stdout)
-            print("*** format_exc, first and last line:")
-            formatted_lines = traceback.format_exc().splitlines()
-            print(formatted_lines[0])
-            print(formatted_lines[-1])
-            print("*** format_exception:")
-            print(repr(traceback.format_exception(exc_type, exc_value,
-                                                exc_traceback)))
-            print("*** extract_tb:")
-            print(repr(traceback.extract_tb(exc_traceback)))
-            print("*** format_tb:")
-            print(repr(traceback.format_tb(exc_traceback)))
-            print("*** tb_lineno:", exc_traceback.tb_lineno)
-        except BotError as e:
-            if 'Expression' not in page.name:
-                print('\n', lineno(), page.name, str(e), '\n', text,
-                      file=sys.stderr)
-        except ValueError as e:
-            print('\n', lineno(), page.name, str(e), '\n', text,
+        except KeyError as error:
+            print('\n', lineno(), page.name, str(error), '\n', text,
                   file=sys.stderr)
             exc_type, exc_value, exc_traceback = sys.exc_info()
             print("*** print_tb:")
@@ -421,11 +402,39 @@ def fix_other_issues(category, counter):
             print("*** format_tb:")
             print(repr(traceback.format_tb(exc_traceback)))
             print("*** tb_lineno:", exc_traceback.tb_lineno)
-        except TypeError as error:
+        except BotError as error:
+            if 'Expression' not in page.name:
+                print('\n', lineno(), page.name, str(error), '\n', text,
+                      file=sys.stderr)
+        except ValueError as error:
+            print('\n', lineno(), page.name, str(error), '\n', text,
+                  file=sys.stderr)
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print("*** print_tb:")
+            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
+            print("*** print_exception:")
+            traceback.print_exception(exc_type, exc_value, exc_traceback,
+                                      limit=2, file=sys.stdout)
+            print("*** print_exc:")
+            traceback.print_exc(limit=2, file=sys.stdout)
+            print("*** format_exc, first and last line:")
+            formatted_lines = traceback.format_exc().splitlines()
+            print(formatted_lines[0])
+            print(formatted_lines[-1])
+            print("*** format_exception:")
+            print(repr(traceback.format_exception(exc_type, exc_value,
+                                                  exc_traceback)))
+            print("*** extract_tb:")
+            print(repr(traceback.extract_tb(exc_traceback)))
+            print("*** format_tb:")
+            print(repr(traceback.format_tb(exc_traceback)))
+            print("*** tb_lineno:", exc_traceback.tb_lineno)
+        except TypeError:
             print('\n', lineno(), page.name, page.text)
 
 
 def main():
+    """Make the bot fix all pages."""
     counter = collections.defaultdict(int)
     print('Logging in …')
     site = get_site()
@@ -442,12 +451,13 @@ def main():
 
 
 def test():
+    """Check to see if everything works as expected."""
     abba = etree.parse(os.path.join('termwikiimporter', 'test', 'abba.txt'))
 
     with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
         for page in abba.xpath('./page'):
-            c = page.find('content')
-            botted_text = concept_parser(c.text)
+            content = page.find('content')
+            botted_text = concept_parser(content.text)
             if botted_text is not None:
                 abc.write(botted_text.encode('utf8'))
                 abc.write('\n')

@@ -74,9 +74,9 @@ def get_pos(expression, language):
                os.path.join(os.getenv('GTHOME'), 'langs', language,
                             'src', 'analyser-gt-norm.xfst')]
     runner = importer.ExternalCommandRunner()
-    runner.run(command, to_stdin=expression.encode('utf8'))
+    runner.run(command, to_stdin=expression)
 
-    for analysis in runner.stdout.split('\n'):
+    for analysis in runner.stdout.decode('utf8').split('\n'):
         if (analysis.endswith('+N+Sg+Nom') or
                 analysis.endswith('+N+G3+Sg+Nom') or
                 analysis.endswith('+N+NomAg+Sg+Nom') or
@@ -101,7 +101,7 @@ def get_pos(expression, language):
         elif analysis.endswith('?'):
             return '?'
 
-    print('Unknown\n' + runner.stdout)
+    print('Unknown\n' + runner.stdout.decode('utf8'))
     return '?'
 
 

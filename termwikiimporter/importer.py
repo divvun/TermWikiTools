@@ -45,7 +45,7 @@ class ExternalCommandRunner(object):
             print('Please install {}'.format(command[0]))
             raise
 
-        (self.stdout, self.stderr) = subp.communicate(to_stdin)
+        (self.stdout, self.stderr) = subp.communicate(to_stdin.encode('utf8'))
         self.returncode = subp.returncode
 
 
@@ -482,7 +482,7 @@ class Importer(object):
         runner = ExternalCommandRunner()
         runner.run(command, to_stdin=content)
 
-        return runner.stdout
+        return runner.stdout.decode('utf8')
 
     def is_expression_typo(self, expression, lang):
         """Runs lookup on the expression.
@@ -502,7 +502,7 @@ class Importer(object):
                                            'src', 'analyser-gt-norm.xfst')]
 
             if '?' in self.run_external_command(lookup_command,
-                                                expression.encode('utf8')):
+                                                expression):
                 return True
 
         return False
@@ -552,7 +552,7 @@ class ExcelImporter(Importer):
             counter['has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
-                    expression=str(startline.replace('\n', ' ')),
+                    expression=startline.replace('\n', ' '),
                     language=language,
                     is_typo='No',
                     has_illegal_char='Yes',
@@ -565,7 +565,7 @@ class ExcelImporter(Importer):
             splitters = re.compile(r'[,;\n\/]')
 
             for token in splitters.split(startline):
-                finaltoken = str(token.strip().lower())
+                finaltoken = token.strip().lower()
                 if len(finaltoken) > 0:
                     if ' ' in finaltoken:
                         counter['mwe'] += 1

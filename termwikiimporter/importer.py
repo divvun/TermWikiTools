@@ -22,10 +22,15 @@ class ExternalCommandRunner(object):
     """Class to run external command through subprocess.
 
     Attributes:
-        returncode (int): The return code returned by the command.
+        stdout: save the stdout of the command here.
+        stderr: save the stderr of the command here.
+        returncode: save the returncode of the command here.
     """
 
     def __init__(self):
+        """Initialise the ExternalCommandRunner class."""
+        self.stdout = None
+        self.stderr = None
         self.returncode = None
 
     def run(self, command, cwd=None, to_stdin=None):
@@ -37,35 +42,11 @@ class ExternalCommandRunner(object):
                                     stderr=subprocess.PIPE,
                                     cwd=cwd)
         except OSError:
-            raise SystemExit(
-                'Please install {}'.format(command[0]))
+            print('Please install {}'.format(command[0]))
+            raise
 
         (self.stdout, self.stderr) = subp.communicate(to_stdin)
         self.returncode = subp.returncode
-
-    @property
-    def stdout(self):
-        """Return stdout as str."""
-        if self.__stdout is not None:
-            return self.__stdout.decode('utf8')
-        else:
-            return None
-
-    @stdout.setter
-    def stdout(self, value):
-        self.__stdout = value
-
-    @property
-    def stderr(self):
-        """Return stderr as str."""
-        if self.__stderr is not None:
-            return self.__stderr.decode('utf8')
-        else:
-            return None
-
-    @stderr.setter
-    def stderr(self, value):
-        self.__stderr = value
 
 
 class ExpressionInfo(

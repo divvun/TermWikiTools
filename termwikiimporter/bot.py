@@ -102,7 +102,7 @@ def is_concept_tag(content):
     """
     return ('{{Concept' in content and
             ('{{Related expression' in content or
-                '{{Related_expression' in content))
+             '{{Related_expression' in content))
 
 
 def fix_site():

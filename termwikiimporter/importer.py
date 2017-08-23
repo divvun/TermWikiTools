@@ -10,6 +10,7 @@ import sys
 from collections import OrderedDict, defaultdict, namedtuple
 import yaml
 
+import attr
 import openpyxl
 from lxml import etree
 
@@ -18,12 +19,8 @@ class ExpressionError(Exception):
     pass
 
 
-        namedtuple(
-            'ExpressionInfo',
-            [
-                'language', 'expression', 'has_illegal_char',
-                'collection', 'status', 'note', 'sanctioned',
-                'equivalence'])):
+@attr.s
+class ExpressionInfo(object):
     """Information bound to an expression.
 
 
@@ -40,8 +37,16 @@ class ExpressionError(Exception):
         status (str): Indicate if the expression is recommended, outdated,
             etc.
         note (str): Ad hoc note about the expression
+        source (str): source of the expression
     """
-    __slots__ = ()
+    language = attr.ib('')
+    expression = attr.ib('')
+    has_illegal_char = attr.ib(default='No')
+    collection = attr.ib('')
+    sanctioned = attr.ib(default='No')
+    status = attr.ib('')
+    note = attr.ib('')
+    source = attr.ib('')
 
 
 class ExpressionInfos(object):
@@ -60,7 +65,7 @@ class ExpressionInfos(object):
         strings = []
         for expression in self.expressions:
             strings.append('{{Related expression')
-            for key, value in list(expression._asdict().items()):
+            for key, value in sorted(attr.asdict(expression).items()):
                 if (value == '' or
                         (value == 'No' and (key == 'has_illegal_char'))):
                     pass
@@ -492,7 +497,7 @@ class ExcelImporter(Importer):
                     collection=collection,
                     status='',
                     note='',
-                    equivalence='',
+                    source='',
                     sanctioned='No'))
         else:
             splitters = re.compile(r'[,;\n\/]')
@@ -510,7 +515,7 @@ class ExcelImporter(Importer):
                                 collection=collection,
                                 status='',
                                 note='',
-                                equivalence='',
+                                source='',
                                 sanctioned='Yes'))
                     else:
                         counter['non_typo'] += 1
@@ -522,7 +527,7 @@ class ExcelImporter(Importer):
                                 collection=collection,
                                 status='',
                                 note='',
-                                equivalence='',
+                                source='',
                                 sanctioned='Yes'))
 
         return expressions

@@ -30,8 +30,8 @@ class TestBot(unittest.TestCase):
             '|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet',
             '}}',
             '{{Related expression',
-            '|language=se',
             '|expression=ađaiduvvat',
+            '|language=se',
             '|sanctioned=No',
             '|pos=V',
             '}}'
@@ -69,8 +69,8 @@ class TestBot(unittest.TestCase):
             '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
             '}}\n'
             '{{Related expression\n'
-            '|language=se\n'
             '|expression=rotnu\n'
+            '|language=se\n'
             '|sanctioned=No\n'
             '|pos=N\n'
             '}}'
@@ -97,8 +97,8 @@ class TestBot(unittest.TestCase):
             '{{Concept\n'
             '}}\n'
             '{{Related expression\n'
-            '|language=fi\n'
             '|expression=se\n'
+            '|language=fi\n'
             '|sanctioned=Yes\n'
             '|pos=N/A\n'
             '}}'
@@ -178,8 +178,8 @@ class TestBot(unittest.TestCase):
 |explanation_nb=Den tynne del av ei øks (den slipes til egg)
 }}
 {{Related expression
-|language=se
 |expression=ákšodearri
+|language=se
 |sanctioned=Yes
 |pos=N
 }}'''
@@ -207,8 +207,8 @@ class TestBot(unittest.TestCase):
             '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
             '}}\n'
             '{{Related expression\n'
-            '|language=se\n'
             '|expression=rotnu\n'
+            '|language=se\n'
             '|sanctioned=Yes\n'
             '|pos=N\n'
             '}}'
@@ -241,8 +241,8 @@ class TestBot(unittest.TestCase):
             '|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe 1. du blir nok ikke fet av det arbeidet',
             '}}',
             '{{Related expression',
-            '|language=se',
             '|expression=ađaiduvvat',
+            '|language=se',
             '|sanctioned=No',
             '|pos=V',
             '}}'
@@ -269,8 +269,8 @@ class TestBot(unittest.TestCase):
             '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
             '}}\n'
             '{{Related expression\n'
-            '|language=se\n'
             '|expression=rotnu\n'
+            '|language=se\n'
             '|sanctioned=Yes\n'
             '|pos=N\n'
             '}}'
@@ -303,8 +303,8 @@ class TestBot(unittest.TestCase):
             '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
             '}}\n'
             '{{Related expression\n'
-            '|language=se\n'
             '|expression=rotnu\n'
+            '|language=se\n'
             '|sanctioned=Yes\n'
             '|pos=N\n'
             '}}'
@@ -329,8 +329,8 @@ class TestBot(unittest.TestCase):
 |definition_nb=tynne delen av øks
 }}
 {{Related expression
-|language=se
 |expression=ákšodearri
+|language=se
 |sanctioned=No
 |pos=N
 }}'''
@@ -352,8 +352,8 @@ class TestBot(unittest.TestCase):
 |definition_smj=bessam, gå besa jali oattjo máhttelisvuodav sirddet diedojt - sierraláhká datåvrån/dáhtámasjijnan
 }}
 {{Related expression
-|language=smj
 |expression=bessam
+|language=smj
 |sanctioned=No
 |pos=N/A
 }}'''

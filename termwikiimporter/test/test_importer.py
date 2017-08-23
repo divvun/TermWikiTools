@@ -18,7 +18,7 @@ class TestExpressionInfos(unittest.TestCase):
                                              collection='Example coll',
                                              status='',
                                              note='',
-                                             equivalence='',
+                                             source='',
                                              sanctioned='Yes')
 
         self.info2 = importer.ExpressionInfo(expression='test1',
@@ -27,24 +27,24 @@ class TestExpressionInfos(unittest.TestCase):
                                              collection='Example coll',
                                              status='',
                                              note='',
-                                             equivalence='',
+                                             source='',
                                              sanctioned='Yes')
 
         self.want1 = [
             '{{Related expression',
-            '|language=se',
+            '|collection=Example coll',
             '|expression=test1',
             '|has_illegal_char=Yes',
-            '|collection=Example coll',
+            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}']
 
         self.want2 = [
             '{{Related expression',
-            '|language=se',
-            '|expression=test1',
             '|collection=Example coll',
+            '|expression=test1',
+            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}']
@@ -143,7 +143,7 @@ class TestConcept(unittest.TestCase):
                                             collection='Example coll',
                                             status='',
                                             note='',
-                                            equivalence='',
+                                            source='',
                                             sanctioned='Yes'))
 
     def add_concept_info(self):
@@ -190,23 +190,23 @@ class TestConcept(unittest.TestCase):
             '|duplicate_pages=[8], [9]',
             '}}',
             '{{Related expression',
-            '|language=nb',
+            '|collection=Example coll',
             '|expression=norsk1',
-            '|collection=Example coll',
+            '|language=nb',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
             '{{Related expression',
-            '|language=se',
+            '|collection=Example coll',
             '|expression=sámi1',
-            '|collection=Example coll',
+            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
             '{{Related expression',
-            '|language=se',
-            '|expression=sámi2',
             '|collection=Example coll',
+            '|expression=sámi2',
+            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
@@ -338,7 +338,7 @@ class TestTermwiki(unittest.TestCase):
                                             collection='Example coll',
                                             status='',
                                             note='',
-                                            equivalence='',
+                                            source='',
                                             sanctioned='Yes'))
 
         self.assertSetEqual(
@@ -360,7 +360,7 @@ class TestTermwiki(unittest.TestCase):
                                             collection='Example coll',
                                             status='',
                                             note='',
-                                            equivalence='',
+                                            source='',
                                             sanctioned='Yes'))
 
         self.assertSetEqual(
@@ -382,7 +382,7 @@ class TestTermwiki(unittest.TestCase):
                                             collection='Example coll',
                                             status='',
                                             note='',
-                                            equivalence='',
+                                            source='',
                                             sanctioned='Yes'))
 
         self.assertSetEqual(
@@ -426,7 +426,7 @@ class TestExcelImporter(unittest.TestCase):
                                             collection='simple',
                                             status='',
                                             note='',
-                                            equivalence='',
+                                            source='',
                                             sanctioned='Yes'))
                 concept.add_concept_info('explanation_nb', 'Dette er forklaringen')
 
@@ -456,7 +456,7 @@ class TestExcelImporter(unittest.TestCase):
                         collection='example',
                         status='',
                         note='',
-                        equivalence='',
+                        source='',
                         sanctioned='Yes'),
                     importer.ExpressionInfo(
                         expression='b',
@@ -465,7 +465,7 @@ class TestExcelImporter(unittest.TestCase):
                         collection='example',
                         status='',
                         note='',
-                        equivalence='',
+                        source='',
                         sanctioned='Yes'),
                 ], got)
 
@@ -485,7 +485,7 @@ class TestExcelImporter(unittest.TestCase):
                         collection='example',
                         status='',
                         note='',
-                        equivalence='',
+                        source='',
                         sanctioned='No'),
                 ], got)
 
@@ -505,7 +505,7 @@ class TestExcelImporter(unittest.TestCase):
                     collection='example',
                     status='',
                     note='',
-                    equivalence='',
+                    source='',
                     sanctioned='No'),
             ], got)
 
@@ -524,6 +524,6 @@ class TestExcelImporter(unittest.TestCase):
                     collection='example',
                     status='',
                     note='',
-                    equivalence='',
+                    source='',
                     sanctioned='Yes'),
             ], got)

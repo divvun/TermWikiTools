@@ -21,6 +21,7 @@ setup(
         ]
     },
     install_requires=[
+        'attrs',
         'lxml',
         'mwclient',
         'openpyxl',

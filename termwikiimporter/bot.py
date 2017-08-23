@@ -96,7 +96,7 @@ def parse_related_expression(lines, sanctioned):
     template_contents['collection'] = ''
     template_contents['status'] = ''
     template_contents['note'] = ''
-    template_contents['equivalence'] = ''
+    template_contents['source'] = ''
 
     key = ''
     pos = 'N/A'

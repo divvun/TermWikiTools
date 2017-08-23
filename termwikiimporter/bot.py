@@ -68,17 +68,41 @@ def termwiki_concept_pages(site):
     """
     for category in site.allcategories():
         if category.name.replace('Kategoriija:', '') in NAMESPACES:
+            print(category.name)
             for page in category:
-                yield page
+                if is_concept_page(page.name):
+                    yield page
 
 
 def dump_concept_pages(dump_tree):
+    """Get the concept pages from dump.xml.
+
+    Args:
+        dump_tree (lxml.ElementTree): the dump.xml element tree.
+
+    Yields:
+        str: content of a TermWiki page.
+    """
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
     for page in dump_tree.getroot().iter('{}page'.format(mediawiki_ns)):
         title = page.find('.//{}title'.format(mediawiki_ns)).text
         if title[:title.find(':')] in NAMESPACES:
             yield page
+
+
+def is_concept_page(title):
+    """Check if the given page is a TermWiki Concept page.
+
+    Args:
+        title (str): name of the page.
+
+    Returns:
+        bool: True if the page is a Concept page, False otherwise.
+    """
+    return ('Expression' not in title and
+            'Kategoriija' not in title and
+            title[:title.find(':')] in NAMESPACES)
 
 
 def fix_site():
@@ -89,11 +113,18 @@ def fix_site():
 
     print('About to iterate categories')
     for page in termwiki_concept_pages(site):
-
         orig_text = page.text()
-        new_text = read_termwiki.fix_content(orig_text)
+        try:
+            new_text = read_termwiki.fix_content(orig_text)
+        except ValueError:
+            print(read_termwiki.lineno(),
+                  page.name,
+                  'has invalid content\n',
+                  orig_text,
+                  file=sys.stderr)
 
         if orig_text != new_text:
+            print(read_termwiki.lineno(), page.name)
             try:
                 page.save(new_text, summary='Fixing content')
             except mwclient.errors.APIError as error:

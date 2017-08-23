@@ -43,30 +43,6 @@ class TestBot(unittest.TestCase):
 
         self.assertEqual(want, read_termwiki.handle_page(concept))
 
-    def test_bot2(self):
-        """Check that ValueError is raised when hitting invalid content."""
-        self.maxDiff = None
-        concept = (
-            '[[Kategoriija:Concepts]]'
-        )
-
-        with self.assertRaises(ValueError):
-            read_termwiki.handle_page(concept)
-
-    def test_stivren(self):
-        """Check that pages containing STIVREN is preserved."""
-        self.maxDiff = None
-        concept = '#STIVREN [[Page]]'
-
-        self.assertEqual(read_termwiki.handle_page(concept), concept)
-
-    def test_omdirigering(self):
-        """Check that pages containing OMDIRIGERING is preserved."""
-        self.maxDiff = None
-        concept = '#OMDIRIGERING [[Page]]'
-
-        self.assertEqual(read_termwiki.handle_page(concept), concept)
-
     def test_bot4(self):
         """Check that sanctioned=No is set default."""
         self.maxDiff = None

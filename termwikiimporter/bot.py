@@ -70,7 +70,7 @@ def termwiki_concept_pages(site):
         if category.name.replace('Kategoriija:', '') in NAMESPACES:
             print(category.name)
             for page in category:
-                if is_concept_page(page.name):
+                if is_concept_tag(page.text()):
                     yield page
 
 
@@ -91,18 +91,18 @@ def dump_concept_pages(dump_tree):
             yield page
 
 
-def is_concept_page(title):
-    """Check if the given page is a TermWiki Concept page.
+def is_concept_tag(content):
+    """Check if content is a TermWiki Concept page.
 
     Args:
-        title (str): name of the page.
+        content (str): content of a TermWiki page.
 
     Returns:
-        bool: True if the page is a Concept page, False otherwise.
+        bool
     """
-    return ('Expression' not in title and
-            'Kategoriija' not in title and
-            title[:title.find(':')] in NAMESPACES)
+    return ('{{Concept' in content and
+            ('{{Related expression' in content or
+                '{{Related_expression' in content))
 
 
 def fix_site():
@@ -114,14 +114,9 @@ def fix_site():
     print('About to iterate categories')
     for page in termwiki_concept_pages(site):
         orig_text = page.text()
-        try:
-            new_text = read_termwiki.fix_content(orig_text)
-        except ValueError:
-            print(read_termwiki.lineno(),
-                  page.name,
-                  'has invalid content\n',
-                  orig_text,
-                  file=sys.stderr)
+
+        concept = read_termwiki.handle_page(orig_text)
+        new_text = read_termwiki.term_to_string(concept)
 
         if orig_text != new_text:
             print(read_termwiki.lineno(), page.name)
@@ -130,8 +125,46 @@ def fix_site():
             except mwclient.errors.APIError as error:
                 print(page.name, new_text, str(error), file=sys.stderr)
 
+        write_expressions(concept['expressions'], site)
+
     for key in sorted(counter):
         print(key, counter[key])
+
+
+def write_expressions(expressions, site):
+    """Make Expression pages.
+
+    Args:
+        expressions (list of importer.OrderDefaultDict): The expressions found
+            in the Concept page.
+        site (mwclient.Site): The site object
+    """
+    for expression in expressions:
+        page = site.Pages['Expression:{}'.format(
+            expression['expression'])]
+        if not page.exists:
+            print('Creating page: {}'.format(page.name))
+            page.save(
+                to_page_content(expression),
+                summary='Creating new Expression page')
+        else:
+            print(page.name, 'exists')
+
+
+def to_page_content(expression):
+    """Turn an expression dict to into Expression page content.
+
+    Args:
+        expression (importer.OrderDefaultDict): a dict representing an
+            expression
+
+    Returns:
+        str: a string containing a TermWiki Expression.
+    """
+    return '\n'.join(['{{Expression',
+                      '|{}={}'.format('language', expression['language']),
+                      '|{}={}'.format('pos', expression['pos']),
+                      '}}'])
 
 
 def fix_dump():

@@ -84,29 +84,6 @@ def remove_unwanted_tag(orig_text):
     return orig_text
 
 
-def fix_content(orig_text):
-    """Clean up the content of a TermWiki article.
-
-    Args:
-        orig_text (str): Original text of a TermWiki article.
-
-    Returns:
-        str: Content of cleaned up TermWiki text
-    """
-    ruw = remove_unwanted_tag(orig_text)
-    if orig_text != ruw:
-        print(lineno())
-    f_coll = fix_collection(ruw)
-    #if ruw != f_coll:
-        #print(lineno())
-    rthp = handle_page(f_coll)
-    #if f_coll != rthp:
-        #print(lineno())
-    #print()
-
-    return rthp
-
-
 def is_related_expression(line):
     """Check if line is the start of a TermWiki Related expression.
 
@@ -186,21 +163,7 @@ def term_to_string(term):
     return '\n'.join(term_strings)
 
 
-def is_concept_tag(content):
-    """Check if content is a TermWiki Concept page.
-
-    Args:
-        content (str): content of a TermWiki page.
-
-    Returns:
-        bool
-    """
-    return ('{{Concept' in content and
-            ('{{Related expression' in content or
-                '{{Related_expression' in content))
-
-
-def handle_page(text):
+def handle_page(orig_text):
     """Parse a termwiki page.
 
     Args:
@@ -212,20 +175,16 @@ def handle_page(text):
     Raises:
         ValueError: if the page is not a known format
     """
-    if is_concept_tag(text):
-        before = text.find('{{')
-        if before > 0:
-            print('text before {{')
-            print(text[:before])
-        after = text.rfind('}}')
-        if 0 < after + 2 < len(text):
-            print('text after')
-            print(text[after:])
+    before = orig_text.find('{{')
+    if before > 0:
+        print('text before {{')
+        print(orig_text[:before])
+    after = orig_text.rfind('}}')
+    if 0 < after + 2 < len(orig_text):
+        print('text after')
+        print(orig_text[after:])
 
-        concept = parse_termwiki_concept(text)
-        return term_to_string(concept)
-    elif 'STIVREN' in text or 'OMDIRIGERING' in text:
-        return text
-    else:
-        raise ValueError('Unknown content:\n{}'.format(text))
+    return parse_termwiki_concept(
+        fix_collection(remove_unwanted_tag(orig_text)))
+
 

@@ -178,7 +178,7 @@ class ExpressionInfos(object):
         elif self._pos == 'N/A':
             self._pos = pos
         elif self._pos != pos:
-            print('Trying to set conflicting pos {} {}'.format(
+            raise ExpressionError('Trying to set conflicting pos {} {}'.format(
                 self.pos, pos))
 
 

@@ -51,49 +51,6 @@ class TestBot(unittest.TestCase):
 
         self.assertEqual(bot.concept_parser(c), want)
 
-    def test_bot3(self):
-        """Check that pos is set.
-
-        Verb should be set to V, expression containg space is MWE
-        """
-        self.maxDiff = None
-        c = (
-            '{{Concept\n'
-            '|definition_se=ađaiduvvat\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=nb\n'
-            '|sanctioned=No\n'
-            '|expression=bli fetere\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=se\n'
-            '|sanctioned=No\n'
-            '|expression=ađaiduvvat\n'
-            '}}'
-        )
-
-        want = (
-            '{{Concept\n'
-            '|definition_se=ađaiduvvat\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=nb\n'
-            '|expression=bli fetere\n'
-            '|sanctioned=No\n'
-            '|pos=MWE\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=se\n'
-            '|expression=ađaiduvvat\n'
-            '|sanctioned=No\n'
-            '|pos=V\n'
-            '}}'
-        )
-
-        got = bot.concept_parser(c)
-        self.assertEqual(want, got)
-
     def test_bot4(self):
         """Check that sanctioned=No is set default."""
         self.maxDiff = None
@@ -398,29 +355,8 @@ class TestBot(unittest.TestCase):
 |language=smj
 |expression=bessam
 |sanctioned=No
-|pos=N
+|pos=N/A
 }}'''
 
         got = bot.concept_parser(concept)
         self.assertEqual(want, got)
-
-    def test_exception_raised_when_conflicting_pos_is_set(self):
-        concept = '''{{Concept
-|definition_se=vuogádat maid geavaheaddji ieš mearrida mo doaibmá
-|more_info_se=Davvisámegiela juogus dohkkehan 11.-12.12.2014
-}}
-{{Related expression
-|language=se
-|expression=jorahit
-|note=synonyma
-|sanctioned=No
-}}
-{{Related expression
-|language=se
-|expression=vuogádatválljejumit
-|status=proposed
-|sanctioned=No
-}}'''
-
-        with self.assertRaises(importer.ExpressionError):
-            bot.concept_parser(concept)

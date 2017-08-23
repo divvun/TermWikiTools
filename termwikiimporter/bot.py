@@ -56,55 +56,6 @@ def parse_concept(lines):
             template_contents[key] = template_contents[key] + ' ' + line.strip()
 
 
-def get_pos(expression, language):
-    """Use lookup to determine the part of speech of an expression.
-
-    Arguments:
-        expression (str): an expression
-        language (str): language of the expression
-
-    Returns:
-        str: the wordclass
-
-    Raises:
-        BotError: If the output of lookup is unknown, raise
-            this exception.
-    """
-    command = ['lookup', '-q', '-flags', 'mbTT',
-               os.path.join(os.getenv('GTHOME'), 'langs', language,
-                            'src', 'analyser-gt-norm.xfst')]
-    runner = importer.ExternalCommandRunner()
-    runner.run(command, to_stdin=expression)
-
-    for analysis in runner.stdout.decode('utf8').split('\n'):
-        if (analysis.endswith('+N+Sg+Nom') or
-                analysis.endswith('+N+G3+Sg+Nom') or
-                analysis.endswith('+N+NomAg+Sg+Nom') or
-                analysis.endswith('+N+Pl+Nom') or
-                analysis.endswith('+N+Prop+Sem/Plc+Sg+Nom') or
-                analysis.endswith('+N+Prop+Sem/Plc+Pl+Nom') or
-                analysis.endswith('+N+Prop+Sem/Plc+Der/lasj+A+Sg+Nom') or
-                analysis.endswith('+N+Der/heapmi+A+Comp+Sg+Nom') or
-                analysis.endswith('+N+ACR+Sg+Nom')):
-            return 'N'
-        elif (analysis.endswith('+V+TV+Inf') or
-              analysis.endswith('+V+IV+Inf') or
-              analysis.endswith('+V+IV+Pass+Inf') or
-              analysis.endswith('+V+TV+Der/InchL+V+Inf')):
-            return 'V'
-        elif analysis.endswith('+A+Attr') or analysis.endswith('+A+Sg+Nom'):
-            return 'A'
-        elif analysis.endswith('+Adv'):
-            return 'Adv'
-        elif analysis.endswith('+Num+Sg+Nom'):
-            return 'Num'
-        elif analysis.endswith('?'):
-            return '?'
-
-    print('Unknown\n' + runner.stdout.decode('utf8'))
-    return '?'
-
-
 def set_sanctioned(template_contents, sanctioned):
     """Set the sanctioned key.
 
@@ -170,14 +121,6 @@ def parse_related_expression(lines, sanctioned):
             except KeyError:
                 raise BotError('expression not set in Related expression template')
             else:
-                if pos == 'N/A':
-                    language = template_contents['language']
-                    if (language in ['se', 'sma', 'smj'] and
-                            ' ' not in template_contents['expression']):
-                        if language == 'se':
-                            language = 'sme'
-                        ppos = get_pos(template_contents['expression'], language)
-                        pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
             template_contents[key] = template_contents[key] + ' ' + line.strip()

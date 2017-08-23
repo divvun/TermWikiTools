@@ -161,10 +161,12 @@ def to_page_content(expression):
     Returns:
         str: a string containing a TermWiki Expression.
     """
-    return '\n'.join(['{{Expression',
-                      '|{}={}'.format('language', expression['language']),
-                      '|{}={}'.format('pos', expression['pos']),
-                      '}}'])
+    text_lines = ['{{Expression']
+    text_lines.extend(['|{}={}'.format(key, expression[key])
+                       for key in expression])
+    text_lines.append('}}')
+
+    return '\n'.join(text_lines)
 
 
 def fix_dump():

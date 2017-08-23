@@ -20,6 +20,8 @@ def read_semantic_form(text_iterator):
     for line in text_iterator:
         if line == '}}':
             return wiki_form
+        elif line.startswith('|is_typo'):
+            pass
         elif line.startswith('|'):
             equality = line.find('=')
             key = line[1:equality]

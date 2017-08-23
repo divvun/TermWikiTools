@@ -540,23 +540,3 @@ class TestExcelImporter(unittest.TestCase):
                     equivalence='',
                     sanctioned='Yes'),
             ], got)
-
-    def test_collect_expressions_typo(self):
-        """Handle typo expression."""
-        counter = collections.defaultdict(int)
-        ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        got = ei.collect_expressions('asdfg', 'se', counter, collection='example')
-
-        self.assertEqual(
-            [
-                importer.ExpressionInfo(
-                    expression='asdfg',
-                    language='se',
-                    is_typo='Yes',
-                    has_illegal_char='No',
-                    collection='example',
-                    status='',
-                    note='',
-                    equivalence='',
-                    sanctioned='No'),
-            ], got)

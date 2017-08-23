@@ -478,37 +478,6 @@ class Importer(object):
         self.termwiki = termwiki
         self.concepts = []
 
-    @staticmethod
-    def run_external_command(command, content):
-        """Run the command with input using subprocess."""
-        runner = ExternalCommandRunner()
-        runner.run(command, to_stdin=content)
-
-        return runner.stdout.decode('utf8')
-
-    def is_expression_typo(self, expression, lang):
-        """Runs lookup on the expression.
-
-        Arguments:
-            expression (str): an term expression
-            lang (str): language of the expression
-
-        Returns:
-            bool: True if expression is known to lookup, False otherwise.
-        """
-        if lang in ['se', 'sma', 'smj']:
-            if lang == 'se':
-                lang = 'sme'
-            lookup_command = ['lookup', '-q', '-flags', 'mbTT',
-                              os.path.join(os.getenv('GTHOME'), 'langs', lang,
-                                           'src', 'analyser-gt-norm.xfst')]
-
-            if '?' in self.run_external_command(lookup_command,
-                                                expression):
-                return True
-
-        return False
-
     def write(self, pagecounter):
         """Write the result of the conversion.
 
@@ -582,19 +551,6 @@ class ExcelImporter(Importer):
                                 note='',
                                 equivalence='',
                                 sanctioned='Yes'))
-                    elif self.is_expression_typo(finaltoken, language):
-                        counter['is_typo'] += 1
-                        expressions.append(
-                            ExpressionInfo(
-                                expression=finaltoken,
-                                language=language,
-                                is_typo='Yes',
-                                has_illegal_char='No',
-                                collection=collection,
-                                status='',
-                                note='',
-                                equivalence='',
-                                sanctioned='No'))
                     else:
                         counter['non_typo'] += 1
                         expressions.append(

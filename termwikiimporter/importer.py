@@ -173,9 +173,11 @@ class ExpressionInfos(object):
                        'Pr', 'Interj', 'Pcle', 'Num', 'ABBR', 'MWE', 'N/A',
                        'A/N']:
             raise ExpressionError('Illegal value: {}'.format(pos))
-        elif pos in ['MWE', 'N/A']:
-            pass
-        elif self._pos == 'N/A':
+
+        if pos in ['MWE', 'N/A']:
+            return
+
+        if self._pos == 'N/A':
             self._pos = pos
         elif self._pos != pos:
             raise ExpressionError('Trying to set conflicting pos {} {}'.format(

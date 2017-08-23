@@ -357,7 +357,7 @@ def fix_content(orig_text):
     return new_text
 
 
-def main():
+def fix_site():
     """Make the bot fix all pages."""
     counter = collections.defaultdict(int)
     print('Logging in …')
@@ -379,7 +379,7 @@ def main():
         print(key, counter[key])
 
 
-def test():
+def fix_dump():
     """Check to see if everything works as expected."""
     dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
@@ -396,3 +396,14 @@ def test():
                       title.text)
 
     tree.write(dump, pretty_print=True, encoding='utf8')
+
+
+def main():
+    if len(sys.argv) == 2 and sys.argv[1] == 'test':
+        fix_dump()
+    elif len(sys.argv) == 2 and sys.argv[1] == 'site':
+        fix_site()
+    else:
+        print(
+            'Usage:\ntermbot site to fix the TermWiki\n'
+            'termbot test to run a test on dump.xml')

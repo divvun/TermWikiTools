@@ -62,15 +62,23 @@ class ExpressionInfos(object):
         strings = []
         for expression in self.expressions:
             strings.append('{{Related expression')
-            for key, value in attr.asdict(expression).items():
-                if value:
-                    print('70', key, value)
-                    strings.append('|' + key + '=' + value)
+            strings.append('|language={}'.format(expression.language))
+            strings.append('|expression={}'.format(expression.expression))
             if ' ' in expression.expression:
                 strings.append('|pos=MWE')
+            elif expression.pos:
+                strings.append('|pos={}'.format(expression.pos))
             else:
-                strings.append('|pos=' + self.pos)
-
+                strings.append('|pos={}'.format(self.pos))
+            if expression.status:
+                strings.append('|status={}'.format(expression.status))
+            strings.append('|sanctioned={}'.format(expression.sanctioned))
+            if expression.note:
+                strings.append('|note={}'.format(expression.note))
+            if expression.collection:
+                strings.append('|collection={}'.format(expression.collection))
+            if expression.source:
+                strings.append('|source={}'.format(expression.source))
             strings.append('}}')
 
         return '\n'.join(strings)

@@ -30,20 +30,20 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.want1 = [
             '{{Related expression',
-            '|sanctioned=Yes',
             '|language=se',
             '|expression=test1',
-            '|collection=Example coll',
             '|pos=N',
+            '|sanctioned=Yes',
+            '|collection=Example coll',
             '}}']
 
         self.want2 = [
             '{{Related expression',
-            '|sanctioned=Yes',
             '|language=se',
             '|expression=test2',
-            '|collection=Example coll',
             '|pos=N',
+            '|sanctioned=Yes',
+            '|collection=Example coll',
             '}}']
 
     def test_str_multiple_related_expressions(self):
@@ -121,7 +121,7 @@ class TestConcept(unittest.TestCase):
         uff = {
             'se': ['sámi1', 'sámi2'],
             'nb': ['norsk1']}
-        for lang, expressions in list(uff.items()):
+        for lang, expressions in sorted(list(uff.items())):
             for expression in expressions:
                 self.concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
@@ -177,24 +177,24 @@ class TestConcept(unittest.TestCase):
             '}}',
             '{{Related expression',
             '|language=nb',
-            '|collection=Example coll',
             '|expression=norsk1',
-            '|sanctioned=Yes',
             '|pos=N',
+            '|sanctioned=Yes',
+            '|collection=Example coll',
             '}}',
             '{{Related expression',
             '|language=se',
-            '|collection=Example coll',
             '|expression=sámi1',
-            '|sanctioned=Yes',
             '|pos=N',
+            '|sanctioned=Yes',
+            '|collection=Example coll',
             '}}',
             '{{Related expression',
             '|language=se',
-            '|collection=Example coll',
             '|expression=sámi2',
-            '|sanctioned=Yes',
             '|pos=N',
+            '|sanctioned=Yes',
+            '|collection=Example coll',
             '}}',
             '{{Related concept',
             '|concept=Boazodoallu:duottarmiessi',

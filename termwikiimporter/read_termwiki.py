@@ -21,9 +21,9 @@ def read_semantic_form(text_iterator):
         if line == '}}':
             return wiki_form
         elif line.startswith('|'):
-            parts = line[1:].split('=')
-            key = parts[0]
-            wiki_form[key] = parts[1]
+            equality = line.find('=')
+            key = line[1:equality]
+            wiki_form[key] = line[equality + 1:]
         else:
             wiki_form[key] = '\n'.join([wiki_form[key], line])
 

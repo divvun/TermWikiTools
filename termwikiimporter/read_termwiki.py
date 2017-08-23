@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 """Read termwiki pages."""
 
-import collections
-import os
+import inspect
+import sys
 
-import lxml.etree as etree
+from termwikiimporter import importer
 
-from termwikiimporter import bot, importer
+
+def lineno():
+    """Return the current line number in our program."""
+    return inspect.currentframe().f_back.f_lineno
 
 
 def read_semantic_form(text_iterator):
@@ -14,20 +17,107 @@ def read_semantic_form(text_iterator):
 
     Args:
         text_iterator (str_iterator): the contents of the termwiki article.
+
+    Returns:
+        importer.OrderedDefaultDict
     """
     wiki_form = importer.OrderedDefaultDict()
     wiki_form.default_factory = str
     for line in text_iterator:
         if line == '}}':
             return wiki_form
-        elif line.startswith('|is_typo'):
+        elif line.startswith('|reviewed=') or line.startswith('|is_typo'):
             pass
         elif line.startswith('|'):
             equality = line.find('=')
             key = line[1:equality]
-            wiki_form[key] = line[equality + 1:]
+            if line[equality + 1:]:
+                wiki_form[key] = line[equality + 1:]
         else:
             wiki_form[key] = '\n'.join([wiki_form[key], line])
+
+
+def fixed_collection_line(line):
+    """Add Collection: to collection line if needed.
+
+    Args:
+        line (str): a line found in a termwiki page.
+
+    Returns:
+        str
+    """
+    if '|collection' in line and 'Collection:' not in line:
+        return line.replace('=', '=Collection:')
+    else:
+        return line
+
+
+def fix_collection(orig_text):
+    """Add Collection: to collection line if needed.
+
+    Args:
+        orig_text
+
+    Returns:
+        str
+    """
+    return '\n'.join(
+        [fixed_collection_line(line) for line in orig_text.split('\n')])
+
+
+def remove_unwanted_tag(orig_text):
+    """Remove unwanted attributes from a termwiki page.
+
+    Args:
+        orig_text
+
+    Returns:
+        str
+    """
+    unwanteds = ['|is_typo', '|has_illegal_char']
+
+    for unwanted in unwanteds:
+        new_text = '\n'.join([line for line in orig_text.split('\n')
+                              if not line.startswith(unwanted)])
+        orig_text = new_text
+
+    return orig_text
+
+
+def fix_content(orig_text):
+    """Clean up the content of a TermWiki article.
+
+    Args:
+        orig_text (str): Original text of a TermWiki article.
+
+    Returns:
+        str: Content of cleaned up TermWiki text
+    """
+    ruw = remove_unwanted_tag(orig_text)
+    if orig_text != ruw:
+        print(lineno())
+    f_coll = fix_collection(ruw)
+    #if ruw != f_coll:
+        #print(lineno())
+    rthp = handle_page(f_coll)
+    #if f_coll != rthp:
+        #print(lineno())
+    #print()
+
+    return rthp
+
+
+def is_related_expression(line):
+    """Check if line is the start of a TermWiki Related expression.
+
+    Args:
+        line (str): TermWiki line
+
+    Returns:
+        bool
+    """
+    return (line.startswith('{{Related expression') or
+            line.startswith('{{Related_expression'))
 
 
 def parse_termwiki_concept(text):
@@ -41,62 +131,26 @@ def parse_termwiki_concept(text):
         dict: contains the content of the termwiki page.
     """
     text_iterator = iter(text.splitlines())
-    expressions = importer.OrderedDefaultDict()
-    expressions.default_factory = list
     term = {
         'concept': {},
+        'expressions': [],
         'related_concepts': []}
     for line in text_iterator:
         if line.startswith('{{Concept'):
             if not line.endswith('}}'):
                 term['concept'] = read_semantic_form(text_iterator)
-        elif line.startswith('{{Related expression') or line.startswith('{{Related_expression'):
+        elif is_related_expression(line):
             expression = read_semantic_form(text_iterator)
-            expressions[expression['language']].append(expression)
+            if 'sanctioned' not in expression:
+                expression['sanctioned'] = 'No'
+
+            if 'expression' in expression:
+                term['expressions'].append(expression)
+
         elif line.startswith('{{Related'):
             term['related_concepts'].append(read_semantic_form(text_iterator))
 
-    term['expressions'] = expressions
-
     return term
-
-
-def clean_up_concept(term, counter):
-    """Clean up the contents of concept.
-
-    Possibly change the content of term['concept'].
-
-    Remove definitions if they are found in expressions.
-    If the above is a hit, promote explanation to definition,
-    and more_info to explanation.
-
-    Args:
-        concept (dict): The result from parse_termwiki_concept.
-        counter (collections.defaultdict(int)): keep track of things
-    """
-    for language in term['expressions'].keys():
-        definition = 'definition_{}'.format(language)
-
-        if (term['concept'].get(definition) in
-                [exp['expression'] for exp in term['expressions'][language]]):
-            counter['hits'] += 1
-            del term['concept'][definition]
-
-        explanation = 'explanation_{}'.format(language)
-        if (term['concept'].get(definition) is None and
-                term['concept'].get(explanation) is not None):
-            counter['promote_exp'] += 1
-            term['concept'][definition] = term['concept'].get(explanation)
-            del term['concept'][explanation]
-
-        more_info_lang = 'more_info_{}'.format(language)
-        if (term['concept'].get(explanation) is None and
-                term['concept'].get(more_info_lang) is not None):
-            more_info = term['concept'].get(more_info_lang)
-            if not ('ohkkeh' in more_info or 'dåhkkidum' in more_info):
-                counter['promote_more'] += 1
-                term['concept'][explanation] = term['concept'].get(more_info_lang)
-                del term['concept'][more_info_lang]
 
 
 def term_to_string(term):
@@ -117,12 +171,11 @@ def term_to_string(term):
     else:
         term_strings.append('{{Concept}}')
 
-    for language in term['expressions'].keys():
-        for expression in term['expressions'][language]:
-            term_strings.append('{{Related expression')
-            for key, value in expression.items():
-                term_strings.append('|{}={}'.format(key, value))
-            term_strings.append('}}')
+    for expression in term['expressions']:
+        term_strings.append('{{Related expression')
+        for key, value in expression.items():
+            term_strings.append('|{}={}'.format(key, value))
+        term_strings.append('}}')
 
     for related_concept in term['related_concepts']:
         term_strings.append('{{Related concept')
@@ -133,20 +186,33 @@ def term_to_string(term):
     return '\n'.join(term_strings)
 
 
+def is_concept_tag(content):
+    """Check if content is a TermWiki Concept page.
+
+    Args:
+        content (str): content of a TermWiki page.
+
+    Returns:
+        bool
+    """
+    return ('{{Concept' in content and
+            ('{{Related expression' in content or
+                '{{Related_expression' in content))
+
+
 def handle_page(text):
     """Parse a termwiki page.
 
     Args:
         text (str): content of the page
-        counter (dict): count occurences of page types
 
     Returns:
         str: The cleaned up page, in mediawiki format.
 
     Raises:
-        bot.BotError: if the page is not a known format
+        ValueError: if the page is not a known format
     """
-    if '{{Concept' in text and ('{{Related expression' in text or '{{Related_expression' in text):
+    if is_concept_tag(text):
         before = text.find('{{')
         if before > 0:
             print('text before {{')
@@ -157,60 +223,9 @@ def handle_page(text):
             print(text[after:])
 
         concept = parse_termwiki_concept(text)
-        clean_up_concept(concept)
         return term_to_string(concept)
-    elif not ('STIVREN' in text or 'OMDIRIGERING' in text):
-        raise bot.BotError()
+    elif 'STIVREN' in text or 'OMDIRIGERING' in text:
+        return text
+    else:
+        raise ValueError('Unknown content:\n{}'.format(text))
 
-
-def dump_pages(mediawiki_ns):
-    """Make a mediawiki page from page elements found in a xml dump file.
-
-    Yields:
-        tuple (str, etree.Element)
-    """
-    dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
-
-    tree = etree.parse(dump)
-
-    for page in tree.getroot().iter('{}page'.format(mediawiki_ns)):
-        title = page.find('./{}title'.format(mediawiki_ns))
-        if not title.text.startswith('Expression:') and not title.text.startswith('Collection'):
-            yield title, page
-
-    tree.write(dump, pretty_print=True, encoding='utf8')
-
-
-def clean_dump():
-    """Cleanup a given termwiki dump in xml format."""
-    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
-    counter = collections.defaultdict(int)
-
-    for title, page in dump_pages(mediawiki_ns):
-        text = page.find('.//{}text'.format(mediawiki_ns)).text
-        if text is not None:
-            try:
-                page.find('.//{}text'.format(mediawiki_ns)).text = handle_page(
-                    text,
-                    counter)
-            except KeyError:
-                counter['no_exp'] += 1
-                print(bot.lineno())
-                print(title.text)
-                print(text)
-                print()
-            except bot.BotError:
-                print(bot.lineno())
-                print(title.text)
-                print(text)
-                print()
-                counter['erroneous'] += 1
-        else:
-            counter['deleted'] += 1
-
-    for key in sorted(counter):
-        print(key, counter[key])
-
-
-if __name__ == "__main__":
-    clean_dump()

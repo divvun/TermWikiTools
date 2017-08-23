@@ -14,16 +14,14 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.info1 = importer.ExpressionInfo(expression='test1',
                                              language='se',
-                                             has_illegal_char='Yes',
                                              collection='Example coll',
                                              status='',
                                              note='',
                                              source='',
                                              sanctioned='Yes')
 
-        self.info2 = importer.ExpressionInfo(expression='test1',
+        self.info2 = importer.ExpressionInfo(expression='test2',
                                              language='se',
-                                             has_illegal_char='No',
                                              collection='Example coll',
                                              status='',
                                              note='',
@@ -32,32 +30,21 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.want1 = [
             '{{Related expression',
-            '|collection=Example coll',
-            '|expression=test1',
-            '|has_illegal_char=Yes',
-            '|language=se',
             '|sanctioned=Yes',
+            '|language=se',
+            '|expression=test1',
+            '|collection=Example coll',
             '|pos=N',
             '}}']
 
         self.want2 = [
             '{{Related expression',
-            '|collection=Example coll',
-            '|expression=test1',
-            '|language=se',
             '|sanctioned=Yes',
+            '|language=se',
+            '|expression=test2',
+            '|collection=Example coll',
             '|pos=N',
             '}}']
-
-    def test_str_is_typo_false(self):
-        self.infos.add_expression(self.info1)
-
-        self.assertEqual('\n'.join(self.want1), str(self.infos))
-
-    def test_str_has_illegal_char_is_false(self):
-        self.infos.add_expression(self.info2)
-
-        self.assertEqual('\n'.join(self.want2), str(self.infos))
 
     def test_str_multiple_related_expressions(self):
         self.infos.add_expression(self.info1)
@@ -67,8 +54,8 @@ class TestExpressionInfos(unittest.TestCase):
         want.extend(self.want1)
         want.extend(self.want2)
 
-        print(('\n'.join(want)))
-        print((str(self.infos)))
+        #print(('\n'.join(want)))
+        #print((str(self.infos)))
         self.assertEqual('\n'.join(want), str(self.infos))
 
     def test_pos_default(self):
@@ -139,7 +126,6 @@ class TestConcept(unittest.TestCase):
                 self.concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            has_illegal_char='No',
                                             collection='Example coll',
                                             status='',
                                             note='',
@@ -190,23 +176,23 @@ class TestConcept(unittest.TestCase):
             '|duplicate_pages=[8], [9]',
             '}}',
             '{{Related expression',
+            '|language=nb',
             '|collection=Example coll',
             '|expression=norsk1',
-            '|language=nb',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
             '{{Related expression',
+            '|language=se',
             '|collection=Example coll',
             '|expression=sámi1',
-            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
             '{{Related expression',
+            '|language=se',
             '|collection=Example coll',
             '|expression=sámi2',
-            '|language=se',
             '|sanctioned=Yes',
             '|pos=N',
             '}}',
@@ -334,7 +320,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
                                             note='',
@@ -356,7 +341,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
                                             note='',
@@ -378,7 +362,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
                                             note='',
@@ -422,7 +405,6 @@ class TestExcelImporter(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            has_illegal_char='No',
                                             collection='simple',
                                             status='',
                                             note='',
@@ -452,7 +434,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression='a',
                         language='se',
-                        has_illegal_char='No',
                         collection='example',
                         status='',
                         note='',
@@ -461,7 +442,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression='b',
                         language='se',
-                        has_illegal_char='No',
                         collection='example',
                         status='',
                         note='',
@@ -481,7 +461,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression=startline,
                         language='se',
-                        has_illegal_char='Yes',
                         collection='example',
                         status='',
                         note='',
@@ -501,7 +480,6 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression=startline.replace('\n', ' '),
                     language='se',
-                    has_illegal_char='Yes',
                     collection='example',
                     status='',
                     note='',
@@ -520,7 +498,6 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression='a b',
                     language='se',
-                    has_illegal_char='No',
                     collection='example',
                     status='',
                     note='',

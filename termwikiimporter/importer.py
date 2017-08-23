@@ -23,29 +23,26 @@ class ExpressionError(Exception):
 class ExpressionInfo(object):
     """Information bound to an expression.
 
-
     Attributes:
         languge (str): Indicate which language the expression is.
         expression (str): The expression.
-        has_illegal_char (boolean): Indicate whether the expression contains
-            an unwanted character. Should only written if it is True, as it
-            is only used for debugging/checking TermWiki pages.
-        collection (str): Indicates which collection the expression belongs
-            to.
-        sanctioned (boolean): Indicate whether norm groups have sanctioned
-            the expression.
+        pos (str): The part of speech
         status (str): Indicate if the expression is recommended, outdated,
             etc.
+        sanctioned (boolean): Indicate whether norm groups have sanctioned
+            the expression.
         note (str): Ad hoc note about the expression
+        collection (str): Indicates which collection the expression belongs
+            to.
         source (str): source of the expression
     """
     language = attr.ib('')
     expression = attr.ib('')
-    has_illegal_char = attr.ib(default='No')
-    collection = attr.ib('')
-    sanctioned = attr.ib(default='No')
+    pos = attr.ib('')
     status = attr.ib('')
+    sanctioned = attr.ib(default='No')
     note = attr.ib('')
+    collection = attr.ib('')
     source = attr.ib('')
 
 
@@ -65,11 +62,9 @@ class ExpressionInfos(object):
         strings = []
         for expression in self.expressions:
             strings.append('{{Related expression')
-            for key, value in sorted(attr.asdict(expression).items()):
-                if (value == '' or
-                        (value == 'No' and (key == 'has_illegal_char'))):
-                    pass
-                else:
+            for key, value in attr.asdict(expression).items():
+                if value:
+                    print('70', key, value)
                     strings.append('|' + key + '=' + value)
             if ' ' in expression.expression:
                 strings.append('|pos=MWE')
@@ -488,12 +483,10 @@ class ExcelImporter(Importer):
         """
         expressions = []
         if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
-            counter['has_illegal_char'] += 1
             expressions.append(
                 ExpressionInfo(
                     expression=startline.replace('\n', ' '),
                     language=language,
-                    has_illegal_char='Yes',
                     collection=collection,
                     status='',
                     note='',
@@ -511,7 +504,6 @@ class ExcelImporter(Importer):
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                has_illegal_char='No',
                                 collection=collection,
                                 status='',
                                 note='',
@@ -523,7 +515,6 @@ class ExcelImporter(Importer):
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                has_illegal_char='No',
                                 collection=collection,
                                 status='',
                                 note='',

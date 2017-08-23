@@ -30,7 +30,7 @@ def read_semantic_form(text_iterator):
             wiki_form[key] = '\n'.join([wiki_form[key], line])
 
 
-def parse_termwiki_concept(text, counter):
+def parse_termwiki_concept(text):
     """Parse a termwiki page.
 
     Args:
@@ -48,17 +48,13 @@ def parse_termwiki_concept(text, counter):
         'related_concepts': []}
     for line in text_iterator:
         if line.startswith('{{Concept'):
-            counter['concept'] += 1
             if not line.endswith('}}'):
                 term['concept'] = read_semantic_form(text_iterator)
         elif line.startswith('{{Related expression') or line.startswith('{{Related_expression'):
-            counter['expression'] += 1
             expression = read_semantic_form(text_iterator)
             expressions[expression['language']].append(expression)
-            counter[expression['language']] += 1
         elif line.startswith('{{Related'):
             term['related_concepts'].append(read_semantic_form(text_iterator))
-            counter['rconc'] += 1
 
     term['expressions'] = expressions
 
@@ -137,7 +133,7 @@ def term_to_string(term):
     return '\n'.join(term_strings)
 
 
-def handle_page(text, counter):
+def handle_page(text):
     """Parse a termwiki page.
 
     Args:
@@ -159,14 +155,11 @@ def handle_page(text, counter):
         if 0 < after + 2 < len(text):
             print('text after')
             print(text[after:])
-        counter['real'] += 1
 
-        concept = parse_termwiki_concept(text, counter)
-        clean_up_concept(concept, counter)
+        concept = parse_termwiki_concept(text)
+        clean_up_concept(concept)
         return term_to_string(concept)
-    elif 'STIVREN' in text or 'OMDIRIGERING' in text:
-        counter['redirect'] += 1
-    else:
+    elif not ('STIVREN' in text or 'OMDIRIGERING' in text):
         raise bot.BotError()
 
 

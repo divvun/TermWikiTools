@@ -268,108 +268,93 @@ def get_site():
         return site
 
 
-def text_yielder(text):
-    for line in text.split('\n'):
-        if '|collection' in line and 'Collection:' not in line:
-            yield line.replace('=', '=Collection:')
-        else:
-            yield line
+def fixed_collection_line(line):
+    """Add Collection: to collection line if needed.
+
+    Args:
+        line (str): a line found in a termwiki page.
+
+    Returns:
+        str
+    """
+    if '|collection' in line and 'Collection:' not in line:
+        return line.replace('=', '=Collection:')
+    else:
+        return line
 
 
-def fix_collection(category, counter):
-    if 'Expression' not in category.name:
-        for page in category:
-            counter['total'] += 1
-            orig_text = page.text()
-            if 'collection=' in orig_text and '=Collection:' not in orig_text:
-                counter['collection'] += 1
-                print('+', end='')
-            else:
-                print('.', end='')
-            sys.stdout.flush()
+def fix_collection(orig_text):
+    """Add Collection: to collection line if needed.
 
-            new_text = '\n'.join([line for line in text_yielder(page.text())])
-            if new_text != orig_text:
-                print()
-                print('\t' + page.name)
-                print()
-                page.save(new_text,
-                          summary='Add Collection: to collection lines')
+    Args:
+        orig_text
+
+    Returns:
+        str
+    """
+    return '\n'.join(
+        [fixed_collection_line(line) for line in orig_text.split('\n')])
 
 
-def fix_other_issues(category, counter):
-    for page in category:
-        try:
-            text = page.text()
-            botted_text = concept_parser(text)
-            cleaned_botted_text = read_termwiki.handle_page(
-                botted_text, counter)
-            if text != cleaned_botted_text:
-                sys.stdout.write('-')
-                counter['saves'] += 1
-                try:
-                    page.save(cleaned_botted_text, summary='Fixing content')
-                except mwclient.errors.APIError as error:
-                    print(page.name, text, str(error), file=sys.stderr)
+def remove_unwanted_tag(orig_text):
+    """Remove unwanted attributes from a termwiki page.
 
-            else:
-                sys.stdout.write('|')
-            sys.stdout.flush()
-        except importer.ExpressionError as error:
-            print('\n', lineno(), page.name, str(error), '\n', text,
-                  file=sys.stderr)
-        except KeyError as error:
-            print('\n', lineno(), page.name, str(error), '\n', text,
-                  file=sys.stderr)
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print("*** print_tb:")
-            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
-            print("*** print_exception:")
-            traceback.print_exception(exc_type, exc_value, exc_traceback,
-                                      limit=2, file=sys.stdout)
-            print("*** print_exc:")
-            traceback.print_exc(limit=2, file=sys.stdout)
-            print("*** format_exc, first and last line:")
-            formatted_lines = traceback.format_exc().splitlines()
-            print(formatted_lines[0])
-            print(formatted_lines[-1])
-            print("*** format_exception:")
-            print(repr(traceback.format_exception(exc_type, exc_value,
-                                                  exc_traceback)))
-            print("*** extract_tb:")
-            print(repr(traceback.extract_tb(exc_traceback)))
-            print("*** format_tb:")
-            print(repr(traceback.format_tb(exc_traceback)))
-            print("*** tb_lineno:", exc_traceback.tb_lineno)
-        except BotError as error:
-            if 'Expression' not in page.name:
-                print('\n', lineno(), page.name, str(error), '\n', text,
-                      file=sys.stderr)
-        except ValueError as error:
-            print('\n', lineno(), page.name, str(error), '\n', text,
-                  file=sys.stderr)
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print("*** print_tb:")
-            traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
-            print("*** print_exception:")
-            traceback.print_exception(exc_type, exc_value, exc_traceback,
-                                      limit=2, file=sys.stdout)
-            print("*** print_exc:")
-            traceback.print_exc(limit=2, file=sys.stdout)
-            print("*** format_exc, first and last line:")
-            formatted_lines = traceback.format_exc().splitlines()
-            print(formatted_lines[0])
-            print(formatted_lines[-1])
-            print("*** format_exception:")
-            print(repr(traceback.format_exception(exc_type, exc_value,
-                                                  exc_traceback)))
-            print("*** extract_tb:")
-            print(repr(traceback.extract_tb(exc_traceback)))
-            print("*** format_tb:")
-            print(repr(traceback.format_tb(exc_traceback)))
-            print("*** tb_lineno:", exc_traceback.tb_lineno)
-        except TypeError:
-            print('\n', lineno(), page.name, page.text)
+    Args:
+        orig_text
+
+    Returns:
+        str
+    """
+    unwanteds = ['is_typo', 'has_illegal_char']
+    new_text = orig_text
+
+    for unwanted in unwanteds:
+        new_text = '\n'.join(
+            [line for line in new_text.split('\n')
+             if not line.startswith('|{}'.format(unwanted))])
+
+    return new_text
+
+
+def termwiki_concepts(site):
+    namespaces = [
+        'Boazodoallu',
+        'Dihtorteknologiija ja diehtoteknihkka',
+        'Dáidda ja girjjálašvuohta',
+        'Eanandoallu',
+        'Education',
+        'Ekologiija ja biras',
+        'Ekonomiija ja gávppašeapmi',
+        'Geografiija',
+        'Gielladieđa',
+        'Gulahallanteknihkka',
+        'Guolástus',
+        'Huksenteknihkka',
+        'Juridihkka',
+        'Luonddudieđa ja matematihkka',
+        'Medisiidna',
+        'Mášenteknihkka',
+        'Ođđa sánit',
+        'Servodatdieđa',
+        'Stáda almmolaš hálddašeapmi',
+        'Teknihkka industriija duodji',
+        'Álšateknihkka',
+        'Ásttoáigi ja faláštallan',
+        'Ávnnasindustriija',
+    ]
+    for category in site.allcategories():
+        if category.name.replace('Kategoriija:', '') in namespaces:
+            for page in category:
+                yield page
+
+
+def fix_content(orig_text):
+    new_text = orig_text
+    for fixer in [remove_unwanted_tag, fix_collection, concept_parser,
+                  read_termwiki.handle_page]:
+        new_text = fixer(new_text)
+
+    return new_text
 
 
 def main():
@@ -377,13 +362,18 @@ def main():
     counter = collections.defaultdict(int)
     print('Logging in …')
     site = get_site()
+
     print('About to iterate categories')
-    for category in site.allcategories():
-        print()
-        print(category.name)
-        if 'Expression' not in category.name:
-            # fix_collection(category, counter)
-            fix_other_issues(category, counter)
+    for page in termwiki_concepts(site):
+
+        orig_text = page.text()
+        new_text = fix_content(orig_text)
+
+        if orig_text != new_text:
+            try:
+                page.save(new_text, summary='Fixing content')
+            except mwclient.errors.APIError as error:
+                print(page.name, new_text, str(error), file=sys.stderr)
 
     for key in sorted(counter):
         print(key, counter[key])
@@ -391,14 +381,18 @@ def main():
 
 def test():
     """Check to see if everything works as expected."""
-    abba = etree.parse(os.path.join('termwikiimporter', 'test', 'abba.txt'))
+    dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
+    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
+    tree = etree.parse(dump)
 
-    with open(os.path.join('termwikiimporter', 'test', 'abba.abc'), 'w') as abc:
-        for page in abba.xpath('./page'):
-            content = page.find('content')
-            botted_text = concept_parser(content.text)
-            if botted_text is not None:
-                abc.write(botted_text.encode('utf8'))
-                abc.write('\n')
-            else:
-                print(etree.tostring(page, encoding='utf8'))
+    for page in tree.getroot().iter('{}page'.format(mediawiki_ns)):
+        title = page.find('.//{}text'.format(mediawiki_ns))
+        if title is not None and title.text is not None and '|is_typo' in title.text:
+            try:
+                title.text = fix_content(title.text)
+            except TypeError:
+                print(lineno(),
+                      page.find('.//{}title'.format(mediawiki_ns)).text,
+                      title.text)
+
+    tree.write(dump, pretty_print=True, encoding='utf8')

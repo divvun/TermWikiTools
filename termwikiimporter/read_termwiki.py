@@ -120,8 +120,9 @@ def parse_termwiki_concept(text):
             expression = read_semantic_form(text_iterator)
             if 'sanctioned' not in expression:
                 expression['sanctioned'] = 'No'
-
             if 'expression' in expression:
+                if ' ' in expression['expression']:
+                    expression['pos'] = 'MWE'
                 term['expressions'].append(expression)
 
         elif line.startswith('{{Related'):

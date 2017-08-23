@@ -404,18 +404,6 @@ class TestBot(unittest.TestCase):
         got = bot.concept_parser(concept)
         self.assertEqual(want, got)
 
-    def test_unchanged_concept_when_pos_is_unknown(self):
-        concept = '''{{Concept
-|more_info_se=Erklære seg uvillig : cealkit iežas vuostemielas.
-}}
-{{Related expression
-|language=se
-|expression=vuostemielas
-}}'''
-
-        with self.assertRaises(bot.BotError):
-            bot.concept_parser(concept)
-
     def test_exception_raised_when_conflicting_pos_is_set(self):
         concept = '''{{Concept
 |definition_se=vuogádat maid geavaheaddji ieš mearrida mo doaibmá

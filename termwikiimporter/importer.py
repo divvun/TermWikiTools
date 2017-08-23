@@ -545,7 +545,7 @@ class ExcelImporter(Importer):
 
         print(shortname)
         for ws_title, ws_info in list(self.fileinfo.items()):
-            sheet = workbook.get_sheet_by_name(ws_title)
+            sheet = workbook[ws_title]
 
             for row in range(2, sheet.max_row + 1):
                 counter['concepts'] += 1

@@ -152,7 +152,53 @@ def write_expressions(expressions, site):
                 to_page_content(expression),
                 summary='Creating new Expression page')
         else:
-            print(page.name, 'exists')
+            existings = parse_expression(page.text(),
+                                         expression['expression'])
+            for existing in existings:
+                try:
+                    if (existing['language'] == expression['language'] and
+                            existing['pos'] == expression['pos']):
+                        break
+                except TypeError:
+                    print(existing, expression)
+                    sys.exit(18)
+            else:
+                existings.append({
+                    'language': expression['language'],
+                    'pos': expression['pos']})
+
+            new_text = '\n'.join(
+                [to_page_content(expression) for expression in existings])
+            if page.text() != new_text:
+                print()
+                print('Correcting content in: {}'.format(page.name))
+                page.save(new_text, summary='Correcting content')
+
+
+def parse_expression(text, page_name):
+    """Parse an expression page.
+
+    Args:
+        text (str): content of an Expression page.
+        page_name (str): name of the Expression page.
+
+    Returns:
+        dict(str, str): contains the keys and values found on the Expression
+            page.
+    """
+    existing = []
+    text_iterator = iter(text.splitlines())
+
+    for line in text_iterator:
+        if line.startswith('{{Expression') and '}}' not in line:
+            exp = read_termwiki.read_semantic_form(text_iterator)
+            if exp:
+                if ' ' in page_name:
+                    exp['pos'] = 'MWE'
+                if exp not in existing:
+                    existing.append(exp)
+
+    return existing
 
 
 def to_page_content(expression):

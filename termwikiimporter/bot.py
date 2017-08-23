@@ -141,7 +141,6 @@ def parse_related_expression(lines, sanctioned):
     """
     template_contents = {}
     template_contents['sanctioned'] = 'No'
-    template_contents['is_typo'] = 'No'
     template_contents['has_illegal_char'] = 'No'
     template_contents['collection'] = ''
     template_contents['status'] = ''
@@ -178,10 +177,7 @@ def parse_related_expression(lines, sanctioned):
                         if language == 'se':
                             language = 'sme'
                         ppos = get_pos(template_contents['expression'], language)
-                        if ppos == '?':
-                            template_contents['is_typo'] = 'Yes'
-                        else:
-                            pos = ppos
+                        pos = ppos
                 return (importer.ExpressionInfo(**template_contents), pos)
         else:
             template_contents[key] = template_contents[key] + ' ' + line.strip()

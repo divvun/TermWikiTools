@@ -53,7 +53,7 @@ class ExpressionInfo(
         namedtuple(
             'ExpressionInfo',
             [
-                'language', 'expression', 'is_typo', 'has_illegal_char',
+                'language', 'expression', 'has_illegal_char',
                 'collection', 'status', 'note', 'sanctioned',
                 'equivalence'])):
     """Information bound to an expression.
@@ -62,10 +62,6 @@ class ExpressionInfo(
     Attributes:
         languge (str): Indicate which language the expression is.
         expression (str): The expression.
-        is_typo (boolean): Indicate whether the expression is known by
-            the sámi morphological analysers. Should only written if it
-            is True, as it is only used for debugging/checking TermWiki
-            pages.
         has_illegal_char (boolean): Indicate whether the expression contains
             an unwanted character. Should only written if it is True, as it
             is only used for debugging/checking TermWiki pages.
@@ -98,8 +94,7 @@ class ExpressionInfos(object):
             strings.append('{{Related expression')
             for key, value in list(expression._asdict().items()):
                 if (value == '' or
-                        (value == 'No' and (key == 'is_typo' or
-                                            key == 'has_illegal_char'))):
+                        (value == 'No' and (key == 'has_illegal_char'))):
                     pass
                 else:
                     strings.append('|' + key + '=' + value)
@@ -525,7 +520,6 @@ class ExcelImporter(Importer):
                 ExpressionInfo(
                     expression=startline.replace('\n', ' '),
                     language=language,
-                    is_typo='No',
                     has_illegal_char='Yes',
                     collection=collection,
                     status='',
@@ -544,7 +538,6 @@ class ExcelImporter(Importer):
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo='No',
                                 has_illegal_char='No',
                                 collection=collection,
                                 status='',
@@ -557,7 +550,6 @@ class ExcelImporter(Importer):
                             ExpressionInfo(
                                 expression=finaltoken,
                                 language=language,
-                                is_typo='No',
                                 has_illegal_char='No',
                                 collection=collection,
                                 status='',

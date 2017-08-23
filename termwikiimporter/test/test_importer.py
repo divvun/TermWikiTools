@@ -14,7 +14,6 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.info1 = importer.ExpressionInfo(expression='test1',
                                              language='se',
-                                             is_typo='No',
                                              has_illegal_char='Yes',
                                              collection='Example coll',
                                              status='',
@@ -24,7 +23,6 @@ class TestExpressionInfos(unittest.TestCase):
 
         self.info2 = importer.ExpressionInfo(expression='test1',
                                              language='se',
-                                             is_typo='Yes',
                                              has_illegal_char='No',
                                              collection='Example coll',
                                              status='',
@@ -46,7 +44,6 @@ class TestExpressionInfos(unittest.TestCase):
             '{{Related expression',
             '|language=se',
             '|expression=test1',
-            '|is_typo=Yes',
             '|collection=Example coll',
             '|sanctioned=Yes',
             '|pos=N',
@@ -142,7 +139,6 @@ class TestConcept(unittest.TestCase):
                 self.concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo='No',
                                             has_illegal_char='No',
                                             collection='Example coll',
                                             status='',
@@ -338,7 +334,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo='No',
                                             has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
@@ -361,7 +356,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo='No',
                                             has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
@@ -384,7 +378,6 @@ class TestTermwiki(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo='No',
                                             has_illegal_char='Yes',
                                             collection='Example coll',
                                             status='',
@@ -429,7 +422,6 @@ class TestExcelImporter(unittest.TestCase):
                 concept.add_expression(
                     importer.ExpressionInfo(expression=expression,
                                             language=lang,
-                                            is_typo='No',
                                             has_illegal_char='No',
                                             collection='simple',
                                             status='',
@@ -460,7 +452,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression='a',
                         language='se',
-                        is_typo='No',
                         has_illegal_char='No',
                         collection='example',
                         status='',
@@ -470,7 +461,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression='b',
                         language='se',
-                        is_typo='No',
                         has_illegal_char='No',
                         collection='example',
                         status='',
@@ -491,7 +481,6 @@ class TestExcelImporter(unittest.TestCase):
                     importer.ExpressionInfo(
                         expression=startline,
                         language='se',
-                        is_typo='No',
                         has_illegal_char='Yes',
                         collection='example',
                         status='',
@@ -512,7 +501,6 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression=startline.replace('\n', ' '),
                     language='se',
-                    is_typo='No',
                     has_illegal_char='Yes',
                     collection='example',
                     status='',
@@ -532,7 +520,6 @@ class TestExcelImporter(unittest.TestCase):
                 importer.ExpressionInfo(
                     expression='a b',
                     language='se',
-                    is_typo='No',
                     has_illegal_char='No',
                     collection='example',
                     status='',

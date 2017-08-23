@@ -72,6 +72,7 @@ def termwiki_concept_pages(site):
             for page in category:
                 if is_concept_tag(page.text()):
                     yield page
+            print()
 
 
 def dump_concept_pages(dump_tree):
@@ -113,12 +114,15 @@ def fix_site():
 
     print('About to iterate categories')
     for page in termwiki_concept_pages(site):
+        print('.', end='')
+        sys.stdout.flush()
         orig_text = page.text()
 
         concept = read_termwiki.handle_page(orig_text)
         new_text = read_termwiki.term_to_string(concept)
 
         if orig_text != new_text:
+            print()
             print(read_termwiki.lineno(), page.name)
             try:
                 page.save(new_text, summary='Fixing content')

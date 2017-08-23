@@ -18,38 +18,6 @@ class ExpressionError(Exception):
     pass
 
 
-class ExternalCommandRunner(object):
-    """Class to run external command through subprocess.
-
-    Attributes:
-        stdout: save the stdout of the command here.
-        stderr: save the stderr of the command here.
-        returncode: save the returncode of the command here.
-    """
-
-    def __init__(self):
-        """Initialise the ExternalCommandRunner class."""
-        self.stdout = None
-        self.stderr = None
-        self.returncode = None
-
-    def run(self, command, cwd=None, to_stdin=None):
-        """Run the command, save the result."""
-        try:
-            subp = subprocess.Popen(command,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    cwd=cwd)
-        except OSError:
-            print('Please install {}'.format(command[0]))
-            raise
-
-        (self.stdout, self.stderr) = subp.communicate(to_stdin.encode('utf8'))
-        self.returncode = subp.returncode
-
-
-class ExpressionInfo(
         namedtuple(
             'ExpressionInfo',
             [

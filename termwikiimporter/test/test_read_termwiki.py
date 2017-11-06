@@ -26,11 +26,16 @@ class TestBot(unittest.TestCase):
             '}}'
         ])
 
-        want = '\n'.join([
-            '{{Concept',
-            '|explanation_se=omd',
+        want = sorted([
+            '{{Concept}}',
+            '{{Concept info',
+            '|language=se',
+            '|explanation=omd',
             ' 1. it don gal dainna bargguin ađaiduva',
-            '|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
+            '}}',
+            '{{Concept info',
+            '|language=nb',
+            '|explanation=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
             ' 1. du blir nok ikke fet av det arbeidet',
             '}}',
             '{{Related expression',
@@ -41,12 +46,13 @@ class TestBot(unittest.TestCase):
             '}}'
         ])
 
-        self.assertEqual(want, read_termwiki.handle_page(concept))
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(concept)).split('\n')))
 
     def test_bot4(self):
         """Check that sanctioned=No is set default."""
         self.maxDiff = None
-        content = '\n'.join([
+        concept = '\n'.join([
             '{{Concept',
             '|definition_se=njiŋŋálas',
             '}}',
@@ -56,9 +62,11 @@ class TestBot(unittest.TestCase):
             '|pos=N',
             '}}'
         ])
-        want = '\n'.join([
-            '{{Concept',
-            '|definition_se=njiŋŋálas',
+        want = sorted([
+            '{{Concept}}',
+            '{{Concept info',
+            '|language=se',
+            '|definition=njiŋŋálas',
             '}}',
             '{{Related expression',
             '|language=se',
@@ -67,19 +75,16 @@ class TestBot(unittest.TestCase):
             '|sanctioned=No',
             '}}'
         ])
-        got = read_termwiki.handle_page(content)
 
-        self.assertEqual(want, got)
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(concept)).split('\n')))
 
     def test_bot6(self):
         """Check that Related concept is parsed correctly."""
         self.maxDiff = None
 
         concept = [
-            '{{Concept',
-            '|definition_se=definition1',
-            '|duplicate_pages=[8], [9]',
-            '}}',
+            '{{Concept}}',
             '{{Related expression',
             '|language=se',
             '|expression=exp',
@@ -91,10 +96,10 @@ class TestBot(unittest.TestCase):
             '}}'
         ]
 
-        want = '\n'.join(concept)
-        got = read_termwiki.handle_page(want)
-
-        self.assertEqual(want, got)
+        want = sorted(concept)
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(
+                '\n'.join(concept))).split('\n')))
 
     def test_is_expression_set(self):
         """Check Related expressions with empty expressions are deleted."""
@@ -103,7 +108,6 @@ class TestBot(unittest.TestCase):
         concept = '\n'.join([
             '{{Concept',
             '|definition_se=definition1',
-            '|duplicate_pages=[8], [9]',
             '}}',
             '{{Related expression',
             '|language=se',
@@ -111,14 +115,16 @@ class TestBot(unittest.TestCase):
             '}}'
         ])
 
-        want = '\n'.join([
-            '{{Concept',
-            '|definition_se=definition1',
-            '|duplicate_pages=[8], [9]',
-            '}}',
+        want = sorted([
+            '{{Concept}}',
+            '{{Concept info',
+            '|language=se',
+            '|definition=definition1',
+            '}}'
         ])
 
-        self.assertEqual(want, read_termwiki.handle_page(concept))
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(concept)).split('\n')))
 
     def test_bot8(self):
         """Check that empty and unwanted attributes in Concept are removed."""
@@ -138,50 +144,59 @@ class TestBot(unittest.TestCase):
 |sanctioned=Yes
 |pos=N
 }}'''
-        want = '''{{Concept
-|definition_se=ákšodearri
-|definition_nb=tynne delen av øks
-|explanation_nb=Den tynne del av ei øks (den slipes til egg)
-}}
-{{Related expression
-|language=se
-|expression=ákšodearri
-|sanctioned=Yes
-|pos=N
-}}'''
+        want = sorted([
+            '{{Concept}}',
+            '{{Concept info',
+            '|language=se',
+            '|definition=ákšodearri',
+            '}}',
+            '{{Concept info',
+            '|language=nb',
+            '|definition=tynne delen av øks',
+            '|explanation=Den tynne del av ei øks (den slipes til egg)',
+            '}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákšodearri',
+            '|sanctioned=Yes',
+            '|pos=N',
+            '}}',
+        ])
 
-        got = read_termwiki.handle_page(concept)
-        self.assertEqual(want, got)
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(concept)).split('\n')))
 
     def test_bot10(self):
         """Check that reviewed is removed."""
         self.maxDiff = None
-        c = (
-            '{{Concept\n'
-            '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
-            '|reviewed=No\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=se\n'
-            '|expression=rotnu\n'
-            '|sanctioned=Yes\n'
-            '|pos=N\n'
+        concept = '\n'.join([
+            '{{Concept',
+            '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi',
+            '|reviewed=No',
+            '}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=rotnu',
+            '|sanctioned=Yes',
+            '|pos=N',
             '}}'
-        )
-        want = (
-            '{{Concept\n'
-            '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi\n'
-            '}}\n'
-            '{{Related expression\n'
-            '|language=se\n'
-            '|expression=rotnu\n'
-            '|sanctioned=Yes\n'
-            '|pos=N\n'
+        ])
+        want = sorted([
+            '{{Concept}}',
+            '{{Concept info',
+            '|language=se',
+            '|definition=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi',
+            '}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=rotnu',
+            '|sanctioned=Yes',
+            '|pos=N',
             '}}'
-        )
-        got = read_termwiki.handle_page(c)
+        ])
 
-        self.assertEqual(want, got)
+        self.assertEqual(want, sorted(read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(concept)).split('\n')))
 
 
 class TestReadTermwiki(unittest.TestCase):
@@ -215,3 +230,50 @@ class TestReadTermwiki(unittest.TestCase):
             read_termwiki.parse_termwiki_concept(
                 contains_is_typo))
         self.assertFalse('is_typo' in got)
+
+    def test_concept_to_conceptinfo(self):
+        """Check that conversion from concept to concept info works."""
+        self.maxDiff = None
+        concept = '\n'.join([
+            '{{Concept',
+            '|definition_nb=en fullvoksen hun av arten steinkobbe, (en fullvoksen hun-sel av den selen som av samene kalles nuorroš L); en steinkobbe hun som er drektig PAJ',
+            '|definition_se=Ollesšattot njiŋŋálas geađgán, PAJ lassediehtu čovjon geađgán',
+            '|more_info_nb=Norsk søkeord på risten.no: steinkobbe',
+            '|explanation_se=(afzhio L, afčo FR)',
+            '}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|collection=Collection:njuorjjotearpmat',
+            '|sanctioned=No',
+            '|pos=N',
+            '}}',
+        ])
+
+        want = [
+            '{{Concept',
+            '|collection=Collection:njuorjjotearpmat',
+            '}}',
+            '{{Concept info',
+            '|language=se',
+            '|definition=Ollesšattot njiŋŋálas geađgán, PAJ lassediehtu čovjon geađgán',
+            '|explanation=(afzhio L, afčo FR)',
+            '}}',
+            '{{Concept info',
+            '|more_info=Norsk søkeord på risten.no: steinkobbe',
+            '|definition=en fullvoksen hun av arten steinkobbe, (en fullvoksen hun-sel av den selen som av samene kalles nuorroš L); en steinkobbe hun som er drektig PAJ',
+            '|language=nb',
+            '}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|sanctioned=No',
+            '|pos=N',
+            '}}',
+        ]
+
+        got = read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(
+                concept))
+
+        self.assertEqual(sorted(got.split('\n')), sorted(want))

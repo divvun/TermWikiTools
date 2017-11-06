@@ -150,6 +150,8 @@ def parse_termwiki_concept(text):
         if line.startswith('{{Concept'):
             if not line.endswith('}}'):
                 term['concept'] = read_semantic_form(text_iterator)
+                if term['concept'].get('language'):
+                    del term['concept']['language']
         elif is_related_expression(line):
             expression = read_semantic_form(text_iterator)
             if 'sanctioned' not in expression:
@@ -233,8 +235,7 @@ def handle_page(orig_text):
     if 0 < after + 2 < len(orig_text):
         print('text after')
         print(orig_text[after:])
+        print(orig_text)
 
     return parse_termwiki_concept(
         fix_collection(remove_unwanted_tag(orig_text)))
-
-

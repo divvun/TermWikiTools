@@ -277,3 +277,22 @@ class TestReadTermwiki(unittest.TestCase):
                 concept))
 
         self.assertEqual(sorted(got.split('\n')), sorted(want))
+
+    def test_remove_language_from_concept(self):
+        """Check that conversion from concept to concept info works."""
+        self.maxDiff = None
+        concept = '\n'.join([
+            '{{Concept',
+            '|language=se',
+            '}}',
+        ])
+
+        want = [
+            '{{Concept}}'
+        ]
+
+        got = read_termwiki.term_to_string(
+            read_termwiki.parse_termwiki_concept(
+                concept))
+
+        self.assertEqual(sorted(got.split('\n')), sorted(want))

@@ -147,7 +147,9 @@ def parse_termwiki_concept(text):
         'related_concepts': []}
     collection = set()
     for line in text_iterator:
-        if line.startswith('{{Concept'):
+        if line.startswith('{{Concept info'):
+            term['concept_infos'].append(read_semantic_form(text_iterator))
+        elif line.startswith('{{Concept'):
             if not line.endswith('}}'):
                 term['concept'] = read_semantic_form(text_iterator)
                 if term['concept'].get('language'):

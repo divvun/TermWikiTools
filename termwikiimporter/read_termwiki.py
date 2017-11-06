@@ -112,18 +112,21 @@ def to_concept_info(term):
             pos = key.rfind('_')
             if pos > 0:
                 lang = key[pos + 1:]
-                if not langs.get(lang):
-                    langs[lang] = {}
-                    langs[lang]['language'] = lang
-                new_key = key[:pos]
-                langs[lang][new_key] = concept[key]
-                del concept[key]
+                if lang in ['se', 'sv', 'fi', 'en', 'nb', 'nn', 'sma', 'smj',
+                            'smn', 'sms', 'lat']:
+                    if not langs.get(lang):
+                        langs[lang] = {}
+                        langs[lang]['language'] = lang
+                    new_key = key[:pos]
+                    langs[lang][new_key] = concept[key]
+                    del concept[key]
 
     term['concept'] = concept
     for lang in langs:
         term['concept_infos'].append(langs[lang])
 
-    print(lineno(), term['concept_infos'])
+    if term['concept_infos']:
+        print(lineno(), term['concept_infos'])
 
 
 def parse_termwiki_concept(text):

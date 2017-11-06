@@ -55,6 +55,8 @@ def fixed_collection_line(line):
 def fix_collection(orig_text):
     """Add Collection: to collection line if needed.
 
+    Plain text conversion.
+
     Args:
         orig_text
 
@@ -67,6 +69,8 @@ def fix_collection(orig_text):
 
 def remove_unwanted_tag(orig_text):
     """Remove unwanted attributes from a termwiki page.
+
+    Plain text conversion.
 
     Args:
         orig_text
@@ -105,7 +109,7 @@ def to_concept_info(term):
 
     if concept:
         for key in list(concept.keys()):
-            pos = key.find('_')
+            pos = key.rfind('_')
             if pos > 0:
                 lang = key[pos + 1:]
                 if not langs.get(lang):
@@ -138,6 +142,7 @@ def parse_termwiki_concept(text):
         'concept_infos': [],
         'expressions': [],
         'related_concepts': []}
+    collection = set()
     for line in text_iterator:
         if line.startswith('{{Concept'):
             if not line.endswith('}}'):
@@ -149,12 +154,18 @@ def parse_termwiki_concept(text):
             if 'expression' in expression:
                 if ' ' in expression['expression']:
                     expression['pos'] = 'MWE'
+                if 'collection' in expression:
+                    collection.add(expression['collection'].replace('_', ' '))
+                    del expression['collection']
                 term['expressions'].append(expression)
 
         elif line.startswith('{{Related'):
             term['related_concepts'].append(read_semantic_form(text_iterator))
 
     to_concept_info(term)
+
+    if collection:
+        term['concept']['collection'] = '@@'.join(collection)
 
     return term
 

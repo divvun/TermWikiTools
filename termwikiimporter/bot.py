@@ -227,14 +227,8 @@ def fix_dump():
 
     for page in dump_concept_pages(tree):
         content_elt = page.find('.//{}text'.format(mediawiki_ns))
-        try:
-            content_elt.text = read_termwiki.fix_content(content_elt.text)
-        except ValueError:
-            print(read_termwiki.lineno(),
-                  page.find('.//{}title'.format(mediawiki_ns)).text,
-                  'has invalid content\n',
-                  content_elt.text,
-                  file=sys.stderr)
+        content_elt.text = read_termwiki.term_to_string(
+                read_termwiki.handle_page(content_elt.text))
 
     tree.write(dump, pretty_print=True, encoding='utf8')
 

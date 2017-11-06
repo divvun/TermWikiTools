@@ -106,35 +106,6 @@ def is_concept_tag(content):
              '{{Related_expression' in content))
 
 
-def fix_site():
-    """Make the bot fix all pages."""
-    counter = collections.defaultdict(int)
-    print('Logging in …')
-    site = get_site()
-
-    print('About to iterate categories')
-    for page in termwiki_concept_pages(site):
-        print('.', end='')
-        sys.stdout.flush()
-        orig_text = page.text()
-
-        concept = read_termwiki.handle_page(orig_text)
-        new_text = read_termwiki.term_to_string(concept)
-
-        if orig_text != new_text:
-            print()
-            print(read_termwiki.lineno(), page.name)
-            try:
-                page.save(new_text, summary='Fixing content')
-            except mwclient.errors.APIError as error:
-                print(page.name, new_text, str(error), file=sys.stderr)
-
-        write_expressions(concept['expressions'], site)
-
-    for key in sorted(counter):
-        print(key, counter[key])
-
-
 def write_expressions(expressions, site):
     """Make Expression pages.
 
@@ -231,6 +202,35 @@ def fix_dump():
                 read_termwiki.handle_page(content_elt.text))
 
     tree.write(dump, pretty_print=True, encoding='utf8')
+
+
+def fix_site():
+    """Make the bot fix all pages."""
+    counter = collections.defaultdict(int)
+    print('Logging in …')
+    site = get_site()
+
+    print('About to iterate categories')
+    for page in termwiki_concept_pages(site):
+        print('.', end='')
+        sys.stdout.flush()
+        orig_text = page.text()
+
+        concept = read_termwiki.handle_page(orig_text)
+        new_text = read_termwiki.term_to_string(concept)
+
+        if orig_text != new_text:
+            print()
+            print(read_termwiki.lineno(), page.name)
+            try:
+                page.save(new_text, summary='Fixing content')
+            except mwclient.errors.APIError as error:
+                print(page.name, new_text, str(error), file=sys.stderr)
+
+        write_expressions(concept['expressions'], site)
+
+    for key in sorted(counter):
+        print(key, counter[key])
 
 
 def main():

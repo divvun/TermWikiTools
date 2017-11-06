@@ -198,8 +198,9 @@ def fix_dump():
 
     for page in dump_concept_pages(tree):
         content_elt = page.find('.//{}text'.format(mediawiki_ns))
-        content_elt.text = read_termwiki.term_to_string(
-                read_termwiki.handle_page(content_elt.text))
+        if '{{' in content_elt.text:
+            content_elt.text = read_termwiki.term_to_string(
+                    read_termwiki.handle_page(content_elt.text))
 
     tree.write(dump, pretty_print=True, encoding='utf8')
 
@@ -216,18 +217,19 @@ def fix_site():
         sys.stdout.flush()
         orig_text = page.text()
 
-        concept = read_termwiki.handle_page(orig_text)
-        new_text = read_termwiki.term_to_string(concept)
+        if '{{' in orig_text:
+            concept = read_termwiki.handle_page(orig_text)
+            new_text = read_termwiki.term_to_string(concept)
 
-        if orig_text != new_text:
-            print()
-            print(read_termwiki.lineno(), page.name)
-            try:
-                page.save(new_text, summary='Fixing content')
-            except mwclient.errors.APIError as error:
-                print(page.name, new_text, str(error), file=sys.stderr)
+            if orig_text != new_text:
+                print()
+                print(read_termwiki.lineno(), page.name)
+                try:
+                    page.save(new_text, summary='Fixing content')
+                except mwclient.errors.APIError as error:
+                    print(page.name, new_text, str(error), file=sys.stderr)
 
-        write_expressions(concept['expressions'], site)
+            write_expressions(concept['expressions'], site)
 
     for key in sorted(counter):
         print(key, counter[key])

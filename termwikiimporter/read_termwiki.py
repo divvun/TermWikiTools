@@ -31,9 +31,9 @@ def read_semantic_form(text_iterator):
             equality = line.find('=')
             key = line[1:equality]
             if line[equality + 1:]:
-                wiki_form[key] = line[equality + 1:]
+                wiki_form[key] = line[equality + 1:].strip()
         else:
-            wiki_form[key] = '\n'.join([wiki_form[key], line])
+            wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
 
 
 def fixed_collection_line(line):
@@ -152,6 +152,7 @@ def parse_termwiki_concept(text):
     }
 
     for line in text_iterator:
+        line = line.replace('\xa0', ' ')  # replace nbsp
         if (line == '{{Related expression}}' or
                 line == '{{Concept info}}' or line == '{{Concept}}'):
             continue

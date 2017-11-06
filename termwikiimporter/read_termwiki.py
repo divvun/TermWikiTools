@@ -97,6 +97,31 @@ def is_related_expression(line):
             line.startswith('{{Related_expression'))
 
 
+def to_concept_info(term):
+    langs = {}
+
+    concept = {}
+    concept.update(term['concept'])
+
+    if concept:
+        for key in list(concept.keys()):
+            pos = key.find('_')
+            if pos > 0:
+                lang = key[pos + 1:]
+                if not langs.get(lang):
+                    langs[lang] = {}
+                    langs[lang]['language'] = lang
+                new_key = key[:pos]
+                langs[lang][new_key] = concept[key]
+                del concept[key]
+
+    term['concept'] = concept
+    for lang in langs:
+        term['concept_infos'].append(langs[lang])
+
+    print(lineno(), term['concept_infos'])
+
+
 def parse_termwiki_concept(text):
     """Parse a termwiki page.
 
@@ -110,6 +135,7 @@ def parse_termwiki_concept(text):
     text_iterator = iter(text.splitlines())
     term = {
         'concept': {},
+        'concept_infos': [],
         'expressions': [],
         'related_concepts': []}
     for line in text_iterator:
@@ -127,6 +153,8 @@ def parse_termwiki_concept(text):
 
         elif line.startswith('{{Related'):
             term['related_concepts'].append(read_semantic_form(text_iterator))
+
+    to_concept_info(term)
 
     return term
 
@@ -148,6 +176,13 @@ def term_to_string(term):
         term_strings.append('}}')
     else:
         term_strings.append('{{Concept}}')
+
+    for concept_info in term['concept_infos']:
+        print(lineno(), concept_info)
+        term_strings.append('{{Concept info')
+        for key, value in concept_info.items():
+            term_strings.append('|{}={}'.format(key, value))
+        term_strings.append('}}')
 
     for expression in term['expressions']:
         term_strings.append('{{Related expression')

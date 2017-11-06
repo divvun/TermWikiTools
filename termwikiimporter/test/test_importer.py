@@ -3,6 +3,7 @@
 import collections
 import os
 import unittest
+import sys
 
 from termwikiimporter import importer
 
@@ -309,69 +310,69 @@ class TestTermwiki(unittest.TestCase):
             self.assertSetEqual(want[lang],
                                 self.termwiki.get_expressions_set(lang))
 
-    def test_get_pages_where_concept_probably_exists1(self):
-        """No common expressions."""
-        concept = importer.Concept(main_category='TestCategory')
-        uff = {
-            'se': ['sámi1', 'sámi2'],
-            'nb': ['norsk1']}
-        for lang, expressions in list(uff.items()):
-            for expression in expressions:
-                concept.add_expression(
-                    importer.ExpressionInfo(expression=expression,
-                                            language=lang,
-                                            collection='Example coll',
-                                            status='',
-                                            note='',
-                                            source='',
-                                            sanctioned='Yes'))
+    #def test_get_pages_where_concept_probably_exists1(self):
+        #"""No common expressions."""
+        #concept = importer.Concept(main_category='TestCategory')
+        #uff = {
+            #'se': ['sámi1', 'sámi2'],
+            #'nb': ['norsk1']}
+        #for lang, expressions in list(uff.items()):
+            #for expression in expressions:
+                #concept.add_expression(
+                    #importer.ExpressionInfo(expression=expression,
+                                            #language=lang,
+                                            #collection='Example coll',
+                                            #status='',
+                                            #note='',
+                                            #source='',
+                                            #sanctioned='Yes'))
 
-        self.assertSetEqual(
-            self.termwiki.get_pages_where_concept_probably_exists(concept),
-            set())
+        #self.assertSetEqual(
+            #self.termwiki.get_pages_where_concept_probably_exists(concept),
+            #set())
 
-    def test_get_pages_where_concept_probably_exists2(self):
-        """Common expressions in one language."""
-        concept = importer.Concept(main_category='TestCategory')
-        uff = {
-            'se': ['Brasil', 'sámi2'],
-            'nb': ['norsk1', 'norsk2']}
-        for lang, expressions in list(uff.items()):
-            for expression in expressions:
-                concept.add_expression(
-                    importer.ExpressionInfo(expression=expression,
-                                            language=lang,
-                                            collection='Example coll',
-                                            status='',
-                                            note='',
-                                            source='',
-                                            sanctioned='Yes'))
+    #def test_get_pages_where_concept_probably_exists2(self):
+        #"""Common expressions in one language."""
+        #concept = importer.Concept(main_category='TestCategory')
+        #uff = {
+            #'se': ['Brasil', 'sámi2'],
+            #'nb': ['norsk1', 'norsk2']}
+        #for lang, expressions in list(uff.items()):
+            #for expression in expressions:
+                #concept.add_expression(
+                    #importer.ExpressionInfo(expression=expression,
+                                            #language=lang,
+                                            #collection='Example coll',
+                                            #status='',
+                                            #note='',
+                                            #source='',
+                                            #sanctioned='Yes'))
 
-        self.assertSetEqual(
-            self.termwiki.get_pages_where_concept_probably_exists(concept),
-            set())
+        #self.assertSetEqual(
+            #self.termwiki.get_pages_where_concept_probably_exists(concept),
+            #set())
 
-    def test_get_pages_where_concept_probably_exists3(self):
-        """Common expressions in two languages."""
-        concept = importer.Concept(main_category='TestCategory')
-        uff = {
-            'se': ['bealjoštelefovdna', 'belljosat'],
-            'nb': ['norsk1', 'hodetelefoner']}
-        for lang, expressions in list(uff.items()):
-            for expression in expressions:
-                concept.add_expression(
-                    importer.ExpressionInfo(expression=expression,
-                                            language=lang,
-                                            collection='Example coll',
-                                            status='',
-                                            note='',
-                                            source='',
-                                            sanctioned='Yes'))
+    #def test_get_pages_where_concept_probably_exists3(self):
+        #"""Common expressions in two languages."""
+        #concept = importer.Concept(main_category='TestCategory')
+        #uff = {
+            #'se': ['bealjoštelefovdna', 'belljosat'],
+            #'nb': ['norsk1', 'hodetelefoner']}
+        #for lang, expressions in list(uff.items()):
+            #for expression in expressions:
+                #concept.add_expression(
+                    #importer.ExpressionInfo(expression=expression,
+                                            #language=lang,
+                                            #collection='Example coll',
+                                            #status='',
+                                            #note='',
+                                            #source='',
+                                            #sanctioned='Yes'))
 
-        self.assertSetEqual(
-            self.termwiki.get_pages_where_concept_probably_exists(concept),
-            set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
-                 'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
+        #self.assertSetEqual(
+            #self.termwiki.get_pages_where_concept_probably_exists(concept),
+            #set(['Dihtorteknologiija ja diehtoteknihkka:bealjoštelefovdna',
+                 #'Dihtorteknologiija ja diehtoteknihkka:belljosat']))
 
     def test_pagenames(self):
         """Check if the property pagenames returns what it is supposed to."""
@@ -394,113 +395,78 @@ class TestExcelImporter(unittest.TestCase):
                                 'simple.xlsx')
         ei = importer.ExcelImporter(filename, self.termwiki)
 
-        concept = importer.Concept(main_category='TestCategory')
-        uff = {
-            'fi': ['suomi'],
-            'nb': ['norsk'],
-            'se': ['davvisámegiella']}
-        for lang, expressions in list(uff.items()):
-            for expression in expressions:
-                concept.expression_infos.pos = 'N'
-                concept.add_expression(
-                    importer.ExpressionInfo(expression=expression,
-                                            language=lang,
-                                            collection='simple',
-                                            status='',
-                                            note='',
-                                            source='',
-                                            sanctioned='Yes'))
-                concept.add_concept_info('explanation_nb', 'Dette er forklaringen')
-
+        concept = {
+            'concept': {
+                'main_category': 'Servodatdieđa',
+                'collection': set(),
+            },
+            'concept_infos': [
+                {
+                    'explanation': 'Dette er forklaringen',
+                    'language': 'nb',
+                },
+            ],
+            'related_expressions': [
+                {
+                    'expression': 'davvisámegiella',
+                    'language': 'se',
+                    'pos': 'N',
+                },
+                {
+                    'expression': 'suomi',
+                    'language': 'fi',
+                    'pos': 'N',
+                },
+                {
+                    'expression': 'norsk',
+                    'language': 'nb',
+                    'pos': 'N',
+                },
+            ]
+        }
+        concept['concept']['collection'].add('simple')
         ei.get_concepts()
         got = ei.concepts
         got_concept = got[0]
-        self.assertEqual(len(got), 1)
-        self.assertDictEqual(got_concept.concept_info, concept.concept_info)
-        self.assertEqual(sorted(got_concept.expression_infos.expressions),
-                         sorted(concept.expression_infos.expressions))
-        self.assertEqual(got_concept.expression_infos.pos,
-                         concept.expression_infos.pos)
+
+        self.assertDictEqual(got_concept['concept'], concept['concept'])
+        for concept_info in got_concept['concept_infos']:
+            self.assertTrue(concept_info in concept['concept_infos'])
+        for related_expression in got_concept['related_expressions']:
+            self.assertTrue(
+                related_expression in concept['related_expressions'])
 
     def test_collect_expressions_test_splitters(self):
         """Test if legal split chars work as splitters."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
-            got = ei.collect_expressions(startline, 'se', counter, collection='example')
+            got = ei.collect_expressions(startline)
 
-            self.assertEqual(
-                [
-                    importer.ExpressionInfo(
-                        expression='a',
-                        language='se',
-                        collection='example',
-                        status='',
-                        note='',
-                        source='',
-                        sanctioned='Yes'),
-                    importer.ExpressionInfo(
-                        expression='b',
-                        language='se',
-                        collection='example',
-                        status='',
-                        note='',
-                        source='',
-                        sanctioned='Yes'),
-                ], got)
+            self.assertEqual(['a','b'], got)
 
     def test_collect_expressions_illegal_chars(self):
         """Check that illegal chars in startline is handled correctly."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        for startline in '()-~?':
-            got = ei.collect_expressions(startline, 'se', counter, collection='example')
+        for x, startline in enumerate('()-~?'):
+            got = ei.collect_expressions(startline)
 
-            self.assertEqual(
-                [
-                    importer.ExpressionInfo(
-                        expression=startline,
-                        language='se',
-                        collection='example',
-                        status='',
-                        note='',
-                        source='',
-                        sanctioned='No'),
-                ], got)
+            self.assertEqual([startline], got)
 
     def test_collect_expressions_illegal_chars_with_newline(self):
         """Check that illegal chars in startline is handled correctly."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
         startline = 'a-a;\nb=b;\nc?c'
-        got = ei.collect_expressions(startline, 'se', counter, collection='example')
+        got = ei.collect_expressions(startline)
 
-        self.assertEqual(
-            [
-                importer.ExpressionInfo(
-                    expression=startline.replace('\n', ' '),
-                    language='se',
-                    collection='example',
-                    status='',
-                    note='',
-                    source='',
-                    sanctioned='No'),
-            ], got)
+        self.assertEqual([startline.replace('\n', ' ')], got)
 
     def test_collect_expressions_multiword_expression(self):
         """Handle multiword expression."""
         counter = collections.defaultdict(int)
         ei = importer.ExcelImporter('fakename.xlsx', self.termwiki)
-        got = ei.collect_expressions('a b', 'se', counter, collection='example')
+        got = ei.collect_expressions('a b')
 
-        self.assertEqual(
-            [
-                importer.ExpressionInfo(
-                    expression='a b',
-                    language='se',
-                    collection='example',
-                    status='',
-                    note='',
-                    source='',
-                    sanctioned='Yes'),
-            ], got)
+        self.assertEqual(['a b'], got)

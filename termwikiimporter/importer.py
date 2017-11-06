@@ -5,14 +5,16 @@
 import argparse
 import os
 import re
-import subprocess
 import sys
-from collections import OrderedDict, defaultdict, namedtuple
+from collections import defaultdict, namedtuple
 import yaml
 
+from lxml import etree
 import attr
 import openpyxl
-from lxml import etree
+
+from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
+from termwikiimporter import read_termwiki
 
 
 class ExpressionError(Exception):
@@ -170,51 +172,6 @@ class RelatedConceptInfo(namedtuple('RelatedConceptInfo',
         strings.append('}}')
 
         return '\n'.join(strings)
-
-
-class OrderedDefaultDict(OrderedDict):
-    # Source: http://stackoverflow.com/a/6190500/562769
-
-    def __init__(self, default_factory=None, *a, **kw):
-        if (default_factory is not None and
-                not isinstance(default_factory, Callable)):
-            raise TypeError('first argument must be callable')
-        OrderedDict.__init__(self, *a, **kw)
-        self.default_factory = default_factory
-
-    def __getitem__(self, key):
-        try:
-            return super().__getitem__(key)
-        except KeyError:
-            return self.__missing__(key)
-
-    def __missing__(self, key):
-        if self.default_factory is None:
-            raise KeyError(key)
-        self[key] = value = self.default_factory()
-        return value
-
-    def __reduce__(self):
-        if self.default_factory is None:
-            args = tuple()
-        else:
-            args = self.default_factory,
-        return type(self), args, None, None, self.items()
-
-    def copy(self):
-        return self.__copy__()
-
-    def __copy__(self):
-        return type(self)(self.default_factory, self)
-
-    def __deepcopy__(self, memo):
-        import copy
-        return type(self)(self.default_factory,
-                          copy.deepcopy(self.items()))
-
-    def __repr__(self):
-        return 'OrderedDefaultDict(%s, %s)' % (self.default_factory,
-                                               OrderedDict.__repr__(self))
 
 
 class Concept(object):
@@ -460,11 +417,13 @@ class Importer(object):
         pages = etree.Element('pages')
         for concept in self.concepts:
             content = etree.Element('content')
-            content.text = str(concept)
+            content.text = read_termwiki.term_to_string(concept)
 
             page = etree.Element('page')
             try:
-                page.set('title', concept.get_pagename(self.termwiki.pagenames))
+                page.set('title', ':'.join(
+                    [concept['concept']['main_category'],
+                     concept['related_expressions'][0]['expression']]))
             except TypeError:
                 page.set('title', ':'.join([concept.main_category,
                                             'page_' + str(pagecounter.number)]))
@@ -482,52 +441,28 @@ class Importer(object):
 
 class ExcelImporter(Importer):
 
-    def collect_expressions(self, startline, language, counter, collection=''):
-        """Insert expressions found in startline into a list of ExpressionInfo.
+    def collect_expressions(self, startline):
+        """Find expressions found in startline.
 
-        startline: the content of an expression line
-        language: the language of the expression line
-        collection: the basename of the file where the expression comes from
+        Arguments:
+            startline (str): the content of an expression line
+
+        Returns:
+            list of str: the expression found in startline
         """
         expressions = []
-        if '~' in startline or '?' in startline or re.search('[()-]', startline) is not None:
-            expressions.append(
-                ExpressionInfo(
-                    expression=startline.replace('\n', ' '),
-                    language=language,
-                    collection=collection,
-                    status='',
-                    note='',
-                    source='',
-                    sanctioned='No'))
+
+        if ('~' in startline or
+                '?' in startline or
+                re.search('[()-]', startline) is not None):
+            expressions.append(startline.replace('\n', ' '))
         else:
             splitters = re.compile(r'[,;\n\/]')
 
             for token in splitters.split(startline):
                 finaltoken = token.strip().lower()
                 if len(finaltoken) > 0:
-                    if ' ' in finaltoken:
-                        counter['mwe'] += 1
-                        expressions.append(
-                            ExpressionInfo(
-                                expression=finaltoken,
-                                language=language,
-                                collection=collection,
-                                status='',
-                                note='',
-                                source='',
-                                sanctioned='Yes'))
-                    else:
-                        counter['non_typo'] += 1
-                        expressions.append(
-                            ExpressionInfo(
-                                expression=finaltoken,
-                                language=language,
-                                collection=collection,
-                                status='',
-                                note='',
-                                source='',
-                                sanctioned='Yes'))
+                    expressions.append(finaltoken)
 
         return expressions
 
@@ -548,37 +483,50 @@ class ExcelImporter(Importer):
 
             for row in range(2, sheet.max_row + 1):
                 counter['concepts'] += 1
-                concept = Concept(ws_info['main_category'])
-                pos = 'N/A'
+
+                concept = {
+                    'concept': {
+                        'collection': set(),
+                        'main_category': ws_info['main_category'],
+                    },
+                    'concept_infos': [],
+                    'related_expressions': []
+                }
+                concept['concept']['collection'].add(shortname)
+
+                pos = ''
                 if (ws_info['wordclass'] != 0 and
                         sheet.cell(
                             row=row,
                             column=ws_info['wordclass']).value is not None):
                     pos = sheet.cell(
                         row=row, column=ws_info['wordclass']).value.strip()
-                    concept.expression_infos.pos = pos
+
                 for language, col in list(ws_info['terms'].items()):
                     if sheet.cell(row=row, column=col).value is not None:
                         expression_line = sheet.cell(
                             row=row, column=col).value.strip()
-                        for expression in self.collect_expressions(
-                                expression_line, language, counter,
-                                collection=shortname):
-                            concept.add_expression(expression)
+                        for expression in self.collect_expressions(expression_line):
+                            concept['related_expressions'].append({
+                                'expression': expression,
+                                'pos': pos,
+                                'language': language,
+                            })
 
                 for info, col in list(ws_info['other_info'].items()):
                     if sheet.cell(row=row, column=col).value is not None:
-                        concept.add_concept_info(
-                            info, sheet.cell(row=row,
-                                             column=col).value.strip())
+                        concept['concept'][info] = sheet.cell(
+                            row=row, column=col).value.strip()
 
-                common_pages = \
-                    self.termwiki.get_pages_where_concept_probably_exists(concept)
-                if len(common_pages) > 0:
-                    concept.possible_duplicate = common_pages
-                    counter['possible_duplicates'] += 1
-
-                if not concept.is_empty:
+                #common_pages = \
+                    #self.termwiki.get_pages_where_concept_probably_exists(
+                        #concept)
+                #if len(common_pages) > 0:
+                    #concept.possible_duplicate = common_pages
+                    #counter['possible_duplicates'] += 1
+                read_termwiki.to_concept_info(concept)
+                if (len(concept['related_expressions']) or
+                        len(concept['concept_infos'])):
                     self.concepts.append(concept)
 
         for key, count in list(counter.items()):

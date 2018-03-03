@@ -174,6 +174,9 @@ def parse_termwiki_concept(text):
             if 'expression' in expression:
                 if ' ' in expression['expression']:
                     expression['pos'] = 'MWE'
+                if ' ' in expression['expression']:
+                    expression['expression'] = expression['expression'].replace(
+                        ' ', ' ').strip()
                 if 'collection' in expression:
                     if not term.get('collection'):
                         term['concept']['collection'] = set()

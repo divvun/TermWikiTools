@@ -206,7 +206,7 @@ def term_to_string(term):
             term_strings.append('|{}={}'.format(key, value))
         term_strings.append('}}')
 
-    if term.get('related_concept'):
+    if term.get('related_concepts'):
         for related_concept in term['related_concepts']:
             term_strings.append('{{Related concept')
             for key, value in related_concept.items():

@@ -195,15 +195,10 @@ def parse_dump(filename):
     for element in dump_element.xpath('.//page'):
         category = element.find('title').text.split(':')[0]
         if category in CATEGORIES:
-            try:
-                c_text = element.find('.//text')
-                b_text = bot.concept_parser(c_text.text)
-                if c_text.text != b_text:
-                    c_text.text = b_text
-            except importer.ExpressionError as error:
-                print(str(error), file=sys.stderr)
-                print(element.find('title').text, file=sys.stderr)
-                print(element.find('.//text').text, file=sys.stderr)
+            c_text = element.find('.//text')
+            b_text = bot.concept_parser(c_text.text)
+            if c_text.text != b_text:
+                c_text.text = b_text
 
     dump_element.write('dump1.xml', encoding='utf8')
 

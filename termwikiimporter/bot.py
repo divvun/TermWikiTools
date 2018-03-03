@@ -229,7 +229,7 @@ def fix_site():
                 except mwclient.errors.APIError as error:
                     print(page.name, new_text, str(error), file=sys.stderr)
 
-            write_expressions(concept['expressions'], site)
+            write_expressions(concept['related_expressions'], site)
 
     for key in sorted(counter):
         print(key, counter[key])

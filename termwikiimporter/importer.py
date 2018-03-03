@@ -31,10 +31,9 @@ class Importer(object):
         concepts (list of ConceptInfo): all the concepts that have been
             found in filename
     """
-    def __init__(self, filename, termwiki):
+    def __init__(self, filename):
         """Initialise the Importer class."""
         self.filename = filename
-        self.termwiki = termwiki
         self.concepts = []
 
     def write(self, pagecounter):
@@ -149,12 +148,6 @@ class ExcelImporter(Importer):
                         concept['concept'][info] = sheet.cell(
                             row=row, column=col).value.strip()
 
-                #common_pages = \
-                    #self.termwiki.get_pages_where_concept_probably_exists(
-                        #concept)
-                #if len(common_pages) > 0:
-                    #concept.possible_duplicate = common_pages
-                    #counter['possible_duplicates'] += 1
                 read_termwiki.to_concept_info(concept)
                 if (len(concept['related_expressions']) or
                         len(concept['concept_infos'])):
@@ -254,11 +247,7 @@ def main():
 
     pagecounter = PageCounter()
 
-    termwiki = TermWiki()
-    termwiki.get_expressions()
-    termwiki.get_pages()
-
     for termfile in args.termfiles:
-        excel = ExcelImporter(termfile, termwiki)
+        excel = ExcelImporter(termfile)
         excel.get_concepts()
         excel.write(pagecounter)

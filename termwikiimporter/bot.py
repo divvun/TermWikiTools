@@ -33,6 +33,7 @@ NAMESPACES = [
     'Ođđa sánit',
     'Servodatdieđa',
     'Stáda almmolaš hálddašeapmi',
+    'Religion',
     'Teknihkka industriija duodji',
     'Álšateknihkka',
     'Ásttoáigi ja faláštallan',

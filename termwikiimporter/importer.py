@@ -15,10 +15,6 @@ import openpyxl
 from termwikiimporter import read_termwiki
 
 
-class ExpressionError(Exception):
-    pass
-
-
 class Importer(object):
     """The import class.
 

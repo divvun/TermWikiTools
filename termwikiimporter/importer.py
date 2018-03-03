@@ -101,11 +101,9 @@ class ExcelImporter(Importer):
             return yaml.load(yamlfile)
 
     def get_concepts(self):
-        shortname = os.path.splitext(os.path.basename(self.filename))[0]
         counter = defaultdict(int)
         workbook = openpyxl.load_workbook(self.filename)
 
-        print(shortname)
         for ws_title, ws_info in list(self.fileinfo.items()):
             sheet = workbook[ws_title]
 
@@ -120,7 +118,8 @@ class ExcelImporter(Importer):
                     'concept_infos': [],
                     'related_expressions': []
                 }
-                concept['concept']['collection'].add(shortname)
+                concept['concept']['collection'].add(
+                    os.path.splitext(os.path.basename(self.filename))[0])
 
                 pos = ''
                 if (ws_info['wordclass'] != 0 and

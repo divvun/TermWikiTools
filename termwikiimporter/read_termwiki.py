@@ -129,9 +129,6 @@ def to_concept_info(term):
     for lang in langs:
         term['concept_infos'].append(langs[lang])
 
-    #if term['concept_infos']:
-        #print(lineno(), term['concept_infos'])
-
 
 def parse_termwiki_concept(text):
     """Parse a termwiki page.
@@ -198,7 +195,6 @@ def term_to_string(term):
     term_strings = []
 
     for concept_info in term['concept_infos']:
-        #print(lineno(), concept_info)
         term_strings.append('{{Concept info')
         for key, value in concept_info.items():
             term_strings.append('|{}={}'.format(key, value))

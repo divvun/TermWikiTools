@@ -165,8 +165,12 @@ def parse_termwiki_concept(text):
         elif is_related_expression(line):
             expression = read_semantic_form(text_iterator)
 
+            if 'sanctioned' in expression and expression['sanctioned'] == 'No':
+                expression['sanctioned'] = 'False'
+            if 'sanctioned' in expression and expression['sanctioned'] == 'Yes':
+                expression['sanctioned'] = 'True'
             if 'sanctioned' not in expression:
-                expression['sanctioned'] = 'No'
+                expression['sanctioned'] = 'False'
             if 'expression' in expression:
                 if ' ' in expression['expression']:
                     expression['pos'] = 'MWE'

@@ -171,7 +171,9 @@ def parse_termwiki_concept(text):
                 if ' ' in expression['expression']:
                     expression['pos'] = 'MWE'
                 if 'collection' in expression:
-                    term['collection'].add(expression['collection'].replace('_', ' '))
+                    if not term.get('collection'):
+                        term['concept']['collection'] = set()
+                    term['concept']['collection'].add(expression['collection'].replace('_', ' '))
                     del expression['collection']
                 term['related_expressions'].append(expression)
 
@@ -216,7 +218,10 @@ def term_to_string(term):
     if term['concept']:
         term_strings.append('{{Concept')
         for key, value in term['concept'].items():
-            term_strings.append('|{}={}'.format(key, value))
+            if key == 'collection':
+                term_strings.append('|{}={}'.format(key, '@@ '.join(value)))
+            else:
+                term_strings.append('|{}={}'.format(key, value))
         term_strings.append('}}')
     else:
         term_strings.append('{{Concept}}')

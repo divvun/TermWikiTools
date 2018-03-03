@@ -6,14 +6,12 @@ import argparse
 import os
 import re
 import sys
-from collections import defaultdict, namedtuple
+from collections import defaultdict
 import yaml
 
 from lxml import etree
-import attr
 import openpyxl
 
-from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 from termwikiimporter import read_termwiki
 
 

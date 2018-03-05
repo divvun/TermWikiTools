@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Import/convert term files to termwiki."""
+"""Convert term files to termwiki parsable xml."""
 
 import argparse
 import os
 import re
-import sys
 from collections import defaultdict
 
 import openpyxl
@@ -25,18 +24,16 @@ class Importer(object):
     """
 
     concepts = []
+    pagecounter = 0
 
     def __init__(self, filename):
         """Initialise the Importer class."""
         self.filename = filename
 
-    def write(self, pagecounter):
+    def write(self, ):
         """Write the result of the conversion.
 
         Write the concepts found to an xml file.
-
-        Arguments:
-            pagecounter ():
         """
         pages = etree.Element('pages')
         for concept in self.concepts:
@@ -50,9 +47,9 @@ class Importer(object):
                     concept['related_expressions'][0]['expression']
                 ]))
             except TypeError:
+                self.pagecounter += 1
                 page.set('title', ':'.join(
-                    [concept.main_category,
-                     'page_' + str(pagecounter.number)]))
+                    [concept.main_category, 'page_' + str(self.pagecounter)]))
             page.append(content)
             pages.append(page)
 
@@ -94,6 +91,9 @@ class Importer(object):
 class ExcelImporter(Importer):
     """Convert excel files to xml."""
 
+    splitters = re.compile(r'[,;\n\/]')
+    counter = defaultdict(int)
+
     def collect_expressions(self, startline):
         """Find expressions found in startline.
 
@@ -109,9 +109,7 @@ class ExcelImporter(Importer):
                 or re.search('[()-]', startline) is not None):
             expressions.append(startline.replace('\n', ' '))
         else:
-            splitters = re.compile(r'[,;\n\/]')
-
-            for token in splitters.split(startline):
+            for token in self.splitters.split(startline):
                 finaltoken = token.strip().lower()
                 if len(finaltoken) > 0:
                     expressions.append(finaltoken)
@@ -127,14 +125,13 @@ class ExcelImporter(Importer):
 
     def get_concepts(self):
         """Extract concepts from excel files."""
-        counter = defaultdict(int)
         workbook = openpyxl.load_workbook(self.filename)
 
         for ws_title, ws_info in list(self.fileinfo.items()):
             sheet = workbook[ws_title]
 
             for row in range(2, sheet.max_row + 1):
-                counter['concepts'] += 1
+                self.counter['concepts'] += 1
 
                 concept = self.fresh_concept()
                 concept['concept']['main_category'] = ws_info['main_category']
@@ -168,7 +165,7 @@ class ExcelImporter(Importer):
 
                 self.add_concept(concept)
 
-        for key, count in list(counter.items()):
+        for key, count in list(self.counter.items()):
             print(
                 '\t',
                 key,
@@ -179,59 +176,75 @@ class ExcelImporter(Importer):
 class ArbeidImporter(Importer):
     """Convert database dumps in text format to xml."""
 
+    gram_re = re.compile('<GRAM (.+)>')
+    no_concepts = 0
+    definitions = defaultdict(list)
+    explanations = defaultdict(list)
+    expressions = []
+    current_lang = 'nb'
+
+    def reset_concept(self):
+        """Reset internal concept structures."""
+        self.definitions = defaultdict(list)
+        self.explanations = defaultdict(list)
+        self.expressions = []
+
+    def to_concept(self):
+        """Turn dump concept to termwiki concept."""
+        self.no_concepts += 1
+        term = self.fresh_concept()
+        term['concept']['main_category'] = 'HUPPSANN'
+        for lang in self.definitions:
+            concept_info = defaultdict(str)
+            concept_info['language'] = lang
+            concept_info['definition'] = '\n'.join(self.definitions[lang])
+            concept_info['explanation'] = '\n'.join(self.explanations[lang])
+            term['concept_infos'].append(concept_info)
+        term['related_expressions'] = self.expressions
+        self.add_concept(term)
+        self.reset_concept()
+
+    def parse_line(self, line, number):
+        """Parse lines.
+
+        Arguments:
+            line (str): line that should be parsed
+            number (int): the number of the line to be parsed
+        """
+        if line.startswith('smi →'):
+            self.current_lang = 'sma'
+            self.expressions.extend(
+                self.parse_expression_line(line[len('smi →'):].strip(),
+                                           self.current_lang))
+        elif line.startswith('nb	'):
+            self.current_lang = 'nb'
+            self.expressions.extend(
+                self.parse_expression_line(line[len('nb	'):].strip(),
+                                           self.current_lang))
+        elif line.startswith('nbDEF '):
+            self.definitions[self.current_lang].append(
+                line[len('nbDEF '):].strip())
+        elif line.startswith('nbMRKN '):
+            self.explanations[self.current_lang].append(
+                line[len('nbMRKN '):].strip())
+        elif line.startswith('klass	'):
+            pass
+        else:
+            print('lineno {}: «{}»'.format(number, line))
+
     def get_concepts(self):
         """Find concepts in a database dump in text format."""
-        no_concepts = 0
         start = re.compile(r'^\w\w\w$')
         with open(self.filename) as arbeid:
-            definitions = defaultdict(list)
-            explanations = defaultdict(list)
-            expressions = []
-            current_lang = 'nb'
-
             for number, line in enumerate(arbeid, start=1):
                 line = line.strip()
                 if line:
                     if start.match(line):
-                        no_concepts += 1
-                        term = self.fresh_concept()
-                        term['concept']['main_category'] = 'HUPPSANN'
-                        for lang in definitions:
-                            concept_info = defaultdict(str)
-                            concept_info['language'] = lang
-                            concept_info['definition'] = '\n'.join(
-                                definitions[lang])
-                            concept_info['explanation'] = '\n'.join(
-                                explanations[lang])
-                            term['concept_infos'].append(concept_info)
-                        term['related_expressions'] = expressions
-                        self.add_concept(term)
-                        definitions = defaultdict(list)
-                        explanations = defaultdict(list)
-                        expressions = []
+                        self.to_concept()
                     else:
-                        if line.startswith('smi →'):
-                            current_lang = 'sma'
-                            expressions.extend(
-                                self.parse_expression_line(
-                                    line[len('smi →'):].strip(), current_lang))
-                        elif line.startswith('nb	'):
-                            current_lang = 'nb'
-                            expressions.extend(
-                                self.parse_expression_line(
-                                    line[len('nb	'):].strip(), current_lang))
-                        elif line.startswith('nbDEF '):
-                            definitions[current_lang].append(
-                                line[len('nbDEF '):].strip())
-                        elif line.startswith('nbMRKN '):
-                            explanations[current_lang].append(
-                                line[len('nbMRKN '):].strip())
-                        elif line.startswith('klass	'):
-                            pass
-                        else:
-                            print('lineno {}: «{}»'.format(number, line))
+                        self.parse_line(line, number)
 
-        print(no_concepts)
+        print(self.no_concepts)
 
     def parse_expression_line(self, expression_line, language):
         """Parse a line containing expressions.
@@ -243,22 +256,20 @@ class ArbeidImporter(Importer):
         Returns:
             list of dict: expressions as a list of dicts
         """
-        gram_re = re.compile('<GRAM (.+)>')
         expressions = []
         has_synonym = '<SY>' in expression_line
         for semicolontoken in expression_line.split(';'):
             if '<STE>' not in semicolontoken:
-
                 not_synonym_block = '<SY>' not in semicolontoken
                 semicolontoken = semicolontoken.replace('<SY>', '')
 
-                found_gram = gram_re.search(semicolontoken)
+                found_gram = self.gram_re.search(semicolontoken)
                 pos = found_gram.group(1) if found_gram else ''
                 if found_gram:
                     semicolontoken = semicolontoken[:found_gram.start()]
 
                 for commatoken in semicolontoken.split(','):
-                    duct = {
+                    expression = {
                         'language': language,
                         'expression': commatoken.strip(),
                     }
@@ -268,30 +279,21 @@ class ArbeidImporter(Importer):
                                 'm', 'n', 'c', 'm pl', 'n pl', 'm n', 'c pl',
                                 'pl'
                         ]:
-                            duct['pos'] = 'N'
+                            expression['pos'] = 'N'
                         elif pos == 'v':
-                            duct['pos'] = 'V'
+                            expression['pos'] = 'V'
                         elif pos == 'adj':
-                            duct['pos'] = 'Adj'
+                            expression['pos'] = 'Adj'
                         else:
-                            print('«{}»: {}'.format(pos, duct['expression']))
+                            print('«{}»: {}'.format(pos,
+                                                    expression['expression']))
 
                     if has_synonym and not_synonym_block:
-                        duct['status'] = 'recommended'
+                        expression['status'] = 'recommended'
 
-                    expressions.append(duct)
+                    expressions.append(expression)
 
         return expressions
-
-
-class PageCounter(object):
-    def __init__(self):
-        self.counter = 0
-
-    @property
-    def number(self):
-        self.counter += 1
-        return self.counter
 
 
 def parse_options():
@@ -323,9 +325,7 @@ def main():
     """Convert files to termwiki format."""
     args = parse_options()
 
-    pagecounter = PageCounter()
-
     for termfile in args.termfiles:
         importer = init_file(termfile)
         importer.get_concepts()
-        importer.write(pagecounter)
+        importer.write()

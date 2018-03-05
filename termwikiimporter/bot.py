@@ -236,13 +236,33 @@ def fix_site():
         print(key, counter[key])
 
 
+def query():
+    print('Logging in to query …')
+    site = get_site()
+
+    query = '[[Category:Servodatdieđa]]|[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]'
+    for number, answer in enumerate(site.ask(query), start=1):
+        for title, data in answer.items():
+            print('Hit no: {}, title: {}'.format(number, title))
+            page = site.Pages[title]
+            concept = read_termwiki.handle_page(page.text())
+            new_text = read_termwiki.term_to_string(concept)
+            try:
+                page.save(
+                    new_text.replace('|language=sma', '|language=se'),
+                    summary='This is North Saami, not South Saami')
+            except mwclient.errors.APIError as error:
+                print(page.name, new_text, str(error), file=sys.stderr)
+
+
 def main():
     """Either fix a TermWiki site or test fixing routines on dump.xml."""
     if len(sys.argv) == 2 and sys.argv[1] == 'test':
         fix_dump()
     elif len(sys.argv) == 2 and sys.argv[1] == 'site':
         fix_site()
+    elif len(sys.argv) == 2 and sys.argv[1] == 'query':
+        query()
     else:
-        print(
-            'Usage:\ntermbot site to fix the TermWiki\n'
-            'termbot test to run a test on dump.xml')
+        print('Usage:\ntermbot site to fix the TermWiki\n'
+              'termbot test to run a test on dump.xml')

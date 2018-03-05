@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 """Bot to fix syntax blunders in termwiki articles."""
 
-
 import collections
 import os
 import sys
-import yaml
 
-import mwclient
+import yaml
 from lxml import etree
 
+import mwclient
 from termwikiimporter import read_termwiki
-
 
 NAMESPACES = [
     'Boazodoallu',
@@ -47,9 +45,8 @@ def get_site():
     Returns:
         mwclient.Site
     """
-    config_file = os.path.join(os.getenv('HOME'),
-                               '.config',
-                               'term_config.yaml')
+    config_file = os.path.join(
+        os.getenv('HOME'), '.config', 'term_config.yaml')
     with open(config_file) as config_stream:
         config = yaml.load(config_stream)
         site = mwclient.Site('satni.uit.no', path='/termwiki/')
@@ -102,9 +99,8 @@ def is_concept_tag(content):
     Returns:
         bool
     """
-    return ('{{Concept' in content and
-            ('{{Related expression' in content or
-             '{{Related_expression' in content))
+    return ('{{Concept' in content and ('{{Related expression' in content
+                                        or '{{Related_expression' in content))
 
 
 def write_expressions(expressions, site):
@@ -116,20 +112,18 @@ def write_expressions(expressions, site):
         site (mwclient.Site): The site object
     """
     for expression in expressions:
-        page = site.Pages['Expression:{}'.format(
-            expression['expression'])]
+        page = site.Pages['Expression:{}'.format(expression['expression'])]
         if not page.exists:
             print('Creating page: {}'.format(page.name))
             page.save(
                 to_page_content(expression),
                 summary='Creating new Expression page')
         else:
-            existings = parse_expression(page.text(),
-                                         expression['expression'])
+            existings = parse_expression(page.text(), expression['expression'])
             for existing in existings:
                 try:
-                    if (existing['language'] == expression['language'] and
-                            existing['pos'] == expression['pos']):
+                    if (existing['language'] == expression['language']
+                            and existing['pos'] == expression['pos']):
                         break
                 except TypeError:
                     print(existing, expression)
@@ -137,7 +131,8 @@ def write_expressions(expressions, site):
             else:
                 existings.append({
                     'language': expression['language'],
-                    'pos': expression['pos']})
+                    'pos': expression['pos']
+                })
 
             new_text = '\n'.join(
                 [to_page_content(expression) for expression in existings])
@@ -184,8 +179,8 @@ def to_page_content(expression):
         str: a string containing a TermWiki Expression.
     """
     text_lines = ['{{Expression']
-    text_lines.extend(['|{}={}'.format(key, expression[key])
-                       for key in expression])
+    text_lines.extend(
+        ['|{}={}'.format(key, expression[key]) for key in expression])
     text_lines.append('}}')
 
     return '\n'.join(text_lines)
@@ -201,7 +196,7 @@ def fix_dump():
         content_elt = page.find('.//{}text'.format(mediawiki_ns))
         if '{{' in content_elt.text:
             content_elt.text = read_termwiki.term_to_string(
-                    read_termwiki.handle_page(content_elt.text))
+                read_termwiki.handle_page(content_elt.text))
 
     tree.write(dump, pretty_print=True, encoding='utf8')
 
@@ -236,13 +231,21 @@ def fix_site():
         print(key, counter[key])
 
 
-def query():
+def query_and_fix():
+    u"""Do a semantic media query and fix pages.
+
+    Change the query and the actions when needed …
+
+    http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
+    https://www.semantic-mediawiki.org/wiki/Help:API
+    """
     print('Logging in to query …')
     site = get_site()
 
-    query = '[[Category:Servodatdieđa]]|[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]'
+    query = ('[[Category:Servodatdieđa]]|'
+             '[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]')
     for number, answer in enumerate(site.ask(query), start=1):
-        for title, data in answer.items():
+        for title, _ in answer.items():
             print('Hit no: {}, title: {}'.format(number, title))
             page = site.Pages[title]
             concept = read_termwiki.handle_page(page.text())
@@ -262,7 +265,7 @@ def main():
     elif len(sys.argv) == 2 and sys.argv[1] == 'site':
         fix_site()
     elif len(sys.argv) == 2 and sys.argv[1] == 'query':
-        query()
+        query_and_fix()
     else:
         print('Usage:\ntermbot site to fix the TermWiki\n'
               'termbot test to run a test on dump.xml')

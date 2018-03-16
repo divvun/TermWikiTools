@@ -10,15 +10,18 @@ from lxml import etree
 
 import mwclient
 from termwikiimporter import read_termwiki
+from corpustools import util
 
 NAMESPACES = [
     'Boazodoallu',
+    'Collection',
     'Dihtorteknologiija ja diehtoteknihkka',
     'Dáidda ja girjjálašvuohta',
     'Eanandoallu',
     'Education',
     'Ekologiija ja biras',
     'Ekonomiija ja gávppašeapmi',
+    'Expression',
     'Geografiija',
     'Gielladieđa',
     'Gulahallanteknihkka',
@@ -37,6 +40,108 @@ NAMESPACES = [
     'Ásttoáigi ja faláštallan',
     'Ávnnasindustriija',
 ]
+
+
+class DumpHandler(object):
+    """Class that involves using the TermWiki dump.
+
+    Attributes:
+        dump (str): path to the dump file.
+        tree (etree.ElementTree): the parsed dump file.
+        mediawiki_ns (str): the mediawiki name space found in the dump file.
+    """
+
+    dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
+    tree = etree.parse(dump)
+    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
+
+    @property
+    def pages(self):
+        """Get the namespaced pages from dump.xml.
+
+        Yields:
+            tuple: The title and the content of a TermWiki page.
+        """
+        for page in self.tree.getroot().iter('{}page'.format(
+                self.mediawiki_ns)):
+            title = page.find('.//{}title'.format(self.mediawiki_ns)).text
+            if title[:title.find(':')] in NAMESPACES:
+                yield title, page
+
+    def expressions(self, language):
+        """Find all expressions of the given language.
+
+        Arguments:
+            language (src): language of the terms.
+
+        Yields:
+            tuple: an expression, the collections and the title of a
+                given concept.
+        """
+        for title, page in self.pages:
+            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+            if '{{' in content_elt.text:
+                concept = read_termwiki.handle_page(content_elt.text)
+                for expression in concept['related_expressions']:
+                    if expression['language'] == language:
+                        yield expression['expression'], concept['concept'].get(
+                            'collection'), title
+
+    def print_missing(self, language=None):
+        """Print lemmas not found in the languages lexicon.
+
+        Arguments:
+            language (src): language of the terms.
+        """
+        runner = util.ExternalCommandRunner()
+        command = 'hfst-lookup --quiet {}'.format(
+            os.path.join(
+                os.getenv('GTHOME'), 'langs', language,
+                'src/analyser-gt-norm.hfstol'))
+
+        for expression, term_collections, title in self.expressions(language):
+            runner.run(
+                command.split(), to_stdin=bytes(expression, encoding='utf8'))
+
+            if b'?' in runner.stdout:
+                wanted = []
+                wanted.append('{0}:{0} TermWiki ; !'.format(expression))
+
+                if term_collections:
+                    for collection in term_collections:
+                        wanted.append('«{}»'.format(collection))
+
+                wanted.append('«{}»'.format(title))
+
+                print(' '.join(wanted))
+
+    def fix_dump(self):
+        """Check to see if everything works as expected."""
+        for title, page in self.pages:
+            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+            try:
+                if '{{' in content_elt.text:
+                    content_elt.text = read_termwiki.term_to_string(
+                        read_termwiki.handle_page(content_elt.text))
+            except TypeError:
+                print('empty element:\n{}\n{}\n'.format(
+                    title, etree.tostring(content_elt, encoding='unicode')))
+
+        self.tree.write(self.dump, pretty_print=True, encoding='utf8')
+
+    def find_collections(self):
+        """Check if collections are correctly defined."""
+        for title, page in self.pages:
+            if title.startswith('Collection:'):
+                content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+                text = content_elt.text
+                if text:
+                    if '{{Collection' not in text:
+                        print('|collection={}\n{}'.format(title, text))
+                        print()
+                else:
+                    print(title, etree.tostring(
+                        content_elt, encoding='unicode'))
 
 
 def get_site():
@@ -71,23 +176,6 @@ def termwiki_concept_pages(site):
                 if is_concept_tag(page.text()):
                     yield page
             print()
-
-
-def dump_concept_pages(dump_tree):
-    """Get the concept pages from dump.xml.
-
-    Args:
-        dump_tree (lxml.ElementTree): the dump.xml element tree.
-
-    Yields:
-        str: content of a TermWiki page.
-    """
-    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
-
-    for page in dump_tree.getroot().iter('{}page'.format(mediawiki_ns)):
-        title = page.find('.//{}title'.format(mediawiki_ns)).text
-        if title[:title.find(':')] in NAMESPACES:
-            yield page
 
 
 def is_concept_tag(content):
@@ -186,21 +274,6 @@ def to_page_content(expression):
     return '\n'.join(text_lines)
 
 
-def fix_dump():
-    """Check to see if everything works as expected."""
-    dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
-    mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
-    tree = etree.parse(dump)
-
-    for page in dump_concept_pages(tree):
-        content_elt = page.find('.//{}text'.format(mediawiki_ns))
-        if '{{' in content_elt.text:
-            content_elt.text = read_termwiki.term_to_string(
-                read_termwiki.handle_page(content_elt.text))
-
-    tree.write(dump, pretty_print=True, encoding='utf8')
-
-
 def fix_site():
     """Make the bot fix all pages."""
     counter = collections.defaultdict(int)
@@ -258,14 +331,41 @@ def query_and_fix():
                 print(page.name, new_text, str(error), file=sys.stderr)
 
 
+def handle_dump(arguments):
+    """Act on the TermWiki dump.
+
+    Arguments:
+        argument (str): command line argument
+    """
+    dumphandler = DumpHandler()
+
+    if arguments[0] == 'test':
+        dumphandler.fix_dump()
+    elif arguments[0] == 'missing':
+        dumphandler.print_missing(language=arguments[1])
+    elif arguments[0] == 'collection':
+        dumphandler.find_collections()
+
+
+def handle_site(argument):
+    """Act on the termwiki.
+
+    Arguments:
+        argument (str): command line argument
+    """
+    if argument == 'site':
+        fix_site()
+    elif argument == 'query':
+        query_and_fix()
+
+
 def main():
     """Either fix a TermWiki site or test fixing routines on dump.xml."""
-    if len(sys.argv) == 2 and sys.argv[1] == 'test':
-        fix_dump()
-    elif len(sys.argv) == 2 and sys.argv[1] == 'site':
-        fix_site()
-    elif len(sys.argv) == 2 and sys.argv[1] == 'query':
-        query_and_fix()
+    if len(sys.argv) > 1:
+        if sys.argv[1] in ['test', 'missing', 'collection']:
+            handle_dump(sys.argv[1:])
+        else:
+            handle_site(sys.argv[1])
     else:
         print('Usage:\ntermbot site to fix the TermWiki\n'
               'termbot test to run a test on dump.xml')

@@ -2,7 +2,10 @@
 """Read termwiki pages."""
 
 import inspect
+import os
+from operator import itemgetter
 
+from corpustools import util
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 
@@ -11,252 +14,291 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
-def read_semantic_form(text_iterator):
-    """Parse semantic wiki form.
+class Concept(object):
+    """Class that represents a TermWiki concept."""
 
-    Args:
-        text_iterator (str_iterator): the contents of the termwiki article.
+    runner = util.ExternalCommandRunner()
+    command_template = 'hfst-lookup --quiet {}'.format(
+        os.path.join(
+            os.getenv('GTHOME'), 'langs/{}/src/analyser-gt-norm.hfstol'))
 
-    Returns:
-        importer.OrderedDefaultDict
-    """
-    wiki_form = OrderedDefaultDict()
-    wiki_form.default_factory = str
-    for line in text_iterator:
-        if line == '}}':
-            return wiki_form
-        elif line.startswith('|reviewed=') or line.startswith('|is_typo'):
-            pass
-        elif line.startswith('|'):
-            equality = line.find('=')
-            key = line[1:equality]
-            if line[equality + 1:]:
-                wiki_form[key] = line[equality + 1:].strip()
-        else:
-            wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
+    def __init__(self):
+        """Initialise the Concept class."""
+        self.title = ''
+        self.data = {
+            'concept': {},
+            'concept_infos': [],
+            'related_expressions': [],
+            'related_concepts': []
+        }
 
+    @property
+    def related_expressions(self):
+        """Get related_expressions."""
+        return self.data['related_expressions']
 
-def fixed_collection_line(line):
-    """Add Collection: to collection line if needed.
+    @property
+    def collections(self):
+        """Get collections."""
+        return self.data['concept'].get('collection')
 
-    Args:
-        line (str): a line found in a termwiki page.
+    def clean_up_concept(self):
+        """Clean up concept data."""
+        if self.data['concept'].get('language'):
+            del self.data['concept']['language']
+        if self.data['concept'].get('collection'):
+            self.data['concept']['collection'] = set([
+                self.fix_collection_line(concept)
+                for concept in self.data['concept']['collection'].split('@@')
+            ])
 
-    Returns:
-        str
-    """
-    if '|collection' in line and 'Collection:' not in line:
-        return line.replace('=', '=Collection:')
-    else:
-        return line
-
-
-def fix_collection(orig_text):
-    """Add Collection: to collection line if needed.
-
-    Plain text conversion.
-
-    Args:
-        orig_text
-
-    Returns:
-        str
-    """
-    return '\n'.join(
-        [fixed_collection_line(line) for line in orig_text.split('\n')])
-
-
-def remove_unwanted_tag(orig_text):
-    """Remove unwanted attributes from a termwiki page.
-
-    Plain text conversion.
-
-    Args:
-        orig_text
-
-    Returns:
-        str
-    """
-    unwanteds = ['|is_typo', '|has_illegal_char']
-
-    for unwanted in unwanteds:
-        new_text = '\n'.join([line for line in orig_text.split('\n')
-                              if not line.startswith(unwanted)])
-        orig_text = new_text
-
-    return orig_text
-
-
-def is_related_expression(line):
-    """Check if line is the start of a TermWiki Related expression.
-
-    Args:
-        line (str): TermWiki line
-
-    Returns:
-        bool
-    """
-    return (line.startswith('{{Related expression') or
-            line.startswith('{{Related_expression'))
-
-
-def to_concept_info(term):
-    """Turn old school Concept to new school Concept.
-
-    Arguments:
-        term (dict): A representation of a TermWiki Concept
-    """
-    langs = {}
-
-    concept = {}
-    concept.update(term['concept'])
-
-    if concept:
-        for key in list(concept.keys()):
-            pos = key.rfind('_')
-            if pos > 0:
-                lang = key[pos + 1:]
-                if lang in ['se', 'sv', 'fi', 'en', 'nb', 'nn', 'sma', 'smj',
-                            'smn', 'sms', 'lat']:
-                    if not langs.get(lang):
-                        langs[lang] = {}
-                        langs[lang]['language'] = lang
-                    new_key = key[:pos]
-                    langs[lang][new_key] = concept[key]
-                    del concept[key]
-
-    term['concept'] = concept
-    for lang in langs:
-        term['concept_infos'].append(langs[lang])
-
-
-def parse_termwiki_concept(text):
-    """Parse a termwiki page.
-
-    Args:
-        text (str): content of the termwiki page.
-        counter (collections.defaultdict(int)): keep track of things
-
-    Returns:
-        dict: contains the content of the termwiki page.
-    """
-    text_iterator = iter(text.splitlines())
-    term = {
-        'concept': {},
-        'concept_infos': [],
-        'related_expressions': [],
-        'related_concepts': []
-    }
-
-    for line in text_iterator:
-        line = line.replace('\xa0', ' ')  # replace nbsp
-        if (line == '{{Related expression}}' or
-                line == '{{Concept info}}' or line == '{{Concept}}'):
-            continue
-        elif line.startswith('{{Concept info'):
-            term['concept_infos'].append(read_semantic_form(text_iterator))
-        elif line.startswith('{{Concept'):
-            term['concept'] = read_semantic_form(text_iterator)
-            if term['concept'].get('language'):
-                del term['concept']['language']
-            if term['concept'].get('collection'):
-                term['concept']['collection'] = set(
-                    term['concept']['collection'].split('@@'))
-        elif is_related_expression(line):
-            expression = read_semantic_form(text_iterator)
-
-            if 'sanctioned' in expression and expression['sanctioned'] == 'No':
+    def clean_up_expression(self, expression):
+        """Clean up expression."""
+        if 'expression' in expression:
+            if (('sanctioned' in expression
+                 and expression['sanctioned'] == 'No')
+                    or 'sanctioned' not in expression):
                 expression['sanctioned'] = 'False'
-            if 'sanctioned' in expression and expression['sanctioned'] == 'Yes':
+            if ('sanctioned' in expression
+                    and expression['sanctioned'] == 'Yes'):
                 expression['sanctioned'] = 'True'
-            if 'sanctioned' not in expression:
-                expression['sanctioned'] = 'False'
-            if 'expression' in expression:
-                if ' ' in expression['expression']:
-                    expression['pos'] = 'MWE'
-                if ' ' in expression['expression']:
-                    expression['expression'] = expression['expression'].replace(
-                        ' ', ' ').strip()
-                if 'collection' in expression:
-                    if not term.get('collection'):
-                        term['concept']['collection'] = set()
-                    term['concept']['collection'].add(expression['collection'].replace('_', ' '))
-                    del expression['collection']
-                term['related_expressions'].append(expression)
 
-        elif line.startswith('{{Related'):
-            term['related_concepts'].append(read_semantic_form(text_iterator))
+            if ' ' in expression['expression']:
+                expression['pos'] = 'MWE'
+            if 'collection' in expression:
+                if not self.data.get('collection'):
+                    self.data['concept']['collection'] = set()
+                self.data['concept']['collection'].add(
+                    expression['collection'].replace('_', ' '))
+                del expression['collection']
 
-    to_concept_info(term)
+            self.data['related_expressions'].append(expression)
 
-    return term
+    def from_termwiki(self, text):
+        """Parse a termwiki page.
 
+        Args:
+            text (str): content of the termwiki page.
+            counter (collections.defaultdict(int)): keep track of things
 
-def term_to_string(term):
-    """Turn a term dict to a semantic wiki page.
+        Returns:
+            dict: contains the content of the termwiki page.
+        """
+        text_iterator = iter(text.splitlines())
 
-    Args:
-        term (dict): the result of clean_up_concept
+        for line in text_iterator:
+            line = line.replace('\xa0', ' ').strip()  # replace nbsp
+            if self.is_empty_template(line):
+                continue
 
-    Returns:
-        str: term formatted as a semantic wiki page.
-    """
-    term_strings = []
+            elif line.startswith('{{Concept info'):
+                self.data['concept_infos'].append(
+                    self.read_semantic_form(text_iterator))
 
-    for concept_info in term['concept_infos']:
-        term_strings.append('{{Concept info')
-        for key, value in concept_info.items():
-            term_strings.append('|{}={}'.format(key, value))
-        term_strings.append('}}')
+            elif line.startswith('{{Concept'):
+                self.data['concept'] = self.read_semantic_form(text_iterator)
+                self.clean_up_concept()
 
-    for expression in term['related_expressions']:
-        term_strings.append('{{Related expression')
-        for key, value in expression.items():
-            term_strings.append('|{}={}'.format(key, value))
-        term_strings.append('}}')
+            elif self.is_related_expression(line):
+                expression = self.read_semantic_form(text_iterator)
+                self.clean_up_expression(expression)
 
-    if term.get('related_concepts'):
-        for related_concept in term['related_concepts']:
-            term_strings.append('{{Related concept')
-            for key, value in related_concept.items():
+            elif line.startswith('{{Related'):
+                self.data['related_concepts'].append(
+                    self.read_semantic_form(text_iterator))
+
+        self.to_concept_info()
+
+    def to_concept_info(self):
+        """Turn old school Concept to new school Concept.
+
+        Arguments:
+            term (dict): A representation of a TermWiki Concept
+        """
+        langs = {}
+        concept = {}
+        concept.update(self.data['concept'])
+
+        if concept:
+            for key in list(concept.keys()):
+                pos = key.rfind('_')
+                if pos > 0:
+                    lang = key[pos + 1:]
+                    if lang in [
+                            'se', 'sv', 'fi', 'en', 'nb', 'nn', 'sma', 'smj',
+                            'smn', 'sms', 'lat'
+                    ]:
+                        if not langs.get(lang):
+                            langs[lang] = {}
+                            langs[lang]['language'] = lang
+                        new_key = key[:pos]
+                        langs[lang][new_key] = concept[key]
+                        del concept[key]
+
+        self.data['concept'] = concept
+        for lang in langs:
+            self.data['concept_infos'].append(langs[lang])
+
+    @staticmethod
+    def read_semantic_form(text_iterator):
+        """Turn a template into a dict.
+
+        Args:
+            text_iterator (str_iterator): the contents of the termwiki article.
+
+        Returns:
+            importer.OrderedDefaultDict
+        """
+        wiki_form = OrderedDefaultDict()
+        wiki_form.default_factory = str
+        for line in text_iterator:
+            if line == '}}':
+                return wiki_form
+            elif line.startswith('|reviewed=') or line.startswith(
+                    '|is_typo') or line.startswith('|has_illegal_char'):
+                pass
+            elif line.startswith('|'):
+                equality = line.find('=')
+                key = line[1:equality]
+                if line[equality + 1:]:
+                    wiki_form[key] = line[equality + 1:].strip()
+            else:
+                wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
+
+    @staticmethod
+    def is_empty_template(line):
+        """Check if a line represents an empty template."""
+        return (line == '{{Related expression}}' or line == '{{Concept info}}'
+                or line == '{{Concept}}')
+
+    @staticmethod
+    def fix_collection_line(line):
+        """Add Collection: to collection line if needed.
+
+        Args:
+            line (str): a line found in a termwiki page.
+
+        Returns:
+            str
+        """
+        if 'Collection:' not in line:
+            return '{}:{}'.format('Collection', line)
+        else:
+            return line
+
+    @staticmethod
+    def is_related_expression(line):
+        """Check if line is the start of a TermWiki Related expression.
+
+        Args:
+            line (str): TermWiki line
+
+        Returns:
+            bool
+        """
+        return (line.startswith('{{Related expression')
+                or line.startswith('{{Related_expression'))
+
+    def concept_info_str(self, term_strings):
+        """Append concept_info to a list of strings."""
+        for concept_info in sorted(
+                self.data['concept_infos'], key=itemgetter('language')):
+            term_strings.append('{{Concept info')
+            for key in ['language', 'definition', 'explanation', 'more_info']:
+                if concept_info.get(key):
+                    term_strings.append('|{}={}'.format(
+                        key, concept_info[key]))
+            term_strings.append('}}')
+
+    def related_expressions_str(self, term_strings):
+        """Append related_expressions to a list of strings."""
+        for expression in self.related_expressions:
+            term_strings.append('{{Related expression')
+            for key, value in expression.items():
                 term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')
 
-    if term['concept']:
-        term_strings.append('{{Concept')
-        for key, value in term['concept'].items():
-            if key == 'collection':
-                term_strings.append('|{}={}'.format(key, '@@ '.join(value)))
-            else:
-                term_strings.append('|{}={}'.format(key, value))
-        term_strings.append('}}')
-    else:
-        term_strings.append('{{Concept}}')
+    def related_concepts_str(self, term_strings):
+        """Append related_concepts to a list of strings."""
+        if self.data.get('related_concepts'):
+            for related_concept in self.data['related_concepts']:
+                term_strings.append('{{Related concept')
+                for key, value in related_concept.items():
+                    term_strings.append('|{}={}'.format(key, value))
+                term_strings.append('}}')
 
-    return '\n'.join(term_strings)
+    def concept_str(self, term_strings):
+        """Append concept to a list of strings."""
+        if self.data['concept']:
+            term_strings.append('{{Concept')
+            for key, value in self.data['concept'].items():
+                if key == 'collection':
+                    term_strings.append('|{}={}'.format(
+                        key, '@@ '.join(value)))
+                else:
+                    term_strings.append('|{}={}'.format(key, value))
+            term_strings.append('}}')
+        else:
+            term_strings.append('{{Concept}}')
 
+    def __str__(self):
+        """Turn a term dict into a semantic wiki page.
 
-def handle_page(orig_text):
-    """Parse a termwiki page.
+        Args:
+            term (dict): the result of clean_up_concept
 
-    Args:
-        text (str): content of the page
+        Returns:
+            str: term formatted as a semantic wiki page.
+        """
+        term_strings = []
+        self.concept_info_str(term_strings)
+        self.related_expressions_str(term_strings)
+        self.related_concepts_str(term_strings)
+        self.concept_str(term_strings)
 
-    Returns:
-        str: The cleaned up page, in mediawiki format.
+        return '\n'.join(term_strings)
 
-    Raises:
-        ValueError: if the page is not a known format
-    """
-    before = orig_text.find('{{')
-    if before > 0:
-        print('text before {{')
-        print(orig_text[:before])
-    after = orig_text.rfind('}}')
-    if 0 < after + 2 < len(orig_text):
-        print('text after')
-        print(orig_text[after:])
-        print(orig_text)
+    def auto_sanction(self, language):
+        """Automatically sanction expressions in the given language.
 
-    return parse_termwiki_concept(
-        fix_collection(remove_unwanted_tag(orig_text)))
+        Arguments:
+            language (str): the language to handle
+        """
+        command = self.command_template.format(language).split()
+
+        for expression in self.related_expressions:
+            if expression['language'] == language:
+                self.runner.run(
+                    command,
+                    to_stdin=bytes(expression['expression'], encoding='utf8'))
+
+                if (b'?' not in self.runner.stdout
+                        and expression['sanctioned'] == 'False'):
+                    expression['sanctioned'] = 'True'
+
+    def print_missing(self, language=None):
+        """Print lemmas not found in the languages lexicon.
+
+        Arguments:
+            language (src): language of the terms.
+        """
+        command = self.command_template.format(language).split()
+
+        for expression in self.related_expressions:
+            if expression['language'] == language:
+                self.runner.run(
+                    command,
+                    to_stdin=bytes(expression['expression'], encoding='utf8'))
+
+                if b'?' in self.runner.stdout:
+                    wanted = []
+                    wanted.append('{0}:{0} TermWiki ; !'.format(
+                        expression['expression']))
+
+                    if self.collections:
+                        for collection in self.collections:
+                            wanted.append('«{}»'.format(collection))
+
+                    wanted.append('«{}»'.format(self.title))
+
+                    print(' '.join(wanted))

@@ -17,6 +17,12 @@ def lineno():
 
 class Analyser(object):
     """Class to analyse lemmas sent to it."""
+    wiki_to_fst = {
+        'se': 'sme',
+        'fi': 'fin',
+        'nb': 'nob',
+        'nn': 'nob',
+    }
 
     runner = util.ExternalCommandRunner()
     command_template = 'hfst-lookup --quiet {}'.format(
@@ -25,6 +31,8 @@ class Analyser(object):
 
     def is_known(self, language, lemma):
         """Check if the given lemma in the given language is known."""
+        if language in self.wiki_to_fst:
+            language = self.wiki_to_fst[language]
         command = self.command_template.format(language).split()
         self.runner.run(command, to_stdin=bytes(lemma, encoding='utf8'))
 

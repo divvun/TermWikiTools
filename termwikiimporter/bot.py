@@ -85,7 +85,7 @@ class DumpHandler(object):
             if content_elt.text and '{{Concept' in content_elt.text:
                 yield title, content_elt
 
-    def expressions(self, language):
+    def print_missing(self, language=None):
         """Find all expressions of the given language.
 
         Arguments:
@@ -95,62 +95,11 @@ class DumpHandler(object):
             tuple: an expression, the collections and the title of a
                 given concept.
         """
-        for title, page in self.pages:
-            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
-            if content_elt.text and '{{Concept' in content_elt.text:
-                concept = read_termwiki.handle_page(content_elt.text)
-                for expression in concept['related_expressions']:
-                    if expression['language'] == language:
-                        yield expression, concept['concept'].get(
-                            'collection'), title
-
-    def print_missing(self, language=None):
-        """Print lemmas not found in the languages lexicon.
-
-        Arguments:
-            language (src): language of the terms.
-        """
-        command = self.command_template.format(language).split()
-
-        for expression, term_collections, title in self.expressions(language):
-            self.runner.run(
-                command, to_stdin=bytes(expression, encoding='utf8'))
-
-            if b'?' in self.runner.stdout:
-                wanted = []
-                wanted.append('{0}:{0} TermWiki ; !'.format(
-                    expression['expression']))
-
-                if term_collections:
-                    for collection in term_collections:
-                        wanted.append('«{}»'.format(collection))
-
-                wanted.append('«{}»'.format(title))
-
-                print(' '.join(wanted))
-
-    def auto_sanction_term(self, concept, language):
-        """Automatically sanction expressions in the given concept.
-
-        Arguments:
-            concept (dict): a concept dict as returned by
-                read_termwiki.term_to_string
-            language (str): the language to handle
-
-        Returns:
-            str: a new textual representation of the concept.
-        """
-        for expression in concept['related_expressions']:
-            if expression['language'] == language:
-                self.runner.run(
-                    self.command_template,
-                    to_stdin=bytes(
-                        expression['expression'], encoding='utf8'))
-
-                if b'?' not in self.runner.stdout and expression['sanctioned'] == 'False':
-                    expression['sanctioned'] = 'True'
-
-        return read_termwiki.term_to_string(concept)
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+            concept.print_missing(language)
 
     def auto_sanction_dump(self, language):
         """Automatically sanction expressions that have no collection.
@@ -163,9 +112,11 @@ class DumpHandler(object):
             language (str): the language to sanction
         """
         for _, content_elt in self.content_elements:
-            concept = read_termwiki.handle_page(content_elt.text)
-            if concept['concept'].get('collection') is None:
-                content_elt.text = self.auto_sanction_term(concept, language)
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(content_elt.text)
+            if concept.collections is None:
+                concept.auto_sanction(language)
+                content_elt.text = str(concept)
 
         self.tree.write(self.dump, pretty_print=True, encoding='utf8')
 
@@ -209,8 +160,9 @@ class DumpHandler(object):
         """Check to see if everything works as expected."""
         for title, content_elt in self.content_elements:
             try:
-                content_elt.text = read_termwiki.term_to_string(
-                    read_termwiki.handle_page(content_elt.text))
+                concept = read_termwiki.Concept()
+                concept.from_termwiki(content_elt.text)
+                content_elt.text = str(concept)
             except TypeError:
                 print('empty element:\n{}\n{}\n'.format(
                     title, etree.tostring(content_elt, encoding='unicode')))

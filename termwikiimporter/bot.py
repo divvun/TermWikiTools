@@ -55,6 +55,10 @@ class DumpHandler(object):
     dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
+    runner = util.ExternalCommandRunner()
+    command_template = 'hfst-lookup --quiet {}'.format(
+        os.path.join(
+            os.getenv('GTHOME'), 'langs/{}/src/analyser-gt-norm.hfstol'))
 
     @property
     def pages(self):
@@ -68,6 +72,18 @@ class DumpHandler(object):
             title = page.find('.//{}title'.format(self.mediawiki_ns)).text
             if title[:title.find(':')] in NAMESPACES:
                 yield title, page
+
+    @property
+    def content_elements(self):
+        """Get concept elements found in dump.xml
+
+        Yields:
+            etree.Element: the content element found in a page element.
+        """
+        for title, page in self.pages:
+            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+            if content_elt.text and '{{Concept' in content_elt.text:
+                yield title, content_elt
 
     def expressions(self, language):
         """Find all expressions of the given language.
@@ -94,17 +110,13 @@ class DumpHandler(object):
         Arguments:
             language (src): language of the terms.
         """
-        runner = util.ExternalCommandRunner()
-        command = 'hfst-lookup --quiet {}'.format(
-            os.path.join(
-                os.getenv('GTHOME'), 'langs', language,
-                'src/analyser-gt-norm.hfstol'))
+        command = self.command_template.format(language).split()
 
         for expression, term_collections, title in self.expressions(language):
-            runner.run(
-                command.split(), to_stdin=bytes(expression, encoding='utf8'))
+            self.runner.run(
+                command, to_stdin=bytes(expression, encoding='utf8'))
 
-            if b'?' in runner.stdout:
+            if b'?' in self.runner.stdout:
                 wanted = []
                 wanted.append('{0}:{0} TermWiki ; !'.format(
                     expression['expression']))
@@ -117,42 +129,54 @@ class DumpHandler(object):
 
                 print(' '.join(wanted))
 
-    def auto_confirm_term(self, language):
-        runner = util.ExternalCommandRunner()
-        command = 'hfst-lookup --quiet {}'.format(
-            os.path.join(
-                os.getenv('GTHOME'), 'langs', language,
-                'src/analyser-gt-norm.hfstol'))
+    def auto_sanction_term(self, concept, language):
+        """Automatically sanction expressions in the given concept.
 
-        hits = collections.defaultdict(int)
-        for title, page in self.pages:
-            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
-            if content_elt.text and '{{Concept' in content_elt.text:
-                concept = read_termwiki.handle_page(content_elt.text)
-                for expression in concept['related_expressions']:
-                    if expression['language'] == language:
-                        runner.run(
-                            command.split(),
-                            to_stdin=bytes(
-                                expression['expression'], encoding='utf8'))
-                        hits['total'] += 1
+        Arguments:
+            concept (dict): a concept dict as returned by
+                read_termwiki.term_to_string
+            language (str): the language to handle
 
-                        if b'?' not in runner.stdout and concept['concept'].get(
-                                'collection'
-                        ) is None and expression['sanctioned'] == 'False':
-                            hits['sanction'] += 1
-                            print(hits)
-                            expression['sanctioned'] = 'True'
-                            ct = read_termwiki.term_to_string(
-                                concept)
-                            content_elt.text = ct
+        Returns:
+            str: a new textual representation of the concept.
+        """
+        for expression in concept['related_expressions']:
+            if expression['language'] == language:
+                self.runner.run(
+                    self.command_template,
+                    to_stdin=bytes(
+                        expression['expression'], encoding='utf8'))
+
+                if b'?' not in self.runner.stdout and expression['sanctioned'] == 'False':
+                    expression['sanctioned'] = 'True'
+
+        return read_termwiki.term_to_string(concept)
+
+    def auto_sanction_dump(self, language):
+        """Automatically sanction expressions that have no collection.
+
+        The theory is that concept pages with no collections mostly are from the
+        risten.no import, and if there are no typos found in an expression they
+        should be sanctioned.
+
+        Arguments:
+            language (str): the language to sanction
+        """
+        for _, content_elt in self.content_elements:
+            concept = read_termwiki.handle_page(content_elt.text)
+            if concept['concept'].get('collection') is None:
+                content_elt.text = self.auto_sanction_term(concept, language)
 
         self.tree.write(self.dump, pretty_print=True, encoding='utf8')
-        print(language, hits)
 
     def sum_terms(self, language=None):
+        """Sum up sanctioned and none sanctioned terms.
+
+        Arguments:
+            language (str): the language to report on.
+        """
         counter = collections.defaultdict(int)
-        for expression, term_collections, title in self.expressions(language):
+        for expression, _, _ in self.expressions(language):
             if expression.get(
                     'sanctioned') and expression['sanctioned'] == 'True':
                 counter['true'] += 1
@@ -164,6 +188,7 @@ class DumpHandler(object):
             counter['false'] + counter['true']))
 
     def print_invalid_chars(self):
+        """Find terms with invalid characters, print the errors to stdout."""
         invalids = collections.defaultdict(int)
         invalid_chars_re = re.compile(r'[,\(\)]')
 
@@ -182,12 +207,10 @@ class DumpHandler(object):
 
     def fix_dump(self):
         """Check to see if everything works as expected."""
-        for title, page in self.pages:
-            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+        for title, content_elt in self.content_elements:
             try:
-                if '{{Concept' in content_elt.text:
-                    content_elt.text = read_termwiki.term_to_string(
-                        read_termwiki.handle_page(content_elt.text))
+                content_elt.text = read_termwiki.term_to_string(
+                    read_termwiki.handle_page(content_elt.text))
             except TypeError:
                 print('empty element:\n{}\n{}\n'.format(
                     title, etree.tostring(content_elt, encoding='unicode')))
@@ -415,7 +438,7 @@ def handle_dump(arguments):
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':
-        dumphandler.auto_confirm_term(language=arguments[1])
+        dumphandler.auto_sanction_dump(language=arguments[1])
 
 
 def handle_site(argument):

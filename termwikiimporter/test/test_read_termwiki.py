@@ -7,7 +7,16 @@ import unittest
 from termwikiimporter import read_termwiki
 
 
-class TestBot(unittest.TestCase):
+class FalseMockAnalyser(object):
+    def is_known(self, language, lemma):
+        return False
+
+
+class TrueMockAnalyser(object):
+    def is_known(self, language, lemma):
+        return True
+
+class TestConcept(unittest.TestCase):
     def test_bot1(self):
         """Check that continued lines in Concept is kept as is."""
         self.maxDiff = None
@@ -204,10 +213,6 @@ class TestBot(unittest.TestCase):
         concept.from_termwiki(content)
         self.assertEqual(want, str(concept))
 
-
-class TestReadTermwiki(unittest.TestCase):
-    """Test the functions in read_termwiki."""
-
     def test_remove_is_typo(self):
         """Check that is_typo is removed from Related expression."""
         content = '''{{Concept}}
@@ -294,4 +299,60 @@ class TestReadTermwiki(unittest.TestCase):
 
         concept = read_termwiki.Concept()
         concept.from_termwiki(content)
+        self.assertEqual(want, str(concept))
+
+    def test_auto_sanction_true(self):
+        content = '\n'.join([
+            '{{Concept}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|sanctioned=No',
+            '|pos=N',
+            '}}',
+        ])
+
+        want = '\n'.join([
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|sanctioned=True',
+            '|pos=N',
+            '}}',
+            '{{Concept}}',
+        ])
+
+        concept = read_termwiki.Concept()
+        concept.from_termwiki(content)
+        concept.analyser = TrueMockAnalyser()
+        concept.auto_sanction('se')
+
+        self.assertEqual(want, str(concept))
+
+    def test_auto_sanction_false(self):
+        content = '\n'.join([
+            '{{Concept}}',
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|sanctioned=No',
+            '|pos=N',
+            '}}',
+        ])
+
+        want = '\n'.join([
+            '{{Related expression',
+            '|language=se',
+            '|expression=ákču',
+            '|sanctioned=False',
+            '|pos=N',
+            '}}',
+            '{{Concept}}',
+        ])
+
+        concept = read_termwiki.Concept()
+        concept.from_termwiki(content)
+        concept.analyser = FalseMockAnalyser()
+        concept.auto_sanction('se')
+
         self.assertEqual(want, str(concept))

@@ -3,6 +3,7 @@
 
 import collections
 import os
+import re
 import sys
 
 import yaml
@@ -80,11 +81,11 @@ class DumpHandler(object):
         """
         for title, page in self.pages:
             content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
-            if '{{' in content_elt.text:
+            if content_elt.text and '{{Concept' in content_elt.text:
                 concept = read_termwiki.handle_page(content_elt.text)
                 for expression in concept['related_expressions']:
                     if expression['language'] == language:
-                        yield expression['expression'], concept['concept'].get(
+                        yield expression, concept['concept'].get(
                             'collection'), title
 
     def print_missing(self, language=None):
@@ -105,7 +106,8 @@ class DumpHandler(object):
 
             if b'?' in runner.stdout:
                 wanted = []
-                wanted.append('{0}:{0} TermWiki ; !'.format(expression))
+                wanted.append('{0}:{0} TermWiki ; !'.format(
+                    expression['expression']))
 
                 if term_collections:
                     for collection in term_collections:
@@ -115,12 +117,75 @@ class DumpHandler(object):
 
                 print(' '.join(wanted))
 
+    def auto_confirm_term(self, language):
+        runner = util.ExternalCommandRunner()
+        command = 'hfst-lookup --quiet {}'.format(
+            os.path.join(
+                os.getenv('GTHOME'), 'langs', language,
+                'src/analyser-gt-norm.hfstol'))
+
+        hits = collections.defaultdict(int)
+        for title, page in self.pages:
+            content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
+            if content_elt.text and '{{Concept' in content_elt.text:
+                concept = read_termwiki.handle_page(content_elt.text)
+                for expression in concept['related_expressions']:
+                    if expression['language'] == language:
+                        runner.run(
+                            command.split(),
+                            to_stdin=bytes(
+                                expression['expression'], encoding='utf8'))
+                        hits['total'] += 1
+
+                        if b'?' not in runner.stdout and concept['concept'].get(
+                                'collection'
+                        ) is None and expression['sanctioned'] == 'False':
+                            hits['sanction'] += 1
+                            print(hits)
+                            expression['sanctioned'] = 'True'
+                            ct = read_termwiki.term_to_string(
+                                concept)
+                            content_elt.text = ct
+
+        self.tree.write(self.dump, pretty_print=True, encoding='utf8')
+        print(language, hits)
+
+    def sum_terms(self, language=None):
+        counter = collections.defaultdict(int)
+        for expression, term_collections, title in self.expressions(language):
+            if expression.get(
+                    'sanctioned') and expression['sanctioned'] == 'True':
+                counter['true'] += 1
+            else:
+                counter['false'] += 1
+
+        print('{}: {}: true, {}: false, {}: total'.format(
+            language, counter['true'], counter['false'],
+            counter['false'] + counter['true']))
+
+    def print_invalid_chars(self):
+        invalids = collections.defaultdict(int)
+        invalid_chars_re = re.compile(r'[,\(\)]')
+
+        for language in [
+                'en', 'fi', 'lat', 'nb', 'nn', 'se', 'sma', 'smj', 'smn', 'sms'
+        ]:
+            for expression, _, title in self.expressions(language):
+                if invalid_chars_re.search(expression['expression']):
+                    invalids[language] += 1
+                    print(
+                        '{} https://satni.uit.no/termwiki/index.php/{}'.format(
+                            expression['expression'], title))
+
+        for language, number in invalids.items():
+            print(language, number)
+
     def fix_dump(self):
         """Check to see if everything works as expected."""
         for title, page in self.pages:
             content_elt = page.find('.//{}text'.format(self.mediawiki_ns))
             try:
-                if '{{' in content_elt.text:
+                if '{{Concept' in content_elt.text:
                     content_elt.text = read_termwiki.term_to_string(
                         read_termwiki.handle_page(content_elt.text))
             except TypeError:
@@ -345,6 +410,12 @@ def handle_dump(arguments):
         dumphandler.print_missing(language=arguments[1])
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
+    elif arguments[0] == 'invalid':
+        dumphandler.print_invalid_chars()
+    elif arguments[0] == 'sum':
+        dumphandler.sum_terms(language=arguments[1])
+    elif arguments[0] == 'auto':
+        dumphandler.auto_confirm_term(language=arguments[1])
 
 
 def handle_site(argument):
@@ -362,7 +433,9 @@ def handle_site(argument):
 def main():
     """Either fix a TermWiki site or test fixing routines on dump.xml."""
     if len(sys.argv) > 1:
-        if sys.argv[1] in ['test', 'missing', 'collection']:
+        if sys.argv[1] in [
+                'test', 'missing', 'collection', 'invalid', 'sum', 'auto'
+        ]:
             handle_dump(sys.argv[1:])
         else:
             handle_site(sys.argv[1])

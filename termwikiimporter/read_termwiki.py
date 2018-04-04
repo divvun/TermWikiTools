@@ -3,6 +3,7 @@
 
 import inspect
 import os
+import re
 from operator import itemgetter
 
 from corpustools import util
@@ -303,3 +304,19 @@ class Concept(object):
                     wanted.append('«{}»'.format(self.title))
 
                     print(' '.join(wanted))
+
+    def find_invalid(self, language):
+        """Find expressions with invalid characters.
+
+        Arguments:
+            language (str): the language of the expressions
+
+        Yields:
+            str: an offending expression
+        """
+        invalid_chars_re = re.compile(r'[,\(\)]')
+
+        for expression in self.related_expressions:
+            if expression['language'] == language:
+                if invalid_chars_re.search(expression['expression']):
+                    yield expression['expression']

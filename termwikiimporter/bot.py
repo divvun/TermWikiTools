@@ -3,7 +3,6 @@
 
 import collections
 import os
-import re
 import sys
 
 import yaml
@@ -11,7 +10,6 @@ from lxml import etree
 
 import mwclient
 from termwikiimporter import read_termwiki
-from corpustools import util
 
 NAMESPACES = [
     'Boazodoallu',
@@ -69,7 +67,7 @@ class DumpHandler(object):
 
     @property
     def content_elements(self):
-        """Get concept elements found in dump.xml
+        """Get concept elements found in dump.xml.
 
         Yields:
             etree.Element: the content element found in a page element.
@@ -98,9 +96,9 @@ class DumpHandler(object):
     def auto_sanction_dump(self, language):
         """Automatically sanction expressions that have no collection.
 
-        The theory is that concept pages with no collections mostly are from the
-        risten.no import, and if there are no typos found in an expression they
-        should be sanctioned.
+        The theory is that concept pages with no collections mostly are from
+        the risten.no import, and if there are no typos found in an expression
+        they should be sanctioned.
 
         Arguments:
             language (str): the language to sanction
@@ -121,31 +119,30 @@ class DumpHandler(object):
             language (str): the language to report on.
         """
         counter = collections.defaultdict(int)
-        for expression, _, _ in self.expressions(language):
-            if expression.get(
-                    'sanctioned') and expression['sanctioned'] == 'True':
-                counter['true'] += 1
-            else:
-                counter['false'] += 1
+        for _, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(content_elt.text)
+
+            for expression in concept.related_expressions:
+                if expression['language'] == language:
+                    counter[expression['sanctioned']] += 1
 
         print('{}: {}: true, {}: false, {}: total'.format(
             language, counter['true'], counter['false'],
             counter['false'] + counter['true']))
 
-    def print_invalid_chars(self):
+    def print_invalid_chars(self, language):
         """Find terms with invalid characters, print the errors to stdout."""
         invalids = collections.defaultdict(int)
-        invalid_chars_re = re.compile(r'[,\(\)]')
 
-        for language in [
-                'en', 'fi', 'lat', 'nb', 'nn', 'se', 'sma', 'smj', 'smn', 'sms'
-        ]:
-            for expression, _, title in self.expressions(language):
-                if invalid_chars_re.search(expression['expression']):
-                    invalids[language] += 1
-                    print(
-                        '{} https://satni.uit.no/termwiki/index.php/{}'.format(
-                            expression['expression'], title))
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(content_elt.text)
+
+            for expression in concept.find_invalid(language):
+                invalids[language] += 1
+                print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
+                    expression, title))
 
         for language, number in invalids.items():
             print(language, number)
@@ -179,10 +176,18 @@ class DumpHandler(object):
 
 
 class SiteHandler(object):
+    """Class that involves using the TermWiki dump.
+
+    Attributes:
+        site (mwclient.Site): the TermWiki site
+    """
+
     def __init__(self):
+        """Initialise the SiteHandler class."""
         self.site = self.get_site()
 
-    def get_site(self):
+    @staticmethod
+    def get_site():
         """Get a mwclient site object.
 
         Returns:
@@ -229,90 +234,14 @@ class SiteHandler(object):
         """
         return '{{Concept' in content
 
-    def write_expressions(self, expressions):
-        """Make Expression pages.
-
-        Args:
-            expressions (list of importer.OrderDefaultDict): The expressions found
-                in the Concept page.
-            site (mwclient.Site): The site object
-        """
-        for expression in expressions:
-            page = self.site.Pages['Expression:{}'.format(
-                expression['expression'])]
-            if not page.exists:
-                print('Creating page: {}'.format(page.name))
-                page.save(
-                    self.to_page_content(expression),
-                    summary='Creating new Expression page')
-            else:
-                existings = self.parse_expression(page.text(),
-                                                  expression['expression'])
-                for existing in existings:
-                    try:
-                        if (existing['language'] == expression['language']
-                                and existing['pos'] == expression['pos']):
-                            break
-                    except TypeError:
-                        print(existing, expression)
-                        sys.exit(18)
-                else:
-                    existings.append({
-                        'language': expression['language'],
-                        'pos': expression['pos']
-                    })
-
-                new_text = '\n'.join(
-                    [to_page_content(expression) for expression in existings])
-                if page.text() != new_text:
-                    print()
-                    print('Correcting content in: {}'.format(page.name))
-                    page.save(new_text, summary='Correcting content')
-
-    def parse_expression(text, page_name):
-        """Parse an expression page.
-
-        Args:
-            text (str): content of an Expression page.
-            page_name (str): name of the Expression page.
-
-        Returns:
-            dict(str, str): contains the keys and values found on the Expression
-                page.
-        """
-        existing = []
-        text_iterator = iter(text.splitlines())
-
-        for line in text_iterator:
-            if line.startswith('{{Expression') and '}}' not in line:
-                exp = read_termwiki.read_semantic_form(text_iterator)
-                if exp:
-                    if ' ' in page_name:
-                        exp['pos'] = 'MWE'
-                    if exp not in existing:
-                        existing.append(exp)
-
-        return existing
-
-    def to_page_content(expression):
-        """Turn an expression dict to into Expression page content.
-
-        Args:
-            expression (importer.OrderDefaultDict): a dict representing an
-                expression
-
-        Returns:
-            str: a string containing a TermWiki Expression.
-        """
-        text_lines = ['{{Expression']
-        text_lines.extend(
-            ['|{}={}'.format(key, expression[key]) for key in expression])
-        text_lines.append('}}')
-
-        return '\n'.join(text_lines)
-
     @staticmethod
     def save_page(page, content, summary):
+        """Save a given TermWiki page.
+
+        Arguments:
+            content (str): the new content to be saved.
+            summary (str): the commit message.
+        """
         try:
             page.save(content, summary=summary)
         except mwclient.errors.APIError as error:
@@ -346,15 +275,16 @@ class SiteHandler(object):
                 print('Hit no: {}, title: {}'.format(number, title))
                 page = self.site.Pages[title]
                 self.save_page(
+                    page,
                     page.text().replace('|language=sma', '|language=se'),
                     summary='This is North Saami, not South Saami')
 
     def auto_sanction_dump(self, language):
         """Automatically sanction expressions that have no collection.
 
-        The theory is that concept pages with no collections mostly are from the
-        risten.no import, and if there are no typos found in an expression they
-        should be sanctioned.
+        The theory is that concept pages with no collections mostly are from
+        the risten.no import, and if there are no typos found in an expression
+        they should be sanctioned.
 
         Arguments:
             language (str): the language to sanction
@@ -367,9 +297,9 @@ class SiteHandler(object):
                 self.save_page(
                     page,
                     str(concept),
-                    summary=
-                    'Sanctioned expressions not associated with any collections that the normative {} fst recognises.'.
-                    format(language))
+                    summary='Sanctioned expressions not associated with any '
+                    'collections that the normative {} fst '
+                    'recognises.'.format(language))
 
 
 def handle_dump(arguments):
@@ -387,7 +317,7 @@ def handle_dump(arguments):
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
-        dumphandler.print_invalid_chars()
+        dumphandler.print_invalid_chars(language=arguments[1])
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':
@@ -400,10 +330,11 @@ def handle_site(argument):
     Arguments:
         argument (str): command line argument
     """
+    site = SiteHandler()
     if argument == 'site':
-        fix_site()
+        site.fix_site()
     elif argument == 'query':
-        query_and_fix()
+        site.query_replace_text()
 
 
 def main():

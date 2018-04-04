@@ -15,14 +15,12 @@ from corpustools import util
 
 NAMESPACES = [
     'Boazodoallu',
-    'Collection',
     'Dihtorteknologiija ja diehtoteknihkka',
     'Dáidda ja girjjálašvuohta',
     'Eanandoallu',
     'Education',
     'Ekologiija ja biras',
     'Ekonomiija ja gávppašeapmi',
-    'Expression',
     'Geografiija',
     'Gielladieđa',
     'Gulahallanteknihkka',
@@ -55,10 +53,6 @@ class DumpHandler(object):
     dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
-    runner = util.ExternalCommandRunner()
-    command_template = 'hfst-lookup --quiet {}'.format(
-        os.path.join(
-            os.getenv('GTHOME'), 'langs/{}/src/analyser-gt-norm.hfstol'))
 
     @property
     def pages(self):
@@ -184,191 +178,198 @@ class DumpHandler(object):
                         content_elt, encoding='unicode'))
 
 
-def get_site():
-    """Get a mwclient site object.
+class SiteHandler(object):
+    def __init__(self):
+        self.site = self.get_site()
 
-    Returns:
-        mwclient.Site
-    """
-    config_file = os.path.join(
-        os.getenv('HOME'), '.config', 'term_config.yaml')
-    with open(config_file) as config_stream:
-        config = yaml.load(config_stream)
-        site = mwclient.Site('satni.uit.no', path='/termwiki/')
-        site.login(config['username'], config['password'])
+    def get_site(self):
+        """Get a mwclient site object.
 
-        return site
+        Returns:
+            mwclient.Site
+        """
+        config_file = os.path.join(
+            os.getenv('HOME'), '.config', 'term_config.yaml')
+        with open(config_file) as config_stream:
+            config = yaml.load(config_stream)
+            site = mwclient.Site('satni.uit.no', path='/termwiki/')
+            site.login(config['username'], config['password'])
 
+            print('Logging in to query …')
 
-def termwiki_concept_pages(site):
-    """Get the concept pages in the TermWiki.
+            return site
 
-    Args:
-        site (mwclient.Site): A site object.
+    @property
+    def content_elements(self):
+        """Get the concept pages in the TermWiki.
 
-    Yields:
-        mwclient.Page
-    """
-    for category in site.allcategories():
-        if category.name.replace('Kategoriija:', '') in NAMESPACES:
-            print(category.name)
-            for page in category:
-                if is_concept_tag(page.text()):
-                    yield page
-            print()
+        Args:
+            site (mwclient.Site): A site object.
 
-
-def is_concept_tag(content):
-    """Check if content is a TermWiki Concept page.
-
-    Args:
-        content (str): content of a TermWiki page.
-
-    Returns:
-        bool
-    """
-    return ('{{Concept' in content and ('{{Related expression' in content
-                                        or '{{Related_expression' in content))
-
-
-def write_expressions(expressions, site):
-    """Make Expression pages.
-
-    Args:
-        expressions (list of importer.OrderDefaultDict): The expressions found
-            in the Concept page.
-        site (mwclient.Site): The site object
-    """
-    for expression in expressions:
-        page = site.Pages['Expression:{}'.format(expression['expression'])]
-        if not page.exists:
-            print('Creating page: {}'.format(page.name))
-            page.save(
-                to_page_content(expression),
-                summary='Creating new Expression page')
-        else:
-            existings = parse_expression(page.text(), expression['expression'])
-            for existing in existings:
-                try:
-                    if (existing['language'] == expression['language']
-                            and existing['pos'] == expression['pos']):
-                        break
-                except TypeError:
-                    print(existing, expression)
-                    sys.exit(18)
-            else:
-                existings.append({
-                    'language': expression['language'],
-                    'pos': expression['pos']
-                })
-
-            new_text = '\n'.join(
-                [to_page_content(expression) for expression in existings])
-            if page.text() != new_text:
+        Yields:
+            mwclient.Page
+        """
+        for category in self.site.allcategories():
+            if category.name.replace('Kategoriija:', '') in NAMESPACES:
+                print(category.name)
+                for page in category:
+                    if self.is_concept_tag(page.text()):
+                        yield page
                 print()
-                print('Correcting content in: {}'.format(page.name))
-                page.save(new_text, summary='Correcting content')
 
+    @staticmethod
+    def is_concept_tag(content):
+        """Check if content is a TermWiki Concept page.
 
-def parse_expression(text, page_name):
-    """Parse an expression page.
+        Args:
+            content (str): content of a TermWiki page.
 
-    Args:
-        text (str): content of an Expression page.
-        page_name (str): name of the Expression page.
+        Returns:
+            bool
+        """
+        return '{{Concept' in content
 
-    Returns:
-        dict(str, str): contains the keys and values found on the Expression
-            page.
-    """
-    existing = []
-    text_iterator = iter(text.splitlines())
+    def write_expressions(self, expressions):
+        """Make Expression pages.
 
-    for line in text_iterator:
-        if line.startswith('{{Expression') and '}}' not in line:
-            exp = read_termwiki.read_semantic_form(text_iterator)
-            if exp:
-                if ' ' in page_name:
-                    exp['pos'] = 'MWE'
-                if exp not in existing:
-                    existing.append(exp)
-
-    return existing
-
-
-def to_page_content(expression):
-    """Turn an expression dict to into Expression page content.
-
-    Args:
-        expression (importer.OrderDefaultDict): a dict representing an
-            expression
-
-    Returns:
-        str: a string containing a TermWiki Expression.
-    """
-    text_lines = ['{{Expression']
-    text_lines.extend(
-        ['|{}={}'.format(key, expression[key]) for key in expression])
-    text_lines.append('}}')
-
-    return '\n'.join(text_lines)
-
-
-def fix_site():
-    """Make the bot fix all pages."""
-    counter = collections.defaultdict(int)
-    print('Logging in …')
-    site = get_site()
-
-    print('About to iterate categories')
-    for page in termwiki_concept_pages(site):
-        print('.', end='')
-        sys.stdout.flush()
-        orig_text = page.text()
-
-        if '{{' in orig_text:
-            concept = read_termwiki.handle_page(orig_text)
-            new_text = read_termwiki.term_to_string(concept)
-
-            if orig_text != new_text:
-                print()
-                print(read_termwiki.lineno(), page.name)
-                try:
-                    page.save(new_text, summary='Fixing content')
-                except mwclient.errors.APIError as error:
-                    print(page.name, new_text, str(error), file=sys.stderr)
-
-            write_expressions(concept['related_expressions'], site)
-
-    for key in sorted(counter):
-        print(key, counter[key])
-
-
-def query_and_fix():
-    u"""Do a semantic media query and fix pages.
-
-    Change the query and the actions when needed …
-
-    http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
-    https://www.semantic-mediawiki.org/wiki/Help:API
-    """
-    print('Logging in to query …')
-    site = get_site()
-
-    query = ('[[Category:Servodatdieđa]]|'
-             '[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]')
-    for number, answer in enumerate(site.ask(query), start=1):
-        for title, _ in answer.items():
-            print('Hit no: {}, title: {}'.format(number, title))
-            page = site.Pages[title]
-            concept = read_termwiki.handle_page(page.text())
-            new_text = read_termwiki.term_to_string(concept)
-            try:
+        Args:
+            expressions (list of importer.OrderDefaultDict): The expressions found
+                in the Concept page.
+            site (mwclient.Site): The site object
+        """
+        for expression in expressions:
+            page = self.site.Pages['Expression:{}'.format(
+                expression['expression'])]
+            if not page.exists:
+                print('Creating page: {}'.format(page.name))
                 page.save(
-                    new_text.replace('|language=sma', '|language=se'),
+                    self.to_page_content(expression),
+                    summary='Creating new Expression page')
+            else:
+                existings = self.parse_expression(page.text(),
+                                                  expression['expression'])
+                for existing in existings:
+                    try:
+                        if (existing['language'] == expression['language']
+                                and existing['pos'] == expression['pos']):
+                            break
+                    except TypeError:
+                        print(existing, expression)
+                        sys.exit(18)
+                else:
+                    existings.append({
+                        'language': expression['language'],
+                        'pos': expression['pos']
+                    })
+
+                new_text = '\n'.join(
+                    [to_page_content(expression) for expression in existings])
+                if page.text() != new_text:
+                    print()
+                    print('Correcting content in: {}'.format(page.name))
+                    page.save(new_text, summary='Correcting content')
+
+    def parse_expression(text, page_name):
+        """Parse an expression page.
+
+        Args:
+            text (str): content of an Expression page.
+            page_name (str): name of the Expression page.
+
+        Returns:
+            dict(str, str): contains the keys and values found on the Expression
+                page.
+        """
+        existing = []
+        text_iterator = iter(text.splitlines())
+
+        for line in text_iterator:
+            if line.startswith('{{Expression') and '}}' not in line:
+                exp = read_termwiki.read_semantic_form(text_iterator)
+                if exp:
+                    if ' ' in page_name:
+                        exp['pos'] = 'MWE'
+                    if exp not in existing:
+                        existing.append(exp)
+
+        return existing
+
+    def to_page_content(expression):
+        """Turn an expression dict to into Expression page content.
+
+        Args:
+            expression (importer.OrderDefaultDict): a dict representing an
+                expression
+
+        Returns:
+            str: a string containing a TermWiki Expression.
+        """
+        text_lines = ['{{Expression']
+        text_lines.extend(
+            ['|{}={}'.format(key, expression[key]) for key in expression])
+        text_lines.append('}}')
+
+        return '\n'.join(text_lines)
+
+    @staticmethod
+    def save_page(page, content, summary):
+        try:
+            page.save(content, summary=summary)
+        except mwclient.errors.APIError as error:
+            print(page.name, content, str(error), file=sys.stderr)
+
+    def fix_site(self):
+        """Make the bot fix all pages."""
+        counter = collections.defaultdict(int)
+
+        for page in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(page.text())
+            self.save_page(page, str(concept), summary='Fixing content')
+
+        for key in sorted(counter):
+            print(key, counter[key])
+
+    def query_replace_text(self):
+        u"""Do a semantic media query and fix pages.
+
+        Change the query and the actions when needed …
+
+        http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
+        https://www.semantic-mediawiki.org/wiki/Help:API
+        """
+        query = ('[[Category:Servodatdieđa]]|'
+                 '[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]')
+
+        for number, answer in enumerate(self.site.ask(query), start=1):
+            for title, _ in answer.items():
+                print('Hit no: {}, title: {}'.format(number, title))
+                page = self.site.Pages[title]
+                self.save_page(
+                    page.text().replace('|language=sma', '|language=se'),
                     summary='This is North Saami, not South Saami')
-            except mwclient.errors.APIError as error:
-                print(page.name, new_text, str(error), file=sys.stderr)
+
+    def auto_sanction_dump(self, language):
+        """Automatically sanction expressions that have no collection.
+
+        The theory is that concept pages with no collections mostly are from the
+        risten.no import, and if there are no typos found in an expression they
+        should be sanctioned.
+
+        Arguments:
+            language (str): the language to sanction
+        """
+        for page in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(page.text())
+            if concept.collections is None:
+                concept.auto_sanction(language)
+                self.save_page(
+                    page,
+                    str(concept),
+                    summary=
+                    'Sanctioned expressions not associated with any collections that the normative {} fst recognises.'.
+                    format(language))
 
 
 def handle_dump(arguments):

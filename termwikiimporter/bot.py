@@ -93,7 +93,7 @@ class DumpHandler(object):
             concept.from_termwiki(content_elt.text)
             concept.print_missing(language)
 
-    def auto_sanction_dump(self, language):
+    def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.
 
         The theory is that concept pages with no collections mostly are from
@@ -103,7 +103,11 @@ class DumpHandler(object):
         Arguments:
             language (str): the language to sanction
         """
+        ex = 1
         for _, content_elt in self.content_elements:
+            print('.', end='')
+            sys.stdout.flush()
+            ex += 1
             concept = read_termwiki.Concept()
             concept.from_termwiki(content_elt.text)
             if concept.collections is None:
@@ -147,7 +151,7 @@ class DumpHandler(object):
         for language, number in invalids.items():
             print(language, number)
 
-    def fix_dump(self):
+    def fix(self):
         """Check to see if everything works as expected."""
         for title, content_elt in self.content_elements:
             try:
@@ -247,7 +251,7 @@ class SiteHandler(object):
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
 
-    def fix_site(self):
+    def fix(self):
         """Make the bot fix all pages."""
         counter = collections.defaultdict(int)
 
@@ -267,19 +271,27 @@ class SiteHandler(object):
         http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
         https://www.semantic-mediawiki.org/wiki/Help:API
         """
-        query = ('[[Category:Servodatdieđa]]|'
-                 '[[Collection::Collection:arbeidsliv_godkjent_av_termgr]]')
+        query = (
+            '[[Related expression::+]]'
+            '[[Language::{}]]'
+            '[[Sanctioned::False]]'.format(language))
 
         for number, answer in enumerate(self.site.ask(query), start=1):
             for title, _ in answer.items():
-                print('Hit no: {}, title: {}'.format(number, title))
                 page = self.site.Pages[title]
-                self.save_page(
-                    page,
-                    page.text().replace('|language=sma', '|language=se'),
-                    summary='This is North Saami, not South Saami')
+                concept = read_termwiki.Concept()
+                concept.from_termwiki(page.text())
+                if concept.collections is None:
+                    print('Hit no: {}, title: {}'.format(number, title))
+                    concept.auto_sanction(language)
+                    self.save_page(
+                        page,
+                        str(concept),
+                        summary='Sanctioned expressions not associated with any '
+                        'collections that the normative {} fst '
+                        'recognises.'.format(language))
 
-    def auto_sanction_dump(self, language):
+    def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.
 
         The theory is that concept pages with no collections mostly are from
@@ -289,17 +301,28 @@ class SiteHandler(object):
         Arguments:
             language (str): the language to sanction
         """
-        for page in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(page.text())
-            if concept.collections is None:
-                concept.auto_sanction(language)
-                self.save_page(
-                    page,
-                    str(concept),
-                    summary='Sanctioned expressions not associated with any '
-                    'collections that the normative {} fst '
-                    'recognises.'.format(language))
+        ex = 1
+        query = (
+            '[[Related expression::+]]'
+            '[[Language::{}]]'
+            '[[Sanctioned::False]]'.format(language))
+
+        for number, answer in enumerate(self.site.ask(query), start=1):
+            for title, _ in answer.items():
+                print('.', end='')
+                sys.stdout.flush()
+                ex += 1
+                page = self.site.Pages[title]
+                concept = read_termwiki.Concept()
+                concept.from_termwiki(page.text())
+                if concept.collections is None:
+                    concept.auto_sanction(language)
+                    self.save_page(
+                        page,
+                        str(concept),
+                        summary='Sanctioned expressions not associated with any '
+                        'collections that the normative {} fst '
+                        'recognises.'.format(language))
 
 
 def handle_dump(arguments):
@@ -310,8 +333,8 @@ def handle_dump(arguments):
     """
     dumphandler = DumpHandler()
 
-    if arguments[0] == 'test':
-        dumphandler.fix_dump()
+    if arguments[0] == 'fix':
+        dumphandler.fix()
     elif arguments[0] == 'missing':
         dumphandler.print_missing(language=arguments[1])
     elif arguments[0] == 'collection':
@@ -321,31 +344,35 @@ def handle_dump(arguments):
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':
-        dumphandler.auto_sanction_dump(language=arguments[1])
+        dumphandler.auto_sanction(language=arguments[1])
+    else:
+        print(' '.join(arguments), 'is not supported')
 
 
-def handle_site(argument):
+def handle_site(arguments):
     """Act on the termwiki.
 
     Arguments:
         argument (str): command line argument
     """
     site = SiteHandler()
-    if argument == 'site':
-        site.fix_site()
-    elif argument == 'query':
+    if arguments[0] == 'fix':
+        site.fix()
+    elif arguments[0] == 'query':
         site.query_replace_text()
+    elif arguments[0] == 'auto':
+        site.auto_sanction(language=arguments[1])
+    else:
+        print(' '.join(arguments), 'is not supported')
 
 
 def main():
     """Either fix a TermWiki site or test fixing routines on dump.xml."""
-    if len(sys.argv) > 1:
-        if sys.argv[1] in [
-                'test', 'missing', 'collection', 'invalid', 'sum', 'auto'
-        ]:
-            handle_dump(sys.argv[1:])
+    if len(sys.argv) > 2:
+        if sys.argv[1] == 'dump':
+            handle_dump(sys.argv[2:])
         else:
-            handle_site(sys.argv[1])
+            handle_site(sys.argv[2:])
     else:
         print('Usage:\ntermbot site to fix the TermWiki\n'
               'termbot test to run a test on dump.xml')

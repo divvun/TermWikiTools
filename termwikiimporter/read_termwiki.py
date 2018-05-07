@@ -2,11 +2,10 @@
 """Read termwiki pages."""
 
 import inspect
-import os
 import re
 from operator import itemgetter
 
-from corpustools import util
+from termwikiimporter import analyser
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 
@@ -15,34 +14,8 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
-class Analyser(object):
-    """Class to analyse lemmas sent to it."""
-    wiki_to_fst = {
-        'se': 'sme',
-        'fi': 'fin',
-        'nb': 'nob',
-        'nn': 'nob',
-    }
-
-    runner = util.ExternalCommandRunner()
-    command_template = 'hfst-lookup --quiet {}'.format(
-        os.path.join(
-            os.getenv('GTHOME'), 'langs/{}/src/analyser-gt-norm.hfstol'))
-
-    def is_known(self, language, lemma):
-        """Check if the given lemma in the given language is known."""
-        if language in self.wiki_to_fst:
-            language = self.wiki_to_fst[language]
-        command = self.command_template.format(language).split()
-        self.runner.run(command, to_stdin=bytes(lemma, encoding='utf8'))
-
-        return b'?' not in self.runner.stdout
-
-
 class Concept(object):
     """Class that represents a TermWiki concept."""
-
-    analyser = Analyser()
 
     def __init__(self):
         """Initialise the Concept class."""
@@ -288,7 +261,7 @@ class Concept(object):
         """
         for expression in self.related_expressions:
             if expression['language'] == language:
-                if (self.analyser.is_known(language, expression['expression'])
+                if (analyser.is_known(language, expression['expression'])
                         and expression['sanctioned'] == 'False'):
                     expression['sanctioned'] = 'True'
 
@@ -300,7 +273,7 @@ class Concept(object):
         """
         for expression in self.related_expressions:
             if expression['language'] == language:
-                if self.analyser.is_known(language, expression['expression']):
+                if analyser.is_known(language, expression['expression']):
                     wanted = []
                     wanted.append('{0}:{0} TermWiki ; !'.format(
                         expression['expression']))

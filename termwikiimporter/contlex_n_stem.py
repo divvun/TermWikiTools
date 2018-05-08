@@ -43,11 +43,9 @@ The name of a Stem page:
 Stem:johtolat se N JOHTOLAT
 """
 
-import glob
 import io
 import os
 import re
-import sys
 from collections import defaultdict
 
 from termwikiimporter import analyser
@@ -67,6 +65,7 @@ WANTED_LEXICONS = {
         'verbs': ['Eahpe_Verb', 'Verb'],
     }
 }
+"""dict: Govern which files and lexicons to extract for the given languages."""
 
 LEXC_LINE_RE = re.compile(r'''
     (?P<contlex>\S+)            #  any nonspace
@@ -75,22 +74,24 @@ LEXC_LINE_RE = re.compile(r'''
     (?P<comment>!.*)?           #  followed by an optional comment
     $
 ''', re.VERBOSE | re.UNICODE)
+"""regex: This is used to recognise a lexc line from other content."""
 
 LEXC_CONTENT_RE = re.compile(r'''
     (?P<exclam>^\s*!\s*)?          #  optional comment
     (?P<content>(<.+>)|(.+))?      #  optional content
 ''', re.VERBOSE | re.UNICODE)
+"""regex: identify more specific parts of a lexc line."""
 
 
 def parse_line(old_match: dict) -> defaultdict:
     """Parse a lexc line.
 
     Arguments:
-        old_match:
+        old_match: the output of LEXC_LINE_RE.groupdict.
 
     Returns:
-        dict of unicode: The entries inside the lexc line expressed as
-            a dict
+        defaultdict: The entries inside the lexc line expressed as
+            a defaultdict
     """
     line_dict = defaultdict(str)
 
@@ -145,6 +146,18 @@ def line2dict(line: str) -> dict:
 
 
 class FileHandler(object):
+    """Turn a stem lexc file into SMW pages.
+
+    Attributes:
+        giella2termwiki: map Giella language codes to TermWiki language codes
+        file2pos: map filenames to Giella part of speech codes
+        filetemplate: template for lexc filenames
+        lang: Giella language code
+        stemfile: name of the stemfile without suffix
+        contlexes: set that contains names of the continuation lexicons found
+            in the stemfile
+        filename: the full path to the stem lexc file
+    """
     giella2termwiki = {
         'fin': 'fi',
         'nob': 'nb',
@@ -169,26 +182,46 @@ class FileHandler(object):
     filetemplate = os.path.join(
         os.getenv('GTHOME'), 'langs/{}/src/morphology/stems/{}.lexc')
 
-    def __init__(self, lang: str, stemfile: str):
+    def __init__(self, lang: str, stemfile: str) -> None:
+        """Initialise the FileHandler class.
+
+        Args:
+            lang: Giella language code.
+            stemfile: name of the stemfile without suffix
+        """
         self.lang = lang
         self.stemfile = stemfile
         self.contlexes = set()
         self.filename = self.filetemplate.format(lang, stemfile)
 
     @property
-    def termwikilang(self):
+    def termwikilang(self) -> str:
+        """Get the language code used in TermWiki."""
         return self.giella2termwiki[self.lang]
 
     @property
-    def termwikipos(self):
+    def termwikipos(self) -> str:
+        """Return the part of speech code used in TermWiki."""
         return self.file2pos[self.stemfile]
 
-    def contlex_name(self, contlex):
+    def contlex_name(self, contlex: str) -> str:
+        """Return the contlex name used in TermWiki.
+
+        Args:
+            contlex: name of a continuation lexicon.
+        """
         return '{} {} {}'.format(self.termwikilang, self.termwikipos, contlex)
 
-    def print_stem(self, upper: str, line_dict: dict) -> None:
+    def print_stem(self, lemma: str, line_dict: dict) -> None:
+        """Produce the content and name of a TermWiki Stem page.
+
+        Args:
+            lemma: the lemma
+            line_dict: the lexc line mapped to a dict containing the different
+                parts of lexc line
+        """
         stem = ['{{Stem']
-        stem.append('|Lemma={}'.format(upper))
+        stem.append('|Lemma={}'.format(lemma))
         stem.append('|Contlex={}'.format(
             self.contlex_name(line_dict['contlex'])))
         if line_dict['translation']:
@@ -196,12 +229,17 @@ class FileHandler(object):
         if line_dict['comment']:
             stem.append('|Comment2={}'.format(line_dict['comment']))
         stem.append('}}')
-        print('Stem:{} {}'.format(upper, self.contlex_name(
+        print('Stem:{} {}'.format(lemma, self.contlex_name(
             line_dict['contlex'])))
         print('\n'.join(stem))
         print()
 
     def print_contlex(self, contlex: str) -> None:
+        """Produce the content and name of a TermWiki Contlex page.
+
+        Args:
+            contlex: name of a continuation lexicon.
+        """
         if contlex not in self.contlexes:
             self.contlexes.add(contlex)
             content = ['{{Continuation lexicon']
@@ -212,18 +250,19 @@ class FileHandler(object):
             print('\n'.join(content))
             print()
 
-    def handle_file(self):
+    def parse_file(self) -> None:
+        """Parse the lexc stem file."""
         with io.open(self.filename) as lexc:
-            SKIP = True
+            skip = True
 
             for lexc_line in lexc:
                 if lexc_line.startswith('LEXICON'):
                     parts = lexc_line.split()
-                    SKIP = parts[1] not in WANTED_LEXICONS[self.lang][
+                    skip = parts[1] not in WANTED_LEXICONS[self.lang][
                         self.stemfile]
                     continue
 
-                if not SKIP and '+Err' not in lexc_line:
+                if not skip and '+Err' not in lexc_line:
                     line_dict = line2dict(lexc_line.rstrip())
                     if line_dict and not line_dict['exclam']:
                         upper = line_dict['upper'].split('+')[0].replace(
@@ -233,11 +272,12 @@ class FileHandler(object):
                             self.print_contlex(line_dict['contlex'])
 
 
-def main():
+def main() -> None:
+    """Parse the files and lexicons as directed in WANTED_LEXICONS."""
     for lang in WANTED_LEXICONS:
         for stemfile in WANTED_LEXICONS[lang]:
             filehandler = FileHandler(lang, stemfile)
-            filehandler.handle_file()
+            filehandler.parse_file()
 
 
 if __name__ == '__main__':

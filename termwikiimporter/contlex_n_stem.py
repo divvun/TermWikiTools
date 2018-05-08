@@ -52,9 +52,9 @@ from termwikiimporter import analyser
 
 WANTED_LEXICONS = {
     'sme': {
-        'adpositions': ['Adposition'],
         'adjectives':
         ['ALIT', 'Eahpe_Adjective', 'AdjectivePx', 'AdjectiveNoPx'],
+        'adpositions': ['Adposition'],
         'adverbs': ['Adverb'],
         'conjunctions': ['CleanConjunction'],
         'interjections': ['Interjection'],
@@ -63,7 +63,40 @@ WANTED_LEXICONS = {
         'particles': ['Particles'],
         'subjunctions': ['ConfuseConjunction', 'CleanSubjunction'],
         'verbs': ['Eahpe_Verb', 'Verb'],
-    }
+    },
+    'smj': {
+        'adjectives': ['Adjective'],
+        'adpositions': ['Adposition'],
+        'adverbs': ['Adverb'],
+        'conjunctions': ['Conjunction'],
+        'interjections': ['Interjection'],
+        'nouns': ['HyphNouns', 'NounPxKin', 'NounNoPx', 'NounPx'],
+        'particles': ['Particle'],
+        'subjunctions': ['Subjunction'],
+        'verbs': ['Verb'],
+    },
+    'sma': {
+        'adjectives': ['Adjective'],
+        'adpositions': ['Adposition'],
+        'adverbs': ['Adverb'],
+        'conjunctions': ['Conjunction'],
+        'interjections': ['Interjection'],
+        'nouns': ['HyphNouns', 'NounPxKin', 'NounNoPx'],
+        'particles': ['Particle'],
+        'subjunctions': ['Subjunction'],
+        'verbs': ['Aux', 'Regular verbs'],
+    },
+    'nob': {
+        'adjectives': ['AdjectiveRoot'],
+        'adpositions': ['Adposition'],
+        'adverbs': ['Adverb'],
+        'conjunctions': ['Conjunction'],
+        'interjections': ['Interjection'],
+        'nouns': ['2_letter', '3_letter', 'NounRoot'],
+        'prepositions': ['Preposition'],
+        'subjunctions': ['Subjunction'],
+        'verbs': ['irregular-verb', 'regular-verb'],
+    },
 }
 """dict: Govern which files and lexicons to extract for the given languages."""
 

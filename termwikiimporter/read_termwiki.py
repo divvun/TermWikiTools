@@ -124,7 +124,7 @@ class Concept(object):
     def to_concept_info(self):
         """Turn old school Concept to new school Concept.
 
-        Arguments:
+        Args:
             term (dict): A representation of a TermWiki Concept
         """
         langs = {}
@@ -273,7 +273,7 @@ class Concept(object):
     def auto_sanction(self, language):
         """Automatically sanction expressions in the given language.
 
-        Arguments:
+        Args:
             language (str): the language to handle
         """
         for expression in self.related_expressions:
@@ -285,7 +285,7 @@ class Concept(object):
     def print_missing(self, language=None):
         """Print lemmas not found in the languages lexicon.
 
-        Arguments:
+        Args:
             language (src): language of the terms.
         """
         for expression in self.related_expressions:
@@ -306,7 +306,7 @@ class Concept(object):
     def find_invalid(self, language):
         """Find expressions with invalid characters.
 
-        Arguments:
+        Args:
             language (str): the language of the expressions
 
         Yields:

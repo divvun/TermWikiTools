@@ -80,7 +80,7 @@ class DumpHandler(object):
     def print_missing(self, language=None):
         """Find all expressions of the given language.
 
-        Arguments:
+        Args:
             language (src): language of the terms.
 
         Yields:
@@ -100,7 +100,7 @@ class DumpHandler(object):
         the risten.no import, and if there are no typos found in an expression
         they should be sanctioned.
 
-        Arguments:
+        Args:
             language (str): the language to sanction
         """
         ex = 1
@@ -119,7 +119,7 @@ class DumpHandler(object):
     def sum_terms(self, language=None):
         """Sum up sanctioned and none sanctioned terms.
 
-        Arguments:
+        Args:
             language (str): the language to report on.
         """
         counter = collections.defaultdict(int)
@@ -242,7 +242,7 @@ class SiteHandler(object):
     def save_page(page, content, summary):
         """Save a given TermWiki page.
 
-        Arguments:
+        Args:
             content (str): the new content to be saved.
             summary (str): the commit message.
         """
@@ -298,7 +298,7 @@ class SiteHandler(object):
         the risten.no import, and if there are no typos found in an expression
         they should be sanctioned.
 
-        Arguments:
+        Args:
             language (str): the language to sanction
         """
         ex = 1
@@ -328,7 +328,7 @@ class SiteHandler(object):
 def handle_dump(arguments):
     """Act on the TermWiki dump.
 
-    Arguments:
+    Args:
         argument (str): command line argument
     """
     dumphandler = DumpHandler()
@@ -352,7 +352,7 @@ def handle_dump(arguments):
 def handle_site(arguments):
     """Act on the termwiki.
 
-    Arguments:
+    Args:
         argument (str): command line argument
     """
     site = SiteHandler()

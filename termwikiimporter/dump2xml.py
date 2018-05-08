@@ -25,7 +25,7 @@ def concept2xml(concept, general):
 def keys2key_xml(concept_info, element_name, concept_xml):
     """Turn template attributes into xml elements.
 
-    Arguments:
+    Args:
         concept (dict): dict containing info TermWiki template attributes
         element_name (str): name of the TermWiki template
         concept2xml (etree.Element): the Concept element
@@ -49,7 +49,7 @@ def contains_sami(concept_xml):
 def concept_page2xml(concept, pages):
     """Turn a TermWiki concept into xml.
 
-    Arguments:
+    Args:
         concept (dict): contains the info found inside a TermWiki
             Concept template.
     """

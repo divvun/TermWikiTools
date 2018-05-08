@@ -79,7 +79,7 @@ class Importer(object):
     def add_concept(self, concept):
         """Add a concept to all concepts.
 
-        Arguments:
+        Args:
             concept (dict): A termwiki concept
         """
         read_termwiki.to_concept_info(concept)
@@ -97,7 +97,7 @@ class ExcelImporter(Importer):
     def collect_expressions(self, startline):
         """Find expressions found in startline.
 
-        Arguments:
+        Args:
             startline (str): the content of an expression line
 
         Returns:
@@ -207,7 +207,7 @@ class ArbeidImporter(Importer):
     def parse_line(self, line, number):
         """Parse lines.
 
-        Arguments:
+        Args:
             line (str): line that should be parsed
             number (int): the number of the line to be parsed
         """
@@ -249,7 +249,7 @@ class ArbeidImporter(Importer):
     def parse_expression_line(self, expression_line, language):
         """Parse a line containing expressions.
 
-        Arguments:
+        Args:
             expression_line (str): string containing expressions
             language (str): language of the expressions
 

@@ -86,7 +86,7 @@ LEXC_CONTENT_RE = re.compile(r'''
 def parse_line(old_match: dict) -> defaultdict:
     """Parse a lexc line.
 
-    Arguments:
+    Args:
         old_match: the output of LEXC_LINE_RE.groupdict.
 
     Returns:

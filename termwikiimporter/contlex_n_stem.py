@@ -127,7 +127,7 @@ def parse_line(old_match: dict) -> defaultdict:
     return line_dict
 
 
-def handle_line(line: str) -> dict:
+def line2dict(line: str) -> dict:
     """Parse a valid line.
 
     Args:
@@ -144,7 +144,7 @@ def handle_line(line: str) -> dict:
     return {}
 
 
-def print_stem(line: str, lang: str, stemfile: str) -> None:
+class FileHandler(object):
     giella2termwiki = {
         'fin': 'fi',
         'nob': 'nb',
@@ -166,44 +166,78 @@ def print_stem(line: str, lang: str, stemfile: str) -> None:
         'verbs': 'V'
     }
 
-    line_dict = handle_line(line)
-    if line_dict and not line_dict['exclam']:
-        upper = line_dict['upper'].split('+')[0].replace('%', '')
-        if analyser.is_known(lang, upper):
-            stem = ['{{Stem']
-            stem.append('|Lemma={}'.format(upper))
-            stem.append('|Contlex={} {} {}'.format(giella2termwiki[lang],
-                                                   file2pos[stemfile],
-                                                   line_dict['contlex']))
-            if line_dict['translation']:
-                stem.append('|Comment1={}'.format(line_dict['translation']))
-            if line_dict['comment']:
-                stem.append('|Comment2={}'.format(line_dict['comment']))
-            stem.append('}}')
-            print('\n'.join(stem))
-
-
-def handle_file(lang, stemfile):
     filetemplate = os.path.join(
         os.getenv('GTHOME'), 'langs/{}/src/morphology/stems/{}.lexc')
 
-    with io.open(filetemplate.format(lang, stemfile)) as lexc:
-        SKIP = True
+    def __init__(self, lang: str, stemfile: str):
+        self.lang = lang
+        self.stemfile = stemfile
+        self.contlexes = set()
+        self.filename = self.filetemplate.format(lang, stemfile)
 
-        for lexc_line in lexc:
-            if lexc_line.startswith('LEXICON'):
-                parts = lexc_line.split()
-                SKIP = parts[1] not in WANTED_LEXICONS[lang][stemfile]
-                continue
+    @property
+    def termwikilang(self):
+        return self.giella2termwiki[self.lang]
 
-            if not SKIP and '+Err' not in lexc_line:
-                print_stem(lexc_line.rstrip(), lang, stemfile)
+    @property
+    def termwikipos(self):
+        return self.file2pos[self.stemfile]
+
+    def contlex_name(self, contlex):
+        return '{} {} {}'.format(self.termwikilang, self.termwikipos, contlex)
+
+    def print_stem(self, upper: str, line_dict: dict) -> None:
+        stem = ['{{Stem']
+        stem.append('|Lemma={}'.format(upper))
+        stem.append('|Contlex={}'.format(
+            self.contlex_name(line_dict['contlex'])))
+        if line_dict['translation']:
+            stem.append('|Comment1={}'.format(line_dict['translation']))
+        if line_dict['comment']:
+            stem.append('|Comment2={}'.format(line_dict['comment']))
+        stem.append('}}')
+        print('Stem:{} {}'.format(upper, self.contlex_name(
+            line_dict['contlex'])))
+        print('\n'.join(stem))
+        print()
+
+    def print_contlex(self, contlex: str) -> None:
+        if contlex not in self.contlexes:
+            self.contlexes.add(contlex)
+            content = ['{{Continuation lexicon']
+            content.append('|lang={}'.format(self.termwikilang))
+            content.append('|pos={}'.format(self.termwikipos))
+            content.append('}}')
+            print('Contlex:{}'.format(self.contlex_name(contlex)))
+            print('\n'.join(content))
+            print()
+
+    def handle_file(self):
+        with io.open(self.filename) as lexc:
+            SKIP = True
+
+            for lexc_line in lexc:
+                if lexc_line.startswith('LEXICON'):
+                    parts = lexc_line.split()
+                    SKIP = parts[1] not in WANTED_LEXICONS[self.lang][
+                        self.stemfile]
+                    continue
+
+                if not SKIP and '+Err' not in lexc_line:
+                    line_dict = line2dict(lexc_line.rstrip())
+                    if line_dict and not line_dict['exclam']:
+                        upper = line_dict['upper'].split('+')[0].replace(
+                            '%', '')
+                        if analyser.is_known(self.lang, upper):
+                            self.print_stem(upper, line_dict)
+                            self.print_contlex(line_dict['contlex'])
 
 
 def main():
     for lang in WANTED_LEXICONS:
         for stemfile in WANTED_LEXICONS[lang]:
-            handle_file(lang, stemfile)
+            filehandler = FileHandler(lang, stemfile)
+            filehandler.handle_file()
 
 
 if __name__ == '__main__':

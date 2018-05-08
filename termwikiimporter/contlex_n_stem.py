@@ -29,18 +29,18 @@ The format of a Contlex page
 }}
 
 The name of Contlex page:
-Contlex:se_N_JOHTOLAT
+Contlex:<Language> <Pos> <Contlex name>
 
 The format of a Stem page:
 {{Stem
 |Lemma=johtolat
 |Contlex=se N JOHTOLAT
-|Comment1=<Freetext part in lexc line>
-|Comment2=<The real comment>
+|Freetext=<Freetext part in lexc line>
+|Comment=<The comment following the lexc line>
 }}
 
 The name of a Stem page:
-Stem:johtolat se N JOHTOLAT
+Stem:<Lemma> <Contlex>
 """
 
 import io
@@ -225,9 +225,9 @@ class FileHandler(object):
         stem.append('|Contlex={}'.format(
             self.contlex_name(line_dict['contlex'])))
         if line_dict['translation']:
-            stem.append('|Comment1={}'.format(line_dict['translation']))
+            stem.append('|Freetext={}'.format(line_dict['translation']))
         if line_dict['comment']:
-            stem.append('|Comment2={}'.format(line_dict['comment']))
+            stem.append('|Comment={}'.format(line_dict['comment']))
         stem.append('}}')
         print('Stem:{} {}'.format(lemma, self.contlex_name(
             line_dict['contlex'])))

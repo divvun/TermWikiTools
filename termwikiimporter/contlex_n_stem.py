@@ -243,8 +243,9 @@ class FileHandler(object):
         if contlex not in self.contlexes:
             self.contlexes.add(contlex)
             content = ['{{Continuation lexicon']
-            content.append('|lang={}'.format(self.termwikilang))
-            content.append('|pos={}'.format(self.termwikipos))
+            content.append('|Contlex name={}'.format(contlex))
+            content.append('|Language={}'.format(self.termwikilang))
+            content.append('|Pos={}'.format(self.termwikipos))
             content.append('}}')
             print('Contlex:{}'.format(self.contlex_name(contlex)))
             print('\n'.join(content))

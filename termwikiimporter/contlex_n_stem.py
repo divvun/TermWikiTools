@@ -205,12 +205,16 @@ class FileHandler(object):
         return self.file2pos[self.stemfile]
 
     def contlex_name(self, contlex: str) -> str:
-        """Return the contlex name used in TermWiki.
+        r"""Return the contlex name used in TermWiki.
+
+        / is replaced with \ because / in page names indicates subpages in
+        Mediawiki.
 
         Args:
             contlex: name of a continuation lexicon.
         """
-        return '{} {} {}'.format(self.termwikilang, self.termwikipos, contlex)
+        return '{} {} {}'.format(self.termwikilang, self.termwikipos,
+                                 contlex.replace('/', '\\'))
 
     def print_stem(self, lemma: str, line_dict: dict) -> None:
         """Produce the content and name of a TermWiki Stem page.

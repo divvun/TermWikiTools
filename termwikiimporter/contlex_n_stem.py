@@ -407,6 +407,7 @@ class FileHandler(object):
 
     @property
     def wanted_lexicons(self) -> list:
+        """Return the wanted lexicons for this file."""
         return WANTED_LEXICONS[self.lang][self.stemfile]['lexicons']
 
     def contlex_name(self, contlex: str) -> str:

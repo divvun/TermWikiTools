@@ -52,72 +52,234 @@ from termwikiimporter import analyser
 
 WANTED_LEXICONS = {
     'sme': {
-        'adjectives':
-        ['ALIT', 'Eahpe_Adjective', 'AdjectivePx', 'AdjectiveNoPx'],
-        'adpositions': ['Adposition'],
-        'adverbs': ['Adverb'],
-        'conjunctions': ['CleanConjunction'],
-        'interjections': ['Interjection'],
-        'nouns':
-        ['HyphNouns', 'Eahpe_Noun', 'NounNoPx', 'NounPxKin', 'NounPx'],
-        'particles': ['Particles'],
-        'subjunctions': ['ConfuseConjunction', 'CleanSubjunction'],
-        'verbs': ['Eahpe_Verb', 'Verb'],
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['ALIT', 'Eahpe_Adjective', 'AdjectivePx',
+                         'AdjectiveNoPx'],
+        },
+        'adpositions': {
+            'pos': 'Adp',
+            'lexicons': ['Adposition'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['Adverb'],
+        },
+        'conjunctions': {
+            'pos': 'Cc',
+            'lexicons': ['CleanConjunction'],
+        },
+        'interjections': {
+            'pos': 'Interj',
+            'lexicons': ['Interjection'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['HyphNouns', 'Eahpe_Noun', 'NounNoPx', 'NounPxKin',
+                         'NounPx'],
+        },
+        'particles': {
+            'pos': 'Pcle',
+            'lexicons': ['Particles'],
+        },
+        'subjunctions': {
+            'pos': 'CS',
+            'lexicons': ['ConfuseConjunction', 'CleanSubjunction'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['Eahpe_Verb', 'Verb'],
+        },
     },
     'smj': {
-        'adjectives': ['Adjective'],
-        'adpositions': ['Adposition'],
-        'adverbs': ['Adverb'],
-        'conjunctions': ['Conjunction'],
-        'interjections': ['Interjection'],
-        'nouns': ['HyphNouns', 'NounPxKin', 'NounNoPx', 'NounPx'],
-        'particles': ['Particle'],
-        'subjunctions': ['Subjunction'],
-        'verbs': ['Verb'],
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['Adjective'],
+        },
+        'adpositions': {
+            'pos': 'Adp',
+            'lexicons': ['Adposition'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['Adverb'],
+        },
+        'conjunctions': {
+            'pos': 'Cc',
+            'lexicons': ['Conjunction'],
+        },
+        'interjections': {
+            'pos': 'Interj',
+            'lexicons': ['Interjection'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['HyphNouns', 'NounPxKin', 'NounNoPx', 'NounPx'],
+        },
+        'particles': {
+            'pos': 'Pcle',
+            'lexicons': ['Particle'],
+        },
+        'subjunctions': {
+            'pos': 'CS',
+            'lexicons': ['Subjunction'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['Verb'],
+        },
     },
     'sma': {
-        'adjectives': ['Adjective'],
-        'adpositions': ['Adposition'],
-        'adverbs': ['Adverb'],
-        'conjunctions': ['Conjunction'],
-        'interjections': ['Interjection'],
-        'nouns': ['HyphNouns', 'NounPxKin', 'NounNoPx'],
-        'particles': ['Particle'],
-        'subjunctions': ['Subjunction'],
-        'verbs': ['Aux', 'Regular verbs'],
-    },
-    'nob': {
-        'adjectives': ['AdjectiveRoot'],
-        'adpositions': ['Adposition'],
-        'adverbs': ['Adverb'],
-        'conjunctions': ['Conjunction'],
-        'interjections': ['Interjection'],
-        'nouns': ['2_letter', '3_letter', 'NounRoot'],
-        'prepositions': ['Preposition'],
-        'subjunctions': ['Subjunction'],
-        'verbs': ['irregular-verb', 'regular-verb'],
-    },
-    'fin': {
-        'adjectives': ['ADJECTIVE'],
-        'adverbs': ['ADVERB'],
-        'cc': ['CC'],
-        'cs': ['CS'],
-        'interj': ['INTERJECTION'],
-        'nouns': ['NOUN'],
-        'particles': ['PARTICLE'],
-        'pp': ['ADPOSITION'],
-        'verbs': ['VERB'],
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['Adjective'],
+        },
+        'adpositions': {
+            'pos': 'Adp',
+            'lexicons': ['Adposition'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['Adverb'],
+        },
+        'conjunctions': {
+            'pos': 'Cc',
+            'lexicons': ['Conjunction'],
+        },
+        'interjections': {
+            'pos': 'Interj',
+            'lexicons': ['Interjection'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['HyphNouns', 'NounPxKin', 'NounNoPx'],
+        },
+        'particles': {
+            'pos': 'Pcle',
+            'lexicons': ['Particle'],
+        },
+        'subjunctions': {
+            'pos': 'CS',
+            'lexicons': ['Subjunction'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['Aux', 'Verb'],
+        },
     },
     'smn': {
-        'adjectives': ['AdjectiveRoot'],
-        'adpositions': ['Pre', 'Post'],
-        'adverbs': ['Adverb'],
-        'conjunctions': ['Conjunction'],
-        'interjections': ['Interjection'],
-        'nouns': ['Noun'],
-        'particles': ['Particle'],
-        'subjunctions': ['Subjunction'],
-        'verbs': ['VGenVerbs', 'Verbs'],
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['AdjectiveRoot'],
+        },
+        'adpositions': {
+            'pos': 'Adp',
+            'lexicons': ['Pre', 'Post'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['Adverb'],
+        },
+        'conjunctions': {
+            'pos': 'Cc',
+            'lexicons': ['Conjunction'],
+        },
+        'interjections': {
+            'pos': 'Interj',
+            'lexicons': ['Interjection'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['Noun'],
+        },
+        'particles': {
+            'pos': 'Pcle',
+            'lexicons': ['Particle'],
+        },
+        'subjunctions': {
+            'pos': 'CS',
+            'lexicons': ['Subjunction'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['VGenVerbs', 'Verbs'],
+        },
+    },
+    'nob': {
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['AdjectiveRoot'],
+        },
+        'adpositions': {
+            'pos': 'Adp',
+            'lexicons': ['Adposition'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['Adverb'],
+        },
+        'conjunctions': {
+            'pos': 'Cc',
+            'lexicons': ['Conjunction'],
+        },
+        'interjections': {
+            'pos': 'Interj',
+            'lexicons': ['Interjection'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['2_letter', '3_letter', 'NounRoot'],
+        },
+        'prepositions': {
+            'pos': 'Pr',
+            'lexicons': ['Preposition'],
+        },
+        'subjunctions': {
+            'pos': 'CS',
+            'lexicons': ['Subjunction'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['irregular-verb', 'regular-verb'],
+        },
+    },
+    'fin': {
+        'adjectives': {
+            'pos': 'A',
+            'lexicons': ['ADJECTIVE'],
+        },
+        'adverbs': {
+            'pos': 'Adv',
+            'lexicons': ['ADVERB'],
+        },
+        'cc': {
+            'pos': 'Cc',
+            'lexicons': ['CC'],
+        },
+        'cs': {
+            'pos': 'CS',
+            'lexicons': ['CS'],
+        },
+        'interj': {
+            'pos': 'Interj',
+            'lexicons': ['INTERJECTION'],
+        },
+        'nouns': {
+            'pos': 'N',
+            'lexicons': ['NOUN'],
+        },
+        'particles': {
+            'pos': 'Pcle',
+            'lexicons': ['PARTICLE'],
+        },
+        'pp': {
+            'pos': 'Adp',
+            'lexicons': ['ADPOSITION'],
+        },
+        'verbs': {
+            'pos': 'V',
+            'lexicons': ['VERB'],
+        },
     },
 }
 """dict: Govern which files and lexicons to extract for the given languages."""
@@ -220,18 +382,6 @@ class FileHandler(object):
         'sme': 'se',
         'smj': 'smj',
         'smn': 'smn',
-    }
-
-    file2pos = {
-        'adjectives': 'A',
-        'adpositions': 'Adp',
-        'adverbs': 'Adv',
-        'conjunctions': 'Cc',
-        'interjections': 'Interj',
-        'nouns': 'N',
-        'particles': 'Pcle',
-        'subjunctions': 'CS',
-        'verbs': 'V'
     }
 
     filetemplate = os.path.join(

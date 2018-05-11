@@ -427,7 +427,8 @@ class FileHandler(object):
     @staticmethod
     def write_file(filename: str, stringlist: list) -> None:
         if os.path.exists(filename):
-            print('{} already exists'.format(filename))
+            pass
+            # print('{} already exists'.format(filename))
         else:
             with open(filename, 'w') as file_:
                 print('\n'.join(stringlist), file=file_)
@@ -449,8 +450,9 @@ class FileHandler(object):
         if line_dict['comment']:
             stem.append('|Comment={}'.format(line_dict['comment']))
         stem.append('}}')
-        stemname = '{}/Stem:{} {}'.format(self.outdir, lemma,
-                                          self.contlex_name(line_dict['contlex']))
+        stemname = '{}/Stem:{} {}'.format(
+            self.outdir, lemma.replace('/', '\\'),
+            self.contlex_name(line_dict['contlex']))
         self.write_file(stemname, stem)
 
     def print_contlex(self, contlex: str) -> None:
@@ -472,6 +474,9 @@ class FileHandler(object):
 
     def parse_file(self) -> None:
         """Parse the lexc stem file."""
+        dupes = defaultdict(list)
+
+        print(self.termwikilang, self.termwikipos)
         with io.open(self.filename) as lexc:
             skip = True
 
@@ -486,9 +491,18 @@ class FileHandler(object):
                     if line_dict and not line_dict['exclam']:
                         upper = line_dict['upper'].split('+')[0].replace(
                             '%', '')
-                        if analyser.is_known(self.lang, upper):
-                            self.print_stem(upper, line_dict)
-                            self.print_contlex(line_dict['contlex'])
+                        # if analyser.is_known(self.lang, upper):
+                        dupes[upper].append(lexc_line)
+                        self.print_stem(upper, line_dict)
+                        self.print_contlex(line_dict['contlex'])
+
+        with io.open('dupes-{}-{}.txt'.format(
+                self.termwikilang, self.termwikipos), 'w') as dupefile:
+            for lemma in dupes:
+                if len(dupes[lemma]) > 1:
+                    print(lemma, file=dupefile)
+                    for line in dupes[lemma]:
+                        print('\t{}'.format(line.rstrip()), file=dupefile)
 
 
 def main() -> None:

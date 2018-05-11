@@ -403,7 +403,11 @@ class FileHandler(object):
     @property
     def termwikipos(self) -> str:
         """Return the part of speech code used in TermWiki."""
-        return self.file2pos[self.stemfile]
+        return WANTED_LEXICONS[self.lang][self.stemfile]['pos']
+
+    @property
+    def wanted_lexicons(self) -> list:
+        return WANTED_LEXICONS[self.lang][self.stemfile]['lexicons']
 
     def contlex_name(self, contlex: str) -> str:
         r"""Return the contlex name used in TermWiki.
@@ -464,8 +468,7 @@ class FileHandler(object):
             for lexc_line in lexc:
                 if lexc_line.startswith('LEXICON'):
                     parts = lexc_line.split()
-                    skip = parts[1] not in WANTED_LEXICONS[self.lang][
-                        self.stemfile]
+                    skip = parts[1] not in self.wanted_lexicons
                     continue
 
                 if not skip and '+Err' not in lexc_line:

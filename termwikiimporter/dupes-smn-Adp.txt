@@ -1,0 +1,54 @@
+vuálá
+	vuálá:vuálá pr ;
+	vuálá:vuálá po "alle" ;
+aldasáid
+	aldasáid pr "lähettyville" ;
+	aldasáid po "lähettyville" ;
+kooskâst
+	kooskâst po ;
+	kooskâst po ;
+pajas
+	pajas pr ;
+	pajas po ;
+paijeel
+	paijeel pr ;
+	paijeel po ;
+	paijeel:paijeel po ;
+kaskoo
+	kaskoo:kaskoo pr "keskivälillä" ;
+	kaskoo:kaskoo po "keskivälillä" ;
+peht
+	peht po "kautta" ;
+	peht po ;
+kooskân
+	kooskân po "väliin" ;
+	kooskân po ;
+čoođâ
+	čoođâ pr "lävitse" ;
+	čoođâ po ;
+pirrâ
+	pirrâ pr ;
+	pirrâ:pirrâ po ;
+	pirrâ po ;
+maŋa
+	maŋa:maŋa pr ;
+	maŋa:maŋa po ;
+koskân
+	koskân pr ;
+	koskân po ;
+ulguubeln
+	ulguubeln po ;
+	ulguubeln pr ;
+	ulguubeln+Use/NG:ulgguubeln po ;
+ovdil
+	ovdil pr ;
+	ovdil po ;
+miätá
+	miätá pr ;
+	miätá po ;
+alda
+	alda:alda pr ;
+	alda:alda po ;
+rasta
+	rasta:rasta pr ;
+	rasta:rasta po ;

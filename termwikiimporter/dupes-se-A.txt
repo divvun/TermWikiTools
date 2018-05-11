@@ -1,0 +1,712 @@
+johtil
+	johtil+CmpN/SgN+CmpN/PlG+Sem/Hum:johtil JOHTIL "fast A"; !
+	johtil+CmpN/SgN+CmpN/PlG+Sem/Hum:johtil JOHTIL; !
+kulturhistorjjálaš
+	kulturhistorjjálaš+v1+Sem/Dummytag:kultur#historjjál ETNOLOGALAS ;
+	kulturhistorjjálaš+v2+Sem/Dummytag:kulttor#historjjál ETNOLOGALAS ;
+kulturmihtus
+	kulturmihtus+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:kultur#mihttus GAPPUS ;
+	kulturmihtus+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:kulttor#mihttus GAPPUS ;
+ruoksat
+	ruoksat+Use/Circ+Sem/Dummytag:ruoks VIELG ; ! red
+	ruoksat+Sem/Dummytag:ruoks VIELG ; ! red
+kulturfágalaš
+	kulturfágalaš+v1+Sem/Dummytag:kultur#fágal ETNOLOGALAS ;
+	kulturfágalaš+v2+Sem/Dummytag:kulttor#fágal ETNOLOGALAS ;
+kulturvuđot
+	kulturvuđot+v1+Sem/Dummytag:kultur#vuđog AGAdjINFL ;
+	kulturvuđot+v2+Sem/Dummytag:kulttor#vuđog AGAdjINFL ;
+dámis
+	dámis+CmpN/SgN+CmpN/PlG+Sem/Hum:dápmis GAPPUS ;
+	dámis+Sem/Dummytag:dámisis LEXATTR ;
+roavis
+	roavis+CmpN/SgN+CmpN/PlG+Sem/Hum:roavv LINIS ;
+	roavis+CmpN/SgN+CmpN/PlG+Sem/Hum:roavv SUVRRIS ; !Lene la den til, finnes slik i korp og på internet
+	roavis+Sem/Dummytag:roava LEXATTR ; !roava suoladeapme
+	roavis+Use/NG+Sem/Dummytag:roaves LEXATTR ; ! irregular attr. form
+eanadoallopolitihkalaš
+	eanadoallopolitihkalaš+v1+Sem/Dummytag:eana#doallo#polit IHKALAS-ETNOLOGALAS ;
+	eanadoallopolitihkalaš+v2+Sem/Dummytag:eanan#doallo#polit IHKALAS-ETNOLOGALAS ;
+	eanadoallopolitihkalaš+v3+Sem/Dummytag:eatnan#doallo#polit IHKALAS-ETNOLOGALAS ;
+stiivvis
+	stiivvis+Sem/Dummytag:stiivvisis LEXATTR ;
+	stiivvis+Sem/Dummytag:stij'vis GAPPUS ;
+mehterguhkkosaš
+	mehterguhkkosaš+v1+Sem/Dummytag:mehter#guhkkos AHKASAS ;
+	mehterguhkkosaš+v2+Sem/Dummytag:mettar#guhkkos AHKASAS ;
+háváš
+	háváš+Use/Circ+Sem/Dummytag:háváž BEAKKAN ; ! -times
+	háváš+Sem/Dummytag:háváž BEAKKAN ; ! -times				   !
+hearvás
+	hearvás+A+Ess+Sem/Dummytag:hearvás%>in K ;
+	hearvás+A+Sem/Dummytag+Comp:hearvás%>eabbo K ;
+	hearvás+A+Sem/Dummytag+Comp:hearvás%>et K ;
+erenoamášpedagogalaš
+	erenoamášpedagogalaš+v1+Sem/Dummytag:erenoamáš#pedagogal ETNOLOGALAS ;
+	erenoamášpedagogalaš+v2+Dial/-GG:erenomáš#pedagogal ETNOLOGALAS ;
+	erenoamášpedagogalaš+v3+Dial/-KJ:earenoamáš#pedagogal ETNOLOGALAS ;
+	erenoamášpedagogalaš+v4+Sem/Dummytag:earenomáš#pedagogal ETNOLOGALAS ;
+áibmodivttis
+	áibmodivttis+Sem/Dummytag:áibmo7#dik'tis GAPPUS ;
+	áibmodivttis+Sem/Dummytag:áibmo7#div'tis GAPPUS ;
+sámekulturmieldásaš
+	sámekulturmieldásaš+v1+Sem/Dummytag:sáme#kultur#mieldás AHKASAS ;
+	sámekulturmieldásaš+v2+Sem/Dummytag:sáme#kulttor#mieldás AHKASAS ;
+báddelodji
+	báddelodji+CmpN/SgN+CmpN/PlG+Sem/Hum:bádde#lod'ji LODJI ;
+	báddelodji+CmpN/SgN+CmpN/PlG+Sem/Hum:bádde7#lod'ji LAIKI ;
+goikkis
+	goikkis+A+Sem/Dummytag:goike Rreal ;
+	goikkis+CmpN/SgN+CmpN/PlG+Sem/Hum:goj'kis BOAKKAS ;
+	goikkis+Sem/Dummytag:goike FINJU- ;
+veaddji
+	veaddji+CmpN/SgN+CmpN/PlG+Sem/Hum:vead'ji¤ JUHKKIS ;
+	veaddji+CmpN/SgN+CmpN/PlG+Sem/Hum:veaddji¤ EADDJI ;
+vuosttamuš
+	vuosttamuš+A+Sem/Dummytag+Superl+Sg+Nom+Use/NG:vuostta%>mus K ; ! obl.forms via vuosttamuš
+	vuosttamuš+A+Sem/Dummytag+Superl:vuosttamužž BUOREMUSS ;
+eanadoalloekonomalaš
+	eanadoalloekonomalaš+v1+Sem/Dummytag:eana#doallo#ekonomal ETNOLOGALAS ;
+	eanadoalloekonomalaš+v1+Sem/Dummytag:eanan#doallo#ekonomal ETNOLOGALAS ;
+	eanadoalloekonomalaš+v3+Sem/Dummytag:eatnan#doallo#ekonomal ETNOLOGALAS ;
+sođas
+	sođas+CmpN/SgN+CmpN/PlG+Sem/Hum:soh'tas BOAKKAS ;
+	sođas+CmpN/SgN+CmpN/PlG+Sem/Hum:sođđas BOAKKAS ;
+sápmelašvuostásaš
+	sápmelašvuostásaš+CmpN/SgN+CmpN/PlG+Sem/Hum:sápmelaš#vuostás AHKASAS ;
+	sápmelašvuostásaš+CmpN/SgN+CmpN/PlG+Sem/Hum:sápmelašvuostás AHKASAS ;
+buohcci
+	buohcci+CmpN/SgN+CmpN/PlG+Sem/Hum+A:%>buohcci¤ LAIKI0 ;
+	buohcci+Sem/Dummytag:buohcci¤ At ;
+dulvvis
+	dulvvis+Sem/Dummytag:dul'vis BOAKKAS ;
+	dulvvis+Sem/Dummytag:dulve FINJU- ;
+lihkadanlámis
+	lihkadanlámis+CmpN/SgN+CmpN/PlG+Sem/Hum:lihkadan#lápmis VATTIS ;
+	lihkadanlámis+Use/NG+Sem/Dummytag:lihkadan#lámisis LEXATTR ; !alternating is-attr
+kultursensitiiva
+	kultursensitiiva+v1+Sem/Dummytag:kultur#sensit IIVA_A ;
+	kultursensitiiva+v2+Sem/Dummytag:kulttor#sensit IIVA_A ;
+lámis
+	lámis+CmpN/SgN+CmpN/PlG+Sem/Hum:lápmis VATTIS ;
+	lámis+Use/NG+Sem/Dummytag:lámisis LEXATTR ; !alternating is-attr
+suosas
+	suosas+Sem/Dummytag:suossa GARAS ;
+	suosas+Sem/Dummytag:suossas BOAKKAS ;
+eahpeozolaš
+	eahpeozolaš+CmpNP/First+Sem/Hum:eahpe#ozol DABALAS ;
+	eahpeozolaš+CmpNP/First+Sem/Hum:eahpe#ozol ETNOLOGALAS ;
+eahpebuvttadeaddji
+	eahpebuvttadeaddji+CmpNP/First+Sem/Hum:eahpe7#buvttadeaddji¤ EADDJI ;
+	eahpebuvttadeaddji+CmpNP/First+Sem/Hum:eahpe#buvttadeaddji¤ EADDJI ;
+siđas
+	siđas+CmpN/SgN+CmpN/PlG+Sem/Hum:sih'ta GARAS ;
+	siđas+CmpN/SgN+CmpN/PlG+Sem/Hum:siđđas BOAKKAS ;
+guovttegielalaš
+	guovttegielalaš+CmpN/SgN+CmpN/PlG+Sem/Hum:guovtte#gielal AHKASAS ;
+	guovttegielalaš+CmpN/SgN+CmpN/PlG+Sem/Hum:guovtte7#gielal AHKASAS ;
+stábat
+	stábat+Use/Circ+Sem/Dummytag:stáb AGAdj ; !
+	stábat+Sem/Dummytag:stáb AGAdj ; !
+pronominála
+	pronominála+Sem/Dummytag:pro#nominála FRIIJA ; !
+	pronominála+Sem/Dummytag:pronominála FRIIJA ;
+elektrovnnalaš
+	elektrovnnalaš+v1+Sem/Dummytag:elektrovnnal ETNOLOGALAS ;
+	elektrovnnalaš+v2+Sem/Dummytag:elektronal ETNOLOGALAS ;
+praktihkalaš-pedagogalaš
+	praktihkalaš-pedagogalaš+Sem/Dummytag:praktihkalaš-pedagogal ETNOLOGALAS ;
+	praktihkalaš-pedagogalaš+Sem/Dummytag:praktihkalaš-pedagogal ETNOLOGALAS ;
+luonddučáppis
+	luonddučáppis+Sem/Dummytag:luonddu#čább CAPPIS "beautiful A" ;
+	luonddučáppis+Use/NG+Sem/Dummytag:luonddu#čába LEXATTR ;
+diidii
+	diidii+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:diide VUDDJII ;
+	diidii+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:tiide VUDDJII ;
+imaš
+	imaš+CmpN/SgN+CmpN/PlG+CmpNP/Last+Sem/Hum:ipmaš GAPPUS ;
+	imaš+CmpN/SgN+CmpN/PlG+Use/NG+CmpNP/Last+Sem/Dummytag:ipma IPMAHA ;
+alit
+	alit+Use/Circ+Sem/Dummytag:alih BEAKKAN ;   ! blue
+	alit+Sem/Dummytag:alih BEAKKAN ;   ! blue
+čavddis
+	čavddis+Sem/Dummytag:čav'dis GAPPUS ;
+	čavddis+Sem/Dummytag:čavde FINJU- ;
+museaidgaskasaš
+	museaidgaskasaš+v1+Sem/Dummytag:museaid9#gaskas AHKASAS ;
+	museaidgaskasaš+v2+Sem/Dummytag:muséaid9#gaskas AHKASAS ;
+čáppis
+	čáppis+Sem/Dummytag:čább CAPPIS "beautiful A" ;
+	čáppis+Use/NG+Sem/Dummytag:čába LEXATTR ;
+boahttejagaš
+	boahttejagaš+v1+Sem/Dummytag:boahtte#jagaž AGAdjINFL ;
+	boahttejagaš+v2+Sem/Dummytag:boahtte#jagáž AGAdjINFL ;
+anárašsámegielat
+	anárašsámegielat+CmpN/SgN+CmpN/PlG+Sem/Hum:anáraš#sáme#giel AGAdj ;
+	anárašsámegielat+CmpN/SgN+CmpN/PlG+Sem/Hum:anáraš#sáme#giel AGAdj ;
+lossat
+	lossat+CmpN/SgN+CmpN/PlG+Sem/Hum:loss LOSSAT ;
+	lossat+Use/NG+Use/NG+Sem/Dummytag:los'ses LEXATTR ; ! ad hoc exceptional form
+beroštahtti
+	beroštahtti+v1+Sem/Dummytag:be7rošta HAHTTI ;
+	beroštahtti+v2+Sem/Dummytag:be7rosta HAHTTI ;
+rieppis
+	rieppis+CmpN/SgN+CmpN/PlG+Sem/Hum:riebbis GAPPUS ;
+	rieppis+Sem/Dummytag:rieppisis LEXATTR ;
+lahka
+	lahka+A+Sem/Dummytag+Comp+Attr:lagat K ;
+	lahka+A+Sem/Dummytag+Superl:lagamuss BUOREMUSS ;
+	lahka+A+Sem/Dummytag+Superl:lagamužž BUOREMUSS ;
+sesoŋŋaáigásaš
+	sesoŋŋaáigásaš+v1+Sem/Dummytag:sesoŋŋa#áigás AHKASAS ;
+	sesoŋŋaáigásaš+v2+Sem/Dummytag:sesoŋga#áigás AHKASAS ;
+geahpas
+	geahpas+CmpN/SgN+CmpN/PlG+Sem/Hum:geahppa GARAS ;
+	geahpas+Use/NG+Sem/Dummytag:gehppes LEXATTR ; ! Alt. attr.form
+ovttagielalaš
+	ovttagielalaš+CmpN/SgN+CmpN/PlG+Sem/Hum:ovtta#gielal AHKASAS ;
+	ovttagielalaš+CmpN/SgN+CmpN/PlG+Sem/Hum:ovtta#gielal AHKASAS ;
+čoaskkis
+	čoaskkis+Sem/Dummytag:čoas'k DEAHTIS ;
+	čoaskkis+Use/NG+Sem/Dummytag:čoaskkes LEXATTR ; ! takes care of irregular attr form
+bivnnut
+	bivnnut+CmpN/SgN+CmpN/PlG+Sem/Hum:bivnnuh JOHTIL ;
+	bivnnut+Use/NG+Sem/Dummytag:bivnnut LEXATTR ;
+suohkat
+	suohkat+Sem/Dummytag:suoh'k VIELG ;
+	suohkat+Use/NG+Sem/Dummytag:suohkadis LEXATTR ;
+vádjit
+	vádjit+Sem/Dummytag:vádjid DILDDAS ;
+	vádjit+Sem/Dummytag:vádjig DILDDAS ;
+beallepriváhta
+	beallepriváhta+v1+Sem/Dummytag:bealle#priváhta FRIIJA ;
+	beallepriváhta+v2+Sem/Dummytag:bealle#priváhtta BOREALA ;
+geafi
+	geafi+v1+CmpN/SgN+CmpN/PlG+Dial/-KJ:geafi LAIKI; !
+	geafi+v2+CmpN/SgN+CmpN/PlG+Dial/-GG:geaffi LAIKI; !
+iešráhkis
+	iešráhkis+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:ieš#ráhkkis VATTIS ;
+	iešráhkis+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:jieš#ráhkkis VATTIS ;
+kultursensitiivvalaš
+	kultursensitiivvalaš+v1+Sem/Dummytag:kultur#sensit IIVVAL-DABALAS  ;
+	kultursensitiivvalaš+v2+Sem/Dummytag:kulttor#sensit IIVVAL-DABALAS  ;
+ráhpat
+	ráhpat+CmpN/SgN+CmpN/PlG+Sem/Hum:ráhpad JOHTIL ;
+	ráhpat+Sem/Dummytag:ráhpa LEXATTR ;
+seammanammasaš
+	seammanammasaš+CmpN/SgN+CmpN/PlG+Sem/Hum:seamma#nammas AHKASAS ;
+	seammanammasaš+CmpN/SgN+CmpN/PlG+Sem/Hum:seammá#nammas AHKASAS ;
+nanus
+	nanus+CmpN/SgN+CmpN/PlG+Sem/Hum:nannu NANUS ;
+	nanus+Use/NG+Sem/Dummytag:nana LEXATTR ; ! exceptional attr form
+veara
+	veara+CmpNP/None+A+Ess+Sem/Dummytag:veara%>n K ;
+	veara+CmpNP/None+A+Sg+Gen+Sem/Dummytag:veara K ;
+	veara+CmpNP/None+A+Sg+Nom+Sem/Dummytag:veara K ;
+	veara+Sem/Dummytag:veara At ;
+čielgelámis
+	čielgelámis+CmpN/SgN+CmpN/PlG+Sem/Hum:čielge7#lápmis VATTIS ;
+	čielgelámis+Use/NG+Sem/Dummytag:čielge#lámisis LEXATTR ; !alternating is-attr
+máŋggabealat
+	máŋggabealat+A+Sem/Dummytag:máŋgga#bealag EABBO/EAMOS ;
+	máŋggabealat+Sem/Dummytag:máŋgga#beal AGAdj ;
+ihttáš
+	ihttáš+Sem/Dummytag:ihttáš LEXATTR ;
+	ihttáš+Sem/Dummytag:ihttáž AGAdjINFL ;
+láhtengiel
+	láhtengiel+Sem/Dummytag:láhten#giel At ;
+	láhtengiel+Sem/Dummytag:láhten9#giel At ;
+humanehtalaš
+	humanehtalaš+Sem/Dummytag:human-ehtal ETNOLOGALAS ;
+	humanehtalaš+Sem/Dummytag:humanehtal ETNOLOGALAS ;
+eahpesihkar
+	eahpesihkar+CmpN/SgN+CmpN/PlG+v1+CmpNP/First+Sem/Hum:eahpe#sihkkar CIENAL "sure A" ; ! alternating forms hk ~ hkk
+	eahpesihkar+CmpN/SgN+CmpN/PlG+v2+CmpNP/First+Sem/Hum:eahpe#sihkkar JOHTIL "sure A" ; ! no consonant gradation
+bieđut
+	bieđut+CmpN/SgN+CmpN/PlG+Sem/Hum:bieđuh FARGAT ;
+	bieđut+Sem/Dummytag:bieđđu LEXATTR ;
+snielis
+	snielis+CmpN/SgN+CmpN/PlG+Sem/Hum:sniellis GAPPUS ;
+	snielis+Use/NG+Sem/Dummytag:snielisis LEXATTR ; !alternating is-attr
+várddus
+	várddus+Sem/Dummytag:vár'dus NUOLUS ;
+	várddus+Sem/Dummytag:várddosis LEXATTR ;
+suomagielat
+	suomagielat+CmpN/SgN+CmpN/PlG+Sem/Hum:suoma#giel AGAdj ;
+	suomagielat+CmpN/SgN+CmpN/PlG+Sem/Hum:suoma#giel AGAdj ;
+snavggas
+	snavggas+CmpN/SgN+CmpN/PlG+Sem/Hum:snav'gas GAPPUS ;
+	snavggas+Sem/Dummytag:snavggasis LEXATTR ;
+kulturmieldásaš
+	kulturmieldásaš+v1+Sem/Dummytag:kultur#mieldás AHKASAS ;
+	kulturmieldásaš+v2+Sem/Dummytag:kulttor#mieldás AHKASAS ;
+gummá
+	gummá+A+Sem/Dummytag+Comp:gummá%>t K ;
+	gummá+A+Sem/Dummytag+Sg+Nom:gummá K ;
+	gummá+A+Sem/Dummytag+Superl:gummá%>mus K ;
+otná
+	otná+A+Sem/Dummytag+Sg+Gen:otná K ;
+	otná+Sem/Dummytag:otná LEXATTR ;
+boraspiregoddon
+	boraspiregoddon+Sem/Dummytag:boraspire#goddon PrfPrc ;
+	boraspiregoddon+Sem/Dummytag:boraspire#goddon PrfPrc ;
+čuođigeardásaš
+	čuođigeardásaš+Sem/Dummytag:čuođi#geardás ETNOLOGALAS ;
+	čuođigeardásaš+Sem/Dummytag:čuođi#geardás ETNOLOGALAS ;
+luotkkus
+	luotkkus+Sem/Dummytag:luot'kus BOAKKAS ;
+	luotkkus+Sem/Dummytag:luot'kus GEARGGUS ;
+	luotkkus+Sem/Dummytag:luotkko FINJU- ;
+fuotni
+	fuotni+CmpN/SgN+CmpN/PlG+Sem/Hum:fuotni LAIKI; !
+	fuotni+Sem/Dummytag:fuotni LAIKI "bad A" ;
+táhpalaš
+	táhpalaš+v1+Sem/Dummytag:táhpal DABALAS ;
+	táhpalaš+v2+Sem/Dummytag:dáhpal DABALAS ;
+moattebealat
+	moattebealat+Sem/Dummytag:maotti#beal AGAdj ;
+	moattebealat+Sem/Dummytag:moatte#beal AGAdj ;
+biologalaš
+	biologalaš+Sem/Dummytag:biologal ETNOLOGALAS ;
+	biologalaš+Sem/Dummytag:biologal ETNOLOGALAS ;
+viđanuppelotjahkásaš
+	viđanuppelotjahkásaš+CmpN/SgN+CmpN/PlG+Sem/Hum:vihtta#nuppelot#jahkás AHKASAS ;
+	viđanuppelotjahkásaš+CmpN/SgN+CmpN/PlG+Sem/Hum:viđa#nuppelot#jahkás AHKASAS ;
+ođđaáigásaš
+	ođđaáigásaš+A+Sem/Dummytag:ođđaáigásačča%> BU/MUS ;
+	ođđaáigásaš+Sem/Dummytag:ođđa#áigás ETNOLOGALAS ;
+eanagáibideaddji
+	eanagáibideaddji+v1+CmpNP/First+Sem/Hum:eana#gáibideaddji¤ EADDJI ;
+	eanagáibideaddji+v2+CmpNP/First+Sem/Hum:eanan#gáibideaddji¤ EADDJI ;
+	eanagáibideaddji+v3+CmpNP/First+Sem/Hum:eatnan#gáibideaddji¤ EADDJI ;
+heittot
+	heittot+CmpN/SgN+CmpN/PlG+Use/NG+Sem/Dummytag:heittoh HEITTOHA ;
+	heittot+Sem/Dummytag:heittog JOHTIL ; ! also :heittoh
+internašuvnnalaš
+	internašuvnnalaš+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:inter#našuvnnal ETNOLOGALAS ;
+	internašuvnnalaš+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:inter#naššuvnnal ETNOLOGALAS ;
+soahtelámis
+	soahtelámis+CmpN/SgN+CmpN/PlG+Sem/Hum:soahte7#lápmis VATTIS ;
+	soahtelámis+Use/NG+Sem/Dummytag:soahte#lámisis LEXATTR ; !alternating is-attr
+ruossalas
+	ruossalas+CmpN/SgN+CmpN/PlG+Sem/Hum:ruossal ISSORAS ;
+	ruossalas+Sem/Dummytag:ruossalas LEXATTR ;
+bassi
+	bassi+A+Sem/Dummytag:bassi LAIKI0 ;
+	bassi+Sem/Dummytag:bassi LEXATTR ;
+	bassi+Sem/Dummytag:bassi NUORRA ;
+eahpejáhkihahtti
+	eahpejáhkihahtti+CmpNP/First+Sem/Hum:eahpe#jáhkiha HAHTTI ;
+	eahpejáhkihahtti+CmpNP/First+Sem/Hum:eahpe#jáhki7ha HAHTTI ;
+vuoddji
+	vuoddji+CmpN/SgN+CmpN/PlG+Sem/Hum:vuod'ji¤ JUHKKIS ;
+	vuoddji+CmpN/SgN+CmpN/PlG+Sem/Hum:vuoddji¤ EADDJI ;
+dássásaš
+	dássásaš+CmpN/SgN+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:dássás AHKASAS ;
+	dássásaš+Sem/Dummytag:dássás AHKASAS ;
+vuosttaldahkes
+	vuosttaldahkes+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:vuosttaldahkke7s GAPPUS ;
+	vuosttaldahkes+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:vuosttaldahkkis GAPPUS ;
+radiála
+	radiála+Sem/Dummytag:radi^ála BOREALA ;
+	radiála+Sem/Dummytag:radiála FRIIJA ;
+lohtat
+	lohtat+Sem/Dummytag:lohtad JOHTIL ;
+	lohtat+Sem/Dummytag:lohttes LEXATTR ;
+kulturgáddálas
+	kulturgáddálas+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:kultur#gáddál ISSORAS ;
+	kulturgáddálas+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:kulttor#gáddál ISSORAS ;
+rávdnjelinnjáhámat
+	rávdnjelinnjáhámat+Sem/Dummytag:rávdnje#linnjá#hám AGAdj ;
+	rávdnjelinnjáhámat+Sem/Dummytag:rávdnje#linnjá#hám AGAdj ;
+seaggi
+	seaggi+CmpN/SgN+CmpN/PlG+Sem/Hum:seagg UHCC ;
+	seaggi+Use/NG+Sem/Dummytag:seakkes LEXATTR ;  !irregular attr. form
+ruonáeatnangielat
+	ruonáeatnangielat+CmpN/SgN+CmpN/PlG+Sem/Hum:ruoná#eatnan#giel AGAdj ;
+	ruonáeatnangielat+CmpN/SgN+CmpN/PlG+Sem/Hum:ruoná#eatnan#giel AGAdj ;
+miellavádjet
+	miellavádjet+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:miella#vádje7d JOHTIL ;
+	miellavádjet+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:miella#vádjig JOHTIL ;
+botká
+	botká+A+Sg+Nom+Sem/Dummytag:botká K ;
+	botká+Sem/Dummytag:botká FINJU- ;
+erenoamáš
+	erenoamáš+v1+Sem/Dummytag:erenoamáž AGAdjINFL ;
+	erenoamáš+v2+Dial/-GG:erenomáž AGAdjINFL ;
+	erenoamáš+v3+Dial/-KJ:earenoamáž AGAdjINFL ;
+	erenoamáš+v4+Sem/Dummytag:earenomáž AGAdjINFL ;
+eahpegovttolaš
+	eahpegovttolaš+CmpNP/First+Sem/Hum:eahpe#govttolaš DABALAS ;
+	eahpegovttolaš+CmpNP/First+Sem/Hum:eahpe#govttol DABALAS ;
+sámiguoski
+	sámiguoski+CmpN/SgN+CmpN/PlG+Sem/Hum:sámi#guoski¤ EADDJI ;
+	sámiguoski+CmpN/SgN+CmpN/PlG+Sem/Hum:sámi-guoski¤ EADDJI ;
+snoakkis
+	snoakkis+Sem/Dummytag:snoaggi HEAHKAS ;
+	snoakkis+Use/NG+Sem/Dummytag:snoagga LEXATTR ; !alternating a-attr
+allosaš
+	allosaš+CmpN/SgN+CmpN/PlG+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Hum:allos AHKASAS ;
+	allosaš+CmpN/SgN+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:allos AHKASAS ;
+gieris
+	gieris+CmpN/SgN+CmpN/PlG+Sem/Hum:gierris BOAKKAS ;
+	gieris+Use/NG+Sem/Dummytag:gieres LEXATTR ; !Irregular attr form
+maŋit
+	maŋit+Sem/Plc+Use/NG:maŋe OVDDIT ;
+	maŋit+Sem/Plc:maŋi OVDDIT ;
+russolas
+	russolas+CmpN/SgN+CmpN/PlG+Sem/Hum:russol ISSORAS ;
+	russolas+Sem/Dummytag:russolas LEXATTR ;
+geahppat
+	geahppat+Sem/Dummytag:geahpp LOSSAT ;
+	geahppat+Sem/Dummytag:gehppes LEXATTR ; !Alt attr.form
+	geahppat+Use/NG+Sem/Dummytag:geahppadis LEXATTR ; !Alt. attr. form
+kulturekologalaš
+	kulturekologalaš+v1+Sem/Dummytag:kultur#ekologal ETNOLOGALAS ;
+	kulturekologalaš+v2+Sem/Dummytag:kulttor#ekologal ETNOLOGALAS ;
+sáhkat
+	sáhkat+Sem/Dummytag:sáhkad JOHTIL ;
+	sáhkat+Sem/Dummytag:sáhkkes LEXATTR ;
+jagáš
+	jagáš+v1+Sem/Dummytag:jagáž AGAdjINFL ;
+	jagáš+v1+Sem/Dummytag:juohke#jagáž AGAdjINFL ;
+	jagáš+v2+Sem/Dummytag:jagaž AGAdjINFL ;
+	jagáš+v2+Sem/Dummytag:juohke#jagaž AGAdjINFL ;
+	jagáš:jagáž AGAdjINFL ;
+gáktehámat
+	gáktehámat+Sem/Dummytag:gákte#hám AGAdj ;
+	gáktehámat+Sem/Dummytag:gákte#hám AGAdj ;
+modála
+	modála+Sem/Dummytag:modál BOREALA ;
+	modála+Sem/Dummytag:modála FRIIJA ;
+danhámat
+	danhámat+CmpN/SgN+CmpN/PlG+Sem/Hum:dan#hám AGAdj ;
+	danhámat+CmpN/SgN+CmpN/PlG+Sem/Hum:don#hám AGAdj ;
+idealundosaš
+	idealundosaš+v1+Sem/Dummytag:idea#lundos AHKASAS ;
+	idealundosaš+v2+Sem/Dummytag:idéa#lundos AHKASAS ;
+eahpečorgat
+	eahpečorgat+CmpN/SgN+CmpN/PlG+CmpNP/First+Sem/Hum:eahpe#čorgad JOHTIL ;
+	eahpečorgat+CmpNP/First+Sem/Hum:eahpe#čorges LEXATTR ;
+genitiivvahápmásaš
+	genitiivvahápmásaš+Sem/Dummytag:genetiivva#hápmás AHKASAS ;
+	genitiivvahápmásaš+Sem/Dummytag:genitiivva#hápmás AHKASAS ;
+johtinlámis
+	johtinlámis+CmpN/SgN+CmpN/PlG+Sem/Hum:johtin#lápmis VATTIS ;
+	johtinlámis+Use/NG+Sem/Dummytag:johtin#lámisis LEXATTR ; !alternating is-attr
+smáđáhkis
+	smáđáhkis+CmpN/SgN+CmpN/PlG+Sem/Hum:smáđáhkke7s GAPPUS ;
+	smáđáhkis+CmpN/SgN+CmpN/PlG+Sem/Hum:smáđáhkkis GAPPUS ;
+nákcagáibidahkes
+	nákcagáibidahkes+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:nákca#gáibidahkke7s GAPPUS ;
+	nákcagáibidahkes+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:nákca#gáibidahkkis GAPPUS ;
+beroštusvuđot
+	beroštusvuđot+v1+Sem/Dummytag:beroštus#vu7đog AGAdjINFL ;
+	beroštusvuđot+v2+Sem/Dummytag:berostus#vu7đog AGAdjINFL ;
+suosttas
+	suosttas+CmpN/SgN+CmpN/PlG+Sem/Hum:suos'ta GARAS ;
+	suosttas+CmpN/SgN+CmpN/PlG+Sem/Hum:suos'tas BOAKKAS ;
+jámmis
+	jámmis+Sem/Dummytag:jám'm LINIS ;
+	jámmis+Use/NG+Sem/Dummytag:jámmisis LEXATTR ; !alternating -is-attr
+moattelágan
+	moattelágan+Sem/Dummytag:moatte# LAGAN ;
+	moattelágan+Sem/Dummytag:moatti# LAGAN ;
+fenomenologalaš
+	fenomenologalaš+CmpNP/First+Sem/Hum:fenomenologal ETNOLOGALAS ;
+	fenomenologalaš+Sem/Dummytag:fenomenologal ETNOLOGALAS ;
+gáđaš
+	gáđaš+CmpN/SgN+CmpN/PlG+Sem/Hum:gáh'taš GAPPUS ;
+	gáđaš+CmpN/SgN+CmpN/PlG+Use/NG+Sem/Dummytag:gáh'ta IPMAHA ;
+heamssas
+	heamssas+CmpN/SgN+CmpN/PlG+Sem/Hum:heam'sas BOAKKAS ;
+	heamssas+Sem/Dummytag:heamse FINJU- ;
+gáktemállet
+	gáktemállet+Sem/Dummytag:gákte#málleg AGAdjINFL ;
+	gáktemállet+Sem/Dummytag:gákte#málleg AGAdjINFL ;
+sealbbus
+	sealbbus+Sem/Dummytag:seal'bus NUOLUS ;
+	sealbbus+Sem/Dummytag:sealbbosis LEXATTR ;
+kultursiskkáldas
+	kultursiskkáldas+v1+Sem/Dummytag:kultursiskkáld SISKKALDAS ;
+	kultursiskkáldas+v2+Sem/Dummytag:kultursiskkáld SISKKALDAS ;
+ihtáš
+	ihtáš+Sem/Dummytag:ihtáš LEXATTR ;
+	ihtáš+Sem/Dummytag:ihtáž AGAdjINFL ;
+burporruoksat
+	burporruoksat+v1+Sem/Dummytag:burpor#ruoks VIELG_NOCOMP ;
+	burporruoksat+v2+Sem/Dummytag:purpor#ruoks VIELG_NOCOMP ;
+	burporruoksat+v3+Sem/Dummytag:purpol#ruoks VIELG_NOCOMP ;
+vádjet
+	vádjet+Sem/Dummytag:vádjed DILDDAS ;
+	vádjet+Sem/Dummytag:vádjeg DILDDAS ;
+ievttá
+	ievttá+A+Sem/Dummytag+Sg+Gen:ievttá K ;
+	ievttá+Sem/Dummytag:ievttá LEXATTR ;
+stuoris
+	stuoris+CmpN/SgN+CmpN/PlG+Sem/Hum:stuorr STUORIS ;
+	stuoris+Dial/-GG:stuorra LEXATTR ; ! takes care of irregular attr form
+moattelágaš
+	moattelágaš+Sem/Dummytag:moatte# LAGAS ;
+	moattelágaš+Sem/Dummytag:moatti# LAGAS ;
+ráhkis
+	ráhkis+CmpN/SgN+CmpN/PlG+Sem/Hum:ráhkkis VATTIS ;
+	ráhkis+A+Sem/Hum+Pl+Nom+PxSg1:ráhkkásiiddán K ;
+jorggu
+	jorggu+Sem/Dummytag:jorggo FINJU- ;
+	jorggu+Sem/Dummytag:jorggu FINJU- ;
+viiddis
+	viiddis+A+Sem/Dummytag+Comp+Use/NG:viiddib BUStem ;
+	viiddis+Sem/Dummytag:vij'd VIISSIS ;
+spáhkis
+	spáhkis+CmpN/SgN+CmpN/PlG+Sem/Hum:spáhkkis GAPPUS ;
+	spáhkis+Sem/Dummytag:spáhkisis LEXATTR ;
+rávddis
+	rávddis+CmpN/SgN+CmpN/PlG+Sem/Hum:ráv'dis GAPPUS ;
+	rávddis+Use/NG+Sem/Dummytag:rávddisis LEXATTR ; !alternating is-attr
+čorgat
+	čorgat+CmpN/SgN+CmpN/PlG+Sem/Hum:čorgad JOHTIL ;
+	čorgat+Sem/Dummytag:čorges LEXATTR ;
+badjellunddolaš
+	badjellunddolaš+Sem/Dummytag:badje7l#lunddol ETNOLOGALAS ;
+	badjellunddolaš+Sem/Dummytag:badjel#lunddol ETNOLOGALAS ;
+berošmeahttun
+	berošmeahttun+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:be7rošmeahttu MEAHTTUS ;
+	berošmeahttun+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:be7rosmeahttu MEAHTTUS ;
+áigeguovdil
+	áigeguovdil+A+Sem/Dummytag+Comp+Ess+Use/NG:áige#guovdilaččabun K ;
+	áigeguovdil+A+Sem/Dummytag+Comp+Sg+Nom+Use/NG:áige#guovdilaččat K ;
+	áigeguovdil+A+Sem/Dummytag+Comp+Use/NG:áige#guovdilaččabu HEAPMIOBL ;
+	áigeguovdil+A+Sem/Dummytag+Superl+Use/NG:áige#guovdilaččamuss BUOREMUS ;
+	áigeguovdil+CmpN/SgN+CmpN/PlG+Sem/Hum:áige#guovdil JOHTIL; !
+doaibmavádjet
+	doaibmavádjet+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:doaibma#vádje7d JOHTIL ;
+	doaibmavádjet+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:doaibma#vádjig JOHTIL ;
+binna bánna
+	binna% bánna+A+Sg+Nom+Sem/Dummytag:binna% bánna K ;
+	binna% bánna+Sem/Dummytag:binna% bánna LEXATTR ;
+loaris
+	loaris+CmpN/SgN+CmpN/PlG+Sem/Hum:loarris GAPPUS ;
+	loaris+Sem/Dummytag:loaris LEXATTR ;
+ceakkus
+	ceakkus+Sem/Dummytag:ceaggus BOAKKAS ;
+	ceakkus+Sem/Dummytag:ceakko FINJU- ;
+háittis
+	háittis+Sem/Dummytag:háj'tis VATTIS ;
+	háittis+Use/NG+Sem/Dummytag:hájttisis LEXATTR ; !Alt. attr. form
+priváhta
+	priváhta+v1+Sem/Dummytag:priváhta FRIIJA ;
+	priváhta+v2+Sem/Dummytag:priváhtta BOREALA ;
+vissis
+	vissis+v1+CmpN/SgN+CmpN/PlG+Dial/-KJ:vis'sis GAPPUS ;
+	vissis+v2+CmpN/SgN+CmpN/PlG+Dial/-GG:vis's VIISSIS ;
+raddelámis
+	raddelámis+CmpN/SgN+CmpN/PlG+Sem/Hum:radde7#lápmis VATTIS ;
+	raddelámis+Use/NG+Sem/Dummytag:radde#lámisis LEXATTR ; !alternating is-attr
+girkolaš
+	girkolaš+Sem/Dummytag:girkol AHKASAS ;
+	girkolaš+Sem/Dummytag:girkol AHKASAS ;
+vuolit
+	vuolit+A+Sem/Dummytag+Superl:vuolemuss BUOREMUSS ;
+	vuolit+Sem/Plc:vuoli OVDDIT ;
+ittis
+	ittis+CmpN/SgN+CmpN/PlG+Sem/Hum:iddis GAPPUS ;
+	ittis+Use/NG+Sem/Dummytag:ittisis LEXATTR ; !alternating is-attr
+gálkái
+	gálkái+v1+Sem/Dummytag:gálká JIEDNAI ;
+	gálkái+v2+Sem/Dummytag:kálká JIEDNAI ;
+vuostásaš
+	vuostásaš+Sem/Dummytag:vuostás AHKASAS ;
+	vuostásaš+Sem/Dummytag:vuostás AHKASAS ;
+máŋggajagaš
+	máŋggajagaš+v1+Sem/Dummytag:máŋgga#jagaž AGAdjINFL ;
+	máŋggajagaš+v2+Sem/Dummytag:máŋgga#jagáž AGAdjINFL ;
+snáhpis
+	snáhpis+CmpN/SgN+CmpN/PlG+Sem/Hum:snáhppis BOAKKAS ;
+	snáhpis+Sem/Hum:snáhpes LEXATTR ;
+	snáhpis+Sem/Hum:snáhpisis LEXATTR ;
+váivváš
+	váivváš+CmpN/SgN+CmpN/PlG+Sem/Hum:váivváš BEAKKAN; !
+	váivváš+CmpN/SgN+CmpN/PlG+Sem/Hum:váivváž BEAKKAN ;
+márkanfievrriduvvon
+	márkanfievrriduvvon+v1+Sem/Dummytag:márkan#fievrriduvvon PrfPrc ;
+	márkanfievrriduvvon+v2+Sem/Dummytag:márkan#fievrreduvvon PrfPrc ;
+eahpevissis
+	eahpevissis+v1+CmpN/SgN+CmpN/PlG+Dial/-KJ+CmpNP/First+Sem/Hum:eahpe#vis'sis GAPPUS ;
+	eahpevissis+v2+CmpN/SgN+CmpN/PlG+Dial/-GG+CmpNP/First+Sem/Hum:eahpe#vis's VIISSIS ;
+rusá
+	rusá+v1+Sem/Dummytag:rusá NUORRA ;
+	rusá+v2+Sem/Dummytag:rosá NUORRA ;
+monimušhámat
+	monimušhámat+v1+Sem/Dummytag:monimuš#hám AGAdj ;
+	monimušhámat+v2+Sem/Dummytag:monemuš#hám AGAdj ;
+govdat
+	govdat+CmpN/SgN+CmpN/PlG+Sem/Hum:gov'd ALLAT ;
+	govdat+Use/NG+Sem/Dummytag:govdes LEXATTR ; !unusual attr.form
+goččahahkes
+	goččahahkes+v1+Sem/Ani_Hum:goččahahkke7s GAPPUS ;
+	goččahahkes+v2+Sem/Ani_Hum:goččahahkkis GAPPUS ;
+	goččahahkes+v3+Sem/Ani_Hum:guččahahkke7s GAPPUS ;
+	goččahahkes+v4+Sem/Ani_Hum:guččahahkkis GAPPUS ;
+gearggus
+	gearggus+CmpN/SgN+CmpN/PlG+Sem/Hum:gear'gus GEARGGUS "ready A" ;
+	gearggus+CmpN/SgN+CmpN/PlG+Sem/Hum:gear'gus GEARGGUS ;
+ealas
+	ealas+CmpN/SgN+CmpN/PlG+Sem/Hum:ealla GARAS ;
+	ealas+Sem/Dummytag:ealasis LEXATTR ;
+	ealas+Sem/Dummytag:eallasis LEXATTR ;
+eanagottálaš
+	eanagottálaš+v1+Sem/Dummytag:eana#gottál ETNOLOGALAS ;
+	eanagottálaš+v2+Sem/Dummytag:eanan#gottál ETNOLOGALAS ;
+	eanagottálaš+v3+Sem/Dummytag:eatnan#gottál ETNOLOGALAS ;
+eahpegulolaš
+	eahpegulolaš+CmpN/SgN+CmpN/PlG+CmpNP/First+Sem/Hum:eahpe7#gulol DABALAS ;
+	eahpegulolaš+CmpN/SgN+CmpN/PlG+CmpNP/First+Sem/Hum:eahpe#gulol ETNOLOGALAS ;
+priváhttavuoigatvuođalaš
+	priváhttavuoigatvuođalaš+v1+Sem/Dummytag:priváhtta#vuoigatvuođal ETNOLOGALAS ;
+	priváhttavuoigatvuođalaš+v2+Sem/Dummytag:priváhta#vuoigatvuođal ETNOLOGALAS ;
+čiegus
+	čiegus+Sem/Dummytag:čiegus LEXATTR ;
+	čiegus+Sem/Dummytag:čieh'kus BOAKKAS ;
+knáhpis
+	knáhpis+Sem/Dummytag:knáhppi HEAHKAS ;
+	knáhpis+Use/NG+Sem/Dummytag:knáhppa LEXATTR ;  !alternating a-attr
+hárvvis
+	hárvvis+Sem/Dummytag:hár'vis BOAKKAS ;
+	hárvvis+Sem/Dummytag:hár'v HARVVIS ;
+fitnodatekonomalaš
+	fitnodatekonomalaš+Sem/Dummytag:fitnodat#ekonomal ETNOLOGALAS ;
+	fitnodatekonomalaš+Sem/Dummytag:fitnodat#ekonomal ETNOLOGALAS ;
+albma
+	albma+A+Sg+Nom+Sem/Dummytag:albma K ;
+	albma+Sem/Dummytag:albma LEXATTR ;
+unni
+	unni+Sem/Dummytag:un'n UHCC ; ! attr unna
+	unni+Use/NG+Sem/Dummytag:una LEXATTR ; ! attr una
+rahkat
+	rahkat+Sem/Dummytag:rahkad RAHKAT ;
+	rahkat+Sem/Dummytag:rahkkes LEXATTR ;
+luonddueanandieđalaš
+	luonddueanandieđalaš+v1+Sem/Dummytag:luonddu#eanan#dieđal ETNOLOGALAS ;
+	luonddueanandieđalaš+v2+Sem/Dummytag:luonddu#eana#dieđal ETNOLOGALAS ;
+	luonddueanandieđalaš+v3+Sem/Dummytag:luonddu#eatnan#dieđal ETNOLOGALAS ;
+ihttá
+	ihttá+A+Sem/Dummytag+Sg+Gen:ihttá K ;
+	ihttá+Sem/Dummytag:ihttá LEXATTR ;
+rohčat
+	rohčat+Sem/Dummytag:rohčad JOHTIL ;
+	rohčat+Sem/Dummytag:rohččes LEXATTR ;
+eaŋgals
+	eaŋgals+Sem/Dummytag:eaŋgalas LEXATTR ;
+	eaŋgals+Sem/Dummytag:eaŋgals LEXATTR ;
+oaivelámis
+	oaivelámis+CmpN/SgN+CmpN/PlG+Sem/Hum:oaive7#lápmis VATTIS ;
+	oaivelámis+v1+Sem/Dummytag:oaive#lámisis LEXATTR ; !alternating is-attr
+	oaivelámis+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:oaivi7#lápmis VATTIS ;
+máŋgganašuvnnalaš
+	máŋgganašuvnnalaš+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:máŋgga#našuvnnal ETNOLOGALAS ;
+	máŋgganašuvnnalaš+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:máŋgga#naššuvnnal ETNOLOGALAS ;
+náitalkeahtes
+	náitalkeahtes+Sem/Dummytag:náital LEXATTR_GEAHTES ;
+	náitalkeahtes+Sem/Dummytag:náital LEXATTR_GEAHTES ;
+šnjalžžas
+	šnjalžžas+Sem/Dummytag:šnjal'ža GARAS ;
+	šnjalžžas+Sem/Dummytag:šnjal'žas BOAKKAS ;
+kultureaktudeaddji
+	kultureaktudeaddji+v1+CmpNP/First+Sem/Hum:kulttor#eaktudeaddji¤ EADDJI ;
+	kultureaktudeaddji+v1+CmpNP/First+Sem/Hum:kultur#eaktudeaddji¤ EADDJI ;
+rávdnjelinjáhámat
+	rávdnjelinjáhámat+Sem/Dummytag:rávdnje#linjá#hám AGAdj ;
+	rávdnjelinjáhámat+Sem/Dummytag:rávdnje#linjá#hám AGAdj ;
+garralunddot
+	garralunddot+CmpN/SgN+CmpN/PlG+Sem/Hum:garra#lu7nddog AGAdjINFL ;
+	garralunddot+Sem/Dummytag:garra#lunddog AGAdjINFL ;
+ráttas
+	ráttas+Sem/Dummytag:rádda GARAS ;
+	ráttas+Sem/Dummytag:ráttas LEXATTR ; ! irregular attr.form
+eambbo
+	eambbo+A+Sem/Dummytag+Comp+Attr:eambbo K ;
+	eambbo+A+Sem/Dummytag+Comp+Attr:eambo K ;
+	eambbo+A+Sem/Dummytag+Comp+Pl+Nom:eambbo%>t K ;
+	eambbo+A+Sem/Dummytag+Comp+Sg+Acc:eambbo K ;
+	eambbo+A+Sem/Dummytag+Comp+Sg+Nom:eambbo K ;
+ráhpis
+	ráhpis+Sem/Dummytag:ráhpp RAHPIS ;
+	ráhpis+Sem/Dummytag:ráhppi BOARIS ;
+árrat
+	árrat+A+Sem/Dummytag:ára%> BU/MUS ;
+	árrat+A+Sem/Dummytag:árrad ALLAGA ;
+	árrat+Sem/Dummytag:árra LEXATTR ;
+kulturpolitihkalaš
+	kulturpolitihkalaš+v1+Sem/Dummytag:kultur#polit IHKALAS-ETNOLOGALAS ;
+	kulturpolitihkalaš+v2+Sem/Dummytag:kulttor#polit IHKALAS-ETNOLOGALAS ;
+meađmma
+	meađmma+Sem/Dummytag:meađbmag8 GUOHCA ;
+	meađmma+Sem/Dummytag:meađmmag8 GUOHCA ;
+ievttáš
+	ievttáš+Sem/Dummytag:ievttáš LEXATTR ;
+	ievttáš+Sem/Dummytag:ievttáž AGAdjINFL ;
+kulturávdnejeaddji
+	kulturávdnejeaddji+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:kultur#ávdnejeaddji¤ EADDJI ;
+	kulturávdnejeaddji+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:kulttor#ávdnejeaddji¤ EADDJI ;
+jeagiheapme
+	jeagiheapme+Sem/Dummytag:jeagi7h JEAGOHEAPMI ;
+	jeagiheapme+Sem/Dummytag:jeagih JEAGOHEAPMI ;
+kultureaktodáhtolaš
+	kultureaktodáhtolaš+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:kultur#eakto7#dáhtol ETNOLOGALAS ;
+	kultureaktodáhtolaš+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:kulttor#eakto7#dáhtol ETNOLOGALAS ;
+soadjelámis
+	soadjelámis+CmpN/SgN+CmpN/PlG+Sem/Hum:soadje7#lápmis VATTIS ;
+	soadjelámis+Use/NG+Sem/Dummytag:soadje#lámisis LEXATTR ; !alternating is-attr
+bahá
+	bahá+CmpN/SgN+CmpN/PlG+Sem/Hum:bahá LAIKI; !
+	bahá+Use/NG+Sem/Dummytag:bahá LEXATTR ;  ! This one is for "bahá vuoiŋŋat"
+bievllus
+	bievllus+Sem/Dummytag:biev'lus GAPPUS ;
+	bievllus+Sem/Dummytag:bievllos LEXATTR ;
+radikála
+	radikála+CmpN/SgN+CmpN/PlG+Sem/Hum:radikála FRIIJA ;
+	radikála+CmpN/SgN+CmpN/PlG+Sem/Hum:radikála NUORRA; !
+álo
+	álo+v1+Sem/Dummytag:álo FINJU- ; !
+	álo+v2+Sem/Dummytag:álu FINJU- ; !
+erenoamášmearkkat
+	erenoamášmearkkat+v1+Sem/Dummytag:erenoamáš#mearkk AGAdj "marked A" ;
+	erenoamášmearkkat+v2+Dial/-GG:erenomáš#mearkk AGAdj "marked A" ;
+	erenoamášmearkkat+v3+Dial/-KJ:earenoamáš#mearkk AGAdj "marked A" ;
+	erenoamášmearkkat+v4+Sem/Dummytag:earenomáš#mearkk AGAdj "marked A" ;
+eahpevárddus
+	eahpevárddus+CmpNP/First+Sem/Hum:eahpe#vár'dus NUOLUS ;
+	eahpevárddus+CmpNP/First+Sem/Hum:eahpe#várddosis LEXATTR ;
+streaŋga
+	streaŋga+Sem/Dummytag:streaŋga FINJU- ;
+	streaŋga+Sem/Dummytag:streaŋga LEXATTR ;
+šnjilžžas
+	šnjilžžas+CmpN/SgN+CmpN/PlG+Sem/Hum:šnjil'ža GARAS ;
+	šnjilžžas+CmpN/SgN+CmpN/PlG+Sem/Hum:šnjil'žas BOAKKAS ;
+kulturmihtilmas
+	kulturmihtilmas+v1+CmpN/SgN+CmpN/PlG+Sem/Hum:kultur#mihtilm ISSORAS ;
+	kulturmihtilmas+v2+CmpN/SgN+CmpN/PlG+Sem/Hum:kulttor#mihtilm ISSORAS ;
+badjeljagaš
+	badjeljagaš+v1+Sem/Dummytag:badjel#jagaž AGAdjINFL ;
+	badjeljagaš+v1+Sem/Dummytag:badjel#jagaž AGAdjINFL ;
+	badjeljagaš+v2+Sem/Dummytag:badjel#jagáž AGAdjINFL ;
+	badjeljagaš+v2+Sem/Dummytag:badjel#jagáž AGAdjINFL ;
+oassemávssekeahtes
+	oassemávssekeahtes+Sem/Dummytag:oasse#mávsse LEXATTR_GEAHTES ;
+	oassemávssekeahtes+Sem/Dummytag:oasse#mávsse LEXATTR_GEAHTES ;
+sihkar
+	sihkar+CmpN/SgN+CmpN/PlG+v1+Sem/Hum:sihkkar CIENAL "sure A" ; ! alternating forms hk ~ hkk
+	sihkar+CmpN/SgN+CmpN/PlG+v2+Sem/Hum:sihkkar JOHTIL "sure A" ; ! no consonant gradation
+runta
+	runta+A+Sg+Nom+Sem/Dummytag:runta K ;
+	runta+Sem/Dummytag:runta LEXATTR ;
+funkšuvdnastiilasaš
+	funkšuvdnastiilasaš+v1+Sem/Dummytag:funkšuvdna#stiilas ETNOLOGALAS ;
+	funkšuvdnastiilasaš+v2+Sem/Dummytag:funkšun#stiilas ETNOLOGALAS ;
+eahpeluohtihahtti
+	eahpeluohtihahtti+CmpNP/First+Sem/Hum:eahpe#luohtiha HAHTTI ;
+	eahpeluohtihahtti+CmpNP/First+Sem/Hum:eahpe#luohti7ha HAHTTI ;
+beavrrit
+	beavrrit+Sem/Dummytag:beavrrehis LEXATTR ;
+	beavrrit+Sem/Dummytag:beavrrih JOHTIL ;

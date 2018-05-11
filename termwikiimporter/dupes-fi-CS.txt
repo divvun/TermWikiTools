@@ -1,0 +1,39 @@
+ku
+	ku:ku  SCONJ_ETTÄ  ;
+	ku+Pcle:ku                              # ;
+koskapa
+	koskapa:koskapa  SCONJ_ETTÄ  ;
+	koskapa+Pcle:koskapa                    # ;
+mikäli
+	mikäli+CS:mikäli                        # ;
+	mikäli+Pcle:mikäli                      # ;
+josko
+	josko+CS:josko                          # ;
+	josko+Pcle:josko                        # ;
+että
+	että+CS#ei+V:ett                     VERB_EI ;
+	että+CS:että                            # ;
+jotta
+	jotta+CS#ei+V:jott                   VERB_EI ;
+	jotta+CS:jotta                          # ;
+	jotta+Pcle:jotta                        # ;
+jos
+	jos+CS#ei+V:ell                      VERB_EI ;
+	jos+CS#ei+V:joll                     VERB_EI ;
+	jos+CS:jos                              # ;
+	jos+Pcle:jos                            # ;
+jospa
+	jospa:jospa  SCONJ_ETTÄ  ;
+	jospa+Pcle:jospa                        # ;
+kunpa
+	kunpa+CS:kunpa                          # ;
+	kunpa+Pcle:kunpa                        # ;
+vaikkapa
+	vaikkapa+CS:vaikkapa                    # ;
+	vaikkapa+Pcle:vaikkapa                  # ;
+vaikka
+	vaikka+CS#ei+V:vaikk                 VERB_EI ;
+	vaikka+CS:vaikka                        # ;
+kunhan
+	kunhan+CS:kunhan                        # ;
+	kunhan+Pcle:kunhan                      # ;

@@ -1,0 +1,201 @@
+vuostáčuožžut
+	vuostáčuožžut+v1:vuostá#čuožžu BORRA_TV ;
+	vuostáčuožžut+v2:vuostái#čuožžu BORRA_TV ;
+firodit
+	firodit+v1:firod BONJAT_TV ;
+	firodit+v2:virod BONJAT_TV ;
+doarggistit
+	doarggistit:doarggist ALIST_IV ;
+	doarggistit+V+IV+VGen:doarggis K ;
+lávet
+	lávet:láve DOHPPE_TV ;
+	lávet:láve GILLE_IV ; !FAUXV
+fierrut
+	fierrut+v1:fierru LEABBU_TV ;
+	fierrut+v2:vierru LEABBU_TV ;
+fievrridit
+	fievrridit+v1:fievrrid MUITAL_TV ;
+	fievrridit+v2:fievrre7d MUITAL_TV ;
+alfanummarastit
+	alfanummarastit+v1:alfa#num'maras'ti DIEHTALADDA_TV ;
+	alfanummarastit+v2:alfa#num'máras'ti DIEHTALADDA_TV ;
+fierrat
+	fierrat+v1:fierra DIEVVA_IV ;
+	fierrat+v2:vierra DIEVVA_IV ;
+buhttašuvvat
+	buhttašuvvat+v2:buhttah UVVA_IV ;
+	buhttašuvvat+v1:buhttaš UVVA_IV ;
+fierradit
+	fierradit+v1:fierrad MUITAL_TV ;
+	fierradit+v2:vierrad MUITAL_TV ;
+vuosehit
+	vuosehit:vuose7h MUITAL_TV ;
+	vuosehit:vuosih MUITAL_TV ;
+fierahallat
+	fierahallat+v1:fierahalla DIEHTALADDA_TV ;
+	fierahallat+v2:vierahalla DIEHTALADDA_TV ;
+dárkkálnuhttit
+	dárkkálnuhttit:dárkkálnuhtti HAHTTIT_TV ;
+	dárkkálnuhttit:dárkkálnuhtti HAHTTIT_TV ;
+kristalliseret
+	kristalliseret+OLang/NOB:kristallisere DOHPPE_TV ; ! ^LOAN  SW
+	kristalliseret+OLang/NOB:kristallisere GILLE_IV ;
+mohtorgielkkástallat
+	mohtorgielkkástallat+v1:mohtor#gielkkástalla BOAHTALADDA_IV ;
+	mohtorgielkkástallat+v2:muhtor#gielkkástalla BOAHTALADDA_IV ;
+ráhkistit
+	ráhkistit+Use/NG:ráhke7st MUITAL_TV ;
+	ráhkistit:ráhkist MUITAL_TV ;
+fierrahuvvat
+	fierrahuvvat+v1:fierrah UVVA_IV ;
+	fierrahuvvat+v2:vierrah UVVA_IV ;
+jorggihit
+	jorggihit+v2:jorgge7h ALIST_IV ;
+	jorggihit+v1:jorggih ALIST_IV ;
+firrohit
+	firrohit+v1:fir'roh MUITAL_TV ;
+	firrohit+v2:vir'roh MUITAL_TV ;
+rationeret
+	rationeret+OLang/NOB:rasjonere GILLE_IV ; ! ^LOAN NOR
+	rationeret+OLang/SWE:rationere GILLE_IV ; ! ^
+prentet
+	prentet+v1:prente DOHPPE_TV ;
+	prentet+v2:printe DOHPPE_TV ;
+fieraldahttit
+	fieraldahttit+v1:fieraldahtti HAHTTIT_TV ;
+	fieraldahttit+v2:vieraldahtti HAHTTIT_TV ;
+firrehallat
+	firrehallat+v1:fir'rehalla BOAHTALADDA_IV ;
+	firrehallat+v2:vir'rehalla BOAHTALADDA_IV ;
+firrestit
+	firrestit+v1:fir'rest MUITAL_TV ;
+	firrestit+v2:vir'rest MUITAL_TV ;
+fieradit
+	fieradit+v1:fierad BALAT_IV ;
+	fieradit+v2:vierad BALAT_IV ;
+gárrudit
+	gárrudit:gárrud MUITAL_TV ;
+	gárrudit+V+TV+VGen:gárrut K ;
+čiehkádit
+	čiehkádit+v1:čiehkád ALIST_IV ;
+	čiehkádit+v2:čiehkad ALIST_IV ;
+	čiehkádit+v1+V+IV+Imprt+Du1:čiehkádeatnu K ;
+	čiehkádit+v2+V+IV+Imprt+Du1:čiehkadeatnu K ;
+firret
+	firret+v1:firre DOHPPE_TV ;
+	firret+v2:virre DOHPPE_TV ;
+linjádit
+	linjádit+v1:linjád MUITAL_TV ;
+	linjádit+v2:linnjád MUITAL_TV ;
+vuostáváldit
+	vuostáváldit+v1:vuostá#vál'di DIEHTI_TV ;
+	vuostáváldit+v2:vuostái#vál'di DIEHTI_TV ;
+simultánadulkot
+	simultánadulkot+v2:simultána#tulko DOHPPE_TV ;
+	simultánadulkot+v1:simultána#dulko DOHPPE_TV ;
+oažžašuvvat
+	oažžašuvvat+v2:oažžas UVVA_IV ;
+	oažžašuvvat+v1:oažžaš UVVA_IV ;
+	oažžašuvvat+v3:oažžah UVVA_IV ;
+bordašuvvat
+	bordašuvvat+v2:bordah UVVA_IV ;
+	bordašuvvat+v1:bordaš UVVA_IV ;
+garrudit
+	garrudit:garrud MUITAL_TV ;
+	garrudit+V+TV+VGen:garrut K ;
+meaddelmannat
+	meaddelmannat+v3:meattá#manna DIEVVA_IV ;
+	meaddelmannat+v1:meaddel#manna DIEVVA_IV ;
+	meaddelmannat+v2:meaddil#manna DIEVVA_IV ;
+firrot
+	firrot+v1:firro BASSO_IV ;
+	firrot+v2:virro BASSO_IV ;
+krokkeret
+	krokkeret+OLang/SWE:krokkere DOHPPE_TV ; ! ^
+	krokkeret+OLang/NOB:krokkere DOHPPE_TV ; ! ^LOAN NOR
+firtet
+	firtet+v1:firte BORGE_IV ;
+	firtet+v2:virte BORGE_IV ;
+fierraguššat
+	fierraguššat+v1:fierragušša DIEVVA_IV ;
+	fierraguššat+v2:vierragušša DIEVVA_IV ;
+fierihit
+	fierihit+v1:fierih BEAGASJ_IV ;
+	fierihit+v2:vierih BEAGASJ_IV ;
+basuhit
+	basuhit+V+TV+Der3+Der/PassL+V+IV+Imprt+Sg3:basuhuvvos K ;
+	basuhit:basuh MUITAL_TV ;
+guottihit
+	guottihit:guotte7h MUITAL_TV ;
+	guottihit:guottih MUITAL_TV ;
+atnit
+	atnit:atni DIEHTI_TV ;
+	atnit+V+TV+ConNegII:atno ENDLEX ;
+sibildit
+	sibildit+v1:sibild MUITTASJ_TV ;
+	sibildit+v2:sivild MUITTASJ_TV ;
+spádjut
+	spádjut:spád'ju ALLU_IV ;
+	spádjut:spád'ju BOLTU_TV ;
+nummarastit
+	nummarastit+v1:num'maras'ti DIEHTALADDA_TV ;
+	nummarastit+v2:num'máras'ti DIEHTALADDA_TV ;
+buoridit
+	buoridit+Use/NG:buored MUITAL_TV ;
+	buoridit:buorid MUITAL_TV ;
+fierahit
+	fierahit+v1:fierah MUITAL_TV ;
+	fierahit+v2:vierah MUITAL_TV ;
+áigut
+	áigut:áj'gu ALBMU_TV ;
+	áigut:áj'gu GALGA_IV ; !FAUXV
+oađđit
+	oađđit:oađđi BOAHTI_IV ;
+	oađđit+V+IV+Ind+Prs+Du2:oađđebeahtti K ;
+firrehaddat
+	firrehaddat+v1:fir'rehadda BOAHTALADDA_IV ;
+	firrehaddat+v2:vir'rehadda BOAHTALADDA_IV ;
+roaškkihit
+	roaškkihit:roaškke7h BEAGASJ_IV ;
+	roaškkihit:roaškkih BEAGASJ_IV ;
+ođđasitprentet
+	ođđasitprentet+v1:ođđasit#prente DOHPPE_TV ;
+	ođđasitprentet+v2:ođđasit#printe DOHPPE_TV ;
+maŋosmannat
+	maŋosmannat+v1:maŋos#manna DIEVVA_IV ;
+	maŋosmannat+v2:maŋás#manna DIEVVA_IV ;
+fierrašuvvat
+	fierrašuvvat+v1:fierraš UVVA_IV ;
+	fierrašuvvat+v2:vierraš UVVA_IV ;
+jallošit
+	jallošit:jal'loš BEAGASJ_IV ;
+	jallošit:jal'loš BEAGASJ_IV ;
+njeaššut
+	njeaššut:njeaš'šu DIEVVA_IV ;
+	njeaššut:njeaššu BORRA_TV ;
+fierralit
+	fierralit+v1:fierral SUOTNJAL_IV ;
+	fierralit+v2:vierral SUOTNJAL_IV ;
+firtestit
+	firtestit+v1:firtest COASKKIT_IV ;
+	firtestit+v2:virtest COASKKIT_IV ;
+nettobušeteret
+	nettobušeteret+v2+OLang/SWE:netto#budjetere DOHPPE_TV ; ! ^
+	nettobušeteret+v3+OLang/NOB:netto#budsjettere DOHPPE_TV ; ! ^LOAN NOR
+	nettobušeteret+v4+OLang/NOB:netto#budšettere DOHPPE_TV ; ! ^LOAN
+	nettobušeteret+v5+OLang/NOB:netto#busjettere DOHPPE_TV ; ! ^LOAN NOR
+	nettobušeteret+v1+OLang/NOB:netto#bušetere DOHPPE_TV ; ! ^LOAN
+	nettobušeteret+v6+OLang/NOB:netto#bušettere DOHPPE_TV ; ! ^LOAN
+veahkehit
+	veahkehit:veahke7h MUITAL_TV ;
+	veahkehit:veahkeh MUITAL_TV ;
+bušeteret
+	bušeteret+v1+OLang/NOB:bušehtere DOHPPE_TV ;
+	bušeteret+v2+OLang/NOB:bušetere DOHPPE_TV ;
+	bušeteret+v3+OLang/NOB:bušettere DOHPPE_TV ; !Sub?
+vuostábargat
+	vuostábargat+v1:vuostá#bar'ga BORRA_TV ;
+	vuostábargat+v2:vuostái#bar'ga BORRA_TV ;
+ođđasisprentet
+	ođđasisprentet+v1:ođđasis#prente DOHPPE_TV ;
+	ođđasisprentet+v2:ođđasis#printe DOHPPE_TV ;

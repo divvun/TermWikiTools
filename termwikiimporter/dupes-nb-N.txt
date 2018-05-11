@@ -1,0 +1,546 @@
+ark
+	ark m1 ;
+	ark n1 ;
+atoll
+	atoll m1 ;
+	atoll n2 ;
+postgiro
+	postgiro m1 ;
+	postgiro KONTO ;
+pronomen
+	pronomen n1 ;
+	pronomen n2 ;
+fjøs
+	fjøs n1 ;
+	fjøs x ;
+vindu
+	vindu n1 ;
+	vindu n2 ;
+tips
+	tips x ;
+	tips n1 ;
+bonde
+	bonde m1 ;
+	bonde m1X ;
+komité
+	komité m1 ;
+	komité m1c ;
+pass
+	pass m1Vn1 ;
+	pass n1 ;
+hespe
+	hespe TRE ;
+	hespe fx ;
+nigerianer
+	nigerianer m2 ;
+	nigerianer m2 ;
+radius
+	radius:radi RADIUS ;
+	radius x ;
+fot
+	fot+N+Msc+Pl:føtt er-ene ;
+	fot+N+Msc+Sg:fot 0-en ;
+nederst
+	nederst a2 ;
+	nederst adv ;
+sponde
+	sponde m1 ;
+	sponde m1 ;
+historie
+	historie f1 ;
+	historie m1 ;
+halvliter
+	halvliter m2 ;
+	halvliter m3V ;
+jente
+	jente f1 ;
+	jente f2 ;
+palass
+	palass n3 ;
+	palass n2 ;
+vær
+	vær BROR ;
+	vær FAR ;
+	vær MOR ;
+	vær n1 ;
+øl
+	øl m1 ;
+	øl n1 ;
+konkurs
+	konkurs m1 ;
+	konkurs a3 ;
+overgangsdistrikt
+	overgangsdistrikt n2 ;
+	overgangsdistrikt n2b ;
+fengselseiendom
+	fengselseiendom m1 ;
+	fengselseiendom m1b ;
+kompass
+	kompass n1 ;
+	kompass n2 ;
+mor
+	mor BROR ;
+	mor MOR ;
+militær
+	militær m2 ;
+	militær n1 ;
+møne
+	møne fx ;
+	møne n2 ;
+pol
+	pol m1 ;
+	pol n1 ;
+svartedauen
+	svartedauen mX ;
+	svartedauen mX ;
+nese
+	nese m1 ;
+	nese fx ;
+innskrift
+	innskrift f2 ;
+	innskrift f1 ;
+sviger
+	sviger FAR ;
+	sviger MOR ;
+ris
+	ris m1 ;
+	ris n1 ;
+fregne
+	fregne f1 ;
+	fregne f1 ;
+slam
+	slam m1b ;
+	slam n1 ;
+lynne
+	lynne fx ;
+	lynne n2 ;
+lerke
+	lerke f1 ;
+	lerke TRE ;
+opplæringskontor
+	opplæringskontor n2 ;
+	opplæringskontor n3 ;
+adverbial
+	adverbial n1 ;
+	adverbial n2 ;
+garde
+	garde mD ;
+	garde m1 ; ! garden
+øverst
+	øverst a2 ;
+	øverst adv ;
+utspring
+	utspring f1 ;
+	utspring n1 ;
+vers
+	vers x ;
+	vers n1 ;
+dverg
+	dverg m1 ;
+	dverg GÅS ;
+spøkelse
+	spøkelse m1 ;
+	spøkelse n2 ;
+nylon
+	nylon x ;
+	nylon n2 ;
+veitsle
+	veitsle f1 ;
+	veitsle f1 ;
+media
+	media mX ;
+	media nX ;
+materiell
+	materiell n1 ;
+	materiell n1sg ;
+håndfull
+	håndfull m1 ;
+	håndfull mX ;
+univers
+	univers x ;
+	univers n1 ;
+kratersjø
+	kratersjø m1 ;
+	kratersjø m1 ;
+liv
+	liv MOR ;
+	liv n1 ;
+krus
+	krus x ;
+	krus n1 ;
+tungmetall
+	tungmetall n1 ;
+	tungmetall n2 ;
+lin
+	lin m1 ;
+	lin n1 ;
+statsråd
+	statsråd m1 ;
+	statsråd n1 ;
+trafikksikkerhetsforum
+	trafikksikkerhetsforum:trafikksikkerhetsfor FORUM ;
+	trafikksikkerhetsforum n4b ;
+bek
+	bek m1sg ;
+	bek n1 ;
+gud
+	gud BROR ;
+	gud FAR ;
+	gud MOR ;
+	gud m1 ;
+petroleumsteknologi
+	petroleumsteknologi m1 ;
+	petroleumsteknologi m1 ;
+strøm
+	strøm m1 ;
+	strøm m1b ;
+mark
+	mark f1 ;
+	mark m1 ;
+slips
+	slips x ;
+	slips n1 ;
+våg
+	våg MOR ;
+	våg m1 ;
+kryss
+	kryss x ;
+	kryss n1 ;
+emne
+	emne fx ;
+	emne n2 ;
+formulering
+	formulering f1 ;
+	formulering f1 ;
+strukturvirkemiddel
+	strukturvirkemiddel n3 ;
+	strukturvirkemiddel n3c ;
+hoppski
+	hoppski f1V ;
+	hoppski f2 ;
+rap
+	rap m1 ;
+	rap n1 ;
+død
+	død m1 ;
+	død mX ;
+nummer
+	nummer n3 ;
+	nummer+N+Neu+Pl:numre 0-ne ;
+saltvannsdam
+	saltvannsdam m1b ;
+	saltvannsdam m1b ;
+kurant
+	kurant m1 ;
+	kurant a2 ;
+snei
+	snei f1 ;
+	snei mX ;
+balanse
+	balanse m1 ;
+	balanse KONTO ;
+leksikon
+	leksikon n1 ;
+	leksikon:leksik LEKSIKON ;
+godteri
+	godteri m1 ;
+	godteri n2 ;
+fjærfe
+	fjærfe nX ;
+	fjærfe n1sg ;
+lem
+	lem m1b ;
+	lem n2 ;
+bruk
+	bruk n1 ;
+	bruk m1sg ;
+agrotekniker
+	agrotekniker m2 ;
+	agrotekniker m2 ;
+spark
+	spark m1 ;
+	spark n1 ;
+bolle
+	bolle m1 ;
+	bolle fx ;
+kor
+	kor n1 ;
+	kor n3 ;
+vaktmester
+	vaktmester m2 ;
+	vaktmester m3 ;
+under
+	under n3b ;
+	under SLÅ ;
+jord
+	jord f1 ;
+	jord MOR ;
+torskefiske
+	torskefiske n1sg ;
+	torskefiske n2s ;
+klisje
+	klisje m1 ;
+	klisje:klisjé m1 ;
+knepp
+	knepp n1 ;
+	knepp x ;
+faktum
+	faktum n1 ;
+	faktum n1b ;
+saltsjø
+	saltsjø m1 ;
+	saltsjø m1 ;
+bero
+	bero x ;
+	bero v4 ;
+turkis
+	turkis m1 ;
+	turkis a1 ;
+jordskiftevirkemiddel
+	jordskiftevirkemiddel n3 ;
+	jordskiftevirkemiddel n3b ;
+album
+	album n4 ;
+	album n2c ;
+kaos
+	kaos x ;
+	kaos n1 ;
+veikryss
+	veikryss x ;
+	veikryss n1 ;
+gebiss
+	gebiss x ;
+	gebiss n1 ;
+pleie
+	pleie f1 ;
+	pleie MOR ;
+program
+	program n1b ;
+	program n2b ;
+konto
+	konto m1 ;
+	konto KONTO ;
+utedo
+	utedo m1 ;
+	utedo n2 ;
+øre
+	øre n1 ;
+	øre n2 ;
+næringsutviklingsmiddel
+	næringsutviklingsmiddel n3 ;
+	næringsutviklingsmiddel n3b ;
+jag
+	jag n1 ;
+	jag n1sg ;
+ku
+	ku+N+Fem+Sg+Def:kua K ;
+	ku+N+Fem+Pl+Def:kyrne K ;
+	ku+N+Fem+Pl+Indef:kyr K ;
+	ku+N+Fem+Sg+Indef:ku K ;
+gagn
+	gagn mX ;
+	gagn nX ;
+sus
+	sus m1 ;
+	sus n1 ;
+samarbeidskomité
+	samarbeidskomité m1 ;
+	samarbeidskomité m1c ;
+lokale
+	lokale n1 ;
+	lokale n2 ;
+grusveg
+	grusveg m1 ;
+	grusveg m1 ;
+hare
+	hare m1 ;
+	hare fx ;
+grunnlagsmateriale
+	grunnlagsmateriale n1 ;
+	grunnlagsmateriale n2 ;
+vannskille
+	vannskille fx ;
+	vannskille n2 ;
+ting
+	ting n1 ;
+	ting m1V ;
+olde
+	olde FAR ;
+	olde MOR ;
+hus
+	hus MOR ;
+	hus n1 ;
+barmarkskjøretøy
+	barmarkskjøretøy n1 ;
+	barmarkskjøretøy n2 ;
+problem
+	problem n1 ;
+	problem n2c ;
+kafé
+	kafé m1 ;
+	kafé m1c ;
+flass
+	flass mX ;
+	flass n1sg ;
+tallmateriale
+	tallmateriale n1 ;
+	tallmateriale n2 ;
+bog
+	bog TRE ;
+	bog m1sg ;
+sæd
+	sæd GÅS ;
+	sæd m1 ;
+beste
+	beste FAR ;
+	beste MOR ;
+perle
+	perle f1 ;
+	perle MOR ;
+bygningsvernprosjekt
+	bygningsvernprosjekt n2 ;
+	bygningsvernprosjekt n2b ;
+bar
+	bar TRE ;
+	bar n1sg ;
+dis
+	dis KONTO ;
+	dis m1 ;
+ur
+	ur f1 ;
+	ur n1 ;
+hovedstyre
+	hovedstyre n2 ;
+	hovedstyre n1 ;
+mus
+	mus f1 ;
+	mus f1V ;
+rot
+	rot+N+Fem+Sg:rot 0-a ;
+	rot+N+Fem+Pl:røtt er-ene ;
+forvaltningsmuseum
+	forvaltningsmuseum n4 ;
+	forvaltningsmuseum:forvaltningsmuse MUSEUM ;
+legeme
+	legeme fx ;
+	legeme n2 ;
+lass
+	lass n1 ;
+	lass n1 ;
+løv
+	løv TRE ;
+	løv n1 ;
+rev
+	rev m1 ;
+	rev n1 ;
+kyss
+	kyss x ;
+	kyss n1 ;
+hylle
+	hylle f1 ;
+	hylle TRE ;
+museum
+	museum n4 ;
+	museum:muse MUSEUM ;
+datum
+	datum n1 ;
+	datum+N+Neu+Pl+Indef:data K ;
+foster
+	foster FAR ;
+	foster MOR ;
+	foster n3b ;
+leie
+	leie f1 ;
+	leie n2 ;
+sulfitt
+	sulfitt m1 ;
+	sulfitt n2 ;
+feil
+	feil m1 ;
+	feil TRE ;
+virtuos
+	virtuos m1 ;
+	virtuos a1 ;
+bank
+	bank m1 ;
+	bank KONTO ;
+erme
+	erme fx ;
+	erme n2 ;
+ste
+	ste FAR ;
+	ste MOR ;
+tippolde
+	tippolde FAR ;
+	tippolde MOR ;
+hjerte
+	hjerte n1 ;
+	hjerte n2 ;
+far
+	far BROR ;
+	far FAR ;
+	far MOR ;
+	far n1 ;
+skrifte
+	skrifte n2 ;
+	skrifte FAR ;
+gjeld
+	gjeld f1 ;
+	gjeld n1 ;
+tiss
+	tiss m1 ;
+	tiss n1sg ;
+feltstudie
+	feltstudie m1 ;
+	feltstudie n2 ;
+knippe
+	knippe fx ;
+	knippe n2 ;
+likestillingsmiddel
+	likestillingsmiddel n3 ;
+	likestillingsmiddel n3b ;
+familie
+	familie m1 ;
+	familie FAR ;
+egg
+	egg m1 ;
+	egg n1 ;
+betjent
+	betjent m1 ;
+	betjent a2 ;
+tide
+	tide mX ;
+	tide fD ; ! i tide
+melke
+	melke f1 ;
+	melke KU ;
+virus
+	virus x ;
+	virus n2 ;
+storting
+	storting f1 ;
+	storting n1 ;
+prisvirkemiddel
+	prisvirkemiddel n3 ;
+	prisvirkemiddel n3b ;
+eiendomsutviklingsprosjekt
+	eiendomsutviklingsprosjekt n2 ;
+	eiendomsutviklingsprosjekt n2b ;
+ekko
+	ekko x ;
+	ekko n2 ;
+defekt
+	defekt m1 ;
+	defekt a2 ;
+tekniker
+	tekniker m2 ;
+	tekniker m2 ;
+stimuleringsmiddel
+	stimuleringsmiddel n3 ;
+	stimuleringsmiddel n3b ;
+minus
+	minus x ;
+	minus n1 ;
+spole
+	spole m1 ;
+	spole m1 ;

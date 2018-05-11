@@ -1,0 +1,538 @@
+hæhkkaráduk
+	hæhkkaráduk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:hæhkka#rádug9 BASSTEL ; !Kintel
+	hæhkkaráduk+Sem/Dummytag:hæhkkaráduk LEXATTR ; !Korhonen has this attr
+jalggat
+	jalggat+Sem/Dummytag:jalgga LEXATTR ;
+	jalggat+Sem/Dummytag:jalg'g SUOHKAT ;
+såjådahkes
+	såjådahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:såjådahkke SÁDNES ; !
+	såjådahkes+Sem/Dummytag:såjådahkkes TJIEGOS ;
+rájnas
+	rájnas+A+Ess+Sem/Dummytag:rájna%>n K ;
+	rájnas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:rájnna GALMAS ; !
+suvres
+	suvres+CmpN/SgN+CmpN/PlG+Sem/Dummytag:suvrres SJÆVNNJAT ; !
+	suvres+CmpN/SgN+CmpN/PlG+Sem/Dummytag:suvrr SUVRES ; !
+snjutjo
+	snjutjo+v1+Sem/Dummytag:snjutjo LEXATTR ;
+	snjutjo+v2+Sem/Dummytag:sjnjutjo LEXATTR ;
+	snjutjo+v1+Sem/Dummytag:snjutjo LEXATTR ;
+	snjutjo+v2+Sem/Dummytag:sjnjutjo LEXATTR ;
+buorreluonduk
+	buorreluonduk+CmpNP/None+Sem/Dummytag:buorreluondug9 AGAdj ; !
+	buorreluonduk+Sem/Dummytag:buorreluondugis At ;
+økonåvmålasj
+	økonåvmålasj+Sem/Dummytag:økonåvmåladtj BIOGRÁFALASJ ;
+	økonåvmålasj+Sem/Dummytag:ekonåvmåladtj BIOGRÁFALASJ ;
+jerrat
+	jerrat+Sem/Dummytag:jer'rad9 SJÆVNNJAT ; ! SUOHKAT
+	jerrat+Sem/Dummytag:jierris LEXATTR ;
+ássjájguoskavasj
+	ássjájguoskavasj+Sem/Dummytag:ássjájguoskavadtj ÅLLAGASJ ;
+	ássjájguoskavasj+Sem/Dummytag:ássje#guoskavadtj ÅLLAGASJ ;
+bitjes
+	bitjes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:bihtjes TJIEGOS ; ! According to Korhonen
+	bitjes+Sem/Dummytag:bihtj GIMES ; ! According to Kintel
+duolbbat
+	duolbbat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:duolb'b SUOHKAT ; !
+	duolbbat+Sem/Dummytag:duolbba LEXATTR ;
+åtsådihke
+	åtsådihke+A+Sg+Nom+Sem/Dummytag:åtsådihke%> K ;
+	åtsådihke+Sem/Dummytag:åtsådihke LEXATTR ;
+dutkamstrategalasj
+	dutkamstrategalasj+Area/SE+CmpN/SgN+CmpN/PlG+Sem/Dummytag:dutkam#strategaladtj BIOGRÁFALASJ ; !
+	dutkamstrategalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:dutkam#stratiegaladtj BIOGRÁFALASJ ; !
+sliggot
+	sliggot+Sem/Dummytag:slig'god9 RIHTSOK ;
+	sliggot+Sem/Dummytag:sliggo LEXATTR ;
+rádálasj
+	rádálasj+CmpN/SgN+CmpN/PlG+Sem/Dummytag:rádáladtj ÅLLAGASJ ; !
+	rádálasj+Sem/Dummytag:rádális LEXATTR ;
+vajáldahkes
+	vajáldahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vajáldahkke SÁDNES ; !
+	vajáldahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vajáldahkkes TJIEGOS ; !
+gåmbal
+	gåmbal+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gåmbal BASSTEL ; !
+	gåmbal+Sem/Dummytag:gåmbalis LEXATTR ;
+jårbbåt
+	jårbbåt+CmpN/SgN+CmpN/PlG+Sem/Dummytag:jårb'båd9 RIHTSOK ; ! SUOHKAT
+	jårbbåt+Sem/Dummytag:jårbbis LEXATTR ;
+	jårbbåt+Sem/Dummytag:jårbbå LEXATTR ;
+tjårggåt
+	tjårggåt+Sem/Dummytag:tjårggis LEXATTR ;
+	tjårggåt+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjårg'gåd9 RIHTSOK ; ! SUOHKAT
+någådihke
+	någådihke+A+Sg+Nom+Sem/Dummytag:någådihke%> K ;
+	någådihke+Sem/Dummytag:någådihke LEXATTR ;
+sjålkås
+	sjålkås+A+Ess+Sem/Dummytag:sjålkkå%>n K ;
+	sjålkås+Sem/Dummytag:sjålkkå GALMAS ;
+lájduk
+	lájduk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:lájdug9 BASSTEL ; !
+	lájduk+Sem/Dummytag:lájduk LEXATTR ;
+homogenalasj
+	homogenalasj+Area/SE+Sem/Dummytag:homogenalasj BIOGRÁFALASJ ;
+	homogenalasj+Area/NO+Sem/Dummytag:homogienalasj BIOGRÁFALASJ ;
+lågådihke
+	lågådihke+A+Sg+Nom+Sem/Dummytag:lågådihke%> K ;
+	lågådihke+Sem/Dummytag:lågådihke LEXATTR ;
+	lågådihke+Sem/Dummytag:lågådihke LEXATTR ;
+stajggat
+	stajggat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:stajg'gad9 SJÆVNNJAT ; ! SUOHKAT
+	stajggat+Sem/Dummytag:stajgas LEXATTR ;
+giedtse
+	giedtse+Sem/Dummytag:gettsa LEXATTR ;
+	giedtse+Sem/Dummytag:giedtse GIEVRRA ;
+vedjat
+	vedjat+Sem/Dummytag:ved'jad9 SJÆVNNJAT ; ! SUOHKAT
+	vedjat+Sem/Dummytag:vieddjis LEXATTR ;
+gåmok
+	gåmok+Sem/Dummytag:gåmo LEXATTR ;
+	gåmok+Sem/Dummytag:gåmog9 BASSTEL ;
+dålusj
+	dålusj+CmpNP/None+Sem/Dummytag:dålutj LÁGÁSJ ; !
+	dålusj+Sem/Dummytag:dålusj LEXATTR ;
+systiemalasj
+	systiemalasj+Area/SE+Sem/Dummytag:systemaladtj BIOGRÁFALASJ ;
+	systiemalasj+Area/NO+Sem/Dummytag:systiemaladtj BIOGRÁFALASJ ;
+økologijjalasj
+	økologijjalasj+Area/NO+Sem/Dummytag:økolog IJJALASJ ;
+	økologijjalasj+Area/SE+Sem/Dummytag:ekolog IJJALASJ ;
+snjiltjas
+	snjiltjas+v1+CmpN/SgN+CmpN/PlG+Sem/Dummytag:snjiltjas SJÆVNNJAT ; !
+	snjiltjas+v2+CmpN/SgN+CmpN/PlG+Sem/Dummytag:sjnjiltjas SJÆVNNJAT ; !
+visskat
+	visskat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vis'sk SUOHKAT ; !
+	visskat+Sem/Dummytag:visská LEXATTR ;
+sahkku
+	sahkku+CmpN/SgN+CmpN/PlG+Sem/Dummytag:sahk'ku HÁVSSKE ; !
+	sahkku+CmpN/SgN+CmpN/PlG+Sem/Dummytag:sáhk'ku HÁVSSKE ; !
+suohtas
+	suohtas+A+Ess+Sem/Dummytag:suohta%>n K ;
+	suohtas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:suohttas TJIEGOS ; !
+tjárrat
+	tjárrat+Sem/Dummytag:tjár'rad9 SJÆVNNJAT ; ! SUOHKAT
+	tjárrat+Sem/Dummytag:tjárra LEXATTR ;
+praktihkalasj
+	praktihkalasj+Sem/Dummytag:praktihkaladtj BIOGRÁFALASJ ;
+	praktihkalasj+Area/SE+Sem/Dummytag:praktijkaladtj     BIOGRÁFALASJ ; !
+	praktihkalasj+Sem/Dummytag:praktihkaladtj     BIOGRÁFALASJ ; !
+ekstremalasj
+	ekstremalasj+Area/SE+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ekstrema SUBJEKTIJVALASJ ; !
+	ekstremalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ekstriema SUBJEKTIJVALASJ ; !
+ekstrebma
+	ekstrebma+Area/SE+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ekstrebma DEMONSTRATIJVA ; !
+	ekstrebma+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ekstriebma DEMONSTRATIJVA ; !
+dádjadihke
+	dádjadihke+A+Sg+Nom+Sem/Dummytag:dádjadihke%> K ;
+	dádjadihke+Sem/Dummytag:dádjadihke LEXATTR ;
+ednak
+	ednak+A+Sg+Nom+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ednak%> K ;
+	ednak+A+Attr+Sem/Dummytag:edna%> K ;
+snávggat
+	snávggat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:snávggad9 BASSTEL ; !
+	snávggat+Sem/Dummytag:snávgges LEXATTR ;
+vájbasj
+	vájbasj+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vájbatj TJIEGOS ; !
+	vájbasj+Sem/Dummytag:vájbatjis LEXATTR ;
+tsáptso
+	tsáptso+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tsáptso VINJO- ; !lexattr
+	tsáptso+Sem/Dummytag:tsáptso LEXATTR ;
+sirŋas
+	sirŋas+Sem/Dummytag:sirŋa LEXATTR ;
+	sirŋas+Sem/Dummytag:sirŋŋas TJIEGOS ;
+vuonnak
+	vuonnak+CmpNP/Last+Sem/Dummytag:vuonnag9  AGAdj ; !
+	vuonnak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vuonnag9 BASSTEL ; !
+tjáhtjesiehke
+	tjáhtjesiehke+Sem/Dummytag:tjáhtjesie SUOLASIEHKE ;
+	tjáhtjesiehke+Sem/Dummytag:tjáhtjesiek At ;
+politihkalasj
+	politihkalasj+Sem/Dummytag:politihkaladtj ÅLLAGASJ ; ! LOAN
+	politihkalasj+Area/SE+Sem/Dummytag:politijkaladtj BIOGRÁFALASJ ;
+mållåt
+	mållåt+Sem/Dummytag:mål'låd9 BASSTEL ;
+	mållåt+Sem/Dummytag:mållis LEXATTR ;
+sáŋardihke
+	sáŋardihke+A+Sg+Nom+Sem/Dummytag:sáŋardihke%> K ;
+	sáŋardihke+Sem/Dummytag:sáŋardihke LEXATTR ;
+økonomijjalasj
+	økonomijjalasj+Sem/Dummytag:økonom IJJALASJ ;
+	økonomijjalasj+Sem/Dummytag:ekonom IJJALASJ ;
+skielgok
+	skielgok+CmpN/SgN+CmpN/PlG+Sem/Dummytag:skielgog9 BASSTEL ; !
+	skielgok+Sem/Dummytag:skielgok LEXATTR ;
+gårrat
+	gårrat+Sem/Dummytag:goarris LEXATTR ;
+	gårrat+Sem/Dummytag:går'rad9 RIHTSOK ; ! SUOHKAT
+basske
+	basske+Use/NG+Sem/Dummytag:baskes LEXATTR ;
+	basske+Sem/Dummytag:bassk GALLJE ;
+sajij
+	sajij+Sem/Dummytag:sadjih9 RIHTSOK ;
+	sajij+Sem/Dummytag:sajih9 RIHTSOK ;
+unne
+	unne+CmpN/SgN+CmpN/PlG+Sem/Dummytag:un'n GALLJE ; !
+	unne+Use/NG+Sem/Dummytag:unnes LEXATTR ; !xxx
+gærgos
+	gærgos+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gærg'gos SJÆVNNJAT ; !
+	gærgos+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gærggos SJÆVNNJAT ; !
+sjallat
+	sjallat+Sem/Dummytag:sjal'l SUOHKAT ;
+	sjallat+Sem/Dummytag:sjalla LEXATTR ;
+fijnes
+	fijnes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:fijnn LINES ; !
+	fijnes+Sem/Dummytag:fijna LEXATTR ; !
+	fijnes+A+Comp+Attr+Sem/Dummytag:fijnáp K ; !
+	fijnes+A+Superl+Attr+Sem/Dummytag:fijnámus K ; !
+iesjåjvak
+	iesjåjvak+CmpNP/None+Sem/Dummytag:iesjåjvag9 AGAdj ; !
+	iesjåjvak+Sem/Dummytag:iesj#åjvagis At ;
+viessovarák
+	viessovarák+CmpN/SgN+CmpN/PlG+Sem/Dummytag:viessovarág9 BASSTEL ; !
+	viessovarák+Sem/Dummytag:viesso#varák LEXATTR ;
+vijses
+	vijses+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vijsse SÁDNES ; !
+	vijses+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vijsses TJIEGOS ; !
+aluk
+	aluk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:alug9 SJÆVNNJAT ; !
+	aluk+Sem/Dummytag:alla LEXATTR ;
+hálmes
+	hálmes+Sem/Dummytag:hálmme SÁDNES ;
+	hálmes+Sem/Dummytag:hálmmes TJIEGOS ;
+buollnamahtes
+	buollnamahtes+Sem/Dummytag:buollnam AHTES ;
+	buollnamahtes+Sem/Dummytag:buollnamm AHTES ;
+tjuovggisalek
+	tjuovggisalek+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjuovggis#aleg9 RIHTSOK ; !
+	tjuovggisalek+Sem/Dummytag:tjuovggis#alek LEXATTR ; !
+snjurtjok
+	snjurtjok+v1+Sem/Dummytag:snjurtjog9 BASSTEL ;
+	snjurtjok+v2+Sem/Dummytag:sjnjurtjog9 BASSTEL ;
+kråvvå
+	kråvvå+Sem/Dummytag:kråvvå LEXATTR ;
+	kråvvå+Sem/Dummytag:kråvvå NUORRA ;
+asjmak
+	asjmak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:asjmag9 BASSTEL ;
+	asjmak+Sem/Dummytag:asjmes LEXATTR ;
+njuoras
+	njuoras+CmpN/SgN+CmpN/PlG+Sem/Dummytag:njuorras TJIEGOS ; !
+	njuoras+Sem/Dummytag:njuorra LEXATTR ;
+	njuoras+Sem/Dummytag:njuorris LEXATTR ;
+snjibbalis
+	snjibbalis+v1+Sem/Dummytag:snjibbalis LEXATTR ;
+	snjibbalis+v2+Sem/Dummytag:sjnjibbalis LEXATTR ;
+snjirbbalis
+	snjirbbalis+v1+CmpN/SgN+CmpN/PlG+Sem/Dummytag:snjirbbal ÁRMMOGIS ; !
+	snjirbbalis+v2+CmpN/SgN+CmpN/PlG+Sem/Dummytag:sjnjirbbal ÁRMMOGIS ; !
+gasuk
+	gasuk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gasug9 SJÆVNNJAT ; !
+	gasuk+Sem/Dummytag:gassa LEXATTR ;
+tjoajvak
+	tjoajvak+CmpNP/Last+Sem/Dummytag:tjoajvag9 AGAdj ; !
+	tjoajvak+Sem/Dummytag:tjoajvagis LEXATTR ;
+sjerrat
+	sjerrat+Sem/Dummytag:sjer'rad9 SJÆVNNJAT ; ! SUOHKAT
+	sjerrat+Sem/Dummytag:sjierris LEXATTR ;
+snáves
+	snáves+CmpN/SgN+CmpN/PlG+Sem/Dummytag:snávv LUOBES ; !
+	snáves+Sem/Dummytag:snávves TJIEGOS ;
+alek
+	alek+CmpN/SgN+CmpN/PlG+Sem/Dummytag:aleg9 RIHTSOK ; !
+	alek+Sem/Dummytag:alek LEXATTR ; !
+gájkviekses
+	gájkviekses+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gájk#viek'se SÁDNES ; !
+	gájkviekses+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gájk#viek'ses TJIEGOS ; !
+jålbbåt
+	jålbbåt+CmpN/SgN+CmpN/PlG+Sem/Dummytag:jålb'båd9 RIHTSOK ; ! SUOHKAT
+	jålbbåt+Sem/Dummytag:jålbbis LEXATTR ;
+	jålbbåt+Sem/Dummytag:jålbbå LEXATTR ;
+tjierggat
+	tjierggat+Sem/Dummytag:tjierggad9 BASSTEL ;
+	tjierggat+Sem/Dummytag:tjiergged9 BASSTEL ;
+	tjierggat+Sem/Dummytag:tjierggis LEXATTR ;
+rievtesferduk
+	rievtesferduk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:rievtes#ferdug9 BASSTEL ; !
+	rievtesferduk+Sem/Dummytag:rievtes#ferduk LEXATTR ;
+lånjok
+	lånjok+Sem/Dummytag:låddnjis LEXATTR ;
+	lånjok+Sem/Dummytag:lånjog9 BASSTEL ;
+reaksjonærra
+	reaksjonærra+Sem/Dummytag:re^aksjonær'ra DEMONSTRATIJVA ; ! ^LOAN
+	reaksjonærra+Area/SE+Sem/Dummytag:re^aktionær'ra DEMONSTRATIJVA ; ! ! ^LOAN
+gålmaktes
+	gålmaktes+Sem/Dummytag:gålmak'te SÁDNES ;
+	gålmaktes+Sem/Dummytag:gålmak'tes TJIEGOS ;
+guovtegávnak
+	guovtegávnak+CmpNP/None+Sem/Dummytag:guovtegávnag9 AGAdj ; !
+	guovtegávnak+Sem/Dummytag:guovtegávnagis At ;
+rihtsok
+	rihtsok+CmpN/SgN+CmpN/PlG+Sem/Dummytag:riht'sog9 RIHTSOK ; !
+	rihtsok+Sem/Dummytag:rihtso LEXATTR ;
+duolla
+	duolla+A+Nom+Sem/Dummytag:duolla%> K ;
+	duolla+A+Ess+Sem/Dummytag:duollan%> K ;
+	duolla+Sem/Dummytag:duolla LEXATTR ;
+sárnodihke
+	sárnodihke+A+Sg+Nom+Sem/Dummytag:sárnodihke%> K ;
+	sárnodihke+Sem/Dummytag:sárnodihke LEXATTR ;
+vuorgas
+	vuorgas+Sem/Dummytag:vuorgas LEXATTR ;
+	vuorgas+Sem/Dummytag:vuorgga GALMAS ;
+ájlisahtes
+	ájlisahtes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ájlis AHTES ; !
+	ájlisahtes+Sem/Dummytag:ájlisahtes LEXATTR ;
+smilltjá
+	smilltjá+Sem/Dummytag:smil'ltjá GIEVRRA ;
+	smilltjá+Sem/Dummytag:smil'ltjá HÁVSSKE ;
+dálásj
+	dálásj+Sem/Dummytag:dálásj LEXATTR ;
+	dálásj+CmpNP/None+Sem/Dummytag:dálátj LÁGÁSJ ;
+konkriehtta
+	konkriehtta+Sem/Dummytag:kon^kræhtta DEMONSTRATIJVA ; ! ^LOAN
+	konkriehtta+Use/NG+Sem/Dummytag:kon^kriehtta DEMONSTRATIJVA ; ! ^LOAN
+dievas
+	dievas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:dievva GALMAS ; !
+	dievas+CmpN/SgN+CmpN/PlG+Use/NG+Sem/Dummytag:dievvas TJIEGOS ; !
+sjkebtjas
+	sjkebtjas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:sjkæbttjas SJÆVNNJAT ; !
+	sjkebtjas+Sem/Dummytag:sjkæbttja LEXATTR ;
+ráhpat
+	ráhpat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ráhpad9 BASSTEL ; !
+	ráhpat+Sem/Dummytag:ráhppis LEXATTR ;
+gærmmat
+	gærmmat+Sem/Dummytag:giermmis LEXATTR ;
+	gærmmat+Sem/Dummytag:gærm'mad9 SJÆVNNJAT ;
+ietjasåjvak
+	ietjasåjvak+CmpNP/None+Sem/Dummytag:ietjas#åjvag9 AGAdj ; !
+	ietjasåjvak+Sem/Dummytag:ietjas#åjvagis At ;
+låsjkos
+	låsjkos+Sem/Dummytag:låssjkos TJIEGOS ;
+	låsjkos+Sem/Dummytag:sjlåsjkos LEXATTR ;
+diedos
+	diedos+CmpN/SgN+CmpN/PlG+Sem/Dummytag:diehtos  TJIEGOS ; !
+	diedos+CmpN/SgN+CmpN/PlG+Sem/Dummytag:diehtos TJIEGOS ; !
+siegge
+	siegge+CmpN/SgN+CmpN/PlG+Sem/Dummytag:siegge GIEVRRA ; !
+	siegge+Sem/Dummytag:sekka LEXATTR ;
+njahpet
+	njahpet+Sem/Dummytag:njahped9 BASSTEL ;
+	njahpet+Sem/Dummytag:njahpis LEXATTR ;
+epihkalasj
+	epihkalasj+Area/NO+Sem/Dummytag:epihkaladtj BIOGRÁFALASJ ; !LOAN
+	epihkalasj+Area/SE+Sem/Dummytag:epijkaladtj BIOGRÁFALASJ ; !LOAN
+snjutjek
+	snjutjek+v1+Sem/Dummytag:snjutjeg9 BASSTEL ;
+	snjutjek+v2+Sem/Dummytag:sjnjutjeg9 BASSTEL ;
+gutjel
+	gutjel+Sem/Dummytag:guhtjel SJÆVNNJAT ;
+	gutjel+Sem/Dummytag:gutjelis LEXATTR ;
+oadne
+	oadne+CmpN/SgN+CmpN/PlG+Sem/Dummytag:oadne GIEVRRA ; !
+	oadne+Sem/Dummytag:åna LEXATTR ;
+	oadne+Sem/Dummytag:åni LEXATTR ;
+lásjmak
+	lásjmak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:lásjmag9 BASSTEL ; !
+	lásjmak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:lásmag9 BASSTEL ; !
+gåbduk
+	gåbduk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gåbdug9 SJÆVNNJAT ; !
+	gåbduk+Sem/Dummytag:gåbdå LEXATTR ;
+såbadahkes
+	såbadahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:såbadahkke SÁDNES ; !
+	såbadahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:såbadahkkes TJIEGOS ; !
+guovtesuorak
+	guovtesuorak+CmpNP/None+Sem/Dummytag:guovtesuorag9 AGAdj ; !
+	guovtesuorak+Sem/Dummytag:guovtesuoragis At ;
+galmmavarák
+	galmmavarák+CmpNP/None+Sem/Dummytag:galmmavarág9 AGAdj ; !
+	galmmavarák+Sem/Dummytag:galmmavarágis At ;
+tjavggat
+	tjavggat+Sem/Dummytag:tjavggad9 BASSTEL ;
+	tjavggat+Sem/Dummytag:tjavggis LEXATTR ;
+giehppe
+	giehppe+CmpN/SgN+CmpN/PlG+Sem/Dummytag:giehppe GIEVRRA ; ! With attr same as Kintel (giehpes)
+	giehppe+Sem/Dummytag:giehppis LEXATTR ; !Irregular attr. form, both Korhonen and Kintel have this attr
+	giehppe+Sem/Dummytag:gæhppis LEXATTR ; !Irregular attr. form, attr has this at attr.
+guhkak
+	guhkak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:guhkag9 BASSTEL ; !
+	guhkak+Sem/Dummytag:guhkak LEXATTR ;
+goavsos
+	goavsos+Sem/Dummytag:goaksos TJIEGOS ;
+	goavsos+Sem/Dummytag:goaksu GOAVSOS ;
+tjáhppisalek
+	tjáhppisalek+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjáhppis#aleg9 RIHTSOK ; !
+	tjáhppisalek+Sem/Dummytag:tjáhppis#alek LEXATTR ; !
+sáltes
+	sáltes+Sem/Dummytag:sállte SÁDNES ;
+	sáltes+Sem/Dummytag:sálltes TJIEGOS ;
+bedjat
+	bedjat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:bed'jad9 SJÆVNNJAT ; ! SUOHKAT
+	bedjat+Sem/Dummytag:bieddjis LEXATTR ;
+stuorre
+	stuorre+CmpN/SgN+CmpN/PlG+Sem/Dummytag:stuorr TJÁBBE ; !
+	stuorre+Use/NG+Sem/Dummytag:stuor LEXATTR ;
+rávuk
+	rávuk+CmpN/SgN+CmpN/PlG+Sem/Dummytag:rávug9 BASSTEL ; !
+	rávuk+Sem/Dummytag:rávuk LEXATTR ;
+bávtak
+	bávtak+CmpNP/Last+Sem/Dummytag:bávtag9 AGAdj ;
+	bávtak+Sem/Dummytag:bávtagis LEXATTR ;
+teknihkalasj
+	teknihkalasj+Sem/Dummytag:teknihkaladtj BIOGRÁFALASJ ; ! LOAN
+	teknihkalasj+Area/SE+Sem/Dummytag:teknijkaladtj BIOGRÁFALASJ ;
+strategalasj
+	strategalasj+Area/SE+CmpN/SgN+CmpN/PlG+Sem/Dummytag:strategaladtj BIOGRÁFALASJ ; !
+	strategalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:stratiegaladtj BIOGRÁFALASJ ; !
+másjket
+	másjket+CmpN/SgN+CmpN/PlG+Sem/Dummytag:másjked9 RIHTSOK ; !
+	másjket+Sem/Dummytag:mássjkis LEXATTR ;
+snjiblle
+	snjiblle+v1+Sem/Dummytag:snjiblle GIEVRRA ;
+	snjiblle+v2+Sem/Dummytag:sjnjiblle GIEVRRA ;
+gåmosjævnnjat
+	gåmosjævnnjat+Sem/Dummytag:gåmo#sjievnnjis LEXATTR ;
+	gåmosjævnnjat+Sem/Dummytag:gåmo#sjævn'njad9 SJÆVNNJAT ;
+ráfálasj
+	ráfálasj+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ráfel DÁRBULASJ ; !
+	ráfálasj+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ráfál DÁRBULASJ ; !
+	ráfálasj+Sem/Dummytag:ráfális LEXATTR ;
+vuojnedihke
+	vuojnedihke+A+Sg+Nom+Sem/Dummytag:vuojnedihke%> K ;
+	vuojnedihke+Sem/Dummytag:vuojnedihke LEXATTR ;
+homogedna
+	homogedna+Area/SE+Sem/Dummytag:homogedna DEMONSTRATIJVA ;
+	homogedna+Area/NO+Sem/Dummytag:homogiedna DEMONSTRATIJVA ;
+vuovnná
+	vuovnná+CmpN/SgN+CmpN/PlG+Sem/Dummytag:vuovn'ná HÁVSSKE ; !
+	vuovnná+Sem/Dummytag:vuovnná LEXATTR ;
+ájnegis
+	ájnegis+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ájneg ÁRMMOGIS ; !
+	ájnegis+Sem/Dummytag:ájnegis LEXATTR ;
+båvnåk
+	båvnåk+CmpNP/Last+Sem/Dummytag:båvnåg9 AGAdj ;
+	båvnåk+Sem/Dummytag:båvnågis LEXATTR ;
+juridihkalasj
+	juridihkalasj+Area/NO+Sem/Dummytag:juridihkaladtj BIOGRÁFALASJ ; ! LOAN
+	juridihkalasj+Area/SE+Sem/Dummytag:juridijkaladtj BIOGRÁFALASJ ; ! LOAN
+tiemáhtalasj
+	tiemáhtalasj+Area/NO+Sem/Dummytag:tiemáhtaladtj BIOGRÁFALASJ ;
+	tiemáhtalasj+Area/SE+Sem/Dummytag:temáhtaladtj BIOGRÁFALASJ ;
+poehtalasj
+	poehtalasj+Area/SE+CmpN/SgN+CmpN/PlG+Sem/Dummytag:po^ehtaladtj BIOGRÁFALASJ ; !
+	poehtalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:po^iehtaladtj BIOGRÁFALASJ ; !
+tjuottjes
+	tjuottjes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjuodtje SÁDNES ; !
+	tjuottjes+Sem/Dummytag:tjuodtjes TJIEGOS ;
+uhttse
+	uhttse+CmpN/SgN+CmpN/PlG+Sem/Dummytag:uhtts GALLJE ; !
+	uhttse+Use/NG+Sem/Dummytag:uhtses LEXATTR ;
+gurák
+	gurák+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gurág9 BASSTEL ; !
+	gurák+Sem/Dummytag:gurák LEXATTR ;
+gåbdde
+	gåbdde+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gåbdde GIEVRRA ; !
+	gåbdde+Sem/Dummytag:gåbddis LEXATTR ;
+vædjat
+	vædjat+Sem/Dummytag:viedjis LEXATTR ;
+	vædjat+Sem/Dummytag:væ9d'jad9 SJÆVNNJAT ;
+rádas
+	rádas+Sem/Dummytag:rád RÁDAS ;
+	rádas+Sem/Dummytag:ráda LEXATTR ;
+snjurtjuk
+	snjurtjuk+v1+Sem/Dummytag:snjurtjug9 BASSTEL ;
+	snjurtjuk+v2+Sem/Dummytag:sjnjurtjug9 BASSTEL ;
+	snjurtjuk+v1+Sem/Dummytag:snjurtjuk LEXATTR ;
+	snjurtjuk+v2+Sem/Dummytag:sjnjurtjuk LEXATTR ;
+sjævnnjat
+	sjævnnjat+Sem/Dummytag:sjievnnjis LEXATTR ;
+	sjævnnjat+Sem/Dummytag:sjævn'njad9 SJÆVNNJAT ; ! SUOHKAT
+biehtedihke
+	biehtedihke+A+Sg+Nom+Sem/Dummytag:biehtedihke%> K ;
+	biehtedihke+Sem/Dummytag:biehtedihke LEXATTR ;
+dijmásj
+	dijmásj+Sem/Dummytag:dijmásj LEXATTR ;
+	dijmásj+CmpNP/None+Sem/Dummytag:dijmátj LÁGÁSJ ;
+vánes
+	vánes+Sem/Dummytag:vádn LINES ;
+	vánes+Sem/Dummytag:vánes LEXATTR ;
+bahá
+	bahá+CmpN/SgN+CmpN/PlG+Sem/Dummytag:bahá GIEVRRA ; !
+	bahá+Sem/Dummytag:bahá LEXATTR ;  !Irregular attr. form
+konkriehtalasj
+	konkriehtalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:kon^krehta SUBJEKTIJVALASJ ; !
+	konkriehtalasj+Area/NO+CmpN/SgN+CmpN/PlG+Sem/Dummytag:kon^kriehta SUBJEKTIJVALASJ ; !
+hebalk
+	hebalk+Area/SE+CmpNP/Last+Sem/Dummytag:hebalg9 AGAdj ;
+	hebalk+Area/SE+Sem/Dummytag:hebalgis LEXATTR ;
+niskudahkes
+	niskudahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:niskudahkke SÁDNES ; !
+	niskudahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:niskudahkkes TJIEGOS ; !
+bátjas
+	bátjas+A+Ess+Sem/Dummytag:bátja%>n K ;
+	bátjas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:báhtjas TJIEGOS ; !
+målsudahkes
+	målsudahkes+CmpN/SgN+CmpN/PlG+Sem/Dummytag:målsudahkkes TJIEGOS ; !
+	målsudahkes+Sem/Dummytag:målsudahkke SÁDNES ;
+tjáres
+	tjáres+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjárres TJIEGOS ; !
+	tjáres+Sem/Dummytag:tjárres LEXATTR ;
+	tjáres+Sem/Dummytag:tjárris LEXATTR ;
+tjuorak
+	tjuorak+A+Attr+Sem/Dummytag:tjuorak LEXATTR ;
+	tjuorak+A+Attr+Sem/Dummytag:tjuorris LEXATTR ;
+	tjuorak+CmpN/SgN+CmpN/PlG+Sem/Dummytag:tjuorak9 BASSTEL ; !
+stuoves
+	stuoves+CmpN/SgN+CmpN/PlG+Sem/Dummytag:stuovves TJIEGOS ; !
+	stuoves+Use/NG+Sem/Dummytag:stuovva LEXATTR ;
+smávve
+	smávve+CmpN/SgN+CmpN/PlG+Sem/Dummytag:smávve GIEVRRA ; !
+	smávve+Sem/Dummytag:smáv LEXATTR ;
+	smávve+Sem/Dummytag:smávva LEXATTR ; !Irregular attr. form
+divras
+	divras+A+Ess+Sem/Dummytag:divra%>n K ;
+	divras+CmpN/SgN+CmpN/PlG+Sem/Dummytag:divrras TJIEGOS ; !
+suoma-ugralasj
+	suoma-ugralasj+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:suoma-ugraladtj BIOGRÁFALASJ ; ! ;
+	suoma-ugralasj+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:suoma-ugrálaladtj BIOGRÁFALASJ ; ! ;
+nasjonálla
+	nasjonálla+Sem/Dummytag:na SJONÁLLA ; ! LOAN
+	nasjonálla+A+CmpNP/Pref+Cmp/Sh+Sem/Dummytag:nasjonal%> R    ;
+snjutjok
+	snjutjok+v1+Sem/Dummytag:snjutjog9 BASSTEL ;
+	snjutjok+v2+Sem/Dummytag:sjnjutjog9 BASSTEL ;
+galmas
+	galmas+CmpN/SgN+CmpN/PlG+Sem/Dummytag:galmma GALMAS ; !
+	galmas+A+Ess+Sem/Dummytag:galma%>n K ;
+almma
+	almma+Sem/Dummytag:almma LEXATTR ;
+	almma+Sem/Dummytag:almma NUORRA ;
+giednat
+	giednat+CmpN/SgN+CmpN/PlG+Sem/Dummytag:gied'nad9 SJÆVNNJAT ; !
+	giednat+Sem/Dummytag:gienis LEXATTR ;
+dábálasj
+	dábálasj+CmpN/SgN+CmpN/PlG+v2+Sem/Dummytag:dábál ASIDASJ ; !
+	dábálasj+CmpN/SgN+CmpN/PlG+v1+Sem/Dummytag:dábál DÁRBULASJ ; !
+tsibtsa
+	tsibtsa+Sem/Dummytag:tsibtsa LEXATTR ;
+	tsibtsa+Sem/Dummytag:tsibttsag8 TSIBTSA ;
+ajiksiehke
+	ajiksiehke+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ajiksie SUOLASIEHKE ; !
+	ajiksiehke+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ajeksie SUOLASIEHKE ; !
+hiebalasj
+	hiebalasj+v1+CmpN/SgN+CmpN/PlG+Sem/Dummytag:hiebal DÁRBULASJ ; !
+	hiebalasj+v2+CmpN/SgN+CmpN/PlG+Sem/Dummytag:hebal DÁRBULASJ ; !
+ajik
+	ajik+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ajeg9 BASSTEL ; !
+	ajik+CmpN/SgN+CmpN/PlG+Sem/Dummytag:ajig9 BASSTEL ; !
+dimes
+	dimes+Sem/Dummytag:dibm GIMES ; !According to Tjihkkom and Kintel
+	dimes+Sem/Dummytag:dibm LINES ; ! Attr on -a in StG !According to Spiik
+slåtjos
+	slåtjos+Sem/Dummytag:slåhtjos SJÆVNNJAT ;
+	slåtjos+Sem/Dummytag:slåhtjå LEXATTR ;
+guhkke
+	guhkke+CmpN/SgN+CmpN/PlG+Sem/Dummytag:guhkk GALLJE ; !
+	guhkke+Use/NG+Sem/Dummytag:guhkes LEXATTR ;
+skieges
+	skieges+CmpN/SgN+CmpN/PlG+Sem/Dummytag:skiehke SÁDNES ; !
+	skieges+CmpN/SgN+CmpN/PlG+Sem/Dummytag:skiehkes TJIEGOS ; !

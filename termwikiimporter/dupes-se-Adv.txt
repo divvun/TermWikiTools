@@ -1,0 +1,254 @@
+luksa guovlluid
+	luksa% guovlluid+Use/NG:luksa#guovllujd9 adv; !
+	luksa% guovlluid:luksa% guovllujd9 adv; !
+goappil
+	goappil:goappil CSadvFoc/Neg-ge ;  !NOTLEMMA
+	goappil:goappil adv ;
+goabbil
+	goabbil:goabbil CSadvFoc/Neg-ge ; !NOTLEMMA
+	goabbil:goabbil adv ;
+man
+	man+Adv+Subqst:man # ;
+	man+Adv:man # ;
+siste
+	siste+Adv:sistti%> PxVvowch ;
+	siste:siste adv-plc ;
+dárkkit
+	dárkkit adv ;
+	dárkkit adv-comp ;
+sisa
+	sisa+Adv:sisa%> PxV ;
+	sisa:sisa adv-plc ;
+muhtun ráje
+	muhtun% ráje+Use/NG:muhtun#ráje adv; !
+	muhtun% ráje:muhtun% ráje adv; !
+sealggoduohken
+	sealggoduohken:sealggo#duohken adv-plc ;
+	sealggoduohken+Use/NG:sealggo#duohkin adv-plc ;
+easkka ládje
+	easkka% ládje+v1+MWE:easkka LADJE ;
+	easkka% ládje+v2+MWE:easka LADJE ;
+rájes
+	rájes:rájes adv ;
+	rájes+Use/NG:rájis adv ;
+viidáseappot
+	viidáseappot+v1:viidáseappot adv-comp ;
+	viidáseappot+v2:viidásabbot adv-comp ;
+vuollai
+	vuollai+Adv:vuollá%>s PxC ;
+	vuollai:vuollai adv-plc ;
+luhtte
+	luhtte+Adv:luhti%> PxVvowch ;
+	luhtte:luhtte adv ;
+alde
+	alde+Adv:alddi%> PxVvowch ;
+	alde:alde adv-plc ;
+gaitin
+	gaitin+Use/NG:gaittin adv ; !SUB?
+	gaitin:gaitin adv ;
+maŋábeallai
+	maŋábeallai:maŋá#beallai adv-plc ;
+	maŋábeallai+Use/NG:maŋá#beallái adv-plc ; ! Err/Orth?
+várrugasat
+	várrugasat+Use/NG:várrogasat adv ;
+	várrugasat:várrugasat adv ;
+seammá
+	seammá+Use/NG:seamma adv ;
+	seammá:seammá adv ;
+goabbelis
+	goabbelis:goabbelis CSadvFoc/Neg-ge ; !NOTLEMMA
+	goabbelis:goabbelis adv ;
+mielde
+	mielde+Adv:mielddi%> PxVvowch ;
+	mielde:mielde adv ;
+hiljit
+	hiljit+Use/NG:hiljet adv ; !Err/Orth?
+	hiljit:hiljit adv ;
+ovddas
+	ovddas+Adv:ovdda%>st PxC ;
+	ovddas:ovddas adv-plc ;
+gaskan
+	gaskan+Adv:gaska%>n PxCPlstem ;
+	gaskan:gaskan adv ;
+maŋos guovlluid
+	maŋos% guovlluid:maŋos#guovllujd9 adv; !
+	maŋos% guovlluid:maŋos% guovllujd9 adv; !
+vulos guovlluid
+	vulos% guovlluid+Use/NG:vulos#guovllujd9 adv-plc ;
+	vulos% guovlluid:vulos% guovllujd9 adv-plc ;
+maŋimus
+	maŋimus+Use/NG:maŋemus adv-time-sup ; ! not sup tag
+	maŋimus:maŋimus adv-time-sup ; ! not sup tag
+duos dás
+	duos% dás+MWE:duos% dás adv ;
+	duos% dás:duos-dás adv ;
+máttás guovlluid
+	máttás% guovlluid+Use/NG:máttás#guovllujd9 adv; !
+	máttás% guovlluid:máttás% guovllujd9 adv; !
+gaskkas
+	gaskkas+Adv:gaskka%>st PxCPlstem ; !as for gaskan
+	gaskkas:gaskkas adv ;
+bealde
+	bealde adv ;
+	bealde+Adv:bealddi%> PxVvowch ;
+oarjjás guovlluid
+	oarjjás% guovlluid+Use/NG:oarjjás#guovllujd9 adv; !
+	oarjjás% guovlluid:oarjjás% guovllujd9 adv; !
+maŋágeahčai
+	maŋágeahčai:maŋá#geahčai adv-plc ;
+	maŋágeahčai:maŋá#geahčai adv; !
+ihttážii
+	ihttážii adv ;
+	ihttážii+Use/NG:ihtážii adv ;
+agibeaivvis
+	agibeaivvis:agi#beaivvis CSadvFoc/Neg-ge ; !NOTLEMMA
+	agibeaivvis:agi#beaivvis adv ;
+dađi mielde
+	dađi% mielde:dađi% mielde adv; !
+	dađi% mielde adv-time ;
+olámuttos
+	olámuttos:olá#muttos adv ;
+	olámuttos+Use/NG:olá#muttus adv ;
+bálddas
+	bálddas+Adv+Use/NG:bálda%>s PxC ;
+	bálddas+Adv:báldda%>st PxC ;
+	bálddas:bálddas adv ;
+goabbelii
+	goabbelii:goabbelii CSadvFoc/Neg-ge ; !NOTLEMMA
+	goabbelii:goabbelii adv ;
+rádjai
+	rádjai:rádjai adv ;
+	rádjai+Use/NG:rádjái adv ;
+divrasit
+	divrasit adv ;
+	divrasit+Use/NG:divrasii adv ;
+maŋimuččas
+	maŋimuččas+Use/NG:maŋemuččas adv-time-sup ;
+	maŋimuččas:maŋimuččas adv-time-sup ;
+vaikko
+	vaikko adv ;
+	vaikko+v1:váikko adv ;
+	vaikko+v2:vaikke adv ;
+	vaikko+v3:váikke adv ;
+nuorttas guovlluid
+	nuorttas% guovlluid+Use/NG:nuorttas#guovllujd9 adv; !
+	nuorttas% guovlluid:nuorttas% guovllujd9 adv; !
+álfárot
+	álfárot:álfárot adv ;
+	álfárot+Use/NG:álfárut adv ;
+dađibahábut
+	dađibahábut+Use/NG:dađi% bahábut adv-comp ;
+	dađibahábut:dađi#bahábut adv-comp ;
+maŋimustá
+	maŋimustá:maŋemustá adv-time-sup ;
+	maŋimustá:maŋimustá adv-time-sup ;
+vuolde
+	vuolde+Adv:vuolddi%> PxVvowch ;
+	vuolde:vuolde adv-plc ;
+ruppaid alde
+	ruppaid% alde+MWE:ruppaid% alde adv ;
+	ruppaid% alde:ruppaid% nalde adv ;
+bajás guovlluid
+	bajás% guovlluid+Use/NG:bajás#guovllujd9 adv-plc; !
+	bajás% guovlluid:bajás% guovllujd9 adv-plc; !
+maŋimussii
+	maŋimussii+Use/NG:maŋemussii adv-time-sup ;
+	maŋimussii:maŋimussii adv-time-sup ;
+dienu
+	dienu adv ;
+	dienu+Use/NG:dieno adv ; !Err/Orth?
+birzziid-bárzziid
+	birzziid-bárzziid+v1:birzziid9-bárzziid9 adv;
+	birzziid-bárzziid+v2:birzziid% bárzziid9 adv;
+nuppe guovlluid
+	nuppe% guovlluid+Use/NG:nuppe#guovllujd9 adv-plc ;
+	nuppe% guovlluid:nuppe% guovllujd9 adv-plc ;
+duohkut deike
+	duohkut% deike+Use/NG:duohkot% deike adv ;
+	duohkut% deike:duohkut% deike adv-plc ;
+nalde
+	nalde+Adv:nalddi%> PxVvowch ;
+	nalde:nalde adv ;
+ovtta mielas
+	ovtta% mielas+MWE:ovtta% mielas adv ;
+	ovtta% mielas:ovtta% mielas adv; !
+maŋás guovlluid
+	maŋás% guovlluid:maŋás#guovllujd9 adv; !
+	maŋás% guovlluid:maŋás% guovllujd9 adv; !
+birra
+	birra+Adv:bira%> PxV ;
+	birra:birra adv ;
+láhkai
+	láhkai+Use/NG:láhkái adv ; !part, po
+	láhkai:láhkai adv ; !part, po
+oarjjamáttageahčen
+	oarjjamáttageahčen+v1:oarjja#mátta#geahčen adv-plc ;
+	oarjjamáttageahčen+v2:oarjjá#mátta#geahčen adv-plc ;
+lávvardatveaiggi
+	lávvardatveaiggi+v1:lávvardat#veaiggi adv-time ;
+	lávvardatveaiggi+v2:lávvordat#veaiggi adv-time ;
+vuolás guovlluid
+	vuolás% guovlluid+Use/NG:vuolás#guovllujd9 adv-plc ;
+	vuolás% guovlluid:vuolás% guovllujd9 adv-plc ;
+duohkin
+	duohkin+Adv:duohki%>n PxC ;
+	duohkin:duohkin adv-plc ;
+disdatveaiggi
+	disdatveaiggi+v1:disdat#veaiggi adv-time ;
+	disdatveaiggi+v2:disttat#veaiggi adv-time ;
+maŋimusas
+	maŋimusas+Use/NG:maŋemusas adv-time-sup ;
+	maŋimusas:maŋimusas adv-time-sup ;
+agibeaivves
+	agibeaivves:agi#beaivves CSadvFoc/Neg-ge ; !NOTLEMMA
+	agibeaivves:agi#beaivves adv ;
+ihttin
+	ihttin+Use/NG:ihtin adv-time ;
+	ihttin:ihttin adv-time ;
+maŋŋel
+	maŋŋel adv ;
+	maŋŋel+Use/NG:maŋŋil adv-time ;  ! reintroduced as adv
+eambbo
+	eambbo adv-comp ;
+	eambbo+Use/NG:eambo adv-comp ;
+	eambbo+Use/NG:eambu adv-comp ;
+badjelii
+	badjelii+Adv:badjel%>asa PxVvowch ;
+	badjelii:badjelii adv-plc ;
+davvenuorttasdavás
+	davvenuorttasdavás+v1:davve#nuorttas#davás adv-plc ;
+	davvenuorttasdavás+v2:davvi#nuorttas#davás adv-plc ;
+ovddos guovlluid
+	ovddos% guovlluid:ovddos#guovllu7jd9 adv ;
+	ovddos% guovlluid:ovddos% guovllu7jd9 adv-plc ;
+maŋimužžii
+	maŋimužžii+Use/NG:maŋemužžii adv-time-sup ;
+	maŋimužžii:maŋimužžii adv-time-sup ;
+maŋimuš
+	maŋimuš+Use/NG:maŋemuš adv-time-sup ; ! not sup tag
+	maŋimuš:maŋimuš adv-time-sup ; ! not sup tag
+maiddái
+	maiddái+Use/NG:maiddai adv ;
+	maiddái:maiddái adv ;
+ovddas guovlluid
+	ovddas% guovlluid:ovddas#guovllu7jd9 adv ;
+	ovddas% guovlluid:ovddas% guovllu7jd9 adv-plc ;
+lulás guovlluid
+	lulás% guovlluid+Use/NG:lulás#guovllujd9 adv; !
+	lulás% guovlluid:lulás% guovllujd9 adv; !
+badjelis
+	badjelis+Adv:badjel%>istti PxVvowch ;
+	badjelis:badjelis adv-plc ;
+davás guovlluid
+	davás% guovlluid+Use/NG:davás#guovllujd9 adv-plc; !
+	davás% guovlluid:davás% guovllujd9 adv-plc; !
+lobiheamit
+	lobiheamit+Use/NG:lobiheamet adv ;
+	lobiheamit:lobiheamit adv ;
+	lobiheamit:lobihemet adv ;
+aiddo ládje
+	aiddo% ládje+MWE:aiddo LADJE ; !
+	aiddo% ládje+MWE+Use/NG:aitto LADJE ; !
+bahát
+	bahát adv-comp ;
+	bahát+Use/NG:bahut adv-comp ;

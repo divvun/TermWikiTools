@@ -1,0 +1,164 @@
+dihte
+	dihte+v1:dihte Postp ;
+	dihte+v2:dihtii Postp ;
+luhtte
+	luhtte Postp ;
+	luhtte+Use/NG:luhtti Postp ; ! xxx check Finland
+rádjai
+	rádjai Postp ;
+	rádjai+Use/NG:rádjái Postp ;
+máttanuorttabeallai
+	máttanuorttabeallai:mátta#nuortta#beallai Pp ;
+	máttanuorttabeallai+Use/NG:mátta#nuortta#beallái Pp ;
+máttanuorttabeale
+	máttanuorttabeale:mátta#nuortta#beale Pp ;
+	máttanuorttabeale+Use/NG:mátta#nuortta#beali Pp ;
+olgeš beallai
+	olgeš% beallai:olgeš% beallai Pp ;
+	olgeš% beallai:olgeš% beallái Pp ;
+ovddabeale
+	ovddabeale:ovdda#beale Postp ;
+	ovddabeale+Use/NG:ovdda#beali Postp ;
+alde
+	alde Postp ;
+	alde+Use/NG:aldi Postp ;
+davveviestarbeallai
+	davveviestarbeallai:davve#viestar#beallai Pp ;
+	davveviestarbeallai+Use/NG:davve#viestar#beallái Pp ;
+rájes
+	rájes Postp ;
+	rájes+Use/NG:rájis Postp ;
+	rájes:rájes Postp ;
+davveoarjjábeale
+	davveoarjjábeale:davve#oarjjá#beale Pp ;
+	davveoarjjábeale+Use/NG:davve#oarjjá#beali Pp ;
+davveoarjjabeallai
+	davveoarjjabeallai:davve#oarjja#beallai Pp ;
+	davveoarjjabeallai+Use/NG:davve#oarjja#beallái Pp ;
+davábeallai
+	davábeallai:davá#beallai Pp ;
+	davábeallai+Use/NG:davá#beallái Pp ;
+bealde
+	bealde Pp ;
+	bealde+Use/NG:bealdi Pp ; ! xxx check Finland
+davveoarjjábeallai
+	davveoarjjábeallai:davve#oarjjá#beallai Pp ;
+	davveoarjjábeallai+Use/NG:davve#oarjjá#beallái Pp ;
+gurut beallai
+	gurut% beallai:gurut% beallai Pp ;
+	gurut% beallai:gurut% beallái Pp ;
+vulobeallai
+	vulobeallai+Use/NG:vulo#beallái Pp ;
+	vulobeallai:vulo#beallai Pp ;
+gurut beale
+	gurut% beale:gurut% beale Pp ;
+	gurut% beale:gurut% beali Pp ;
+oarjjabeallai
+	oarjjabeallai:oarjja#beallai Pp ;
+	oarjjabeallai:oarjja#beallái Pp ;
+vulobeale
+	vulobeale+Use/NG:vulo#beali Pp ;
+	vulobeale:vulo#beale Pp ;
+davvenuorttabeale
+	davvenuorttabeale+Use/NG:davve#nuortta#beali Pp ;
+	davvenuorttabeale:davve#nuortta#beale Pp ;
+nuortadavábeale
+	nuortadavábeale:nuorta#davá#beale Pp ;
+	nuortadavábeale+Use/NG:nuorta#davá#beali Pp ;
+nuorttabeallai
+	nuorttabeallai:nuortta#beallai Pp ;
+	nuorttabeallai+Use/NG:nuortta#beallái Pp ;
+oarjjabeale
+	oarjjabeale:oarjja#beale Pp ;
+	oarjjabeale:oarjja#beali Pp ;
+oarjedavábeallai
+	oarjedavábeallai:oarje#davá#beallai Pp ;
+	oarjedavábeallai+Use/NG:oarje#davá#beallái Pp ;
+siskkabeale
+	siskkabeale:siskka#beale Pp ;
+	siskkabeale+Use/NG:siskka#beali Pp ;
+vuollai
+	vuollai Postp ;
+	vuollai+Use/NG:vuollái Postp ;
+lulábeallai
+	lulábeallai:lulá#beallai Pp ;
+	lulábeallai+Use/NG:lulá#beallái Pp ;
+ijabeallai
+	ijabeallai+Use/NG:ija#beallái Pp ;
+	ijabeallai:ija#beallai Pp ;
+oarjjábeallai
+	oarjjábeallai:oarjjá#beallai Pp ;
+	oarjjábeallai:oarjjá#beallái Pp ;
+máttábeale
+	máttábeale:máttá#beale Pp ;
+	máttábeale+Use/NG:máttá#beali Pp ;
+maŋŋel
+	maŋŋel Pp ;
+	maŋŋel+Use/NG:mannjel Pp ; !dialectal form
+	maŋŋel+Use/NG:maŋŋil Pp "after" ;
+olgeš beale
+	olgeš% beale:olgeš% beale Pp ;
+	olgeš% beale:olgeš% beali Pp ;
+bajábeallai
+	bajábeallai+Use/NG:bajá#beallái Pp ;
+	bajábeallai:bajá#beallai Pp ;
+oarjjábeale
+	oarjjábeale:oarjjá#beale Pp ;
+	oarjjábeale+Use/NG:oarjjá#beali Pp ;
+nuortadavábeallai
+	nuortadavábeallai:nuorta#davá#beallai Pp ;
+	nuortadavábeallai+Use/NG:nuorta#davá#beallái Pp ;
+nuortalulábeallai
+	nuortalulábeallai:nuorta#lulá#beallai Pp ;
+	nuortalulábeallai+Use/NG:nuorta#lulá#beallái Pp ;
+davveoarjjabeale
+	davveoarjjabeale:davve#oarjja#beale Pp ;
+	davveoarjjabeale+Use/NG:davve#oarjja#beali Pp ;
+bajábeale
+	bajábeale+Use/NG:bajá#beali Pp ;
+	bajábeale:bajá#beale Pp ;
+beallai
+	beallai Pp ;
+	beallai+Use/NG:beallái Pp ;
+siskkobeale
+	siskkobeale+Use/NG:siskko#beali Pp ;
+	siskkobeale:siskko#beale Pp ;
+nuortalulábeale
+	nuortalulábeale:nuorta#lulá#beale Pp ;
+	nuortalulábeale+Use/NG:nuorta#lulá#beali Pp ;
+máttábeallai
+	máttábeallai:máttá#beallai Pp ;
+	máttábeallai+Use/NG:máttá#beallái Pp ;
+lulábeale
+	lulábeale:lulá#beale Pp ;
+	lulábeale+Use/NG:lulá#beali Pp ;
+vuolábeale
+	vuolábeale+Use/NG:vuolá#beali Pp ;
+	vuolábeale:vuolá#beale Pp ;
+vehkii
+	vehkii Postp ;
+	vehkii Pp ;
+olggobeale
+	olggobeale:olggo#beale Pp ;
+	olggobeale+Use/NG:olggo#beali Pp ;
+nuorttabeale
+	nuorttabeale:nuortta#beale Pp ;
+	nuorttabeale+Use/NG:nuortta#beali Pp ;
+oarjedavábeale
+	oarjedavábeale:oarje#davá#beale Pp ;
+	oarjedavábeale+Use/NG:oarje#davá#beali Pp ;
+vuolábeallai
+	vuolábeallai+Use/NG:vuolá#beallái Pp ;
+	vuolábeallai:vuolá#beallai Pp ;
+davvenuorttabeallai
+	davvenuorttabeallai+Use/NG:davve#nuortta#beallái Pp ;
+	davvenuorttabeallai:davve#nuortta#beallai Pp ;
+duogábeale
+	duogábeale:duogá#beale Pp ;
+	duogábeale+Use/NG:duogá#beali Pp ;
+davveviestarbeale
+	davveviestarbeale+Use/NG:davve#viestar#beali Pp ;
+	davveviestarbeale:davve#viestar#beale Pp ;
+davábeale
+	davábeale:davá#beale Pp ;
+	davábeale+Use/NG:davá#beali Pp ;

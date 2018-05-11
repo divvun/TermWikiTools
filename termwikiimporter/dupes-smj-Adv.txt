@@ -1,0 +1,37 @@
+gåktu
+	gåktu:gåktu adv ;
+	gåktu:gåk SHadv ;
+vuolen
+	vuolen adv ; !noun
+	vuolen+Adv:vuolen%> PxC ; !noun
+návti
+	návti+Use/NG:návte adv ;
+	návti:návti adv ;
+giehtgárddáj
+	giehtgárddáj:gieht#gárddáj adv ;
+	giehtgárddáj:gieht#gárddáj adv ; !AK: gieht-
+dánna
+	dánna:dán'na adv ;
+	dánna  adv ;
+avtaláhkáj
+	avtaláhkáj:avt#láhkáj SHadv ;
+	avtaláhkáj:avta#láhkáj adv ;
+ajtu
+	ajtu:ajt SHadv ;
+	ajtu:ajtu adv ;
+viehka
+	viehka:viehka adv ;
+	viehka:viek SHadv ;
+avtabále
+	avtabále:avt#bále SHadv ;
+	avtabále:avta#bále adv ;
+	avtabále:avta#bále adv ;
+avtatrajes
+	avtatrajes:avtat#rajes adv ; !
+	avtatrajes:avtak#rajes adv ; !From Olavi_missing, got to be a typo too
+diehki
+	diehki:diehki adv ;
+	diehki:diek SHadv ; !use/-sub?
+dåhku
+	dåhku:dåhku adv ;
+	dåhku:dåk SHadv ;

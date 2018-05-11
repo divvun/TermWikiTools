@@ -1,0 +1,2271 @@
+lepäillä
+	lepäillä+V:lepäil  VERB_ÄKSYILLÄ  ;
+	lepäillä+V:lepä  VERB_LEPÄILLÄ  ;
+mölytä
+	mölytä+V:möly  VERB_MYRSKYTÄ  ;
+	mölytä+V:möly  VERB_SELVITÄ  ;
+sisääntulla
+	sisääntulla+V:sisääntul  VERB_ETUILLA  ;
+	sisääntulla+V:sisääntul  VERB_VASTAILLA  ;
+tuumailla
+	tuumailla+V:tuumail  VERB_VASTAILLA  ;
+	tuumailla+V:tuuma  VERB_ARVAILLA  ;
+röyhtäillä
+	röyhtäillä+V:röyhtäil  VERB_ÄKSYILLÄ  ;
+	röyhtäillä+V:röyhtä  VERB_LEPÄILLÄ  ;
+ylikoristella
+	ylikoristella+V:ylikoristel  VERB_ETUILLA  ;
+	ylikoristella+V:ylikoristel  VERB_VASTAILLA  ;
+riiustella
+	riiustella+V:riiustel  VERB_ETUILLA  ;
+	riiustella+V:riiustel  VERB_VASTAILLA  ;
+seurailla
+	seurailla+V:seurail  VERB_VASTAILLA  ;
+	seurailla+V:seura  VERB_ARVAILLA  ;
+esillepanna
+	esillepanna+V:esillepan  VERB_PANNA  ;
+	esillepanna+V:esillepa  VERB_PANNA  ;
+sorvailla
+	sorvailla+V:sorvail  VERB_VASTAILLA  ;
+	sorvailla+V:sorva  VERB_ARVAILLA  ;
+hupailla
+	hupailla+V:hupail  VERB_VASTAILLA  ;
+	hupailla+V:hupa  VERB_ARVAILLA  ;
+töppöillä
+	töppöillä+V:töppöil  VERB_ÄKSYILLÄ  ;
+	töppöillä+V:töppö  VERB_LEPÄILLÄ  ;
+seikkailla
+	seikkailla+V:seikkail  VERB_VASTAILLA  ;
+	seikkailla+V:seikka  VERB_ARVAILLA  ;
+matkustella
+	matkustella+V:matkustel  VERB_ETUILLA  ;
+	matkustella+V:matkustel  VERB_VASTAILLA  ;
+pökertyä
+	pökertyä+V:pöker  VERB_KIERTYÄ  ;
+	pökertyä+V:pöker  VERB_PYÖRTYÄ  ;
+pohdiskella
+	pohdiskella+V:pohdiskel  VERB_ETUILLA  ;
+	pohdiskella+V:pohdiskel  VERB_VASTAILLA  ;
+ostella
+	ostella+V:ostel  VERB_ETUILLA  ;
+	ostella+V:ostel  VERB_VASTAILLA  ;
+tyvetä
+	tyvetä+V:tyve  VERB_TÄHYTÄ  ;
+	tyvetä+V:tyve  VERB_VÄHETÄ  ;
+toimeenpanna
+	toimeenpanna+V:toimeenpan  VERB_PANNA  ;
+	toimeenpanna+V:toimeenpa  VERB_PANNA  ;
+lupailla
+	lupailla+V:lupail  VERB_VASTAILLA  ;
+	lupailla+V:lupa  VERB_ARVAILLA  ;
+norkoilla
+	norkoilla+V:norkoil  VERB_VASTAILLA  ;
+	norkoilla+V:norko  VERB_ARVAILLA  ;
+piirustella
+	piirustella+V:piirustel  VERB_ETUILLA  ;
+	piirustella+V:piirustel  VERB_VASTAILLA  ;
+kiroilla
+	kiroilla+V:kiroil  VERB_VASTAILLA  ;
+	kiroilla+V:kiro  VERB_ARVAILLA  ;
+hengailla
+	hengailla+V:hengailla  #  ;
+	hengailla+V:hengail  VERB_VASTAILLA  ;
+	hengailla+V:henga  VERB_ARVAILLA  ;
+lainelautailla
+	lainelautailla+V:lainelautail  VERB_VASTAILLA  ;
+	lainelautailla+V:lainelauta  VERB_ARVAILLA  ;
+sooloilla
+	sooloilla+V:sooloil  VERB_VASTAILLA  ;
+	sooloilla+V:soolo  VERB_ARVAILLA  ;
+elostella
+	elostella+V:elostel  VERB_ETUILLA  ;
+	elostella+V:elostel  VERB_VASTAILLA  ;
+suukotella
+	suukotella+V:suukotella  #  ;
+	suukotella+V:suukot  VERB_SULATELLA  ;
+sairastella
+	sairastella+V:sairastel  VERB_ETUILLA  ;
+	sairastella+V:sairastel  VERB_VASTAILLA  ;
+tienailla
+	tienailla+V:tienail  VERB_VASTAILLA  ;
+	tienailla+V:tiena  VERB_ARVAILLA  ;
+murustella
+	murustella+V:murustel  VERB_ETUILLA  ;
+	murustella+V:murustel  VERB_VASTAILLA  ;
+homostella
+	homostella+V:homostel  VERB_ETUILLA  ;
+	homostella+V:homostel  VERB_VASTAILLA  ;
+lomailla
+	lomailla+V:lomail  VERB_VASTAILLA  ;
+	lomailla+V:loma  VERB_ARVAILLA  ;
+imuroida
+	imuroida+V:imuro  VERB_KOPIOIDA  ;
+	imuroida+V:imuro  VERB_MELLAKOIDA  ;
+valvoskella
+	valvoskella+V:valvoskel  VERB_ETUILLA  ;
+	valvoskella+V:valvoskel  VERB_VASTAILLA  ;
+kujeilla
+	kujeilla+V:kujeil  VERB_ETUILLA  ;
+	kujeilla+V:kujeil  VERB_VASTAILLA  ;
+pulppuilla
+	pulppuilla+V:pulppuil  VERB_ETUILLA  ;
+	pulppuilla+V:pulppuil  VERB_VASTAILLA  ;
+hihityttää
+	hihityttää+V:hihityttää  #  ;
+	hihityttää+V:hihityt  VERB_RÄPSYTTÄÄ  ;
+edeskäydä
+	edeskäydä+V:edeskä  VERB_KÄYDÄ  ;
+	edeskäydä+V:edeskäy  VERB_KYTKEÄ  ;
+liikuskella
+	liikuskella+V:liikuskel  VERB_ETUILLA  ;
+	liikuskella+V:liikuskel  VERB_VASTAILLA  ;
+irstailla
+	irstailla+V:irstail  VERB_VASTAILLA  ;
+	irstailla+V:irsta  VERB_ARVAILLA  ;
+surkeilla
+	surkeilla+V:surkeil  VERB_ETUILLA  ;
+	surkeilla+V:surkeil  VERB_VASTAILLA  ;
+kuhnustella
+	kuhnustella+V:kuhnustel  VERB_ETUILLA  ;
+	kuhnustella+V:kuhnustel  VERB_VASTAILLA  ;
+pilailla
+	pilailla+V:pilail  VERB_VASTAILLA  ;
+	pilailla+V:pila  VERB_ARVAILLA  ;
+padota
+	padota+V:pa  VERB_KADOTA  ;
+	padota+V:pa  VERB_VAAHDOTA  ;
+säikkyä
+	säikkyä+V:säik  VERB_KÄRKKYÄ  ;
+	säikkyä+V:säik  VERB_SÖRKKIÄ  ;
+aaltoilla
+	aaltoilla+V:aaltoil  VERB_VASTAILLA  ;
+	aaltoilla+V:aalto  VERB_ARVAILLA  ;
+keikailla
+	keikailla+V:keikail  VERB_VASTAILLA  ;
+	keikailla+V:keika  VERB_ARVAILLA  ;
+lurjustella
+	lurjustella+V:lurjustel  VERB_ETUILLA  ;
+	lurjustella+V:lurjustel  VERB_VASTAILLA  ;
+sihtailla
+	sihtailla+V:sihtail  VERB_VASTAILLA  ;
+	sihtailla+V:sihta  VERB_ARVAILLA  ;
+henkäillä
+	henkäillä+V:henkäil  VERB_ÄKSYILLÄ  ;
+	henkäillä+V:henkä  VERB_LEPÄILLÄ  ;
+kurkistella
+	kurkistella+V:kurkistel  VERB_ETUILLA  ;
+	kurkistella+V:kurkistel  VERB_VASTAILLA  ;
+rassailla
+	rassailla+V:rassail  VERB_VASTAILLA  ;
+	rassailla+V:rassa  VERB_ARVAILLA  ;
+laukkailla
+	laukkailla+V:laukkailla  #  ;
+	laukkailla+V:laukka  VERB_ARVAILLA  ;
+nöyrtyä
+	nöyrtyä+V:nöyr  VERB_KIERTYÄ  ;
+	nöyrtyä+V:nöyr  VERB_PYÖRTYÄ  ;
+sulloontua
+	sulloontua+V:sulloontua  #  ;
+	sulloontua+V:sulloon  VERB_VAKAANTUA  ;
+kähertyä
+	kähertyä+V:käher  VERB_KIERTYÄ  ;
+	kähertyä+V:käher  VERB_PYÖRTYÄ  ;
+sekoilla
+	sekoilla+V:sekoil  VERB_VASTAILLA  ;
+	sekoilla+V:seko  VERB_ARVAILLA  ;
+toilailla
+	toilailla+V:toilail  VERB_VASTAILLA  ;
+	toilailla+V:toila  VERB_ARVAILLA  ;
+hälytä
+	hälytä+V:häly  VERB_MYRSKYTÄ  ;
+	hälytä+V:häly  VERB_SELVITÄ  ;
+verrata
+	verrata+V:ver  VERB_VERRATA  ;
+	verrata+V:ver  VERB_VIRRATA  ;
+harppailla
+	harppailla+V:harppail  VERB_VASTAILLA  ;
+	harppailla+V:harppa  VERB_ARVAILLA  ;
+urjeta
+	urjeta+V:ur  VERB_JULJETA  ;
+	urjeta+V:ur  VERB_ROHJETA  ;
+lisäillä
+	lisäillä+V:lisäil  VERB_ÄKSYILLÄ  ;
+	lisäillä+V:lisä  VERB_LEPÄILLÄ  ;
+lommoilla
+	lommoilla+V:lommoil  VERB_VASTAILLA  ;
+	lommoilla+V:lommo  VERB_ARVAILLA  ;
+keimailla
+	keimailla+V:keimail  VERB_VASTAILLA  ;
+	keimailla+V:keima  VERB_ARVAILLA  ;
+kastella
+	kastella+V:kastel  VERB_ETUILLA  ;
+	kastella+V:kastel  VERB_VASTAILLA  ;
+säröillä
+	säröillä+V:säröil  VERB_ÄKSYILLÄ  ;
+	säröillä+V:särö  VERB_LEPÄILLÄ  ;
+jahkailla
+	jahkailla+V:jahkail  VERB_VASTAILLA  ;
+	jahkailla+V:jahka  VERB_ARVAILLA  ;
+muhoilla
+	muhoilla+V:muhoil  VERB_VASTAILLA  ;
+	muhoilla+V:muho  VERB_ARVAILLA  ;
+kuulostella
+	kuulostella+V:kuulostel  VERB_ETUILLA  ;
+	kuulostella+V:kuulostel  VERB_VASTAILLA  ;
+kahlailla
+	kahlailla+V:kahlail  VERB_VASTAILLA  ;
+	kahlailla+V:kahla  VERB_ARVAILLA  ;
+tuittuilla
+	tuittuilla+V:tuittuil  VERB_ETUILLA  ;
+	tuittuilla+V:tuittuil  VERB_VASTAILLA  ;
+leukailla
+	leukailla+V:leukail  VERB_VASTAILLA  ;
+	leukailla+V:leuka  VERB_ARVAILLA  ;
+anella
+	anella+V:anel  VERB_ETUILLA  ;
+	anella+V:anel  VERB_VASTAILLA  ;
+nyhjäillä
+	nyhjäillä+V:nyhjäil  VERB_ÄKSYILLÄ  ;
+	nyhjäillä+V:nyhjä  VERB_LEPÄILLÄ  ;
+ripustella
+	ripustella+V:ripustel  VERB_ETUILLA  ;
+	ripustella+V:ripustel  VERB_VASTAILLA  ;
+potkiskella
+	potkiskella+V:potkiskel  VERB_ETUILLA  ;
+	potkiskella+V:potkiskel  VERB_VASTAILLA  ;
+liukua
+	liukua+V:liu  VERB_MAUKUA  ;
+	liukua+V:liu  VERB_NUOKKUA  ;
+heijastella
+	heijastella+V:heijastel  VERB_ETUILLA  ;
+	heijastella+V:heijastel  VERB_VASTAILLA  ;
+takkuilla
+	takkuilla+V:takkuil  VERB_ETUILLA  ;
+	takkuilla+V:takkuil  VERB_VASTAILLA  ;
+hyräillä
+	hyräillä+V:hyräil  VERB_ÄKSYILLÄ  ;
+	hyräillä+V:hyrä  VERB_LEPÄILLÄ  ;
+raitistella
+	raitistella+V:raitistel  VERB_ETUILLA  ;
+	raitistella+V:raitistel  VERB_VASTAILLA  ;
+rukoilla
+	rukoilla+V:rukoil  VERB_VASTAILLA  ;
+	rukoilla+V:ruko  VERB_ARVAILLA  ;
+jatko-opiskella
+	jatko-opiskella+V:jatko-opiskel  VERB_ETUILLA  ;
+	jatko-opiskella+V:jatko-opiskel  VERB_VASTAILLA  ;
+ufoilla
+	ufoilla+V:ufoil  VERB_VASTAILLA  ;
+	ufoilla+V:ufo  VERB_ARVAILLA  ;
+haistella
+	haistella+V:haistel  VERB_ETUILLA  ;
+	haistella+V:haistel  VERB_VASTAILLA  ;
+talkoilla
+	talkoilla+V:talkoil  VERB_VASTAILLA  ;
+	talkoilla+V:talko  VERB_ARVAILLA  ;
+prameilla
+	prameilla+V:prameil  VERB_ETUILLA  ;
+	prameilla+V:prameil  VERB_VASTAILLA  ;
+mutruilla
+	mutruilla+V:mutruil  VERB_ETUILLA  ;
+	mutruilla+V:mutruil  VERB_VASTAILLA  ;
+varustella
+	varustella+V:varustel  VERB_ETUILLA  ;
+	varustella+V:varustel  VERB_VASTAILLA  ;
+hieroskella
+	hieroskella+V:hieroskel  VERB_ETUILLA  ;
+	hieroskella+V:hieroskel  VERB_VASTAILLA  ;
+vitkailla
+	vitkailla+V:vitkail  VERB_VASTAILLA  ;
+	vitkailla+V:vitka  VERB_ARVAILLA  ;
+loruilla
+	loruilla+V:loruil  VERB_ETUILLA  ;
+	loruilla+V:loruil  VERB_VASTAILLA  ;
+makailla
+	makailla+V:makail  VERB_VASTAILLA  ;
+	makailla+V:maka  VERB_ARVAILLA  ;
+riipustella
+	riipustella+V:riipustel  VERB_ETUILLA  ;
+	riipustella+V:riipustel  VERB_VASTAILLA  ;
+koruommella
+	koruommella+V:koruommella  #  ;
+	koruommella+V:koruom  VERB_OMMELLA  ;
+oudostella
+	oudostella+V:oudostel  VERB_ETUILLA  ;
+	oudostella+V:oudostel  VERB_VASTAILLA  ;
+nuolla
+	nuolla+V:nuol  VERB_ETUILLA  ;
+	nuolla+V:nuol  VERB_VASTAILLA  ;
+tehtailla
+	tehtailla+V:tehtail  VERB_VASTAILLA  ;
+	tehtailla+V:tehta  VERB_ARVAILLA  ;
+hiljennellä
+	hiljennellä+V:hiljennellä  #  ;
+	hiljennellä+V:hiljen  VERB_KÄÄNNELLÄ  ;
+kiivastella
+	kiivastella+V:kiivastel  VERB_ETUILLA  ;
+	kiivastella+V:kiivastel  VERB_VASTAILLA  ;
+hääräillä
+	hääräillä+V:hääräil  VERB_ÄKSYILLÄ  ;
+	hääräillä+V:häärä  VERB_LEPÄILLÄ  ;
+tarjoilla
+	tarjoilla+V:tarjoil  VERB_VASTAILLA  ;
+	tarjoilla+V:tarjo  VERB_ARVAILLA  ;
+kamppailla
+	kamppailla+V:kamppail  VERB_VASTAILLA  ;
+	kamppailla+V:kamppa  VERB_ARVAILLA  ;
+vittuilla
+	vittuilla+V:vittuil  VERB_ETUILLA  ;
+	vittuilla+V:vittuil  VERB_VASTAILLA  ;
+uhkailla
+	uhkailla+V:uhkail  VERB_VASTAILLA  ;
+	uhkailla+V:uhka  VERB_ARVAILLA  ;
+sanailla
+	sanailla+V:sanail  VERB_VASTAILLA  ;
+	sanailla+V:sana  VERB_ARVAILLA  ;
+hyökkäillä
+	hyökkäillä+V:hyökkäil  VERB_ÄKSYILLÄ  ;
+	hyökkäillä+V:hyökkä  VERB_LEPÄILLÄ  ;
+suoristella
+	suoristella+V:suoristel  VERB_ETUILLA  ;
+	suoristella+V:suoristel  VERB_VASTAILLA  ;
+limboilla
+	limboilla+V:limboil  VERB_VASTAILLA  ;
+	limboilla+V:limbo  VERB_ARVAILLA  ;
+puuhailla
+	puuhailla+V:puuhail  VERB_VASTAILLA  ;
+	puuhailla+V:puuha  VERB_ARVAILLA  ;
+karistella
+	karistella+V:karistel  VERB_ETUILLA  ;
+	karistella+V:karistel  VERB_VASTAILLA  ;
+vastailla
+	vastailla+V:vastail  VERB_VASTAILLA  ;
+	vastailla+V:vasta  VERB_ARVAILLA  ;
+hypityttää
+	hypityttää+V:hypityttää  #  ;
+	hypityttää+V:hypityt  VERB_RÄPSYTTÄÄ  ;
+luimistella
+	luimistella+V:luimistel  VERB_ETUILLA  ;
+	luimistella+V:luimistel  VERB_VASTAILLA  ;
+kallistella
+	kallistella+V:kallistel  VERB_ETUILLA  ;
+	kallistella+V:kallistel  VERB_VASTAILLA  ;
+siirtyä
+	siirtyä+V:siir  VERB_KIERTYÄ  ;
+	siirtyä+V:siir  VERB_PYÖRTYÄ  ;
+kurauttaa
+	kurauttaa+V:kurauttaa  #  ;
+	kurauttaa+V:kuraut  VERB_VIEROITTAA  ;
+halkeilla
+	halkeilla+V:halkeil  VERB_ETUILLA  ;
+	halkeilla+V:halkeil  VERB_VASTAILLA  ;
+makoilla
+	makoilla+V:makoil  VERB_VASTAILLA  ;
+	makoilla+V:mako  VERB_ARVAILLA  ;
+heräillä
+	heräillä+V:heräil  VERB_ÄKSYILLÄ  ;
+	heräillä+V:herä  VERB_LEPÄILLÄ  ;
+keikkailla
+	keikkailla+V:keikkail  VERB_VASTAILLA  ;
+	keikkailla+V:keikka  VERB_ARVAILLA  ;
+ujoilla
+	ujoilla+V:ujoil  VERB_VASTAILLA  ;
+	ujoilla+V:ujo  VERB_ARVAILLA  ;
+huudatuttaa
+	huudatuttaa+V:huudatuttaa  #  ;
+	huudatuttaa+V:huudatut  VERB_VIEROITTAA  ;
+sopuilla
+	sopuilla+V:sopuil  VERB_ETUILLA  ;
+	sopuilla+V:sopuil  VERB_VASTAILLA  ;
+telttailla
+	telttailla+V:telttail  VERB_VASTAILLA  ;
+	telttailla+V:teltta  VERB_ARVAILLA  ;
+kyräillä
+	kyräillä+V:kyräil  VERB_ÄKSYILLÄ  ;
+	kyräillä+V:kyrä  VERB_LEPÄILLÄ  ;
+kalistella
+	kalistella+V:kalistel  VERB_ETUILLA  ;
+	kalistella+V:kalistel  VERB_VASTAILLA  ;
+tempoilla
+	tempoilla+V:tempoil  VERB_VASTAILLA  ;
+	tempoilla+V:tempo  VERB_ARVAILLA  ;
+ratkeilla
+	ratkeilla+V:ratkeil  VERB_ETUILLA  ;
+	ratkeilla+V:ratkeil  VERB_VASTAILLA  ;
+renttuilla
+	renttuilla+V:renttuil  VERB_ETUILLA  ;
+	renttuilla+V:renttuil  VERB_VASTAILLA  ;
+kaipailla
+	kaipailla+V:kaipail  VERB_VASTAILLA  ;
+	kaipailla+V:kaipa  VERB_ARVAILLA  ;
+lempeytyä
+	lempeytyä+V:lempeytyä  #  ;
+	lempeytyä+V:lempey  VERB_SILIYTYÄ  ;
+arvostella
+	arvostella+V:arvostel  VERB_ETUILLA  ;
+	arvostella+V:arvostel  VERB_VASTAILLA  ;
+huhuilla
+	huhuilla+V:huhuil  VERB_ETUILLA  ;
+	huhuilla+V:huhuil  VERB_VASTAILLA  ;
+kohoilla
+	kohoilla+V:kohoil  VERB_VASTAILLA  ;
+	kohoilla+V:koho  VERB_ARVAILLA  ;
+moitiskella
+	moitiskella+V:moitiskel  VERB_ETUILLA  ;
+	moitiskella+V:moitiskel  VERB_VASTAILLA  ;
+lueskella
+	lueskella+V:lueskel  VERB_ETUILLA  ;
+	lueskella+V:lueskel  VERB_VASTAILLA  ;
+kaavailla
+	kaavailla+V:kaavail  VERB_VASTAILLA  ;
+	kaavailla+V:kaava  VERB_ARVAILLA  ;
+kuulustella
+	kuulustella+V:kuulustel  VERB_ETUILLA  ;
+	kuulustella+V:kuulustel  VERB_VASTAILLA  ;
+pröystäillä
+	pröystäillä+V:pröystäil  VERB_ÄKSYILLÄ  ;
+	pröystäillä+V:pröystä  VERB_LEPÄILLÄ  ;
+viittailla
+	viittailla+V:viittail  VERB_VASTAILLA  ;
+	viittailla+V:viitta  VERB_ARVAILLA  ;
+hapuilla
+	hapuilla+V:hapuil  VERB_ETUILLA  ;
+	hapuilla+V:hapuil  VERB_VASTAILLA  ;
+ampuilla
+	ampuilla+V:ampuil  VERB_ETUILLA  ;
+	ampuilla+V:ampuil  VERB_VASTAILLA  ;
+retostella
+	retostella+V:retostel  VERB_ETUILLA  ;
+	retostella+V:retostel  VERB_VASTAILLA  ;
+rakastella
+	rakastella+V:rakastel  VERB_ETUILLA  ;
+	rakastella+V:rakastel  VERB_VASTAILLA  ;
+ammuskella
+	ammuskella+V:ammuskel  VERB_ETUILLA  ;
+	ammuskella+V:ammuskel  VERB_VASTAILLA  ;
+ahdistella
+	ahdistella+V:ahdistel  VERB_ETUILLA  ;
+	ahdistella+V:ahdistel  VERB_VASTAILLA  ;
+viipyä
+	viipyä+V:vii  VERB_ELPYÄ  ;
+	viipyä+V:vii  VERB_SYÖPYÄ  ;
+tasasuunnata
+	tasasuunnata+V:tasasuunn  VERB_SUUNNATA  ;
+	tasasuunnata+V:tasasuun  VERB_SUUNNATA  ;
+jyrytä
+	jyrytä+V:jyry  VERB_MYRSKYTÄ  ;
+	jyrytä+V:jyry  VERB_SELVITÄ  ;
+kalastella
+	kalastella+V:kalastel  VERB_ETUILLA  ;
+	kalastella+V:kalastel  VERB_VASTAILLA  ;
+söpöillä
+	söpöillä+V:söpöil  VERB_ÄKSYILLÄ  ;
+	söpöillä+V:söpö  VERB_LEPÄILLÄ  ;
+saapastella
+	saapastella+V:saapastel  VERB_ETUILLA  ;
+	saapastella+V:saapastel  VERB_VASTAILLA  ;
+karjeta
+	karjeta+V:kar  VERB_JULJETA  ;
+	karjeta+V:kar  VERB_ROHJETA  ;
+myrskytä
+	myrskytä+V:myrsky  VERB_MYRSKYTÄ  ;
+	myrskytä+V:myrsky  VERB_SELVITÄ  ;
+tutustella
+	tutustella+V:tutustel  VERB_ETUILLA  ;
+	tutustella+V:tutustel  VERB_VASTAILLA  ;
+nahistella
+	nahistella+V:nahistel  VERB_ETUILLA  ;
+	nahistella+V:nahistel  VERB_VASTAILLA  ;
+tallustella
+	tallustella+V:tallustel  VERB_ETUILLA  ;
+	tallustella+V:tallustel  VERB_VASTAILLA  ;
+muovailla
+	muovailla+V:muovail  VERB_VASTAILLA  ;
+	muovailla+V:muova  VERB_ARVAILLA  ;
+juoruilla
+	juoruilla+V:juoruil  VERB_ETUILLA  ;
+	juoruilla+V:juoruil  VERB_VASTAILLA  ;
+haastella
+	haastella+V:haastel  VERB_ETUILLA  ;
+	haastella+V:haastel  VERB_VASTAILLA  ;
+kimpoilla
+	kimpoilla+V:kimpoil  VERB_VASTAILLA  ;
+	kimpoilla+V:kimpo  VERB_ARVAILLA  ;
+läpivalaista
+	läpivalaista+V:läpivalais  VERB_MARISTA  ;
+	läpivalaista+V:läpi#valais  VERB_MARISTA  ;
+machoilla
+	machoilla+V:machoil  VERB_VASTAILLA  ;
+	machoilla+V:macho  VERB_ARVAILLA  ;
+luonnostella
+	luonnostella+V:luonnostel  VERB_ETUILLA  ;
+	luonnostella+V:luonnostel  VERB_VASTAILLA  ;
+kehuskella
+	kehuskella+V:kehuskel  VERB_ETUILLA  ;
+	kehuskella+V:kehuskel  VERB_VASTAILLA  ;
+tarjeta
+	tarjeta+V:tar  VERB_JULJETA  ;
+	tarjeta+V:tar  VERB_ROHJETA  ;
+syöpyä
+	syöpyä+V:syö  VERB_ELPYÄ  ;
+	syöpyä+V:syö  VERB_SYÖPYÄ  ;
+kuntoilla
+	kuntoilla+V:kuntoil  VERB_VASTAILLA  ;
+	kuntoilla+V:kunto  VERB_ARVAILLA  ;
+konstailla
+	konstailla+V:konstail  VERB_VASTAILLA  ;
+	konstailla+V:konsta  VERB_ARVAILLA  ;
+maksella
+	maksella+V:maksel  VERB_ETUILLA  ;
+	maksella+V:maksel  VERB_VASTAILLA  ;
+käppäillä
+	käppäillä+V:käppäil  VERB_ÄKSYILLÄ  ;
+	käppäillä+V:käppä  VERB_LEPÄILLÄ  ;
+lorvailla
+	lorvailla+V:lorvail  VERB_VASTAILLA  ;
+	lorvailla+V:lorva  VERB_ARVAILLA  ;
+nautiskella
+	nautiskella+V:nautiskel  VERB_ETUILLA  ;
+	nautiskella+V:nautiskel  VERB_VASTAILLA  ;
+harhailla
+	harhailla+V:harhail  VERB_VASTAILLA  ;
+	harhailla+V:harha  VERB_ARVAILLA  ;
+pelailla
+	pelailla+V:pelail  VERB_VASTAILLA  ;
+	pelailla+V:pela  VERB_ARVAILLA  ;
+kuljeskella
+	kuljeskella+V:kuljeskel  VERB_ETUILLA  ;
+	kuljeskella+V:kuljeskel  VERB_VASTAILLA  ;
+autoilla
+	autoilla+V:autoil  VERB_VASTAILLA  ;
+	autoilla+V:auto  VERB_ARVAILLA  ;
+talostella
+	talostella+V:talostel  VERB_ETUILLA  ;
+	talostella+V:talostel  VERB_VASTAILLA  ;
+sinkoilla
+	sinkoilla+V:sinkoil  VERB_VASTAILLA  ;
+	sinkoilla+V:sinko  VERB_ARVAILLA  ;
+kertyä
+	kertyä+V:ker  VERB_KIERTYÄ  ;
+	kertyä+V:ker  VERB_PYÖRTYÄ  ;
+puolustella
+	puolustella+V:puolustel  VERB_ETUILLA  ;
+	puolustella+V:puolustel  VERB_VASTAILLA  ;
+mässäillä
+	mässäillä+V:mässäil  VERB_ÄKSYILLÄ  ;
+	mässäillä+V:mässä  VERB_LEPÄILLÄ  ;
+putsaantua
+	putsaantua+V:putsaantua  #  ;
+	putsaantua+V:putsaan  VERB_VAKAANTUA  ;
+varmistella
+	varmistella+V:varmistel  VERB_ETUILLA  ;
+	varmistella+V:varmistel  VERB_VASTAILLA  ;
+kinastella
+	kinastella+V:kinastel  VERB_ETUILLA  ;
+	kinastella+V:kinastel  VERB_VASTAILLA  ;
+sykertyä
+	sykertyä+V:syker  VERB_KIERTYÄ  ;
+	sykertyä+V:syker  VERB_PYÖRTYÄ  ;
+kikkailla
+	kikkailla+V:kikkail  VERB_VASTAILLA  ;
+	kikkailla+V:kikka  VERB_ARVAILLA  ;
+keritä
+	keritä+V:keri  VERB_MERKITÄ  ;
+	keritä+V:keri  VERB_SELVITÄ  ;
+	keritä+V:ker  VERB_KERITÄ  ;
+meloskella
+	meloskella+V:meloskel  VERB_ETUILLA  ;
+	meloskella+V:meloskel  VERB_VASTAILLA  ;
+hoopoilla
+	hoopoilla+V:hoopoil  VERB_VASTAILLA  ;
+	hoopoilla+V:hoopo  VERB_ARVAILLA  ;
+puhella
+	puhella+V:puhel  VERB_ETUILLA  ;
+	puhella+V:puhel  VERB_VASTAILLA  ;
+peilailla
+	peilailla+V:peilail  VERB_VASTAILLA  ;
+	peilailla+V:peila  VERB_ARVAILLA  ;
+kokeilla
+	kokeilla+V:kokeil  VERB_ETUILLA  ;
+	kokeilla+V:kokeil  VERB_VASTAILLA  ;
+mopoilla
+	mopoilla+V:mopoil  VERB_VASTAILLA  ;
+	mopoilla+V:mopo  VERB_ARVAILLA  ;
+sikailla
+	sikailla+V:sikail  VERB_VASTAILLA  ;
+	sikailla+V:sika  VERB_ARVAILLA  ;
+oikkuilla
+	oikkuilla+V:oikkuil  VERB_ETUILLA  ;
+	oikkuilla+V:oikkuil  VERB_VASTAILLA  ;
+oleskella
+	oleskella+V:oleskel  VERB_ETUILLA  ;
+	oleskella+V:oleskel  VERB_VASTAILLA  ;
+pueskella
+	pueskella+V:pueskel  VERB_ETUILLA  ;
+	pueskella+V:pueskel  VERB_VASTAILLA  ;
+haukuskella
+	haukuskella+V:haukuskel  VERB_ETUILLA  ;
+	haukuskella+V:haukuskel  VERB_VASTAILLA  ;
+pidennyttää
+	pidennyttää+V:pidennytt  VERB_KIVISTÄÄ  ;
+	pidennyttää+V:pidennyttää  #  ;
+myötäillä
+	myötäillä+V:myötäil  VERB_ÄKSYILLÄ  ;
+	myötäillä+V:myötä  VERB_LEPÄILLÄ  ;
+matkailla
+	matkailla+V:matkail  VERB_VASTAILLA  ;
+	matkailla+V:matka  VERB_ARVAILLA  ;
+kiihdytellä
+	kiihdytellä+V:kiihdytellä  #  ;
+	kiihdytellä+V:kiihdyt  VERB_HERÄTELLÄ  ;
+ruokailla
+	ruokailla+V:ruokail  VERB_VASTAILLA  ;
+	ruokailla+V:ruoka  VERB_ARVAILLA  ;
+deittailla
+	deittailla+V:deittail  VERB_VASTAILLA  ;
+	deittailla+V:deitta  VERB_ARVAILLA  ;
+nojailla
+	nojailla+V:nojail  VERB_VASTAILLA  ;
+	nojailla+V:noja  VERB_ARVAILLA  ;
+kajastella
+	kajastella+V:kajastel  VERB_ETUILLA  ;
+	kajastella+V:kajastel  VERB_VASTAILLA  ;
+pornoilla
+	pornoilla+V:pornoil  VERB_VASTAILLA  ;
+	pornoilla+V:porno  VERB_ARVAILLA  ;
+nyrjähdellä
+	nyrjähdellä+V:nyrjähdellä  #  ;
+	nyrjähdellä+V:nyrjäh  VERB_SÄPSÄHDELLÄ  ;
+tiedotella
+	tiedotella+V:tiedotella  #  ;
+	tiedotella+V:tiedot  VERB_SULATELLA  ;
+mittailla
+	mittailla+V:mittail  VERB_VASTAILLA  ;
+	mittailla+V:mitta  VERB_ARVAILLA  ;
+repostella
+	repostella+V:repostel  VERB_ETUILLA  ;
+	repostella+V:repostel  VERB_VASTAILLA  ;
+rustailla
+	rustailla+V:rustail  VERB_VASTAILLA  ;
+	rustailla+V:rusta  VERB_ARVAILLA  ;
+raiteilla
+	raiteilla+V:raiteil  VERB_ETUILLA  ;
+	raiteilla+V:raiteil  VERB_VASTAILLA  ;
+äkäillä
+	äkäillä+V:äkäil  VERB_ÄKSYILLÄ  ;
+	äkäillä+V:äkä  VERB_LEPÄILLÄ  ;
+flirttailla
+	flirttailla+V:flirttail  VERB_VASTAILLA  ;
+	flirttailla+V:flirtta  VERB_ARVAILLA  ;
+virtailla
+	virtailla+V:virtail  VERB_VASTAILLA  ;
+	virtailla+V:virta  VERB_ARVAILLA  ;
+pudota
+	pudota+V:pu  VERB_KADOTA  ;
+	pudota+V:pu  VERB_VAAHDOTA  ;
+hevostella
+	hevostella+V:hevostel  VERB_ETUILLA  ;
+	hevostella+V:hevostel  VERB_VASTAILLA  ;
+vuoleskella
+	vuoleskella+V:vuoleskel  VERB_ETUILLA  ;
+	vuoleskella+V:vuoleskel  VERB_VASTAILLA  ;
+raueta
+	raueta+V:rau  VERB_NIUKETA  ;
+	raueta+V:rau  VERB_POIKETA  ;
+rullalautailla
+	rullalautailla+V:rullalautail  VERB_VASTAILLA  ;
+	rullalautailla+V:rullalauta  VERB_ARVAILLA  ;
+paikkamaalata
+	paikkamaalata+V:paikka#maala  VERB_ARVATA  ;
+	paikkamaalata+V:paikkamaala  VERB_ARVATA  ;
+vuokrailla
+	vuokrailla+V:vuokrailla  #  ;
+	vuokrailla+V:vuokra  VERB_ARVAILLA  ;
+miekkailla
+	miekkailla+V:miekkail  VERB_VASTAILLA  ;
+	miekkailla+V:miekka  VERB_ARVAILLA  ;
+haeskella
+	haeskella+V:haeskel  VERB_ETUILLA  ;
+	haeskella+V:haeskel  VERB_VASTAILLA  ;
+rullailla
+	rullailla+V:rullail  VERB_VASTAILLA  ;
+	rullailla+V:rulla  VERB_ARVAILLA  ;
+virkailla
+	virkailla+V:virkail  VERB_VASTAILLA  ;
+	virkailla+V:virka  VERB_ARVAILLA  ;
+höpötellä
+	höpötellä+V:höpötellä  #  ;
+	höpötellä+V:höpöt  VERB_HERÄTELLÄ  ;
+yökkäillä
+	yökkäillä+V:yökkäil  VERB_ÄKSYILLÄ  ;
+	yökkäillä+V:yökkä  VERB_LEPÄILLÄ  ;
+korjailla
+	korjailla+V:korjail  VERB_VASTAILLA  ;
+	korjailla+V:korja  VERB_ARVAILLA  ;
+hermoilla
+	hermoilla+V:hermoil  VERB_VASTAILLA  ;
+	hermoilla+V:hermo  VERB_ARVAILLA  ;
+hidastella
+	hidastella+V:hidastel  VERB_ETUILLA  ;
+	hidastella+V:hidastel  VERB_VASTAILLA  ;
+kaupustella
+	kaupustella+V:kaupustel  VERB_ETUILLA  ;
+	kaupustella+V:kaupustel  VERB_VASTAILLA  ;
+oireilla
+	oireilla+V:oireil  VERB_ETUILLA  ;
+	oireilla+V:oireil  VERB_VASTAILLA  ;
+paikkailla
+	paikkailla+V:paikkail  VERB_VASTAILLA  ;
+	paikkailla+V:paikka  VERB_ARVAILLA  ;
+virnuilla
+	virnuilla+V:virnuil  VERB_ETUILLA  ;
+	virnuilla+V:virnuil  VERB_VASTAILLA  ;
+puhkeilla
+	puhkeilla+V:puhkeil  VERB_ETUILLA  ;
+	puhkeilla+V:puhkeil  VERB_VASTAILLA  ;
+ratustella
+	ratustella+V:ratustel  VERB_ETUILLA  ;
+	ratustella+V:ratustel  VERB_VASTAILLA  ;
+ärähdellä
+	ärähdellä+V:ärähdellä  #  ;
+	ärähdellä+V:äräh  VERB_SÄPSÄHDELLÄ  ;
+polveilla
+	polveilla+V:polveil  VERB_ETUILLA  ;
+	polveilla+V:polveil  VERB_VASTAILLA  ;
+ilmailla
+	ilmailla+V:ilmail  VERB_VASTAILLA  ;
+	ilmailla+V:ilma  VERB_ARVAILLA  ;
+tsiigata
+	tsiigata+V:tsiigata  #  ;
+	tsiigata+V:tsiiga  VERB_ARVATA  ;
+nahjustella
+	nahjustella+V:nahjustel  VERB_ETUILLA  ;
+	nahjustella+V:nahjustel  VERB_VASTAILLA  ;
+aivastella
+	aivastella+V:aivastel  VERB_ETUILLA  ;
+	aivastella+V:aivastel  VERB_VASTAILLA  ;
+ryntäillä
+	ryntäillä+V:ryntäil  VERB_ÄKSYILLÄ  ;
+	ryntäillä+V:ryntä  VERB_LEPÄILLÄ  ;
+puristella
+	puristella+V:puristel  VERB_ETUILLA  ;
+	puristella+V:puristel  VERB_VASTAILLA  ;
+hengitellä
+	hengitellä+V:hengitellä  #  ;
+	hengitellä+V:hengit  VERB_HERÄTELLÄ  ;
+varistella
+	varistella+V:varistel  VERB_ETUILLA  ;
+	varistella+V:varistel  VERB_VASTAILLA  ;
+oleilla
+	oleilla+V:oleil  VERB_ETUILLA  ;
+	oleilla+V:oleil  VERB_VASTAILLA  ;
+aukoa
+	aukoa+V:au  VERB_HAUKKOA  ;
+	aukoa+V:au  VERB_TAKOA  ;
+jaksella
+	jaksella+V:jaksel  VERB_ETUILLA  ;
+	jaksella+V:jaksel  VERB_VASTAILLA  ;
+taiteilla
+	taiteilla+V:taiteil  VERB_ETUILLA  ;
+	taiteilla+V:taiteil  VERB_VASTAILLA  ;
+kruusailla
+	kruusailla+V:kruusail  VERB_VASTAILLA  ;
+	kruusailla+V:kruusa  VERB_ARVAILLA  ;
+aliravita
+	aliravita+V:aliravita  #  ;
+	aliravita+V:aliravi  VERB_PALKITA  ;
+painiskella
+	painiskella+V:painiskel  VERB_ETUILLA  ;
+	painiskella+V:painiskel  VERB_VASTAILLA  ;
+orjailla
+	orjailla+V:orjail  VERB_VASTAILLA  ;
+	orjailla+V:orja  VERB_ARVAILLA  ;
+maksuunpanna
+	maksuunpanna+V:maksuunpan  VERB_PANNA  ;
+	maksuunpanna+V:maksuunpa  VERB_PANNA  ;
+ryöstöviljellä
+	ryöstöviljellä+V:ryöstöviljellä  #  ;
+	ryöstöviljellä+V:ryöstöviljel  VERB_ÄKSYILLÄ  ;
+kauhistella
+	kauhistella+V:kauhistel  VERB_ETUILLA  ;
+	kauhistella+V:kauhistel  VERB_VASTAILLA  ;
+ulkoilla
+	ulkoilla+V:ulkoil  VERB_VASTAILLA  ;
+	ulkoilla+V:ulko  VERB_ARVAILLA  ;
+ristikuulustella
+	ristikuulustella+V:ristikuulustel  VERB_ETUILLA  ;
+	ristikuulustella+V:ristikuulustel  VERB_VASTAILLA  ;
+hentoilla
+	hentoilla+V:hentoil  VERB_VASTAILLA  ;
+	hentoilla+V:hento  VERB_ARVAILLA  ;
+lakkoilla
+	lakkoilla+V:lakkoil  VERB_VASTAILLA  ;
+	lakkoilla+V:lakko  VERB_ARVAILLA  ;
+myhäillä
+	myhäillä+V:myhäil  VERB_ÄKSYILLÄ  ;
+	myhäillä+V:myhä  VERB_LEPÄILLÄ  ;
+upotussuolata
+	upotussuolata+V:upotus#suola  VERB_ARVATA  ;
+	upotussuolata+V:upotussuola  VERB_ARVATA  ;
+heilastella
+	heilastella+V:heilastel  VERB_ETUILLA  ;
+	heilastella+V:heilastel  VERB_VASTAILLA  ;
+laiminlyödä
+	laiminlyödä+V:laimin#l  VERB_SYÖDÄ  ;
+	laiminlyödä+V:laiminl  VERB_SYÖDÄ  ;
+palella
+	palella+V:palel  VERB_ETUILLA  ;
+	palella+V:palel  VERB_VASTAILLA  ;
+luistella
+	luistella+V:luistel  VERB_ETUILLA  ;
+	luistella+V:luistel  VERB_VASTAILLA  ;
+muistiinpanna
+	muistiinpanna+V:muistiinpan  VERB_PANNA  ;
+	muistiinpanna+V:muistiinpa  VERB_PANNA  ;
+uistella
+	uistella+V:uistel  VERB_ETUILLA  ;
+	uistella+V:uistel  VERB_VASTAILLA  ;
+paiskella
+	paiskella+V:paiskel  VERB_ETUILLA  ;
+	paiskella+V:paiskel  VERB_VASTAILLA  ;
+kaulailla
+	kaulailla+V:kaulail  VERB_VASTAILLA  ;
+	kaulailla+V:kaula  VERB_ARVAILLA  ;
+paneskella
+	paneskella+V:paneskel  VERB_ETUILLA  ;
+	paneskella+V:paneskel  VERB_VASTAILLA  ;
+snobbailla
+	snobbailla+V:snobbail  VERB_VASTAILLA  ;
+	snobbailla+V:snobba  VERB_ARVAILLA  ;
+kerrata
+	kerrata+V:ker  VERB_VERRATA  ;
+	kerrata+V:ker  VERB_VIRRATA  ;
+virrata
+	virrata+V:vir  VERB_VERRATA  ;
+	virrata+V:vir  VERB_VIRRATA  ;
+ihastella
+	ihastella+V:ihastel  VERB_ETUILLA  ;
+	ihastella+V:ihastel  VERB_VASTAILLA  ;
+kiihkoilla
+	kiihkoilla+V:kiihkoil  VERB_VASTAILLA  ;
+	kiihkoilla+V:kiihko  VERB_ARVAILLA  ;
+kipertyä
+	kipertyä+V:kiper  VERB_KIERTYÄ  ;
+	kipertyä+V:kiper  VERB_PYÖRTYÄ  ;
+varastella
+	varastella+V:varastel  VERB_ETUILLA  ;
+	varastella+V:varastel  VERB_VASTAILLA  ;
+uumoilla
+	uumoilla+V:uumoil  VERB_VASTAILLA  ;
+	uumoilla+V:uumo  VERB_ARVAILLA  ;
+keräillä
+	keräillä+V:keräil  VERB_ÄKSYILLÄ  ;
+	keräillä+V:kerä  VERB_LEPÄILLÄ  ;
+katkeilla
+	katkeilla+V:katkeil  VERB_ETUILLA  ;
+	katkeilla+V:katkeil  VERB_VASTAILLA  ;
+ennustella
+	ennustella+V:ennustel  VERB_ETUILLA  ;
+	ennustella+V:ennustel  VERB_VASTAILLA  ;
+tapailla
+	tapailla+V:tapail  VERB_VASTAILLA  ;
+	tapailla+V:tapa  VERB_ARVAILLA  ;
+kumpuilla
+	kumpuilla+V:kumpuil  VERB_ETUILLA  ;
+	kumpuilla+V:kumpuil  VERB_VASTAILLA  ;
+arastella
+	arastella+V:arastel  VERB_ETUILLA  ;
+	arastella+V:arastel  VERB_VASTAILLA  ;
+hiertyä
+	hiertyä+V:hier  VERB_KIERTYÄ  ;
+	hiertyä+V:hier  VERB_PYÖRTYÄ  ;
+lepsuilla
+	lepsuilla+V:lepsuil  VERB_ETUILLA  ;
+	lepsuilla+V:lepsuil  VERB_VASTAILLA  ;
+pamppailla
+	pamppailla+V:pamppail  VERB_VASTAILLA  ;
+	pamppailla+V:pamppa  VERB_ARVAILLA  ;
+velkoa
+	velkoa+V:vel  VERB_HAUKKOA  ;
+	velkoa+V:vel  VERB_TAKOA  ;
+hienosäätää
+	hienosäätää+V:hieno#sää  VERB_YSKÄHTÄÄ  ;
+	hienosäätää+V:hienosää  VERB_YSKÄHTÄÄ  ;
+pärjäillä
+	pärjäillä+V:pärjäil  VERB_ÄKSYILLÄ  ;
+	pärjäillä+V:pärjä  VERB_LEPÄILLÄ  ;
+pukkailla
+	pukkailla+V:pukkail  VERB_VASTAILLA  ;
+	pukkailla+V:pukka  VERB_ARVAILLA  ;
+istuskella
+	istuskella+V:istuskel  VERB_ETUILLA  ;
+	istuskella+V:istuskel  VERB_VASTAILLA  ;
+tuumiskella
+	tuumiskella+V:tuumiskel  VERB_ETUILLA  ;
+	tuumiskella+V:tuumiskel  VERB_VASTAILLA  ;
+haluta
+	haluta+V:halu  VERB_HALUTA  ;
+	haluta+V:halu  VERB_LASSOTA  ;
+hammastella
+	hammastella+V:hammastel  VERB_ETUILLA  ;
+	hammastella+V:hammastel  VERB_VASTAILLA  ;
+tulla
+	tulla+V:tul  VERB_VASTAILLA  ;
+	tulla+V:tu  VERB_TULLA  ;
+sompailla
+	sompailla+V:sompail  VERB_VASTAILLA  ;
+	sompailla+V:sompa  VERB_ARVAILLA  ;
+hurskastella
+	hurskastella+V:hurskastel  VERB_ETUILLA  ;
+	hurskastella+V:hurskastel  VERB_VASTAILLA  ;
+pasteerailla
+	pasteerailla+V:pasteerail  VERB_VASTAILLA  ;
+	pasteerailla+V:pasteera  VERB_ARVAILLA  ;
+kenkkuilla
+	kenkkuilla+V:kenkkuil  VERB_ETUILLA  ;
+	kenkkuilla+V:kenkkuil  VERB_VASTAILLA  ;
+harrastella
+	harrastella+V:harrastel  VERB_ETUILLA  ;
+	harrastella+V:harrastel  VERB_VASTAILLA  ;
+moukua
+	moukua+V:mou  VERB_MAUKUA  ;
+	moukua+V:mou  VERB_NUOKKUA  ;
+naukua
+	naukua+V:nau  VERB_MAUKUA  ;
+	naukua+V:nau  VERB_NUOKKUA  ;
+vippailla
+	vippailla+V:vippail  VERB_VASTAILLA  ;
+	vippailla+V:vippa  VERB_ARVAILLA  ;
+rosvoilla
+	rosvoilla+V:rosvoil  VERB_VASTAILLA  ;
+	rosvoilla+V:rosvo  VERB_ARVAILLA  ;
+metkuilla
+	metkuilla+V:metkuil  VERB_ETUILLA  ;
+	metkuilla+V:metkuil  VERB_VASTAILLA  ;
+tankkailla
+	tankkailla+V:tankkail  VERB_VASTAILLA  ;
+	tankkailla+V:tankka  VERB_ARVAILLA  ;
+pomottaa
+	pomottaa+V:pomottaa  #  ;
+	pomottaa+V:pomot  VERB_VIEROITTAA  ;
+purjelautailla
+	purjelautailla+V:purjelautail  VERB_VASTAILLA  ;
+	purjelautailla+V:purjelauta  VERB_ARVAILLA  ;
+puhututtaa
+	puhututtaa+V:puhututtaa  #  ;
+	puhututtaa+V:puhutut  VERB_VIEROITTAA  ;
+poimiskella
+	poimiskella+V:poimiskel  VERB_ETUILLA  ;
+	poimiskella+V:poimiskel  VERB_VASTAILLA  ;
+myrtyä
+	myrtyä+V:myr  VERB_KIERTYÄ  ;
+	myrtyä+V:myr  VERB_PYÖRTYÄ  ;
+lyijytä
+	lyijytä+V:lyijy  VERB_MYRSKYTÄ  ;
+	lyijytä+V:lyijy  VERB_SELVITÄ  ;
+vertailla
+	vertailla+V:vertail  VERB_VASTAILLA  ;
+	vertailla+V:verta  VERB_ARVAILLA  ;
+hienosahata
+	hienosahata+V:hieno#saha  VERB_ARVATA  ;
+	hienosahata+V:hienosaha  VERB_ARVATA  ;
+makustella
+	makustella+V:makustel  VERB_ETUILLA  ;
+	makustella+V:makustel  VERB_VASTAILLA  ;
+ohjailla
+	ohjailla+V:ohjail  VERB_VASTAILLA  ;
+	ohjailla+V:ohja  VERB_ARVAILLA  ;
+sanella
+	sanella+V:sanel  VERB_ETUILLA  ;
+	sanella+V:sanel  VERB_VASTAILLA  ;
+annostella
+	annostella+V:annostel  VERB_ETUILLA  ;
+	annostella+V:annostel  VERB_VASTAILLA  ;
+vastustella
+	vastustella+V:vastustel  VERB_ETUILLA  ;
+	vastustella+V:vastustel  VERB_VASTAILLA  ;
+soieta
+	soieta+V:soi  VERB_NIUKETA  ;
+	soieta+V:soi  VERB_POIKETA  ;
+junailla
+	junailla+V:junail  VERB_VASTAILLA  ;
+	junailla+V:juna  VERB_ARVAILLA  ;
+moottorikelkkailla
+	moottorikelkkailla+V:moottorikelkkail  VERB_VASTAILLA  ;
+	moottorikelkkailla+V:moottorikelkka  VERB_ARVAILLA  ;
+tutkiskella
+	tutkiskella+V:tutkiskel  VERB_ETUILLA  ;
+	tutkiskella+V:tutkiskel  VERB_VASTAILLA  ;
+haahuilla
+	haahuilla+V:haahuil  VERB_ETUILLA  ;
+	haahuilla+V:haahuil  VERB_VASTAILLA  ;
+jippoilla
+	jippoilla+V:jippoil  VERB_VASTAILLA  ;
+	jippoilla+V:jippo  VERB_ARVAILLA  ;
+patsastella
+	patsastella+V:patsastel  VERB_ETUILLA  ;
+	patsastella+V:patsastel  VERB_VASTAILLA  ;
+puistella
+	puistella+V:puistella  #  ;
+	puistella+V:puistel  VERB_ETUILLA  ;
+patistella
+	patistella+V:patistel  VERB_ETUILLA  ;
+	patistella+V:patistel  VERB_VASTAILLA  ;
+poljeskella
+	poljeskella+V:poljeskel  VERB_ETUILLA  ;
+	poljeskella+V:poljeskel  VERB_VASTAILLA  ;
+lautailla
+	lautailla+V:lautail  VERB_VASTAILLA  ;
+	lautailla+V:lauta  VERB_ARVAILLA  ;
+pöllytä
+	pöllytä+V:pölly  VERB_MYRSKYTÄ  ;
+	pöllytä+V:pölly  VERB_SELVITÄ  ;
+pölytä
+	pölytä+V:pöly  VERB_MYRSKYTÄ  ;
+	pölytä+V:pöly  VERB_SELVITÄ  ;
+tunkeilla
+	tunkeilla+V:tunkeil  VERB_ETUILLA  ;
+	tunkeilla+V:tunkeil  VERB_VASTAILLA  ;
+kokoonpanna
+	kokoonpanna+V:kokoonpan  VERB_PANNA  ;
+	kokoonpanna+V:kokoonpa  VERB_PANNA  ;
+valella
+	valella+V:valel  VERB_ETUILLA  ;
+	valella+V:valel  VERB_VASTAILLA  ;
+varjella
+	varjella+V:varjel  VERB_ETUILLA  ;
+	varjella+V:varjel  VERB_VASTAILLA  ;
+pyrytä
+	pyrytä+V:pyry  VERB_MYRSKYTÄ  ;
+	pyrytä+V:pyry  VERB_SELVITÄ  ;
+häikäillä
+	häikäillä+V:häikäil  VERB_ÄKSYILLÄ  ;
+	häikäillä+V:häikä  VERB_LEPÄILLÄ  ;
+kokkailla
+	kokkailla+V:kokkail  VERB_VASTAILLA  ;
+	kokkailla+V:kokka  VERB_ARVAILLA  ;
+toistella
+	toistella+V:toistel  VERB_ETUILLA  ;
+	toistella+V:toistel  VERB_VASTAILLA  ;
+mennä
+	mennä+Use/NG+V:me  VERB_MENNÄ  ;
+	mennä+V:men  VERB_MENNÄ  ;
+	mennä+V:me  VERB_MENNÄ  ;
+mukailla
+	mukailla+V:mukail  VERB_VASTAILLA  ;
+	mukailla+V:muka  VERB_ARVAILLA  ;
+irkkailla
+	irkkailla+V:irkkail  VERB_VASTAILLA  ;
+	irkkailla+V:irkka  VERB_ARVAILLA  ;
+lauleskella
+	lauleskella+V:lauleskel  VERB_ETUILLA  ;
+	lauleskella+V:lauleskel  VERB_VASTAILLA  ;
+pullistella
+	pullistella+V:pullistel  VERB_ETUILLA  ;
+	pullistella+V:pullistel  VERB_VASTAILLA  ;
+hamuilla
+	hamuilla+V:hamuil  VERB_ETUILLA  ;
+	hamuilla+V:hamuil  VERB_VASTAILLA  ;
+valmistella
+	valmistella+V:valmistel  VERB_ETUILLA  ;
+	valmistella+V:valmistel  VERB_VASTAILLA  ;
+lahosuojata
+	lahosuojata+V:laho#suoja  VERB_ARVATA  ;
+	lahosuojata+V:lahosuoja  VERB_ARVATA  ;
+kuseskella
+	kuseskella+V:kuseskel  VERB_ETUILLA  ;
+	kuseskella+V:kuseskel  VERB_VASTAILLA  ;
+vireillepanna
+	vireillepanna+V:vireillepan  VERB_PANNA  ;
+	vireillepanna+V:vireillepa  VERB_PANNA  ;
+kisailla
+	kisailla+V:kisail  VERB_VASTAILLA  ;
+	kisailla+V:kisa  VERB_ARVAILLA  ;
+lumilautailla
+	lumilautailla+V:lumilautail  VERB_VASTAILLA  ;
+	lumilautailla+V:lumilauta  VERB_ARVAILLA  ;
+kangastella
+	kangastella+V:kangastel  VERB_ETUILLA  ;
+	kangastella+V:kangastel  VERB_VASTAILLA  ;
+puuhastella
+	puuhastella+V:puuhastel  VERB_ETUILLA  ;
+	puuhastella+V:puuhastel  VERB_VASTAILLA  ;
+keskustella
+	keskustella+V:keskustel  VERB_ETUILLA  ;
+	keskustella+V:keskustel  VERB_VASTAILLA  ;
+hikoilla
+	hikoilla+V:hikoil  VERB_VASTAILLA  ;
+	hikoilla+V:hiko  VERB_ARVAILLA  ;
+kopistella
+	kopistella+V:kopistel  VERB_ETUILLA  ;
+	kopistella+V:kopistel  VERB_VASTAILLA  ;
+jermuilla
+	jermuilla+V:jermuil  VERB_ETUILLA  ;
+	jermuilla+V:jermuil  VERB_VASTAILLA  ;
+palautella
+	palautella+V:palautella  #  ;
+	palautella+V:palaut  VERB_SULATELLA  ;
+poreilla
+	poreilla+V:poreil  VERB_ETUILLA  ;
+	poreilla+V:poreil  VERB_VASTAILLA  ;
+tepastella
+	tepastella+V:tepastel  VERB_ETUILLA  ;
+	tepastella+V:tepastel  VERB_VASTAILLA  ;
+siemailla
+	siemailla+V:siemail  VERB_VASTAILLA  ;
+	siemailla+V:siema  VERB_ARVAILLA  ;
+määräillä
+	määräillä+V:määräil  VERB_ÄKSYILLÄ  ;
+	määräillä+V:määrä  VERB_LEPÄILLÄ  ;
+pakoilla
+	pakoilla+V:pakoil  VERB_VASTAILLA  ;
+	pakoilla+V:pako  VERB_ARVAILLA  ;
+oikoilla
+	oikoilla+V:oikoil  VERB_VASTAILLA  ;
+	oikoilla+V:oiko  VERB_ARVAILLA  ;
+kuvailla
+	kuvailla+V:kuvail  VERB_VASTAILLA  ;
+	kuvailla+V:kuva  VERB_ARVAILLA  ;
+perhostella
+	perhostella+V:perhostel  VERB_ETUILLA  ;
+	perhostella+V:perhostel  VERB_VASTAILLA  ;
+muodostella
+	muodostella+V:muodostel  VERB_ETUILLA  ;
+	muodostella+V:muodostel  VERB_VASTAILLA  ;
+naukkailla
+	naukkailla+V:naukkail  VERB_VASTAILLA  ;
+	naukkailla+V:naukka  VERB_ARVAILLA  ;
+sinertyä
+	sinertyä+V:siner  VERB_KIERTYÄ  ;
+	sinertyä+V:siner  VERB_PYÖRTYÄ  ;
+vedota
+	vedota+V:ve  VERB_KADOTA  ;
+	vedota+V:ve  VERB_VAAHDOTA  ;
+irvailla
+	irvailla+V:irvail  VERB_VASTAILLA  ;
+	irvailla+V:irva  VERB_ARVAILLA  ;
+hortoilla
+	hortoilla+V:hortoil  VERB_VASTAILLA  ;
+	hortoilla+V:horto  VERB_ARVAILLA  ;
+törppöillä
+	törppöillä+V:törppöil  VERB_ÄKSYILLÄ  ;
+	törppöillä+V:törppö  VERB_LEPÄILLÄ  ;
+ruukata
+	ruukata+V:ruuk  VERB_MORKATA  ;
+	ruukata+V:ruuk  VERB_MORKATA  ;
+korskeilla
+	korskeilla+V:korskeil  VERB_ETUILLA  ;
+	korskeilla+V:korskeil  VERB_VASTAILLA  ;
+mutristella
+	mutristella+V:mutristel  VERB_ETUILLA  ;
+	mutristella+V:mutristel  VERB_VASTAILLA  ;
+kiukkuilla
+	kiukkuilla+V:kiukkuil  VERB_ETUILLA  ;
+	kiukkuilla+V:kiukkuil  VERB_VASTAILLA  ;
+löysäillä
+	löysäillä+V:löysäil  VERB_ÄKSYILLÄ  ;
+	löysäillä+V:löysä  VERB_LEPÄILLÄ  ;
+toljailla
+	toljailla+V:toljail  VERB_VASTAILLA  ;
+	toljailla+V:tolja  VERB_ARVAILLA  ;
+reistailla
+	reistailla+V:reistail  VERB_VASTAILLA  ;
+	reistailla+V:reista  VERB_ARVAILLA  ;
+törmäillä
+	törmäillä+V:törmäil  VERB_ÄKSYILLÄ  ;
+	törmäillä+V:törmä  VERB_LEPÄILLÄ  ;
+taistella
+	taistella+V:taistel  VERB_ETUILLA  ;
+	taistella+V:taistel  VERB_VASTAILLA  ;
+kadota
+	kadota+V:ka  VERB_KADOTA  ;
+	kadota+V:ka  VERB_VAAHDOTA  ;
+hurjastella
+	hurjastella+V:hurjastel  VERB_ETUILLA  ;
+	hurjastella+V:hurjastel  VERB_VASTAILLA  ;
+kiivailla
+	kiivailla+V:kiivail  VERB_VASTAILLA  ;
+	kiivailla+V:kiiva  VERB_ARVAILLA  ;
+surffailla
+	surffailla+V:surffail  VERB_VASTAILLA  ;
+	surffailla+V:surffa  VERB_ARVAILLA  ;
+tutkailla
+	tutkailla+V:tutkail  VERB_VASTAILLA  ;
+	tutkailla+V:tutka  VERB_ARVAILLA  ;
+arvuutella
+	arvuutella+V:arvuutella  #  ;
+	arvuutella+V:arvuut  VERB_SULATELLA  ;
+vinoilla
+	vinoilla+V:vinoil  VERB_VASTAILLA  ;
+	vinoilla+V:vino  VERB_ARVAILLA  ;
+salailla
+	salailla+V:salail  VERB_VASTAILLA  ;
+	salailla+V:sala  VERB_ARVAILLA  ;
+kaivella
+	kaivella+V:kaivel  VERB_ETUILLA  ;
+	kaivella+V:kaivel  VERB_VASTAILLA  ;
+rullaluistella
+	rullaluistella+V:rullaluistel  VERB_ETUILLA  ;
+	rullaluistella+V:rullaluistel  VERB_VASTAILLA  ;
+pomppoilla
+	pomppoilla+V:pomppoil  VERB_VASTAILLA  ;
+	pomppoilla+V:pomppo  VERB_ARVAILLA  ;
+tuikkaa
+	tuikkaa+V:tuik  VERB_RAIKAA  ;
+	tuikkaa+V:tuik  VERB_TUIKKAA  ;
+muusata
+	muusata+V:muu#sa  VERB_ARVATA  ;
+	muusata+V:muusa  VERB_ARVATA  ;
+hiukoa
+	hiukoa+V:hiu  VERB_HAUKKOA  ;
+	hiukoa+V:hiu  VERB_TAKOA  ;
+sueta
+	sueta+V:su  VERB_NIUKETA  ;
+	sueta+V:su  VERB_POIKETA  ;
+hyväillä
+	hyväillä+V:hyväil  VERB_ÄKSYILLÄ  ;
+	hyväillä+V:hyvä  VERB_LEPÄILLÄ  ;
+jutustella
+	jutustella+V:jutustel  VERB_ETUILLA  ;
+	jutustella+V:jutustel  VERB_VASTAILLA  ;
+kuiskailla
+	kuiskailla+V:kuiskail  VERB_VASTAILLA  ;
+	kuiskailla+V:kuiska  VERB_ARVAILLA  ;
+komeilla
+	komeilla+V:komeil  VERB_ETUILLA  ;
+	komeilla+V:komeil  VERB_VASTAILLA  ;
+ylisuojella
+	ylisuojella+V:ylisuojel  VERB_ETUILLA  ;
+	ylisuojella+V:ylisuojel  VERB_VASTAILLA  ;
+vitkastella
+	vitkastella+V:vitkastel  VERB_ETUILLA  ;
+	vitkastella+V:vitkastel  VERB_VASTAILLA  ;
+kieroilla
+	kieroilla+V:kieroil  VERB_VASTAILLA  ;
+	kieroilla+V:kiero  VERB_ARVAILLA  ;
+majailla
+	majailla+V:majail  VERB_VASTAILLA  ;
+	majailla+V:maja  VERB_ARVAILLA  ;
+kokoilla
+	kokoilla+V:kokoil  VERB_VASTAILLA  ;
+	kokoilla+V:koko  VERB_ARVAILLA  ;
+arkailla
+	arkailla+V:arkail  VERB_VASTAILLA  ;
+	arkailla+V:arka  VERB_ARVAILLA  ;
+tunnustella
+	tunnustella+V:tunnustel  VERB_ETUILLA  ;
+	tunnustella+V:tunnustel  VERB_VASTAILLA  ;
+muotoilla
+	muotoilla+V:muotoil  VERB_VASTAILLA  ;
+	muotoilla+V:muoto  VERB_ARVAILLA  ;
+seurustella
+	seurustella+V:seurustel  VERB_ETUILLA  ;
+	seurustella+V:seurustel  VERB_VASTAILLA  ;
+sykkäillä
+	sykkäillä+V:sykkäil  VERB_ÄKSYILLÄ  ;
+	sykkäillä+V:sykkä  VERB_LEPÄILLÄ  ;
+näppäillä
+	näppäillä+V:näppäil  VERB_ÄKSYILLÄ  ;
+	näppäillä+V:näppä  VERB_LEPÄILLÄ  ;
+huokailla
+	huokailla+V:huokail  VERB_VASTAILLA  ;
+	huokailla+V:huoka  VERB_ARVAILLA  ;
+hakkailla
+	hakkailla+V:hakkail  VERB_VASTAILLA  ;
+	hakkailla+V:hakka  VERB_ARVAILLA  ;
+nostella
+	nostella+V:nostel  VERB_ETUILLA  ;
+	nostella+V:nostel  VERB_VASTAILLA  ;
+tähtäillä
+	tähtäillä+V:tähtäil  VERB_ÄKSYILLÄ  ;
+	tähtäillä+V:tähtä  VERB_LEPÄILLÄ  ;
+turmella
+	turmella+V:turmel  VERB_ETUILLA  ;
+	turmella+V:turmel  VERB_VASTAILLA  ;
+vuotaa
+	vuotaa+V:vuo  VERB_HUUTAA  ;
+	vuotaa+V:vuo  VERB_MOJAHTAA  ;
+isota
+	isota+V:iso  VERB_KARHETA  ;
+	isota+V:iso  VERB_KARHUTA  ;
+pihtailla
+	pihtailla+V:pihtail  VERB_VASTAILLA  ;
+	pihtailla+V:pihta  VERB_ARVAILLA  ;
+ajella
+	ajella+V:ajel  VERB_ETUILLA  ;
+	ajella+V:ajel  VERB_VASTAILLA  ;
+säntäillä
+	säntäillä+V:säntäil  VERB_ÄKSYILLÄ  ;
+	säntäillä+V:säntä  VERB_LEPÄILLÄ  ;
+kärytä
+	kärytä+V:käry  VERB_MYRSKYTÄ  ;
+	kärytä+V:käry  VERB_SELVITÄ  ;
+mulkoilla
+	mulkoilla+V:mulkoil  VERB_VASTAILLA  ;
+	mulkoilla+V:mulko  VERB_ARVAILLA  ;
+leijailla
+	leijailla+V:leijail  VERB_VASTAILLA  ;
+	leijailla+V:leija  VERB_ARVAILLA  ;
+kaatuilla
+	kaatuilla+V:kaatuil  VERB_ETUILLA  ;
+	kaatuilla+V:kaatuil  VERB_VASTAILLA  ;
+pörhistyä
+	pörhistyä+V:pörhist  VERB_RYSKIÄ  ;
+	pörhistyä+V:pörhisty  VERB_ÄLLISTYÄ  ;
+kuumeilla
+	kuumeilla+V:kuumeil  VERB_ETUILLA  ;
+	kuumeilla+V:kuumeil  VERB_VASTAILLA  ;
+nuoleskella
+	nuoleskella+V:nuoleskel  VERB_ETUILLA  ;
+	nuoleskella+V:nuoleskel  VERB_VASTAILLA  ;
+voimistella
+	voimistella+V:voimistel  VERB_ETUILLA  ;
+	voimistella+V:voimistel  VERB_VASTAILLA  ;
+lohkeilla
+	lohkeilla+V:lohkeil  VERB_ETUILLA  ;
+	lohkeilla+V:lohkeil  VERB_VASTAILLA  ;
+itketyttää
+	itketyttää+V:itketytt  VERB_KIVISTÄÄ  ;
+	itketyttää+V:itketyttää  #  ;
+hourailla
+	hourailla+V:hourail  VERB_VASTAILLA  ;
+	hourailla+V:houra  VERB_ARVAILLA  ;
+tiirailla
+	tiirailla+V:tiirail  VERB_VASTAILLA  ;
+	tiirailla+V:tiira  VERB_ARVAILLA  ;
+julkipanna
+	julkipanna+V:julkipan  VERB_PANNA  ;
+	julkipanna+V:julkipa  VERB_PANNA  ;
+seisoskella
+	seisoskella+V:seisoskel  VERB_ETUILLA  ;
+	seisoskella+V:seisoskel  VERB_VASTAILLA  ;
+kareilla
+	kareilla+V:kareil  VERB_ETUILLA  ;
+	kareilla+V:kareil  VERB_VASTAILLA  ;
+suipistella
+	suipistella+V:suipistel  VERB_ETUILLA  ;
+	suipistella+V:suipistel  VERB_VASTAILLA  ;
+kipuilla
+	kipuilla+V:kipuil  VERB_ETUILLA  ;
+	kipuilla+V:kipuil  VERB_VASTAILLA  ;
+valjeta
+	valjeta+V:val  VERB_JULJETA  ;
+	valjeta+V:val  VERB_ROHJETA  ;
+suruliputtaa
+	suruliputtaa+V:suru#liput  VERB_VIEROITTAA  ;
+	suruliputtaa+V:suruliput  VERB_VIEROITTAA  ;
+jeesustella
+	jeesustella+V:jeesustel  VERB_ETUILLA  ;
+	jeesustella+V:jeesustel  VERB_VASTAILLA  ;
+hummailla
+	hummailla+V:hummail  VERB_VASTAILLA  ;
+	hummailla+V:humma  VERB_ARVAILLA  ;
+kanniskella
+	kanniskella+V:kanniskel  VERB_ETUILLA  ;
+	kanniskella+V:kanniskel  VERB_VASTAILLA  ;
+kuntoonpanna
+	kuntoonpanna+V:kuntoonpan  VERB_PANNA  ;
+	kuntoonpanna+V:kuntoonpa  VERB_PANNA  ;
+jumppailla
+	jumppailla+V:jumppailla  #  ;
+	jumppailla+V:jumppa  VERB_ARVAILLA  ;
+nulkata
+	nulkata+V:nulkata  #  ;
+	nulkata+V:nulk  VERB_MORKATA  ;
+halkoa
+	halkoa+V:hal  VERB_HAUKKOA  ;
+	halkoa+V:hal  VERB_TAKOA  ;
+povailla
+	povailla+V:povail  VERB_VASTAILLA  ;
+	povailla+V:pova  VERB_ARVAILLA  ;
+juljeta
+	juljeta+V:jul  VERB_HALJETA  ;
+	juljeta+V:jul  VERB_JULJETA  ;
+	juljeta+V:jul  VERB_ROHJETA  ;
+köyhäillä
+	köyhäillä+V:köyhäil  VERB_ÄKSYILLÄ  ;
+	köyhäillä+V:köyhä  VERB_LEPÄILLÄ  ;
+siekailla
+	siekailla+V:siekail  VERB_VASTAILLA  ;
+	siekailla+V:sieka  VERB_ARVAILLA  ;
+kuivailla
+	kuivailla+V:kuivail  VERB_VASTAILLA  ;
+	kuivailla+V:kuiva  VERB_ARVAILLA  ;
+jonotuttaa
+	jonotuttaa+V:jonotuttaa  #  ;
+	jonotuttaa+V:jonotut  VERB_VIEROITTAA  ;
+kimmota
+	kimmota+V:kimmo  VERB_KARHUTA  ;
+	kimmota+V:kim  VERB_SAMMOTA  ;
+kyykistellä
+	kyykistellä+V:kyykistellä  #  ;
+	kyykistellä+V:kyykistel  VERB_ÄKSYILLÄ  ;
+visailla
+	visailla+V:visail  VERB_VASTAILLA  ;
+	visailla+V:visa  VERB_ARVAILLA  ;
+pakkosiirtää
+	pakkosiirtää+V:pakkosiirtää  #  ;
+	pakkosiirtää+V:pakkosiir  VERB_NÄPERTÄÄ  ;
+aikailla
+	aikailla+V:aikail  VERB_VASTAILLA  ;
+	aikailla+V:aika  VERB_ARVAILLA  ;
+vuolla
+	vuolla+V:vuol  VERB_ETUILLA  ;
+	vuolla+V:vuol  VERB_VASTAILLA  ;
+kursailla
+	kursailla+V:kursail  VERB_VASTAILLA  ;
+	kursailla+V:kursa  VERB_ARVAILLA  ;
+pureskella
+	pureskella+V:pureskel  VERB_ETUILLA  ;
+	pureskella+V:pureskel  VERB_VASTAILLA  ;
+ratsastella
+	ratsastella+V:ratsastel  VERB_ETUILLA  ;
+	ratsastella+V:ratsastel  VERB_VASTAILLA  ;
+pokkailla
+	pokkailla+V:pokkail  VERB_VASTAILLA  ;
+	pokkailla+V:pokka  VERB_ARVAILLA  ;
+taitoluistella
+	taitoluistella+V:taitoluistel  VERB_ETUILLA  ;
+	taitoluistella+V:taitoluistel  VERB_VASTAILLA  ;
+polkupyöräillä
+	polkupyöräillä+V:polkupyöräil  VERB_ÄKSYILLÄ  ;
+	polkupyöräillä+V:polkupyörä  VERB_LEPÄILLÄ  ;
+kiillotuttaa
+	kiillotuttaa+V:kiillotuttaa  #  ;
+	kiillotuttaa+V:kiillotut  VERB_VIEROITTAA  ;
+rohjeta
+	rohjeta+V:roh  VERB_JULJETA  ;
+	rohjeta+V:roh  VERB_ROHJETA  ;
+uinailla
+	uinailla+V:uinail  VERB_VASTAILLA  ;
+	uinailla+V:uina  VERB_ARVAILLA  ;
+etuilla
+	etuilla+V:etuil  VERB_ETUILLA  ;
+	etuilla+V:etuil  VERB_VASTAILLA  ;
+shoppailla
+	shoppailla+V:shoppail  VERB_VASTAILLA  ;
+	shoppailla+V:shoppa  VERB_ARVAILLA  ;
+muistella
+	muistella+V:muistel  VERB_ETUILLA  ;
+	muistella+V:muistel  VERB_VASTAILLA  ;
+putoilla
+	putoilla+V:putoil  VERB_VASTAILLA  ;
+	putoilla+V:puto  VERB_ARVAILLA  ;
+tuhlailla
+	tuhlailla+V:tuhlail  VERB_VASTAILLA  ;
+	tuhlailla+V:tuhla  VERB_ARVAILLA  ;
+luotsailla
+	luotsailla+V:luotsail  VERB_VASTAILLA  ;
+	luotsailla+V:luotsa  VERB_ARVAILLA  ;
+riiailla
+	riiailla+V:riiail  VERB_VASTAILLA  ;
+	riiailla+V:riia  VERB_ARVAILLA  ;
+nyökkäillä
+	nyökkäillä+V:nyökkäil  VERB_ÄKSYILLÄ  ;
+	nyökkäillä+V:nyökkä  VERB_LEPÄILLÄ  ;
+kukkoilla
+	kukkoilla+V:kukkoil  VERB_VASTAILLA  ;
+	kukkoilla+V:kukko  VERB_ARVAILLA  ;
+tunteilla
+	tunteilla+V:tunteil  VERB_ETUILLA  ;
+	tunteilla+V:tunteil  VERB_VASTAILLA  ;
+viekastella
+	viekastella+V:viekastel  VERB_ETUILLA  ;
+	viekastella+V:viekastel  VERB_VASTAILLA  ;
+halata
+	halata+V:halat  VERB_RAIKAA  ;
+	halata+V:hala  VERB_ARVATA  ;
+	halata+V:hala  VERB_HALAJAA  ;
+ivailla
+	ivailla+V:ivail  VERB_VASTAILLA  ;
+	ivailla+V:iva  VERB_ARVAILLA  ;
+vaahdota
+	vaahdota+V:vaah  VERB_KADOTA  ;
+	vaahdota+V:vaah  VERB_VAAHDOTA  ;
+piirtyä
+	piirtyä+V:piir  VERB_KIERTYÄ  ;
+	piirtyä+V:piir  VERB_PYÖRTYÄ  ;
+esilletulla
+	esilletulla+V:esilletul  VERB_ETUILLA  ;
+	esilletulla+V:esilletul  VERB_VASTAILLA  ;
+kinailla
+	kinailla+V:kinail  VERB_VASTAILLA  ;
+	kinailla+V:kina  VERB_ARVAILLA  ;
+kaahailla
+	kaahailla+V:kaahail  VERB_VASTAILLA  ;
+	kaahailla+V:kaaha  VERB_ARVAILLA  ;
+nappailla
+	nappailla+V:nappail  VERB_VASTAILLA  ;
+	nappailla+V:nappa  VERB_ARVAILLA  ;
+jammailla
+	jammailla+V:jammail  VERB_VASTAILLA  ;
+	jammailla+V:jamma  VERB_ARVAILLA  ;
+tavata
+	tavata+V:tava  VERB_ARVATA  ;
+	tavata+V:ta  VERB_KAIVATA  ;
+	tavata+V+Use/NG:ta  VERB_KAIVATA  ;
+suunnata
+	suunnata+V:suunn  VERB_SUUNNATA  ;
+	suunnata+V:suun  VERB_SUUNNATA  ;
+hätäillä
+	hätäillä+V:hätäil  VERB_ÄKSYILLÄ  ;
+	hätäillä+V:hätä  VERB_LEPÄILLÄ  ;
+velmuilla
+	velmuilla+V:velmuil  VERB_ETUILLA  ;
+	velmuilla+V:velmuil  VERB_VASTAILLA  ;
+reippailla
+	reippailla+V:reippail  VERB_VASTAILLA  ;
+	reippailla+V:reippa  VERB_ARVAILLA  ;
+kainostella
+	kainostella+V:kainostel  VERB_ETUILLA  ;
+	kainostella+V:kainostel  VERB_VASTAILLA  ;
+arvailla
+	arvailla+V:arvail  VERB_VASTAILLA  ;
+	arvailla+V:arva  VERB_ARVAILLA  ;
+suojamaadoittaa
+	suojamaadoittaa+V:suoja#maadoit  VERB_VIEROITTAA  ;
+	suojamaadoittaa+V:suojamaadoit  VERB_VIEROITTAA  ;
+narrailla
+	narrailla+V:narrail  VERB_VASTAILLA  ;
+	narrailla+V:narra  VERB_ARVAILLA  ;
+naureskella
+	naureskella+V:naureskel  VERB_ETUILLA  ;
+	naureskella+V:naureskel  VERB_VASTAILLA  ;
+palvella
+	palvella+V:palvel  VERB_ETUILLA  ;
+	palvella+V:palvel  VERB_VASTAILLA  ;
+tavailla
+	tavailla+V:tavail  VERB_VASTAILLA  ;
+	tavailla+V:tava  VERB_ARVAILLA  ;
+taivastella
+	taivastella+V:taivastel  VERB_ETUILLA  ;
+	taivastella+V:taivastel  VERB_VASTAILLA  ;
+treenaantua
+	treenaantua+V:treenaantua  #  ;
+	treenaantua+V:treenaan  VERB_VAKAANTUA  ;
+vertyä
+	vertyä+V:ver  VERB_KIERTYÄ  ;
+	vertyä+V:ver  VERB_PYÖRTYÄ  ;
+mahtailla
+	mahtailla+V:mahtail  VERB_VASTAILLA  ;
+	mahtailla+V:mahta  VERB_ARVAILLA  ;
+heikota
+	heikota+V:heik  VERB_KAIKOTA  ;
+	heikota+V:heik  VERB_ULOTA  ;
+torailla
+	torailla+V:torail  VERB_VASTAILLA  ;
+	torailla+V:tora  VERB_ARVAILLA  ;
+vauhkoilla
+	vauhkoilla+V:vauhkoil  VERB_VASTAILLA  ;
+	vauhkoilla+V:vauhko  VERB_ARVAILLA  ;
+railoilla
+	railoilla+V:railoil  VERB_VASTAILLA  ;
+	railoilla+V:railo  VERB_ARVAILLA  ;
+kuhnailla
+	kuhnailla+V:kuhnail  VERB_VASTAILLA  ;
+	kuhnailla+V:kuhna  VERB_ARVAILLA  ;
+ujostella
+	ujostella+V:ujostel  VERB_ETUILLA  ;
+	ujostella+V:ujostel  VERB_VASTAILLA  ;
+huuleilla
+	huuleilla+V:huuleil  VERB_ETUILLA  ;
+	huuleilla+V:huuleil  VERB_VASTAILLA  ;
+nettailla
+	nettailla+V:nettailla  #  ;
+	nettailla+V:netta  VERB_ARVAILLA  ;
+kitsastella
+	kitsastella+V:kitsastel  VERB_ETUILLA  ;
+	kitsastella+V:kitsastel  VERB_VASTAILLA  ;
+maistella
+	maistella+V:maistel  VERB_ETUILLA  ;
+	maistella+V:maistel  VERB_VASTAILLA  ;
+rietastella
+	rietastella+V:rietastel  VERB_ETUILLA  ;
+	rietastella+V:rietastel  VERB_VASTAILLA  ;
+kuulla
+	kuulla+V:kuul  VERB_ETUILLA  ;
+	kuulla+V:kuul  VERB_VASTAILLA  ;
+muikistella
+	muikistella+V:muikistel  VERB_ETUILLA  ;
+	muikistella+V:muikistel  VERB_VASTAILLA  ;
+intoilla
+	intoilla+V:intoil  VERB_VASTAILLA  ;
+	intoilla+V:into  VERB_ARVAILLA  ;
+temppuilla
+	temppuilla+V:temppuil  VERB_ETUILLA  ;
+	temppuilla+V:temppuil  VERB_VASTAILLA  ;
+käpertyä
+	käpertyä+V:käper  VERB_KIERTYÄ  ;
+	käpertyä+V:käper  VERB_PYÖRTYÄ  ;
+suhailla
+	suhailla+V:suhail  VERB_VASTAILLA  ;
+	suhailla+V:suha  VERB_ARVAILLA  ;
+sammuilla
+	sammuilla+V:sammuilla  #  ;
+	sammuilla+V:sammuil  VERB_ETUILLA  ;
+vehtailla
+	vehtailla+V:vehtail  VERB_VASTAILLA  ;
+	vehtailla+V:vehta  VERB_ARVAILLA  ;
+pehmoilla
+	pehmoilla+V:pehmoil  VERB_VASTAILLA  ;
+	pehmoilla+V:pehmo  VERB_ARVAILLA  ;
+pintaliitää
+	pintaliitää+V:pintaliitää  #  ;
+	pintaliitää+V:pintalii  VERB_KIITÄÄ  ;
+astella
+	astella+V:astel  VERB_ETUILLA  ;
+	astella+V:astel  VERB_VASTAILLA  ;
+ihailla
+	ihailla+V:ihail  VERB_VASTAILLA  ;
+	ihailla+V:iha  VERB_ARVAILLA  ;
+tiedustella
+	tiedustella+V:tiedustel  VERB_ETUILLA  ;
+	tiedustella+V:tiedustel  VERB_VASTAILLA  ;
+moottoripyöräillä
+	moottoripyöräillä+V:moottoripyöräil  VERB_ÄKSYILLÄ  ;
+	moottoripyöräillä+V:moottoripyörä  VERB_LEPÄILLÄ  ;
+armastella
+	armastella+V:armastel  VERB_ETUILLA  ;
+	armastella+V:armastel  VERB_VASTAILLA  ;
+pakittaa
+	pakittaa+V:pakittaa  #  ;
+	pakittaa+V:pakit  VERB_VIEROITTAA  ;
+arvella
+	arvella+V:arvel  VERB_ETUILLA  ;
+	arvella+V:arvel  VERB_VASTAILLA  ;
+lainailla
+	lainailla+V:lainail  VERB_VASTAILLA  ;
+	lainailla+V:laina  VERB_ARVAILLA  ;
+törttöillä
+	törttöillä+V:törttöil  VERB_ÄKSYILLÄ  ;
+	törttöillä+V:törttö  VERB_LEPÄILLÄ  ;
+raapustella
+	raapustella+V:raapustella  #  ;
+	raapustella+V:raapustel  VERB_ETUILLA  ;
+vierailla
+	vierailla+V:vierail  VERB_VASTAILLA  ;
+	vierailla+V:viera  VERB_ARVAILLA  ;
+kolistella
+	kolistella+V:kolistel  VERB_ETUILLA  ;
+	kolistella+V:kolistel  VERB_VASTAILLA  ;
+pottuilla
+	pottuilla+V:pottuil  VERB_ETUILLA  ;
+	pottuilla+V:pottuil  VERB_VASTAILLA  ;
+hoppuilla
+	hoppuilla+V:hoppuil  VERB_ETUILLA  ;
+	hoppuilla+V:hoppuil  VERB_VASTAILLA  ;
+jekkuilla
+	jekkuilla+V:jekkuil  VERB_ETUILLA  ;
+	jekkuilla+V:jekkuil  VERB_VASTAILLA  ;
+paseerailla
+	paseerailla+V:paseerail  VERB_VASTAILLA  ;
+	paseerailla+V:paseera  VERB_ARVAILLA  ;
+röyhytä
+	röyhytä+V:röyhy  VERB_MYRSKYTÄ  ;
+	röyhytä+V:röyhy  VERB_SELVITÄ  ;
+porsastella
+	porsastella+V:porsastel  VERB_ETUILLA  ;
+	porsastella+V:porsastel  VERB_VASTAILLA  ;
+hommailla
+	hommailla+V:hommail  VERB_VASTAILLA  ;
+	hommailla+V:homma  VERB_ARVAILLA  ;
+kirmailla
+	kirmailla+V:kirmail  VERB_VASTAILLA  ;
+	kirmailla+V:kirma  VERB_ARVAILLA  ;
+ilmalautailla
+	ilmalautailla+V:ilmalautail  VERB_VASTAILLA  ;
+	ilmalautailla+V:ilmalauta  VERB_ARVAILLA  ;
+luulla
+	luulla+V:luul  VERB_ETUILLA  ;
+	luulla+V:luul  VERB_VASTAILLA  ;
+palailla
+	palailla+V:palail  VERB_VASTAILLA  ;
+	palailla+V:pala  VERB_ARVAILLA  ;
+kuivasuolata
+	kuivasuolata+V:kuiva#suola  VERB_ARVATA  ;
+	kuivasuolata+V:kuivasuola  VERB_ARVATA  ;
+tallailla
+	tallailla+V:tallail  VERB_VASTAILLA  ;
+	tallailla+V:talla  VERB_ARVAILLA  ;
+hölmöillä
+	hölmöillä+V:hölmöil  VERB_ÄKSYILLÄ  ;
+	hölmöillä+V:hölmö  VERB_LEPÄILLÄ  ;
+kyläillä
+	kyläillä+V:kyläil  VERB_ÄKSYILLÄ  ;
+	kyläillä+V:kylä  VERB_LEPÄILLÄ  ;
+huvimatkailla
+	huvimatkailla+V:huvimatkail  VERB_VASTAILLA  ;
+	huvimatkailla+V:huvimatka  VERB_ARVAILLA  ;
+pokata
+	pokata+V:poka  VERB_ARVATA  ;
+	pokata+V:pok  VERB_MORKATA  ;
+kilpailla
+	kilpailla+V:kilpail  VERB_VASTAILLA  ;
+	kilpailla+V:kilpa  VERB_ARVAILLA  ;
+kompastella
+	kompastella+V:kompastel  VERB_ETUILLA  ;
+	kompastella+V:kompastel  VERB_VASTAILLA  ;
+hoivailla
+	hoivailla+V:hoivail  VERB_VASTAILLA  ;
+	hoivailla+V:hoiva  VERB_ARVAILLA  ;
+kivertyä
+	kivertyä+V:kiver  VERB_KIERTYÄ  ;
+	kivertyä+V:kiver  VERB_PYÖRTYÄ  ;
+satuilla
+	satuilla+V:satuil  VERB_ETUILLA  ;
+	satuilla+V:satuil  VERB_VASTAILLA  ;
+suojella
+	suojella+V:suojel  VERB_ETUILLA  ;
+	suojella+V:suojel  VERB_VASTAILLA  ;
+karkailla
+	karkailla+V:karkail  VERB_VASTAILLA  ;
+	karkailla+V:karka  VERB_ARVAILLA  ;
+punastella
+	punastella+V:punastel  VERB_ETUILLA  ;
+	punastella+V:punastel  VERB_VASTAILLA  ;
+koristella
+	koristella+V:koristel  VERB_ETUILLA  ;
+	koristella+V:koristel  VERB_VASTAILLA  ;
+laskeskella
+	laskeskella+V:laskeskel  VERB_ETUILLA  ;
+	laskeskella+V:laskeskel  VERB_VASTAILLA  ;
+keljuilla
+	keljuilla+V:keljuil  VERB_ETUILLA  ;
+	keljuilla+V:keljuil  VERB_VASTAILLA  ;
+aueta
+	aueta+V:au  VERB_NIUKETA  ;
+	aueta+V:au  VERB_POIKETA  ;
+kerskailla
+	kerskailla+V:kerskail  VERB_VASTAILLA  ;
+	kerskailla+V:kerska  VERB_ARVAILLA  ;
+ohimennä
+	ohimennä+V:ohimen  VERB_MENNÄ  ;
+	ohimennä+V:ohime  VERB_MENNÄ  ;
+ulvoskella
+	ulvoskella+V:ulvoskel  VERB_ETUILLA  ;
+	ulvoskella+V:ulvoskel  VERB_VASTAILLA  ;
+nuukailla
+	nuukailla+V:nuukail  VERB_VASTAILLA  ;
+	nuukailla+V:nuuka  VERB_ARVAILLA  ;
+selailla
+	selailla+V:selail  VERB_VASTAILLA  ;
+	selailla+V:sela  VERB_ARVAILLA  ;
+typertyä
+	typertyä+V:typer  VERB_KIERTYÄ  ;
+	typertyä+V:typer  VERB_PYÖRTYÄ  ;
+kyhäillä
+	kyhäillä+V:kyhäil  VERB_ÄKSYILLÄ  ;
+	kyhäillä+V:kyhä  VERB_LEPÄILLÄ  ;
+kouruilla
+	kouruilla+V:kouruil  VERB_ETUILLA  ;
+	kouruilla+V:kouruil  VERB_VASTAILLA  ;
+herrastella
+	herrastella+V:herrastel  VERB_ETUILLA  ;
+	herrastella+V:herrastel  VERB_VASTAILLA  ;
+kiekkoilla
+	kiekkoilla+V:kiekkoil  VERB_VASTAILLA  ;
+	kiekkoilla+V:kiekko  VERB_ARVAILLA  ;
+mutustella
+	mutustella+V:mutustel  VERB_ETUILLA  ;
+	mutustella+V:mutustel  VERB_VASTAILLA  ;
+haaveilla
+	haaveilla+V:haaveil  VERB_ETUILLA  ;
+	haaveilla+V:haaveil  VERB_VASTAILLA  ;
+runoilla
+	runoilla+V:runoil  VERB_VASTAILLA  ;
+	runoilla+V:runo  VERB_ARVAILLA  ;
+maalailla
+	maalailla+V:maalail  VERB_VASTAILLA  ;
+	maalailla+V:maala  VERB_ARVAILLA  ;
+painella
+	painella+V:painel  VERB_ETUILLA  ;
+	painella+V:painel  VERB_VASTAILLA  ;
+kiertyä
+	kiertyä+V:kier  VERB_KIERTYÄ  ;
+	kiertyä+V:kier  VERB_PYÖRTYÄ  ;
+kynäillä
+	kynäillä+V:kynäil  VERB_ÄKSYILLÄ  ;
+	kynäillä+V:kynä  VERB_LEPÄILLÄ  ;
+loikoilla
+	loikoilla+V:loikoil  VERB_VASTAILLA  ;
+	loikoilla+V:loiko  VERB_ARVAILLA  ;
+kouristella
+	kouristella+V:kouristel  VERB_ETUILLA  ;
+	kouristella+V:kouristel  VERB_VASTAILLA  ;
+julmistella
+	julmistella+V:julmistel  VERB_ETUILLA  ;
+	julmistella+V:julmistel  VERB_VASTAILLA  ;
+härnäillä
+	härnäillä+V:härnäil  VERB_ÄKSYILLÄ  ;
+	härnäillä+V:härnä  VERB_LEPÄILLÄ  ;
+mustamaalata
+	mustamaalata+V:musta#maala  VERB_ARVATA  ;
+	mustamaalata+V:mustamaala  VERB_ARVATA  ;
+tasapainoilla
+	tasapainoilla+V:tasapainoil  VERB_VASTAILLA  ;
+	tasapainoilla+V:tasa#paino  VERB_ARVAILLA  ;
+	tasapainoilla+V:tasapaino  VERB_ARVAILLA  ;
+kurvailla
+	kurvailla+V:kurvail  VERB_VASTAILLA  ;
+	kurvailla+V:kurva  VERB_ARVAILLA  ;
+ärtyä
+	ärtyä+V:är  VERB_KIERTYÄ  ;
+	ärtyä+V:är  VERB_PYÖRTYÄ  ;
+penkoutua
+	penkoutua+V:penkoutua  #  ;
+	penkoutua+V:penkou  VERB_ROHTUA  ;
+pyörtyä
+	pyörtyä+V:pyör  VERB_KIERTYÄ  ;
+	pyörtyä+V:pyör  VERB_PYÖRTYÄ  ;
+opiskella
+	opiskella+V:opiskel  VERB_ETUILLA  ;
+	opiskella+V:opiskel  VERB_VASTAILLA  ;
+torveilla
+	torveilla+V:torveil  VERB_ETUILLA  ;
+	torveilla+V:torveil  VERB_VASTAILLA  ;
+tissutella
+	tissutella+V:tissutel  VERB_ETUILLA  ;
+	tissutella+V:tissut  VERB_SULATELLA  ;
+vakoilla
+	vakoilla+V:vakoil  VERB_VASTAILLA  ;
+	vakoilla+V:vako  VERB_ARVAILLA  ;
+parveilla
+	parveilla+V:parveil  VERB_ETUILLA  ;
+	parveilla+V:parveil  VERB_VASTAILLA  ;
+viittoilla
+	viittoilla+V:viittoil  VERB_VASTAILLA  ;
+	viittoilla+V:viitto  VERB_ARVAILLA  ;
+hämärtyä
+	hämärtyä+V:hämär  VERB_KIERTYÄ  ;
+	hämärtyä+V:hämär  VERB_PYÖRTYÄ  ;
+heivauttaa
+	heivauttaa+V:heivauttaa  #  ;
+	heivauttaa+V:heivaut  VERB_VIEROITTAA  ;
+kovistella
+	kovistella+V:kovistel  VERB_ETUILLA  ;
+	kovistella+V:kovistel  VERB_VASTAILLA  ;
+kiinnitellä
+	kiinnitellä+V:kiinnitellä  #  ;
+	kiinnitellä+V:kiinnit  VERB_HERÄTELLÄ  ;
+anniskella
+	anniskella+V:anniskel  VERB_ETUILLA  ;
+	anniskella+V:anniskel  VERB_VASTAILLA  ;
+tulistella
+	tulistella+V:tulistel  VERB_ETUILLA  ;
+	tulistella+V:tulistel  VERB_VASTAILLA  ;
+kupruilla
+	kupruilla+V:kupruil  VERB_ETUILLA  ;
+	kupruilla+V:kupruil  VERB_VASTAILLA  ;
+palata
+	palata+V:pala  VERB_ARVATA  ;
+	palata+V:pala  VERB_HALAJAA  ;
+veikkailla
+	veikkailla+V:veikkail  VERB_VASTAILLA  ;
+	veikkailla+V:veikka  VERB_ARVAILLA  ;
+kasailla
+	kasailla+V:kasail  VERB_VASTAILLA  ;
+	kasailla+V:kasa  VERB_ARVAILLA  ;
+rimpuilla
+	rimpuilla+V:rimpuil  VERB_ETUILLA  ;
+	rimpuilla+V:rimpuil  VERB_VASTAILLA  ;
+sumeilla
+	sumeilla+V:sumeil  VERB_ETUILLA  ;
+	sumeilla+V:sumeil  VERB_VASTAILLA  ;
+perustella
+	perustella+V:perustel  VERB_ETUILLA  ;
+	perustella+V:perustel  VERB_VASTAILLA  ;
+rymytä
+	rymytä+V:rymy  VERB_MYRSKYTÄ  ;
+	rymytä+V:rymy  VERB_SELVITÄ  ;
+kummastella
+	kummastella+V:kummastel  VERB_ETUILLA  ;
+	kummastella+V:kummastel  VERB_VASTAILLA  ;
+urheilla
+	urheilla+V:urheil  VERB_ETUILLA  ;
+	urheilla+V:urheil  VERB_VASTAILLA  ;
+pohdituttaa
+	pohdituttaa+V:pohdituttaa  #  ;
+	pohdituttaa+V:pohditut  VERB_VIEROITTAA  ;
+ravistella
+	ravistella+V:ravistel  VERB_ETUILLA  ;
+	ravistella+V:ravistel  VERB_VASTAILLA  ;
+konttailla
+	konttailla+V:konttail  VERB_VASTAILLA  ;
+	konttailla+V:kontta  VERB_ARVAILLA  ;
+kuskailla
+	kuskailla+V:kuskail  VERB_VASTAILLA  ;
+	kuskailla+V:kuska  VERB_ARVAILLA  ;
+keskenmennä
+	keskenmennä+V:keskenmen  VERB_MENNÄ  ;
+	keskenmennä+V:keskenme  VERB_MENNÄ  ;
+kuvastella
+	kuvastella+V:kuvastel  VERB_ETUILLA  ;
+	kuvastella+V:kuvastel  VERB_VASTAILLA  ;
+asianajaa
+	asianajaa+V:asianajaa  #  ;
+	asianajaa+V:asianaj  VERB_KASVAA  ;
+täytäntöönpanna
+	täytäntöönpanna+V:täytäntöönpan  VERB_PANNA  ;
+	täytäntöönpanna+V:täytäntöönpa  VERB_PANNA  ;
+siunailla
+	siunailla+V:siunail  VERB_VASTAILLA  ;
+	siunailla+V:siuna  VERB_ARVAILLA  ;
+löhöillä
+	löhöillä+V:löhöil  VERB_ÄKSYILLÄ  ;
+	löhöillä+V:löhö  VERB_LEPÄILLÄ  ;
+kirjailla
+	kirjailla+V:kirjail  VERB_VASTAILLA  ;
+	kirjailla+V:kirja  VERB_ARVAILLA  ;
+kuolla
+	kuolla+V:kuol  VERB_ETUILLA  ;
+	kuolla+V:kuol  VERB_VASTAILLA  ;
+todistella
+	todistella+V:todistel  VERB_ETUILLA  ;
+	todistella+V:todistel  VERB_VASTAILLA  ;
+esimuotoilla
+	esimuotoilla+V:esimuotoil  VERB_VASTAILLA  ;
+	esimuotoilla+V:esimuoto  VERB_ARVAILLA  ;
+elpyä
+	elpyä+V:el  VERB_ELPYÄ  ;
+	elpyä+V:el  VERB_SYÖPYÄ  ;
+lähitaistella
+	lähitaistella+V:lähitaistel  VERB_ETUILLA  ;
+	lähitaistella+V:lähitaistel  VERB_VASTAILLA  ;
+diivailla
+	diivailla+V:diivail  VERB_VASTAILLA  ;
+	diivailla+V:diiva  VERB_ARVAILLA  ;
+naitattaa
+	naitattaa+V:naitattaa  #  ;
+	naitattaa+V:naitat  VERB_VIEROITTAA  ;
+viisastella
+	viisastella+V:viisastel  VERB_ETUILLA  ;
+	viisastella+V:viisastel  VERB_VASTAILLA  ;
+oieta
+	oieta+V:oi  VERB_NIUKETA  ;
+	oieta+V:oi  VERB_POIKETA  ;
+katsella
+	katsella+V:katsel  VERB_ETUILLA  ;
+	katsella+V:katsel  VERB_VASTAILLA  ;
+pähkäillä
+	pähkäillä+V:pähkäil  VERB_ÄKSYILLÄ  ;
+	pähkäillä+V:pähkä  VERB_LEPÄILLÄ  ;
+pyöräillä
+	pyöräillä+V:pyöräil  VERB_ÄKSYILLÄ  ;
+	pyöräillä+V:pyörä  VERB_LEPÄILLÄ  ;
+makeilla
+	makeilla+V:makeil  VERB_ETUILLA  ;
+	makeilla+V:makeil  VERB_VASTAILLA  ;
+kyynistyä
+	kyynistyä+V:kyynisty  VERB_ÄLLISTYÄ  ;
+	kyynistyä+V:kyynistyä  #  ;
+yöpyä
+	yöpyä+V:yö  VERB_ELPYÄ  ;
+	yöpyä+V:yö  VERB_SYÖPYÄ  ;
+nimetä
+	nimetä+V:nime  VERB_MYRSKYTÄ  ;
+	nimetä+V:nime  VERB_SELVITÄ  ;
+pursuilla
+	pursuilla+V:pursuil  VERB_ETUILLA  ;
+	pursuilla+V:pursuil  VERB_VASTAILLA  ;
+kuikuilla
+	kuikuilla+V:kuikuil  VERB_ETUILLA  ;
+	kuikuilla+V:kuikuil  VERB_VASTAILLA  ;
+herjailla
+	herjailla+V:herjail  VERB_VASTAILLA  ;
+	herjailla+V:herja  VERB_ARVAILLA  ;
+kesäasua
+	kesäasua+V:kesäasua  #  ;
+	kesäasua+V:kesäasu  VERB_KAUNISTUA  ;
+keilailla
+	keilailla+V:keilail  VERB_VASTAILLA  ;
+	keilailla+V:keila  VERB_ARVAILLA  ;
+rehvastella
+	rehvastella+V:rehvastel  VERB_ETUILLA  ;
+	rehvastella+V:rehvastel  VERB_VASTAILLA  ;
+rapistella
+	rapistella+V:rapistel  VERB_ETUILLA  ;
+	rapistella+V:rapistel  VERB_VASTAILLA  ;
+ounastella
+	ounastella+V:ounastel  VERB_ETUILLA  ;
+	ounastella+V:ounastel  VERB_VASTAILLA  ;
+kiinailla
+	kiinailla+V:kiinail  VERB_VASTAILLA  ;
+	kiinailla+V:kiina  VERB_ARVAILLA  ;
+kelkkailla
+	kelkkailla+V:kelkkail  VERB_VASTAILLA  ;
+	kelkkailla+V:kelkka  VERB_ARVAILLA  ;
+töytäillä
+	töytäillä+V:töytäil  VERB_ÄKSYILLÄ  ;
+	töytäillä+V:töytä  VERB_LEPÄILLÄ  ;
+verhoilla
+	verhoilla+V:verhoil  VERB_VASTAILLA  ;
+	verhoilla+V:verho  VERB_ARVAILLA  ;
+kurkkailla
+	kurkkailla+V:kurkkail  VERB_VASTAILLA  ;
+	kurkkailla+V:kurkka  VERB_ARVAILLA  ;
+rakoilla
+	rakoilla+V:rakoil  VERB_VASTAILLA  ;
+	rakoilla+V:rako  VERB_ARVAILLA  ;
+aristella
+	aristella+V:aristel  VERB_ETUILLA  ;
+	aristella+V:aristel  VERB_VASTAILLA  ;
+tarkastella
+	tarkastella+V:tarkastel  VERB_ETUILLA  ;
+	tarkastella+V:tarkastel  VERB_VASTAILLA  ;
+velttoilla
+	velttoilla+V:velttoil  VERB_VASTAILLA  ;
+	velttoilla+V:veltto  VERB_ARVAILLA  ;
+möyrytä
+	möyrytä+V:möyry  VERB_MYRSKYTÄ  ;
+	möyrytä+V:möyry  VERB_SELVITÄ  ;
+jarrutella
+	jarrutella+V:jarrutella  #  ;
+	jarrutella+V:jarrut  VERB_SULATELLA  ;
+kopeilla
+	kopeilla+V:kopeil  VERB_ETUILLA  ;
+	kopeilla+V:kopeil  VERB_VASTAILLA  ;
+pudistella
+	pudistella+V:pudistel  VERB_ETUILLA  ;
+	pudistella+V:pudistel  VERB_VASTAILLA  ;
+tonttuilla
+	tonttuilla+V:tonttuil  VERB_ETUILLA  ;
+	tonttuilla+V:tonttuil  VERB_VASTAILLA  ;
+kosiskella
+	kosiskella+V:kosiskel  VERB_ETUILLA  ;
+	kosiskella+V:kosiskel  VERB_VASTAILLA  ;
+tarkkailla
+	tarkkailla+V:tarkkail  VERB_VASTAILLA  ;
+	tarkkailla+V:tarkka  VERB_ARVAILLA  ;
+häipyä
+	häipyä+V:häi  VERB_ELPYÄ  ;
+	häipyä+V:häi  VERB_SYÖPYÄ  ;
+palloilla
+	palloilla+V:palloil  VERB_VASTAILLA  ;
+	palloilla+V:pallo  VERB_ARVAILLA  ;
+ponnistella
+	ponnistella+V:ponnistel  VERB_ETUILLA  ;
+	ponnistella+V:ponnistel  VERB_VASTAILLA  ;
+hiippailla
+	hiippailla+V:hiippail  VERB_VASTAILLA  ;
+	hiippailla+V:hiippa  VERB_ARVAILLA  ;
+asustella
+	asustella+V:asustel  VERB_ETUILLA  ;
+	asustella+V:asustel  VERB_VASTAILLA  ;
+piruilla
+	piruilla+V:piruil  VERB_ETUILLA  ;
+	piruilla+V:piruil  VERB_VASTAILLA  ;
+manailla
+	manailla+V:manail  VERB_VASTAILLA  ;
+	manailla+V:mana  VERB_ARVAILLA  ;
+vihjailla
+	vihjailla+V:vihjail  VERB_VASTAILLA  ;
+	vihjailla+V:vihja  VERB_ARVAILLA  ;
+kertoilla
+	kertoilla+V:kertoil  VERB_VASTAILLA  ;
+	kertoilla+V:kerto  VERB_ARVAILLA  ;
+lobbailla
+	lobbailla+V:lobbail  VERB_VASTAILLA  ;
+	lobbailla+V:lobba  VERB_ARVAILLA  ;
+touhuilla
+	touhuilla+V:touhuil  VERB_ETUILLA  ;
+	touhuilla+V:touhuil  VERB_VASTAILLA  ;
+heihettää
+	heihettää+V:heihett  VERB_KIVISTÄÄ  ;
+	heihettää+V:heihettää  #  ;
+kursastella
+	kursastella+V:kursastel  VERB_ETUILLA  ;
+	kursastella+V:kursastel  VERB_VASTAILLA  ;
+natustella
+	natustella+V:natustel  VERB_ETUILLA  ;
+	natustella+V:natustel  VERB_VASTAILLA  ;
+pomoilla
+	pomoilla+V:pomoil  VERB_VASTAILLA  ;
+	pomoilla+V:pomo  VERB_ARVAILLA  ;
+moottoriveneillä
+	moottoriveneillä+V:moottoriveneil  VERB_ÄKSYILLÄ  ;
+	moottoriveneillä+V:moottori#veneil  VERB_ÄKSYILLÄ  ;
+nirsoilla
+	nirsoilla+V:nirsoil  VERB_VASTAILLA  ;
+	nirsoilla+V:nirso  VERB_ARVAILLA  ;
+haikailla
+	haikailla+V:haikail  VERB_VASTAILLA  ;
+	haikailla+V:haika  VERB_ARVAILLA  ;
+seilailla
+	seilailla+V:seilail  VERB_VASTAILLA  ;
+	seilailla+V:seila  VERB_ARVAILLA  ;
+aavistella
+	aavistella+V:aavistel  VERB_ETUILLA  ;
+	aavistella+V:aavistel  VERB_VASTAILLA  ;
+kestopäällystää
+	kestopäällystää+V:kesto#päällyst  VERB_KIVISTÄÄ  ;
+	kestopäällystää+V:kestopäällyst  VERB_KIVISTÄÄ  ;
+vilkuilla
+	vilkuilla+V:vilkuil  VERB_ETUILLA  ;
+	vilkuilla+V:vilkuil  VERB_VASTAILLA  ;
+halailla
+	halailla+V:halail  VERB_VASTAILLA  ;
+	halailla+V:hala  VERB_ARVAILLA  ;
+lymytä
+	lymytä+V:lymy  VERB_MYRSKYTÄ  ;
+	lymytä+V:lymy  VERB_SELVITÄ  ;
+napostella
+	napostella+V:napostel  VERB_ETUILLA  ;
+	napostella+V:napostel  VERB_VASTAILLA  ;
+laukoa
+	laukoa+V:lau  VERB_HAUKKOA  ;
+	laukoa+V:lau  VERB_TAKOA  ;
+palosuojata
+	palosuojata+V:palo#suoja  VERB_ARVATA  ;
+	palosuojata+V:palosuoja  VERB_ARVATA  ;
+pohjamaalata
+	pohjamaalata+V:pohja#maala  VERB_ARVATA  ;
+	pohjamaalata+V:pohjamaala  VERB_ARVATA  ;
+sormeilla
+	sormeilla+V:sormeil  VERB_ETUILLA  ;
+	sormeilla+V:sormeil  VERB_VASTAILLA  ;
+solmeilla
+	solmeilla+V:solmeil  VERB_ETUILLA  ;
+	solmeilla+V:solmeil  VERB_VASTAILLA  ;
+epäillä
+	epäillä+V:epäil  VERB_ÄKSYILLÄ  ;
+	epäillä+V:epä  VERB_LEPÄILLÄ  ;
+töppäillä
+	töppäillä+V:töppäil  VERB_ÄKSYILLÄ  ;
+	töppäillä+V:töppä  VERB_LEPÄILLÄ  ;
+sirostella
+	sirostella+V:sirostel  VERB_ETUILLA  ;
+	sirostella+V:sirostel  VERB_VASTAILLA  ;
+näpräillä
+	näpräillä+V:näpräil  VERB_ÄKSYILLÄ  ;
+	näpräillä+V:näprä  VERB_LEPÄILLÄ  ;
+venkoilla
+	venkoilla+V:venkoil  VERB_VASTAILLA  ;
+	venkoilla+V:venko  VERB_ARVAILLA  ;
+kualla
+	kualla+V:kualla  #  ;
+	kualla+V:kual  VERB_ETUILLA  ;
+pörräillä
+	pörräillä+V:pörräil  VERB_ÄKSYILLÄ  ;
+	pörräillä+V:pörrä  VERB_LEPÄILLÄ  ;
+silmäillä
+	silmäillä+V:silmäil  VERB_ÄKSYILLÄ  ;
+	silmäillä+V:silmä  VERB_LEPÄILLÄ  ;
+homoilla
+	homoilla+V:homoil  VERB_VASTAILLA  ;
+	homoilla+V:homo  VERB_ARVAILLA  ;
+kakistella
+	kakistella+V:kakistel  VERB_ETUILLA  ;
+	kakistella+V:kakistel  VERB_VASTAILLA  ;
+naureksia
+	naureksia+V:naureksia  #  ;
+	naureksia+V:naureks  VERB_KOSIA  ;
+laulella
+	laulella+V:laulel  VERB_ETUILLA  ;
+	laulella+V:laulel  VERB_VASTAILLA  ;
+vihertyä
+	vihertyä+V:viher  VERB_KIERTYÄ  ;
+	vihertyä+V:viher  VERB_PYÖRTYÄ  ;
+liikkeellepanna
+	liikkeellepanna+V:liikkeellepan  VERB_PANNA  ;
+	liikkeellepanna+V:liikkeellepa  VERB_PANNA  ;
+tuulla
+	tuulla+V:tuul  VERB_ETUILLA  ;
+	tuulla+V:tuul  VERB_VASTAILLA  ;
+tutkistella
+	tutkistella+V:tutkistel  VERB_ETUILLA  ;
+	tutkistella+V:tutkistel  VERB_VASTAILLA  ;
+liukastella
+	liukastella+V:liukastel  VERB_ETUILLA  ;
+	liukastella+V:liukastel  VERB_VASTAILLA  ;
+taipuilla
+	taipuilla+V:taipuil  VERB_ETUILLA  ;
+	taipuilla+V:taipuil  VERB_VASTAILLA  ;
+poimuilla
+	poimuilla+V:poimuil  VERB_ETUILLA  ;
+	poimuilla+V:poimuil  VERB_VASTAILLA  ;
+vitsailla
+	vitsailla+V:vitsail  VERB_VASTAILLA  ;
+	vitsailla+V:vitsa  VERB_ARVAILLA  ;
+sortaa
+	sortaa+V:sor  VERB_KUHERTAA  ;
+	sortaa+V:sor  VERB_SORTAA  ;
+tyrskytä
+	tyrskytä+V:tyrsky  VERB_MYRSKYTÄ  ;
+	tyrskytä+V:tyrsky  VERB_SELVITÄ  ;
+tuskailla
+	tuskailla+V:tuskail  VERB_VASTAILLA  ;
+	tuskailla+V:tuska  VERB_ARVAILLA  ;
+kaunistella
+	kaunistella+V:kaunistel  VERB_ETUILLA  ;
+	kaunistella+V:kaunistel  VERB_VASTAILLA  ;
+pussailla
+	pussailla+V:pussail  VERB_VASTAILLA  ;
+	pussailla+V:pussa  VERB_ARVAILLA  ;
+naljailla
+	naljailla+V:naljail  VERB_VASTAILLA  ;
+	naljailla+V:nalja  VERB_ARVAILLA  ;
+huristella
+	huristella+V:huristel  VERB_ETUILLA  ;
+	huristella+V:huristel  VERB_VASTAILLA  ;
+ilmapalloilla
+	ilmapalloilla+V:ilmapalloil  VERB_VASTAILLA  ;
+	ilmapalloilla+V:ilma#pallo  VERB_ARVAILLA  ;
+	ilmapalloilla+V:ilmapallo  VERB_ARVAILLA  ;
+suojamaattaa
+	suojamaattaa+V:suoja#maat  VERB_AUTTAA  ;
+	suojamaattaa+V:suojamaat  VERB_AUTTAA  ;
+samoilla
+	samoilla+V:samoil  VERB_VASTAILLA  ;
+	samoilla+V:samo  VERB_ARVAILLA  ;
+ruuvailla
+	ruuvailla+V:ruuvail  VERB_VASTAILLA  ;
+	ruuvailla+V:ruuva  VERB_ARVAILLA  ;
+koreilla
+	koreilla+V:koreil  VERB_ETUILLA  ;
+	koreilla+V:koreil  VERB_VASTAILLA  ;
+tuoresuolata
+	tuoresuolata+V:tuore#suola  VERB_ARVATA  ;
+	tuoresuolata+V:tuoresuola  VERB_ARVATA  ;
+lieroilla
+	lieroilla+V:lieroil  VERB_VASTAILLA  ;
+	lieroilla+V:liero  VERB_ARVAILLA  ;
+kellertyä
+	kellertyä+V:keller  VERB_KIERTYÄ  ;
+	kellertyä+V:keller  VERB_PYÖRTYÄ  ;
+sietä
+	sietä+V:si  VERB_JYRKETÄ  ;
+	sietä+V:si  VERB_KERETÄ  ;
+poukkoilla
+	poukkoilla+V:poukkoil  VERB_VASTAILLA  ;
+	poukkoilla+V:poukko  VERB_ARVAILLA  ;
+supistella
+	supistella+V:supistel  VERB_ETUILLA  ;
+	supistella+V:supistel  VERB_VASTAILLA  ;
+turnailla
+	turnailla+V:turnail  VERB_VASTAILLA  ;
+	turnailla+V:turna  VERB_ARVAILLA  ;
+keinuskella
+	keinuskella+V:keinuskel  VERB_ETUILLA  ;
+	keinuskella+V:keinuskel  VERB_VASTAILLA  ;
+kyttäillä
+	kyttäillä+V:kyttäil  VERB_ÄKSYILLÄ  ;
+	kyttäillä+V:kyttä  VERB_LEPÄILLÄ  ;
+hienostella
+	hienostella+V:hienostel  VERB_ETUILLA  ;
+	hienostella+V:hienostel  VERB_VASTAILLA  ;
+kivetä
+	kivetä+V:ki  VERB_KIVETÄ  ;
+	kivetä+V:kivetä  #  ;
+	kivetä+V:kive  VERB_TÄHYTÄ  ;
+karvastella
+	karvastella+V:karvastel  VERB_ETUILLA  ;
+	karvastella+V:karvastel  VERB_VASTAILLA  ;
+pulkkailla
+	pulkkailla+V:pulkkail  VERB_VASTAILLA  ;
+	pulkkailla+V:pulkka  VERB_ARVAILLA  ;
+voimailla
+	voimailla+V:voimail  VERB_VASTAILLA  ;
+	voimailla+V:voima  VERB_ARVAILLA  ;
+hörppäillä
+	hörppäillä+V:hörppäillä  #  ;
+	hörppäillä+V:hörppä  VERB_LEPÄILLÄ  ;

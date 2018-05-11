@@ -1,0 +1,89 @@
+nanos
+	nanos:nannoos ALMOS ; ! V X V	! ¢ nanosáin, nanosist, nanosân, nannoos attr noonâ
+	nanos+A+Attr:noonâ K ; ! V X V	! Attr is not in the contlex
+uápis
+	uápis:u5áppás^ÁI SUOTAS "tuttu" ; ! attr uápis, Pl+Nom uáppáseh;
+	uápis+v1:u5áppás^ÁI SUOTAS  ;
+	uápis+v2:u5áppás^ÁI RAAPIS  ;
+putes
+	putes+v1:puttás^ÁE HAANIS ; !¢ putásáin, putásist, putásân, puttás attr putes
+	putes+v2:puttá^SVs^ÁE RIGES ; !¢ puttáin, puttást, puttás, puttá attr putes
+toovláš
+	toovláš+A+Sg+Nom+Use/NG:tovláš K ;
+	toovláš:toovl TAASSAS "muinainen" ;
+jieijâskielâlâš
+	jieijâskielâlâš:jieijâs#kielâl ANOLASJ ;
+	jieijâskielâlâš+Use/NG:jiejâs#kielâl ANOLASJ ;
+epilyetittettee
+	epilyetittettee:epilyetittette PYECCEE "" ;
+	epilyetittettee:epi#lyetittette PYECCEE "epäluotettava" ;
+suotâs
+	suotâs:suottâs SUOTAS ; ! D X V !¢ suottâsáin, suottâsist, suottâsân, suottâs ! attr also suottâsis
+	suotâs+A+Attr+Use/NG:suottâsis K ;
+kossuv
+	kossuv:ko^RVss KUBDUV "paksu" ; !¢ attr. kossâ !YAML
+	kossuv:ka^RVsse KUBDUV_COMP ;
+	kossuv+Use/NG+A+Comp+Sg+Nom:kasseeb K ;
+tobdos
+	tobdos+A+Attr:tobdos K "tunnettu" ;
+	tobdos:tobdos ALMOS ; ! V  XY V	!¢tobdosáin, tobdosist, tobdosân, tobdos
+čavos
+	čavos:čapp4oos CAVOS_nocomp "ehjä" ; !YAML
+	čavos+A+Attr:čapo K ; ! V X V
+kubduv
+	kubduv:ku^RVbd KUBDUV "leveä" ; !¢ attr. kubdâ !YAML
+	kubduv:kobde KUBDUV_COMP ;
+hirmos
+	hirmos:hirmoos ALMOS "hirveä" ; !YAML
+	hirmos+A+Attr:hirmos K "hirmuinen" ;
+poččâ
+	poččâ:po^RVččâ CEPPI "katkera" ;
+	poččâ+A+Attr:počâs K "katkera" ;
+siämmáá-áigásâš
+	siämmáá-áigásâš+Use/NG:siämmáá#áigás ANOLASJ ;
+	siämmáá-áigásâš:siämmáá-áigás ANOLASJ ;
+uđđâáigásâš
+	uđđâáigásâš:uđđâ#áigás ANOLASJ ;
+	uđđâáigásâš+Use/NG:uđđâ-áigás ANOLASJ ;
+tiäđuštmettum
+	tiäđuštmettum:tiäđušt OLMOOSMETTUM ;
+	tiäđuštmettum+A+Sg+Nom+Use/NG:tiäđuuštmettum OLMOOSMETTUM ;
+viskâd
+	viskâd+Use/NG:visk FISKAD "keltainen" ; ! attr. viskis
+	viskâd:visk FISKAD ; !V XY V attr. viskis, laavcâviskis
+celkkimettum
+	celkkimettum:celkki OLMOOSMETTUM ;
+	celkkimettum+A+Sg+Nom+Use/NG:celkkimiättum OLMOOSMETTUM ;
+vaalmâš
+	vaalmâš:va^RVlmâš SUOTAS ; ! VV XY V !¢ valmâšáin, valmâšist, valmâšân, valmâš
+	vaalmâš+A+Ess:vaalmâšin K ; !
+olluv
+	olluv:o^RVll KUBDUV "korkea" ;
+	olluv:a^RVlle KUBDUV_COMP ;
+episuotâs
+	episuotâs:episuottâs SUOTAS ; ! D X V !¢ suottâsáin, suottâsist, suottâsân, suottâs ! attr also suottâsis
+	episuotâs+A+Attr+Use/NG:episuottâsis K ;
+ärttig
+	ärttig:ärttig PASTIL "omituinen" ; !¢ärttigáin, ärttigist, ärttigân, ärttig, attr ärttigis, ärttigâs ! attr ärtigis ärtigâs ?
+	ärttig+A+Attr+Use/NG:ärttigâs K ;
+kreikakielâsâš
+	kreikakielâsâš+Use/NG:kreika#kielâs ANOLASJ ;
+	kreikakielâsâš:kreikâ#kielâs ANOLASJ ;
+epiputes
+	epiputes+v1:epi#puttás^ÁE HAANIS ; !¢ putásáin, putásist, putásân, puttás attr putes
+	epiputes+v2:epi#puttá^SVs^ÁE RIGES ; !¢ puttáin, puttást, puttás, puttá attr putes
+ekvivalent
+	ekvivalent+A+Sg+Nom+Use/NG:ekvivalenttâ K "ekvivalentti" ;
+	ekvivalent:ekvivalent A_LITTER "ekvivalentti" ;
+áánsášmettum
+	áánsášmettum:áánsáš OLMOOSMETTUM ;
+	áánsášmettum+A+Sg+Nom+Use/NG:áánsâšmettum OLMOOSMETTUM ;
+korrekt
+	korrekt:korrekt A_LITTER "korrekti" ;
+	korrekt ATTR ;
+iänudâhlâš
+	iänudâhlâš+Use/NG:iänodâhl ANOLASJ "enontekiöläinen" ;
+	iänudâhlâš:iänudâhl ANOLASJ "enontekiöläinen" ;
+almos
+	almos:almoos ALMOS "ilmeinen" ; !YAML
+	almos+A+Attr:almos K ; ! V X V	! attr almos

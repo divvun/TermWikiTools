@@ -1,0 +1,375 @@
+nubph
+	nubph adv ;
+	nubph adv ;
+kråhtjoen
+	kråhtjoen:kråhtjoen adv ;
+	kråhtjoen:kråhtjoen adv ;
+daebpiegabpa
+	daebpiegabpa adv ;
+	daebpiegabpa adv ;
+namhtah
+	namhtah:namhtah adv ;
+	namhtah:namhtah adv ;
+jallan
+	jallan:jallan adv ;
+	jallan:jallan adv ;
+geevedahkesne
+	geevedahkesne adv ;
+	geevedahkesne:geevedahkesne adv ;
+veestede
+	veestede:veestede adv ;
+	veestede adv ;
+pleahtjede
+	pleahtjede adv ;
+	pleahtjede adv ;
+noerhtege
+	noerhtege:noerhtege adv ;
+	noerhtege:noerhtege adv ; ! i nord, i nordlig retning
+jeajesne
+	jeajesne adv ;
+	jeajesne:jeajesne adv ;
+tjåalede
+	tjåalede adv ;
+	tjåalede adv ;
+preangkede
+	preangkede adv ;
+	preangkede adv ;
+såagkede
+	såagkede adv ;
+	såagkede adv ;
+heaven
+	heaven:heaven adv ;
+	heaven adv ;
+daebpielistie
+	daebpielistie:daebpielistie adv ;
+	daebpielistie:daebpielistie adv ;
+krakngede
+	krakngede  adv ;
+	krakngede adv ;
+båadtsåejjien
+	båadtsåejjien:båadts#åejjien adv ;
+	båadtsåejjien:båadts#åejjien adv ;
+gaarnjede
+	gaarnjede  adv ;
+	gaarnjede adv ;
+gaahpede
+	gaahpede adv ;
+	gaahpede adv ;
+govloes
+	govloes adv ;
+	govloes:govloes adv ;
+	govloes:govloes adv ;
+dannasinie
+	dannasinie:dannasinie adv ;
+	dannasinie:dannasinie adv ;
+numhtems
+	numhtems adv ;
+	numhtems adv ;
+feejjen
+	feejjen adv ;
+	feejjen adv ;
+gietskiemisnie
+	gietskiemisnie adv ;
+	gietskiemisnie adv ;
+klåabtan
+	klåabtan adv ;
+	klåabtan adv ;
+ahkedh
+	ahkedh:ahkedh adv ;
+	ahkedh:ahkedh adv ;
+havjan
+	havjan adv ;
+	havjan adv ;
+åhtjetji
+	åhtjetji:åhtjetji adv ;
+	åhtjetji:åhtjetji adv ;
+ööjtede
+	ööjtede:ööjtede adv ;
+	ööjtede:ööjtede adv ;
+dabran
+	dabran:dabran adv ;
+	dabran:dabran adv ;
+gaasnjede
+	gaasnjede adv ;
+	gaasnjede adv ;
+daalmasmasten
+	daalmasmasten adv ;
+	daalmasmasten adv ;
+övtebe
+	övtebe adv ;
+	övtebe adv ;
+	övtebe adv ;
+	övtebe adv ; !  adv-comp removed because of MT
+gusn
+	gusn adv ;
+	gusn:gusn adv-interr-rel ;
+klåvhran
+	klåvhran adv ;
+	klåvhran adv ;
+duvvielasse
+	duvvielasse adv ;
+	duvvielasse adv ;
+daebpene
+	daebpene:daebpene adv ;
+	daebpene:daebpene adv ;
+slåaptjede
+	slåaptjede adv ;
+	slåaptjede adv ;
+njåasjlan
+	njåasjlan adv ;
+	njåasjlan adv ;
+nahtegen
+	nahtegen adv ;
+	nahtegen adv ;
+govleræjjesne
+	govleræjjesne adv ;
+	govleræjjesne:govleræjjesne adv ;
+jyseldihkie
+	jyseldihkie:jyseldihkie  adv ;
+	jyseldihkie:jyseldihkie  adv ;
+searrede
+	searrede adv ;
+	searrede adv ;
+raejkene
+	raejkene adv ;
+	raejkene adv ;
+madtjede
+	madtjede adv ;
+	madtjede adv ;
+sïerrene
+	sïerrene adv ;
+	sïerrene adv ;
+kroessehtahken
+	kroessehtahken adv ;
+	kroessehtahken adv ;
+dæjmetje
+	dæjmetje:dæjmetje adv ;
+	dæjmetje:dæjmetje adv ;
+kråavhkan
+	kråavhkan adv ;
+	kråavhkan adv ;
+gååreldahkesne
+	gååreldahkesne adv ;
+	gååreldahkesne adv ;
+gåhkaldahkesne
+	gåhkaldahkesne adv ;
+	gåhkaldahkesne adv ;
+duvviebogke
+	duvviebogke adv ;
+	duvviebogke adv ;
+nåbpadist
+	nåbpadist adv ;
+	nåbpadist adv ;
+guektielisnie
+	guektielisnie adv ;
+	guektielisnie:guektielisnie adv ;
+klåahkan
+	klåahkan adv ;
+	klåahkan adv ;
+klåvhnjan
+	klåvhnjan adv ;
+	klåvhnjan adv ;
+reantsede
+	reantsede adv ;
+	reantsede adv ;
+vietseleslaakan
+	vietseleslaakan adv ;
+	vietseleslaakan:vietseles laakanlex ;
+gåetere
+	gåetere adv ;
+	gåetere:gåetere adv ;
+habjoen
+	habjoen adv ;
+	habjoen adv ;
+gogkoe
+	gogkoe:gogkoe adv ;
+	gogkoe:gogkoe adv-interr-rel ; ! váccán dagkoe, gogkoe don vázzet
+lokse
+	lokse  adv ;
+	lokse adv ;
+sontere
+	sontere adv ;
+	sontere adv ;
+duvviebasse
+	duvviebasse adv ;
+	duvviebasse adv ;
+klåmtjan
+	klåmtjan adv ;
+	klåmtjan adv ;
+mårvan
+	mårvan  adv ;
+	mårvan adv ;
+oktemisnie
+	oktemisnie:oktemisnie adv ;
+	oktemisnie:oktemisnie adv ;
+bijjiebasse
+	bijjiebasse:bijjiebasse adv ;
+	bijjiebasse:bijjiebasse adv ;
+jeatjahligke
+	jeatjahligke adv ;
+	jeatjahligke:jeatjah ligkelex ;
+gietskie
+	gietskie adv ;
+	gietskie:gietskie adv ;
+larhvan
+	larhvan adv ;
+	larhvan adv ;
+fööjjen
+	fööjjen adv ;
+	fööjjen adv ;
+duvviegåbpoe
+	duvviegåbpoe adv ;
+	duvviegåbpoe adv ;
+låaptjede
+	låaptjede adv ;
+	låaptjede adv ;
+gåpmolen
+	gåpmolen adv ;
+	gåpmolen adv ;
+	gåpmolen:gåpmolen adv ;
+luvliegåbpoe
+	luvliegåbpoe:luvliegåbpoe adv ;
+	luvliegåbpoe:luvliegåbpoe adv ;
+vïssjeleslaakan
+	vïssjeleslaakan adv ;
+	vïssjeleslaakan:vïssjeles laakanlex ;
+råaptede
+	råaptede adv ;
+	råaptede adv ;
+guektiendaajesne
+	guektiendaajesne:guektien#daajesne adv ;
+	guektiendaajesne:guektiendaajesne adv ;
+klåbtjan
+	klåbtjan adv ;
+	klåbtjan adv ;
+duvvielisnie
+	duvvielisnie adv ;
+	duvvielisnie adv ;
+båavjoen
+	båavjoen adv ;
+	båavjoen:båavjoen adv ;
+minngiemadtjesne
+	minngiemadtjesne adv ;
+	minngiemadtjesne:minngiemadtjesne adv ;
+nimhtems
+	nimhtems adv ;
+	nimhtems adv ;
+njåavvan
+	njåavvan adv ;
+	njåavvan adv ;
+vætnjoen
+	vætnjoen:vætnjoen adv ;
+	vætnjoen:vætnjoen adv ;
+övtiebisnie
+	övtiebisnie adv ;
+	övtiebisnie adv ;
+	övtiebisnie adv ;
+nabtan
+	nabtan adv ;
+	nabtan adv ;
+njalpan
+	njalpan adv ;
+	njalpan adv ;
+klyjhpeldihkie
+	klyjhpeldihkie:klyjhpeldihkie  adv ;
+	klyjhpeldihkie:klyjhpeldihkie  adv ;
+övtiebasse
+	övtiebasse adv ;
+	övtiebasse adv ;
+håvjan
+	håvjan adv ;
+	håvjan adv ;
+daebpede
+	daebpede:daebpede adv ;
+	daebpede:daebpede adv ;
+gukt
+	gukt adv ;
+	gukt:gukt adv-interr-rel ;
+sjisjnjiemisnie
+	sjisjnjiemisnie  adv ;  ! innerst : skåapen sjisjnjiemisnie = innerst i skapet
+	sjisjnjiemisnie adv ; ! innerst : skåapen sjisjnjiemisnie = innerst i skapet
+numhtemes
+	numhtemes adv ;
+	numhtemes adv ;
+evtebe
+	evtebe adv ;
+	evtebe:evtebe adv ; !  adv-comp removed because of MT
+sjisjnjiemistie
+	sjisjnjiemistie  adv ;  ! innerst : skåapen sjisjnjiemistie = innerst i skapet
+	sjisjnjiemistie adv ; ! innerst : skåapen sjisjnjiemistie bööti goegkerden= han kom krabbende fra innerst i skapet
+åarjagåbpoe
+	åarjagåbpoe:åarjagåbpoe adv ;
+	åarjagåbpoe:åarjagåbpoe adv ;
+sjisjnjiemasse
+	sjisjnjiemasse  adv ;  ! innerst : skåapen sjisjnjiemisnie = innerst i skapet
+	sjisjnjiemasse adv ; ! innerst : skåapen sjisjnjiemisnie = innerst i skapet
+nuemhtemes
+	nuemhtemes adv ;
+	nuemhtemes adv ;
+evtemost
+	evtemost adv ;
+	evtemost adv ;
+havnan
+	havnan adv ;
+	havnan adv ;
+vålle
+	vålle adv ;
+	vålle:vålle adv ;
+nimhtemes
+	nimhtemes adv ;
+	nimhtemes adv ;
+ikth
+	ikth:ikth adv ;
+	ikth:ikth adv ;
+raatjan
+	raatjan adv ;
+	raatjan adv ;
+skåalvede
+	skåalvede adv ;
+	skåalvede adv ;
+jeejesne
+	jeejesne adv ;
+	jeejesne:jeejesne adv ;
+tjåadtjede
+	tjåadtjede adv ;
+	tjåadtjede adv ;
+håvhnjede
+	håvhnjede  adv ;
+	håvhnjede adv ;
+njæjjan
+	njæjjan adv ;
+	njæjjan adv ;
+gåajede
+	gåajede adv ;
+	gåajede adv ;
+snjallede
+	snjallede adv ;
+	snjallede adv ;
+pleaksjede
+	pleaksjede adv ;
+	pleaksjede adv ;
+plaahkede
+	plaahkede adv ;
+	plaahkede adv ;
+goss
+	goss adv ;
+	goss adv ;
+feejjene
+	feejjene adv ;
+	feejjene:feejjene adv ;
+	feejjene adv ;
+klåadtan
+	klåadtan adv ;
+	klåadtan adv ;
+evtiebisnie
+	evtiebisnie adv ;
+	evtiebisnie adv ;
+alkalisnie
+	alkalisnie:alkalisnie adv ;
+	alkalisnie:alkalisnie adv ;
+bueriebuktie
+	bueriebuktie:bueriebuktie adv ;
+	bueriebuktie:bueriebuktie adv ; !buerebe-ligke=bueriebuktie,
+slahtjan
+	slahtjan:slahtjan adv ;
+	slahtjan adv ;

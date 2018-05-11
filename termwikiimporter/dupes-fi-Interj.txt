@@ -1,0 +1,1234 @@
+hai
+	hai+Interj:hai  #  ;
+	hai+Interj:hai  PCLE_HAH  ;
+	hai+Pcle:hai  INTJ_HAH  ;
+pläts
+	pläts+Interj:pläts  PCLE_HAH  ;
+	pläts+Pcle:pläts  INTJ_HAH  ;
+tsup
+	tsup+Interj:tsup  PCLE_HAH  ;
+	tsup+Pcle:tsup  INTJ_HAH  ;
+ihh
+	ihh+Interj:ihh  PCLE_HAH  ;
+	ihh+Pcle:ihh  INTJ_HAH  ;
+kappas
+	kappas+Interj:kappas  #  ;
+	kappas+Interj:kappas  PCLE_HAH  ;
+	kappas+Pcle:kappas  INTJ_HAH  ;
+rompsis
+	rompsis+Interj:rompsis  PCLE_HAH  ;
+	rompsis+Pcle:rompsis  INTJ_HAH  ;
+seis
+	seis+Interj:seis  #  ;
+	seis+Interj:seis  PCLE_HAH  ;
+	seis+Pcle:seis  INTJ_HAH  ;
+eiei
+	eiei+Interj:eiei  PCLE_HAH  ;
+	eiei+Pcle:eiei  INTJ_HAH  ;
+huiskista
+	huiskista+Interj:huiskista  PCLE_HAH  ;
+	huiskista+Pcle:huiskista  INTJ_HAH  ;
+ahah
+	ahah+Interj:ahah  PCLE_HAH  ;
+	ahah+Pcle:ahah  INTJ_HAH  ;
+tik
+	tik+Interj:tik  PCLE_HAH  ;
+	tik+Pcle:tik  INTJ_HAH  ;
+helvetti
+	helvetti+Interj:helvetti  PCLE_HAH  ;
+	helvetti+Pcle:helvetti  INTJ_HAH  ;
+vuh
+	vuh+Interj:vuh  PCLE_HAH  ;
+	vuh+Pcle:vuh  INTJ_HAH  ;
+jaahas
+	jaahas+Interj:jaahas  PCLE_HAH  ;
+	jaahas+Pcle:jaahas  INTJ_HAH  ;
+klunks
+	klunks+Interj:klunks  PCLE_HAH  ;
+	klunks+Pcle:klunks  INTJ_HAH  ;
+öö
+	öö+Interj:öö  PCLE_HAH  ;
+	öö+Pcle:öö  INTJ_OO  ;
+tuku
+	tuku+Interj:tuku  #  ;
+	tuku+Interj:tuku  PCLE_HAH  ;
+	tuku+Pcle:tuku  INTJ_HAH  ;
+bravo
+	bravo+Interj:bravo  #  ;
+	bravo+Interj:bravo  PCLE_HAH  ;
+	bravo+Pcle:bravo  INTJ_HAH  ;
+supi
+	supi+Interj:supi  #  ;
+	supi+Interj:supi  PCLE_HAH  ;
+	supi+Pcle:supi  INTJ_HAH  ;
+hellurei
+	hellurei+Interj:hellurei  #  ;
+	hellurei+Interj:hellurei  PCLE_HAH  ;
+	hellurei+Pcle:hellurei  INTJ_HAH  ;
+hys
+	hys+Interj:hys  #  ;
+	hys+Interj:hys  PCLE_HAH  ;
+	hys+Pcle:hys  INTJ_HAH  ;
+kop
+	kop+Interj:kop  #  ;
+	kop+Interj:kop  PCLE_HAH  ;
+	kop+Pcle:kop  INTJ_HAH  ;
+yäk
+	yäk+Interj:yäk  #  ;
+	yäk+Interj:yäk  PCLE_HAH  ;
+	yäk+Pcle:yäk  INTJ_HAH  ;
+höpsis
+	höpsis+Interj:höpsis  #  ;
+	höpsis+Interj:höpsis  PCLE_HAH  ;
+	höpsis+Pcle:höpsis  INTJ_HAH  ;
+bäng
+	bäng+Interj:bäng  PCLE_HAH  ;
+	bäng+Pcle:bäng  INTJ_HAH  ;
+hui
+	hui+Interj:hui  #  ;
+	hui+Interj:hui  PCLE_HAH  ;
+	hui+Pcle:hui  INTJ_HAH  ;
+jyskis
+	jyskis+Interj:jyskis  PCLE_HAH  ;
+	jyskis+Pcle:jyskis  INTJ_HAH  ;
+phui
+	phui+Interj:phui  #  ;
+	phui+Interj:phui  PCLE_HAH  ;
+	phui+Pcle:phui  INTJ_HAH  ;
+trallallaa
+	trallallaa+Interj:trallallaa  PCLE_HAH  ;
+	trallallaa+Pcle:trallallaa  INTJ_HAH  ;
+mmm
+	mmm+Interj:mmm  #  ;
+	mmm+Interj:mmm  PCLE_HAH  ;
+	mmm+Pcle:mmm  INTJ_OO  ;
+nojoo
+	nojoo+Interj:nojoo  #  ;
+	nojoo+Interj:nojoo  PCLE_HAH  ;
+	nojoo+Pcle:nojoo  INTJ_HAH  ;
+herranjestas
+	herranjestas+Interj:herranjestas  #  ;
+	herranjestas+Interj:herranjestas  PCLE_HAH  ;
+	herranjestas+Pcle:herranjestas  INTJ_HAH  ;
+eheheh
+	eheheh+Interj:eheheh  PCLE_HAH  ;
+	eheheh+Pcle:eheheh  INTJ_HAH  ;
+tyyt
+	tyyt+Interj:tyyt  #  ;
+	tyyt+Interj:tyyt  PCLE_HAH  ;
+	tyyt+Pcle:tyyt  INTJ_HAH  ;
+tsak
+	tsak+Interj:tsak  PCLE_HAH  ;
+	tsak+Pcle:tsak  INTJ_HAH  ;
+plums
+	plums+Interj:plums  PCLE_HAH  ;
+	plums+Pcle:plums  INTJ_HAH  ;
+hoi
+	hoi+Interj:hoi  #  ;
+	hoi+Interj:hoi  PCLE_HAH  ;
+	hoi+Pcle:hoi  INTJ_HAH  ;
+naps
+	naps+Interj:naps  PCLE_HAH  ;
+	naps+Pcle:naps  INTJ_HAH  ;
+murr
+	murr+Interj:murr  PCLE_HAH  ;
+	murr+Pcle:murr  INTJ_HAH  ;
+piru
+	piru+Interj:piru  PCLE_HAH  ;
+	piru+Pcle:piru  INTJ_HAH  ;
+kis
+	kis+Interj:kis  #  ;
+	kis+Interj:kis  PCLE_HAH  ;
+	kis+Pcle:kis  INTJ_HAH  ;
+uu
+	uu+Interj:uu  PCLE_HAH  ;
+	uu+Pcle:uu  INTJ_OO  ;
+ohoh
+	ohoh+Interj:ohoh  #  ;
+	ohoh+Interj:ohoh  PCLE_HAH  ;
+	ohoh+Pcle:ohoh  INTJ_OO  ;
+herrajesta
+	herrajesta+Interj:herrajesta  #  ;
+	herrajesta+Interj:herrajesta  PCLE_HAH  ;
+	herrajesta+Pcle:herrajesta  INTJ_HAH  ;
+hyvästi
+	hyvästi+Interj:hyvästi  #  ;
+	hyvästi+Pcle:hyvästi  INTJ_HAH  ;
+ääh
+	ääh+Interj:ääh  #  ;
+	ääh+Interj:ääh  PCLE_HAH  ;
+	ääh+Pcle:ääh  INTJ_HAH  ;
+puuh
+	puuh+Interj:puuh  PCLE_HAH  ;
+	puuh+Pcle:puuh  INTJ_HAH  ;
+jaha
+	jaha+Interj:jaha  #  ;
+	jaha+Interj:jaha  PCLE_HAH  ;
+	jaha+Pcle:jaha  INTJ_HAH  ;
+heh
+	heh+Interj:heh  #  ;
+	heh+Interj:heh  PCLE_HAH  ;
+	heh+Pcle:heh  INTJ_HAH  ;
+plääh
+	plääh+Interj:plääh  PCLE_HAH  ;
+	plääh+Pcle:plääh  INTJ_HAH  ;
+hm
+	hm+Interj:hm  #  ;
+	hm+Interj:hm  PCLE_HAH  ;
+	hm+Pcle:hm  INTJ_HAH  ;
+kraaps
+	kraaps+Interj:kraaps  PCLE_HAH  ;
+	kraaps+Pcle:kraaps  INTJ_HAH  ;
+jumalauta
+	jumalauta+Interj:jumalauta  #  ;
+	jumalauta+Interj:jumalauta  PCLE_HAH  ;
+	jumalauta+Pcle:jumalauta  INTJ_HAH  ;
+kaps
+	kaps+Interj:kaps  PCLE_HAH  ;
+	kaps+Pcle:kaps  INTJ_HAH  ;
+ha
+	ha+Interj:ha  #  ;
+	ha+Interj:ha  PCLE_HAH  ;
+	ha+Pcle:ha  INTJ_OO  ;
+kraps
+	kraps+Interj:kraps  PCLE_HAH  ;
+	kraps+Pcle:kraps  INTJ_HAH  ;
+lonks
+	lonks+Interj:lonks  PCLE_HAH  ;
+	lonks+Pcle:lonks  INTJ_HAH  ;
+vittu
+	vittu+Interj:vittu  #  ;
+	vittu+Interj:vittu  PCLE_HAH  ;
+	vittu+Pcle:vittu  INTJ_HAH  ;
+polskis
+	polskis+Interj:polskis  PCLE_HAH  ;
+	polskis+Pcle:polskis  INTJ_HAH  ;
+plim
+	plim+Interj:plim  PCLE_HAH  ;
+	plim+Pcle:plim  INTJ_HAH  ;
+jumalaut
+	jumalaut+Interj:jumalaut  #  ;
+	jumalaut+Interj:jumalaut  PCLE_HAH  ;
+	jumalaut+Pcle:jumalaut  INTJ_HAH  ;
+niisk
+	niisk+Interj:niisk  PCLE_HAH  ;
+	niisk+Pcle:niisk  INTJ_HAH  ;
+eh
+	eh+Interj:eh  PCLE_HAH  ;
+	eh+Pcle:eh  INTJ_OO  ;
+sori
+	sori+Interj:sori  PCLE_HAH  ;
+	sori+Pcle:sori  INTJ_HAH  ;
+riips
+	riips+Interj:riips  PCLE_HAH  ;
+	riips+Pcle:riips  INTJ_HAH  ;
+hupsis
+	hupsis+Interj:hupsis  #  ;
+	hupsis+Interj:hupsis  PCLE_HAH  ;
+	hupsis+Pcle:hupsis  INTJ_HAH  ;
+ehei
+	ehei+Interj:ehei  #  ;
+	ehei+Interj:ehei  PCLE_HAH  ;
+	ehei+Pcle:ehei  INTJ_HAH  ;
+mh
+	mh+Interj:mh  #  ;
+	mh+Interj:mh  PCLE_HAH  ;
+	mh+Pcle:mh  INTJ_OO  ;
+jes
+	jes+Interj:jes  PCLE_HAH  ;
+	jes+Pcle:jes  INTJ_HAH  ;
+haa
+	haa+Interj:haa  #  ;
+	haa+Interj:haa  PCLE_HAH  ;
+	haa+Pcle:haa  INTJ_OO  ;
+pling
+	pling+Interj:pling  PCLE_HAH  ;
+	pling+Pcle:pling  INTJ_HAH  ;
+saakeli
+	saakeli+Interj:saakeli  PCLE_HAH  ;
+	saakeli+Pcle:saakeli  INTJ_HAH  ;
+mur
+	mur+Interj:mur  PCLE_HAH  ;
+	mur+Pcle:mur  INTJ_HAH  ;
+hoijakkaa
+	hoijakkaa+Interj:hoijakkaa  PCLE_HAH  ;
+	hoijakkaa+Pcle:hoijakkaa  INTJ_HAH  ;
+ropsis
+	ropsis+Interj:ropsis  PCLE_HAH  ;
+	ropsis+Pcle:ropsis  INTJ_HAH  ;
+öh
+	öh+Interj:öh  PCLE_HAH  ;
+	öh+Pcle:öh  INTJ_OO  ;
+oijoi
+	oijoi+Interj:oijoi  #  ;
+	oijoi+Interj:oijoi  PCLE_HAH  ;
+	oijoi+Pcle:oijoi  INTJ_HAH  ;
+jaa
+	jaa+Interj:jaa  #  ;
+	jaa+Interj:jaa  PCLE_HAH  ;
+	jaa+Pcle:jaa  INTJ_HAH  ;
+huu
+	huu+Interj:huu  PCLE_HAH  ;
+	huu+Pcle:huu  INTJ_OO  ;
+jukolauta
+	jukolauta+Interj:jukolauta  #  ;
+	jukolauta+Interj:jukolauta  PCLE_HAH  ;
+	jukolauta+Pcle:jukolauta  INTJ_HAH  ;
+boing
+	boing+Interj:boing  PCLE_HAH  ;
+	boing+Pcle:boing  INTJ_HAH  ;
+jumaliste
+	jumaliste+Interj:jumaliste  #  ;
+	jumaliste+Interj:jumaliste  PCLE_HAH  ;
+	jumaliste+Pcle:jumaliste  INTJ_HAH  ;
+puks
+	puks+Interj:puks  PCLE_HAH  ;
+	puks+Pcle:puks  INTJ_HAH  ;
+ptruu
+	ptruu+Interj:ptruu  #  ;
+	ptruu+Interj:ptruu  PCLE_HAH  ;
+	ptruu+Pcle:ptruu  INTJ_HAH  ;
+runts
+	runts+Interj:runts  PCLE_HAH  ;
+	runts+Pcle:runts  INTJ_HAH  ;
+pom
+	pom+Interj:pom  PCLE_HAH  ;
+	pom+Pcle:pom  INTJ_HAH  ;
+hiiop
+	hiiop+Interj:hiiop  #  ;
+	hiiop+Interj:hiiop  PCLE_HAH  ;
+	hiiop+Pcle:hiiop  INTJ_HAH  ;
+lumpsis
+	lumpsis+Interj:lumpsis  PCLE_HAH  ;
+	lumpsis+Pcle:lumpsis  INTJ_HAH  ;
+morjesta
+	morjesta+Interj:morjesta  #  ;
+	morjesta+Interj:morjesta  PCLE_HAH  ;
+	morjesta+Pcle:morjesta  INTJ_HAH  ;
+hellanlettas
+	hellanlettas+Interj:hellanlettas  #  ;
+	hellanlettas+Interj:hellanlettas  PCLE_HAH  ;
+	hellanlettas+Pcle:hellanlettas  INTJ_HAH  ;
+moido
+	moido+Interj:moido  PCLE_HAH  ;
+	moido+Pcle:moido  INTJ_HAH  ;
+klonks
+	klonks+Interj:klonks  PCLE_HAH  ;
+	klonks+Pcle:klonks  INTJ_HAH  ;
+läps
+	läps+Interj:läps  PCLE_HAH  ;
+	läps+Pcle:läps  INTJ_HAH  ;
+kasvain
+	kasvain+Interj:kasvain  #  ;
+	kasvain+Interj:kasvain  PCLE_HAH  ;
+	kasvain+Pcle:kasvain  INTJ_HAH  ;
+huijakkaa
+	huijakkaa+Interj:huijakkaa  PCLE_HAH  ;
+	huijakkaa+Pcle:huijakkaa  INTJ_HAH  ;
+jees
+	jees+Interj:jees  PCLE_HAH  ;
+	jees+Pcle:jees  INTJ_HAH  ;
+yhyy
+	yhyy+Interj:yhyy  #  ;
+	yhyy+Interj:yhyy  PCLE_HAH  ;
+	yhyy+Pcle:yhyy  INTJ_HAH  ;
+prkl
+	prkl+Interj:prkl  PCLE_HAH  ;
+	prkl+Pcle:prkl  INTJ_HAH  ;
+pärskis
+	pärskis+Interj:pärskis  PCLE_HAH  ;
+	pärskis+Pcle:pärskis  INTJ_HAH  ;
+tip
+	tip+Interj:tip  PCLE_HAH  ;
+	tip+Pcle:tip  INTJ_HAH  ;
+noni
+	noni+Interj:noni  PCLE_HAH  ;
+	noni+Pcle:noni  INTJ_HAH  ;
+hehe
+	hehe+Interj:hehe  #  ;
+	hehe+Interj:hehe  PCLE_HAH  ;
+	hehe+Pcle:hehe  INTJ_OO  ;
+mars
+	mars+Interj:mars  #  ;
+	mars+Interj:mars  PCLE_HAH  ;
+	mars+Pcle:mars  INTJ_HAH  ;
+ohhoijaa
+	ohhoijaa+Interj:ohhoijaa  #  ;
+	ohhoijaa+Interj:ohhoijaa  PCLE_HAH  ;
+	ohhoijaa+Pcle:ohhoijaa  INTJ_HAH  ;
+vrä
+	vrä+Interj:vrä  PCLE_HAH  ;
+	vrä+Pcle:vrä  INTJ_HAH  ;
+hau
+	hau+Interj:hau  #  ;
+	hau+Interj:hau  PCLE_HAH  ;
+	hau+Pcle:hau  INTJ_HAH  ;
+tsäp
+	tsäp+Interj:tsäp  PCLE_HAH  ;
+	tsäp+Pcle:tsäp  INTJ_HAH  ;
+vruum
+	vruum+Interj:vruum  PCLE_HAH  ;
+	vruum+Pcle:vruum  INTJ_HAH  ;
+phyi
+	phyi+Interj:phyi  #  ;
+	phyi+Interj:phyi  PCLE_HAH  ;
+	phyi+Pcle:phyi  INTJ_HAH  ;
+pentele
+	pentele+Interj:pentele  PCLE_HAH  ;
+	pentele+Pcle:pentele  INTJ_HAH  ;
+äš
+	äš+Interj:äš  #  ;
+	äš+Interj:äš  PCLE_HAH  ;
+	äš+Pcle:äš  INTJ_HAH  ;
+huhhuh
+	huhhuh+Interj:huhhuh  #  ;
+	huhhuh+Interj:huhhuh  PCLE_HAH  ;
+	huhhuh+Pcle:huhhuh  INTJ_OO  ;
+ainiin
+	ainiin+Interj:ainiin  PCLE_HAH  ;
+	ainiin+Pcle:ainiin  INTJ_HAH  ;
+sait
+	sait+Interj:sait  PCLE_HAH  ;
+	sait+Pcle:sait  INTJ_HAH  ;
+pang
+	pang+Interj:pang  PCLE_HAH  ;
+	pang+Pcle:pang  INTJ_HAH  ;
+jestas
+	jestas+Interj:jestas  #  ;
+	jestas+Interj:jestas  PCLE_HAH  ;
+	jestas+Pcle:jestas  INTJ_HAH  ;
+pum
+	pum+Interj:pum  PCLE_HAH  ;
+	pum+Pcle:pum  INTJ_HAH  ;
+molskis
+	molskis+Interj:molskis  PCLE_HAH  ;
+	molskis+Pcle:molskis  INTJ_HAH  ;
+ring
+	ring+Interj:ring  PCLE_HAH  ;
+	ring+Pcle:ring  INTJ_HAH  ;
+hep
+	hep+Interj:hep  #  ;
+	hep+Interj:hep  PCLE_HAH  ;
+	hep+Pcle:hep  INTJ_HAH  ;
+pyh
+	pyh+Interj:pyh  #  ;
+	pyh+Interj:pyh  PCLE_HAH  ;
+	pyh+Pcle:pyh  INTJ_HAH  ;
+lätsistä
+	lätsistä+Interj:lätsistä  PCLE_HAH  ;
+	lätsistä+Pcle:lätsistä  INTJ_HAH  ;
+aha
+	aha+Interj:aha  PCLE_HAH  ;
+	aha+Pcle:aha  INTJ_HAH  ;
+mää
+	mää+Interj:mää  PCLE_HAH  ;
+	mää+Pcle:mää  INTJ_HAH  ;
+miau
+	miau+Interj:miau  #  ;
+	miau+Interj:miau  PCLE_HAH  ;
+	miau+Pcle:miau  INTJ_HAH  ;
+loiskis
+	loiskis+Interj:loiskis  PCLE_HAH  ;
+	loiskis+Pcle:loiskis  INTJ_HAH  ;
+ups
+	ups+Interj:ups  #  ;
+	ups+Interj:ups  PCLE_HAH  ;
+	ups+Pcle:ups  INTJ_HAH  ;
+skool
+	skool+Interj:skool  #  ;
+	skool+Interj:skool  PCLE_HAH  ;
+	skool+Pcle:skool  INTJ_HAH  ;
+hip
+	hip+Interj:hip  #  ;
+	hip+Interj:hip  PCLE_HAH  ;
+	hip+Pcle:hip  INTJ_HAH  ;
+njoo
+	njoo+Interj:njoo  PCLE_HAH  ;
+	njoo+Pcle:njoo  INTJ_HAH  ;
+nuuh
+	nuuh+Interj:nuuh  PCLE_HAH  ;
+	nuuh+Pcle:nuuh  INTJ_HAH  ;
+om
+	om+Interj:om  #  ;
+	om+Pcle:om  INTJ_HAH  ;
+tupsis
+	tupsis+Interj:tupsis  PCLE_HAH  ;
+	tupsis+Pcle:tupsis  INTJ_HAH  ;
+pst
+	pst+Interj:pst  #  ;
+	pst+Interj:pst  PCLE_HAH  ;
+	pst+Pcle:pst  INTJ_HAH  ;
+klaps
+	klaps+Interj:klaps  PCLE_HAH  ;
+	klaps+Pcle:klaps  INTJ_HAH  ;
+piip
+	piip+Interj:piip  #  ;
+	piip+Interj:piip  PCLE_HAH  ;
+	piip+Pcle:piip  INTJ_HAH  ;
+jee
+	jee+Interj:jee  #  ;
+	jee+Interj:jee  PCLE_HAH  ;
+	jee+Pcle:jee  INTJ_HAH  ;
+hihhei
+	hihhei+Interj:hihhei  #  ;
+	hihhei+Interj:hihhei  PCLE_HAH  ;
+	hihhei+Pcle:hihhei  INTJ_HAH  ;
+ammuu
+	ammuu+Interj:ammuu  PCLE_HAH  ;
+	ammuu+Pcle:ammuu  INTJ_HAH  ;
+blää
+	blää+Interj:blää  PCLE_HAH  ;
+	blää+Pcle:blää  INTJ_HAH  ;
+auts
+	auts+Interj:auts  PCLE_HAH  ;
+	auts+Pcle:auts  INTJ_HAH  ;
+kääk
+	kääk+Interj:kääk  #  ;
+	kääk+Interj:kääk  PCLE_HAH  ;
+	kääk+Pcle:kääk  INTJ_HAH  ;
+klang
+	klang+Interj:klang  PCLE_HAH  ;
+	klang+Pcle:klang  INTJ_HAH  ;
+heippa
+	heippa+Interj:heippa  #  ;
+	heippa+Interj:heippa  PCLE_HAH  ;
+	heippa+Pcle:heippa  INTJ_HAH  ;
+moi
+	moi+Interj:moi  #  ;
+	moi+Interj:moi  PCLE_HAH  ;
+	moi+Pcle:moi  INTJ_HAH  ;
+kops
+	kops+Interj:kops  PCLE_HAH  ;
+	kops+Pcle:kops  INTJ_HAH  ;
+kopsis
+	kopsis+Interj:kopsis  PCLE_HAH  ;
+	kopsis+Pcle:kopsis  INTJ_HAH  ;
+joo
+	joo+Interj:joo  #  ;
+	joo+Interj:joo  PCLE_HAH  ;
+	joo+Pcle:joo  INTJ_HAH  ;
+okei
+	okei+Interj:okei  #  ;
+	okei+Interj:okei  PCLE_HAH  ;
+	okei+Pcle:okei  INTJ_HAH  ;
+pöh
+	pöh+Interj:pöh  PCLE_HAH  ;
+	pöh+Pcle:pöh  INTJ_HAH  ;
+plumps
+	plumps+Interj:plumps  PCLE_HAH  ;
+	plumps+Pcle:plumps  INTJ_HAH  ;
+töpsis
+	töpsis+Interj:töpsis  PCLE_HAH  ;
+	töpsis+Pcle:töpsis  INTJ_HAH  ;
+psst
+	psst+Interj:psst  PCLE_HAH  ;
+	psst+Pcle:psst  INTJ_HAH  ;
+möö
+	möö+Interj:möö  PCLE_HAH  ;
+	möö+Pcle:möö  INTJ_HAH  ;
+kalin
+	kalin+Interj:kalin  PCLE_HAH  ;
+	kalin+Pcle:kalin  INTJ_HAH  ;
+heido
+	heido+Interj:heido  PCLE_HAH  ;
+	heido+Pcle:heido  INTJ_HAH  ;
+läiskis
+	läiskis+Interj:läiskis  PCLE_HAH  ;
+	läiskis+Pcle:läiskis  INTJ_HAH  ;
+oioi
+	oioi+Interj:oioi  #  ;
+	oioi+Interj:oioi  PCLE_HAH  ;
+	oioi+Pcle:oioi  INTJ_OO  ;
+ee
+	ee+Interj:ee  PCLE_HAH  ;
+	ee+Pcle:ee  INTJ_OO  ;
+moksis
+	moksis+Interj:moksis  PCLE_HAH  ;
+	moksis+Pcle:moksis  INTJ_HAH  ;
+hyi
+	hyi+Interj:hyi  #  ;
+	hyi+Interj:hyi  PCLE_HAH  ;
+	hyi+Pcle:hyi  INTJ_HAH  ;
+tuut
+	tuut+Interj:tuut  #  ;
+	tuut+Interj:tuut  PCLE_HAH  ;
+	tuut+Pcle:tuut  INTJ_HAH  ;
+avot
+	avot+Interj:avot  PCLE_HAH  ;
+	avot+Pcle:avot  INTJ_HAH  ;
+örr
+	örr+Interj:örr  #  ;
+	örr+Interj:örr  PCLE_HAH  ;
+	örr+Pcle:örr  INTJ_HAH  ;
+huoh
+	huoh+Interj:huoh  #  ;
+	huoh+Interj:huoh  PCLE_HAH  ;
+	huoh+Pcle:huoh  INTJ_HAH  ;
+buum
+	buum+Interj:buum  PCLE_HAH  ;
+	buum+Pcle:buum  INTJ_HAH  ;
+jess
+	jess+Interj:jess  #  ;
+	jess+Interj:jess  PCLE_HAH  ;
+	jess+Pcle:jess  INTJ_HAH  ;
+jukoliste
+	jukoliste+Interj:jukoliste  #  ;
+	jukoliste+Interj:jukoliste  PCLE_HAH  ;
+	jukoliste+Pcle:jukoliste  INTJ_HAH  ;
+jou
+	jou+Interj:jou  PCLE_HAH  ;
+	jou+Pcle:jou  INTJ_HAH  ;
+hopsansaa
+	hopsansaa+Interj:hopsansaa  PCLE_HAH  ;
+	hopsansaa+Pcle:hopsansaa  INTJ_HAH  ;
+napsis
+	napsis+Interj:napsis  PCLE_HAH  ;
+	napsis+Pcle:napsis  INTJ_HAH  ;
+Oo
+	Oo+Interj:Oo  #  ;
+	Oo+Interj:Oo  PCLE_HAH  ;
+	Oo+Pcle:Oo  INTJ_OO  ;
+apropoo
+	apropoo+Interj:apropoo  PCLE_HAH  ;
+	apropoo+Pcle:apropoo  INTJ_OO  ;
+hoh
+	hoh+Interj:hoh  PCLE_HAH  ;
+	hoh+Pcle:hoh  INTJ_HAH  ;
+titityy
+	titityy+Interj:titityy  #  ;
+	titityy+Interj:titityy  PCLE_HAH  ;
+	titityy+Pcle:titityy  INTJ_HAH  ;
+tattis
+	tattis+Interj:tattis  #  ;
+	tattis+Interj:tattis  PCLE_HAH  ;
+	tattis+Pcle:tattis  INTJ_HAH  ;
+jeh
+	jeh+Interj:jeh  PCLE_HAH  ;
+	jeh+Pcle:jeh  INTJ_HAH  ;
+mhh
+	mhh+Interj:mhh  PCLE_HAH  ;
+	mhh+Pcle:mhh  INTJ_HAH  ;
+noh
+	noh+Interj:noh  #  ;
+	noh+Interj:noh  PCLE_HAH  ;
+	noh+Pcle:noh  INTJ_HAH  ;
+hyh
+	hyh+Interj:hyh  #  ;
+	hyh+Interj:hyh  PCLE_HAH  ;
+	hyh+Pcle:hyh  INTJ_HAH  ;
+mrr
+	mrr+Interj:mrr  PCLE_HAH  ;
+	mrr+Pcle:mrr  INTJ_HAH  ;
+pim
+	pim+Interj:pim  PCLE_HAH  ;
+	pim+Pcle:pim  INTJ_HAH  ;
+herranjesta
+	herranjesta+Interj:herranjesta  #  ;
+	herranjesta+Interj:herranjesta  PCLE_HAH  ;
+	herranjesta+Pcle:herranjesta  INTJ_HAH  ;
+huijaa
+	huijaa+Interj:huijaa  PCLE_HAH  ;
+	huijaa+Pcle:huijaa  INTJ_HAH  ;
+oih
+	oih+Interj:oih  #  ;
+	oih+Interj:oih  PCLE_HAH  ;
+	oih+Pcle:oih  INTJ_OO  ;
+hi
+	hi+Interj:hi  #  ;
+	hi+Interj:hi  PCLE_HAH  ;
+	hi+Pcle:hi  INTJ_OO  ;
+tök
+	tök+Interj:tök  PCLE_HAH  ;
+	tök+Pcle:tök  INTJ_HAH  ;
+jessus
+	jessus+Interj:jessus  #  ;
+	jessus+Interj:jessus  PCLE_HAH  ;
+	jessus+Pcle:jessus  INTJ_HAH  ;
+kilin
+	kilin+Interj:kilin  PCLE_HAH  ;
+	kilin+Pcle:kilin  INTJ_HAH  ;
+jassoo
+	jassoo+Interj:jassoo  #  ;
+	jassoo+Interj:jassoo  PCLE_HAH  ;
+	jassoo+Pcle:jassoo  INTJ_HAH  ;
+blääblääblää
+	blääblääblää+Interj:blääblääblää  PCLE_HAH  ;
+	blääblääblää+Pcle:blääblääblää  INTJ_HAH  ;
+humpsis
+	humpsis+Interj:humpsis  PCLE_HAH  ;
+	humpsis+Pcle:humpsis  INTJ_HAH  ;
+jaaha
+	jaaha+Interj:jaaha  #  ;
+	jaaha+Interj:jaaha  PCLE_HAH  ;
+	jaaha+Pcle:jaaha  INTJ_HAH  ;
+terve
+	terve+Interj:terve  #  ;
+	terve+Interj:terve  PCLE_HAH  ;
+	terve+Pcle:terve  INTJ_HAH  ;
+lits
+	lits+Interj:lits  PCLE_HAH  ;
+	lits+Pcle:lits  INTJ_HAH  ;
+kippis
+	kippis+Interj:kippis  #  ;
+	kippis+Interj:kippis  PCLE_HAH  ;
+	kippis+Pcle:kippis  INTJ_HAH  ;
+jybby
+	jybby+Interj:jybby  PCLE_HAH  ;
+	jybby+Pcle:jybby  INTJ_HAH  ;
+rats
+	rats+Interj:rats  PCLE_HAH  ;
+	rats+Pcle:rats  INTJ_HAH  ;
+huiskis
+	huiskis+Interj:huiskis  #  ;
+	huiskis+Interj:huiskis  PCLE_HAH  ;
+	huiskis+Pcle:huiskis  INTJ_HAH  ;
+viuh
+	viuh+Interj:viuh  PCLE_HAH  ;
+	viuh+Pcle:viuh  INTJ_HAH  ;
+noo
+	noo+Interj:noo  PCLE_HAH  ;
+	noo+Pcle:noo  INTJ_OO  ;
+juu
+	juu+Interj:juu  #  ;
+	juu+Interj:juu  PCLE_HAH  ;
+	juu+Pcle:juu  INTJ_HAH  ;
+hihuu
+	hihuu+Interj:hihuu  #  ;
+	hihuu+Interj:hihuu  PCLE_HAH  ;
+	hihuu+Pcle:hihuu  INTJ_HAH  ;
+morjes
+	morjes+Interj:morjes  #  ;
+	morjes+Interj:morjes  PCLE_HAH  ;
+	morjes+Pcle:morjes  INTJ_HAH  ;
+njaa
+	njaa+Interj:njaa  PCLE_HAH  ;
+	njaa+Pcle:njaa  INTJ_HAH  ;
+huh
+	huh+Interj:huh  #  ;
+	huh+Interj:huh  PCLE_HAH  ;
+	huh+Pcle:huh  INTJ_HAH  ;
+hups
+	hups+Interj:hups  PCLE_HAH  ;
+	hups+Pcle:hups  INTJ_HAH  ;
+naks
+	naks+Interj:naks  PCLE_HAH  ;
+	naks+Pcle:naks  INTJ_HAH  ;
+bum
+	bum+Interj:bum  PCLE_HAH  ;
+	bum+Pcle:bum  INTJ_HAH  ;
+räps
+	räps+Interj:räps  PCLE_HAH  ;
+	räps+Pcle:räps  INTJ_HAH  ;
+ihahaa
+	ihahaa+Interj:ihahaa  PCLE_HAH  ;
+	ihahaa+Pcle:ihahaa  INTJ_HAH  ;
+riks
+	riks+Interj:riks  PCLE_HAH  ;
+	riks+Pcle:riks  INTJ_HAH  ;
+töp
+	töp+Interj:töp  PCLE_HAH  ;
+	töp+Pcle:töp  INTJ_HAH  ;
+hah
+	hah+Interj:hah  #  ;
+	hah+Interj:hah  PCLE_HAH  ;
+	hah+Pcle:hah  INTJ_HAH  ;
+häh
+	häh+Interj:häh  #  ;
+	häh+Interj:häh  PCLE_HAH  ;
+	häh+Pcle:häh  INTJ_HAH  ;
+hei
+	hei+Interj:hei  #  ;
+	hei+Interj:hei  PCLE_HAH  ;
+	hei+Pcle:hei  INTJ_HAH  ;
+jeejee
+	jeejee+Interj:jeejee  PCLE_HAH  ;
+	jeejee+Pcle:jeejee  INTJ_OO  ;
+noniin
+	noniin+Interj:noniin  PCLE_HAH  ;
+	noniin+Pcle:noniin  INTJ_HAH  ;
+uh
+	uh+Interj:uh  #  ;
+	uh+Interj:uh  PCLE_HAH  ;
+	uh+Pcle:uh  INTJ_OO  ;
+pam
+	pam+Interj:pam  PCLE_HAH  ;
+	pam+Pcle:pam  INTJ_HAH  ;
+jukra
+	jukra+Interj:jukra  #  ;
+	jukra+Interj:jukra  PCLE_HAH  ;
+	jukra+Pcle:jukra  INTJ_HAH  ;
+täh
+	täh+Interj:täh  PCLE_HAH  ;
+	täh+Pcle:täh  INTJ_HAH  ;
+nips
+	nips+Interj:nips  PCLE_HAH  ;
+	nips+Pcle:nips  INTJ_HAH  ;
+tä
+	tä+Interj:tä  #  ;
+	tä+Pcle:tä  INTJ_OO  ;
+oj
+	oj+Interj:oj  #  ;
+	oj+Interj:oj  PCLE_HAH  ;
+	oj+Pcle:oj  INTJ_OO  ;
+muu
+	muu+Interj:muu  #  ;
+	muu+Interj:muu  PCLE_HAH  ;
+	muu+Pcle:muu  INTJ_HAH  ;
+öhh
+	öhh+Interj:öhh  PCLE_HAH  ;
+	öhh+Pcle:öhh  INTJ_HAH  ;
+ah
+	ah+Interj:ah  PCLE_HAH  ;
+	ah+Pcle:ah  INTJ_OO  ;
+upsis
+	upsis+Interj:upsis  #  ;
+	upsis+Interj:upsis  PCLE_HAH  ;
+	upsis+Pcle:upsis  INTJ_HAH  ;
+aijai
+	aijai+Interj:aijai  PCLE_HAH  ;
+	aijai+Pcle:aijai  INTJ_HAH  ;
+aah
+	aah+Interj:aah  PCLE_HAH  ;
+	aah+Pcle:aah  INTJ_HAH  ;
+naksis
+	naksis+Interj:naksis  PCLE_HAH  ;
+	naksis+Pcle:naksis  INTJ_HAH  ;
+hehh
+	hehh+Interj:hehh  #  ;
+	hehh+Interj:hehh  PCLE_HAH  ;
+	hehh+Pcle:hehh  INTJ_OO  ;
+porloiskis
+	porloiskis+Interj:porloiskis  PCLE_HAH  ;
+	porloiskis+Pcle:porloiskis  INTJ_HAH  ;
+muksis
+	muksis+Interj:muksis  PCLE_HAH  ;
+	muksis+Pcle:muksis  INTJ_HAH  ;
+roiskis
+	roiskis+Interj:roiskis  PCLE_HAH  ;
+	roiskis+Pcle:roiskis  INTJ_HAH  ;
+ding
+	ding+Interj:ding  PCLE_HAH  ;
+	ding+Pcle:ding  INTJ_HAH  ;
+puff
+	puff+Interj:puff  PCLE_HAH  ;
+	puff+Pcle:puff  INTJ_HAH  ;
+tumps
+	tumps+Interj:tumps  PCLE_HAH  ;
+	tumps+Pcle:tumps  INTJ_HAH  ;
+ör
+	ör+Interj:ör  #  ;
+	ör+Interj:ör  PCLE_HAH  ;
+	ör+Pcle:ör  INTJ_HAH  ;
+seesam
+	seesam+Interj:seesam  #  ;
+	seesam+Interj:seesam  PCLE_HAH  ;
+	seesam+Pcle:seesam  INTJ_HAH  ;
+jaa-a
+	jaa-a+Interj:jaa-a  PCLE_HAH  ;
+	jaa-a+Pcle:jaa-a  INTJ_HAH  ;
+no
+	no+Interj:no  #  ;
+	no+Interj:no  PCLE_HAH  ;
+	no+Pcle:no  INTJ_HAH  ;
+plam
+	plam+Interj:plam  PCLE_HAH  ;
+	plam+Pcle:plam  INTJ_HAH  ;
+hus
+	hus+Interj:hus  #  ;
+	hus+Interj:hus  PCLE_HAH  ;
+	hus+Pcle:hus  INTJ_HAH  ;
+klap
+	klap+Interj:klap  PCLE_HAH  ;
+	klap+Pcle:klap  INTJ_HAH  ;
+fiuu
+	fiuu+Interj:fiuu  PCLE_HAH  ;
+	fiuu+Pcle:fiuu  INTJ_HAH  ;
+oi
+	oi+Interj:oi  #  ;
+	oi+Interj:oi  PCLE_HAH  ;
+	oi+Pcle:oi  INTJ_OO  ;
+heijaa
+	heijaa+Interj:heijaa  PCLE_HAH  ;
+	heijaa+Pcle:heijaa  INTJ_HAH  ;
+äh
+	äh+Interj:äh  #  ;
+	äh+Interj:äh  PCLE_HAH  ;
+	äh+Pcle:äh  INTJ_OO  ;
+perhana
+	perhana+Interj:perhana  PCLE_HAH  ;
+	perhana+Pcle:perhana  INTJ_HAH  ;
+nyyh
+	nyyh+Interj:nyyh  PCLE_HAH  ;
+	nyyh+Pcle:nyyh  INTJ_HAH  ;
+jep
+	jep+Interj:jep  #  ;
+	jep+Interj:jep  PCLE_HAH  ;
+	jep+Pcle:jep  INTJ_HAH  ;
+heijakkaa
+	heijakkaa+Interj:heijakkaa  PCLE_HAH  ;
+	heijakkaa+Pcle:heijakkaa  INTJ_HAH  ;
+halleluja
+	halleluja+Interj:halleluja  #  ;
+	halleluja+Interj:halleluja  PCLE_HAH  ;
+	halleluja+Pcle:halleluja  INTJ_HAH  ;
+kräts
+	kräts+Interj:kräts  PCLE_HAH  ;
+	kräts+Pcle:kräts  INTJ_HAH  ;
+hui hai
+	hui% hai+Interj:hui% hai                #  ;
+	hui% hai+Interj:hui% hai  PCLE_HAH  ;
+	hui% hai+Pcle:hui% hai  INTJ_HAH  ;
+herrajestas
+	herrajestas+Interj:herrajestas  #  ;
+	herrajestas+Interj:herrajestas  PCLE_HAH  ;
+	herrajestas+Pcle:herrajestas  INTJ_HAH  ;
+hoijaa
+	hoijaa+Interj:hoijaa  PCLE_HAH  ;
+	hoijaa+Pcle:hoijaa  INTJ_HAH  ;
+perkele
+	perkele+Interj:perkele  PCLE_HAH  ;
+	perkele+Pcle:perkele  INTJ_HAH  ;
+räksis
+	räksis+Interj:räksis  PCLE_HAH  ;
+	räksis+Pcle:räksis  INTJ_HAH  ;
+joopajoo
+	joopajoo+Interj:joopajoo  PCLE_HAH  ;
+	joopajoo+Pcle:joopajoo  INTJ_HAH  ;
+hh
+	hh+Interj:hh  PCLE_HAH  ;
+	hh+Pcle:hh  INTJ_OO  ;
+jukolaut
+	jukolaut+Interj:jukolaut  #  ;
+	jukolaut+Interj:jukolaut  PCLE_HAH  ;
+	jukolaut+Pcle:jukolaut  INTJ_HAH  ;
+kling
+	kling+Interj:kling  PCLE_HAH  ;
+	kling+Pcle:kling  INTJ_HAH  ;
+aijaa
+	aijaa+Interj:aijaa  PCLE_HAH  ;
+	aijaa+Pcle:aijaa  INTJ_HAH  ;
+kolin
+	kolin+Interj:kolin  PCLE_HAH  ;
+	kolin+Pcle:kolin  INTJ_HAH  ;
+ohoi
+	ohoi+Interj:ohoi  #  ;
+	ohoi+Interj:ohoi  PCLE_HAH  ;
+	ohoi+Pcle:ohoi  INTJ_HAH  ;
+hoo
+	hoo+Interj:hoo  PCLE_HAH  ;
+	hoo+Pcle:hoo  INTJ_OO  ;
+yök
+	yök+Interj:yök  #  ;
+	yök+Interj:yök  PCLE_HAH  ;
+	yök+Pcle:yök  INTJ_HAH  ;
+mau
+	mau+Interj:mau  #  ;
+	mau+Interj:mau  PCLE_HAH  ;
+	mau+Pcle:mau  INTJ_HAH  ;
+tsip
+	tsip+Interj:tsip  PCLE_HAH  ;
+	tsip+Pcle:tsip  INTJ_HAH  ;
+aijaij
+	aijaij+Interj:aijaij  PCLE_HAH  ;
+	aijaij+Pcle:aijaij  INTJ_HAH  ;
+vitut
+	vitut+Interj:vitut  PCLE_HAH  ;
+	vitut+Pcle:vitut  INTJ_HAH  ;
+raks
+	raks+Interj:raks  PCLE_HAH  ;
+	raks+Pcle:raks  INTJ_HAH  ;
+jubbum
+	jubbum+Interj:jubbum  PCLE_HAH  ;
+	jubbum+Pcle:jubbum  INTJ_HAH  ;
+kiitti
+	kiitti+Pcle:kiitti  INTJ_HAH ;
+	kiitti+Pcle:kiitti  INTJ_HAH ;
+höh
+	höh+Interj:höh  #  ;
+	höh+Interj:höh  PCLE_HAH  ;
+	höh+Pcle:höh  INTJ_HAH  ;
+puksis
+	puksis+Interj:puksis  PCLE_HAH  ;
+	puksis+Pcle:puksis  INTJ_HAH  ;
+ööh
+	ööh+Interj:ööh  PCLE_HAH  ;
+	ööh+Pcle:ööh  INTJ_HAH  ;
+oh
+	oh+Interj:oh  #  ;
+	oh+Interj:oh  PCLE_HAH  ;
+	oh+Pcle:oh  INTJ_OO  ;
+ii
+	ii+Interj:ii  PCLE_HAH  ;
+	ii+Pcle:ii  INTJ_OO  ;
+rouskis
+	rouskis+Interj:rouskis  PCLE_HAH  ;
+	rouskis+Pcle:rouskis  INTJ_HAH  ;
+oijoij
+	oijoij+Interj:oijoij  PCLE_HAH  ;
+	oijoij+Pcle:oijoij  INTJ_HAH  ;
+blaa
+	blaa+Interj:blaa  PCLE_HAH  ;
+	blaa+Pcle:blaa  INTJ_HAH  ;
+röh
+	röh+Interj:röh  #  ;
+	röh+Interj:röh  PCLE_HAH  ;
+	röh+Pcle:röh  INTJ_HAH  ;
+kukkuu
+	kukkuu+Interj:kukkuu  #  ;
+	kukkuu+Interj:kukkuu  PCLE_HAH  ;
+	kukkuu+Pcle:kukkuu  INTJ_HAH  ;
+pai
+	pai+Interj:pai  #  ;
+	pai+Interj:pai  PCLE_HAH  ;
+	pai+Pcle:pai  INTJ_HAH  ;
+juku
+	juku+Interj:juku  #  ;
+	juku+Interj:juku  PCLE_HAH  ;
+	juku+Pcle:juku  INTJ_HAH  ;
+loiskista
+	loiskista+Interj:loiskista  PCLE_HAH  ;
+	loiskista+Pcle:loiskista  INTJ_HAH  ;
+pah
+	pah+Interj:pah  #  ;
+	pah+Pcle:pah  INTJ_HAH  ;
+ahaa
+	ahaa+Interj:ahaa  PCLE_HAH  ;
+	ahaa+Pcle:ahaa  INTJ_OO  ;
+töks
+	töks+Interj:töks  PCLE_HAH  ;
+	töks+Pcle:töks  INTJ_HAH  ;
+saatana
+	saatana+Interj:saatana  PCLE_HAH  ;
+	saatana+Pcle:saatana  INTJ_HAH  ;
+sur
+	sur+Interj:sur  PCLE_HAH  ;
+	sur+Pcle:sur  INTJ_HAH  ;
+lops
+	lops+Interj:lops  PCLE_HAH  ;
+	lops+Pcle:lops  INTJ_HAH  ;
+aa
+	aa+Interj:aa  PCLE_HAH  ;
+	aa+Pcle:aa  INTJ_OO  ;
+räts
+	räts+Interj:räts  PCLE_HAH  ;
+	räts+Pcle:räts  INTJ_HAH  ;
+tömps
+	tömps+Interj:tömps  PCLE_HAH  ;
+	tömps+Pcle:tömps  INTJ_HAH  ;
+hox
+	hox+Interj:hox  PCLE_HAH  ;
+	hox+Pcle:hox  INTJ_HAH  ;
+olalaa
+	olalaa+Interj:olalaa  PCLE_HAH  ;
+	olalaa+Pcle:olalaa  INTJ_HAH  ;
+rits
+	rits+Interj:rits  PCLE_HAH  ;
+	rits+Pcle:rits  INTJ_HAH  ;
+vau
+	vau+Interj:vau  #  ;
+	vau+Interj:vau  PCLE_HAH  ;
+	vau+Pcle:vau  INTJ_HAH  ;
+mitäh
+	mitäh+Interj:mitäh  PCLE_HAH  ;
+	mitäh+Pcle:mitäh  INTJ_HAH  ;
+tse
+	tse+Interj:tse  #  ;
+	tse+Interj:tse  PCLE_HAH  ;
+	tse+Pcle:tse  INTJ_HAH  ;
+raksis
+	raksis+Interj:raksis  PCLE_HAH  ;
+	raksis+Pcle:raksis  INTJ_HAH  ;
+molskista
+	molskista+Interj:molskista  PCLE_HAH  ;
+	molskista+Pcle:molskista  INTJ_HAH  ;
+boom
+	boom+Interj:boom  PCLE_HAH  ;
+	boom+Pcle:boom  INTJ_HAH  ;
+vrum
+	vrum+Interj:vrum  PCLE_HAH  ;
+	vrum+Pcle:vrum  INTJ_HAH  ;
+oho
+	oho+Interj:oho  #  ;
+	oho+Interj:oho  PCLE_HAH  ;
+	oho+Pcle:oho  INTJ_OO  ;
+nonni
+	nonni+Interj:nonni  PCLE_HAH  ;
+	nonni+Pcle:nonni  INTJ_HAH  ;
+tööt
+	tööt+Interj:tööt  #  ;
+	tööt+Interj:tööt  PCLE_HAH  ;
+	tööt+Pcle:tööt  INTJ_HAH  ;
+prr
+	prr+Interj:prr  PCLE_HAH  ;
+	prr+Pcle:prr  INTJ_HAH  ;
+puh
+	puh+Interj:puh  #  ;
+	puh+Interj:puh  PCLE_HAH  ;
+	puh+Pcle:puh  INTJ_HAH  ;
+nöf
+	nöf+Interj:nöf  #  ;
+	nöf+Interj:nöf  PCLE_HAH  ;
+	nöf+Pcle:nöf  INTJ_HAH  ;
+ai
+	ai+Interj:ai  PCLE_HAH  ;
+	ai+Pcle:ai  INTJ_HAH  ;
+bää
+	bää+Interj:bää  PCLE_HAH  ;
+	bää+Pcle:bää  INTJ_HAH  ;
+hohhoijaa
+	hohhoijaa+Interj:hohhoijaa  #  ;
+	hohhoijaa+Interj:hohhoijaa  PCLE_HAH  ;
+	hohhoijaa+Pcle:hohhoijaa  INTJ_HAH  ;
+morjensta
+	morjensta+Interj:morjensta  #  ;
+	morjensta+Interj:morjensta  PCLE_HAH  ;
+	morjensta+Pcle:morjensta  INTJ_HAH  ;
+hohoi
+	hohoi+Interj:hohoi  #  ;
+	hohoi+Interj:hohoi  PCLE_HAH  ;
+	hohoi+Pcle:hohoi  INTJ_HAH  ;
+suih
+	suih+Interj:suih  PCLE_HAH  ;
+	suih+Pcle:suih  INTJ_HAH  ;
+humps
+	humps+Interj:humps  PCLE_HAH  ;
+	humps+Pcle:humps  INTJ_HAH  ;
+bang
+	bang+Interj:bang  PCLE_HAH  ;
+	bang+Pcle:bang  INTJ_HAH  ;
+hä
+	hä+Interj:hä  #  ;
+	hä+Interj:hä  PCLE_HAH  ;
+	hä+Pcle:hä  INTJ_OO  ;
+töksis
+	töksis+Interj:töksis  PCLE_HAH  ;
+	töksis+Pcle:töksis  INTJ_HAH  ;
+klonk
+	klonk+Interj:klonk  PCLE_HAH  ;
+	klonk+Pcle:klonk  INTJ_HAH  ;
+hurraa
+	hurraa+Interj:hurraa  #  ;
+	hurraa+Interj:hurraa  PCLE_HAH  ;
+	hurraa+Pcle:hurraa  INTJ_HAH  ;
+haloo
+	haloo+Interj:haloo  #  ;
+	haloo+Interj:haloo  PCLE_HAH  ;
+	haloo+Pcle:haloo  INTJ_HAH  ;
+ohhoh
+	ohhoh+Interj:ohhoh  #  ;
+	ohhoh+Interj:ohhoh  PCLE_HAH  ;
+	ohhoh+Pcle:ohhoh  INTJ_HAH  ;
+suit
+	suit+Interj:suit  PCLE_HAH  ;
+	suit+Pcle:suit  INTJ_HAH  ;
+pusi
+	pusi+Interj:pusi  #  ;
+	pusi+Interj:pusi  PCLE_HAH  ;
+	pusi+Pcle:pusi  INTJ_HAH  ;
+sorry
+	sorry+Interj:sorry  PCLE_HAH  ;
+	sorry+Pcle:sorry  INTJ_HAH  ;
+jooh
+	jooh+Interj:jooh  #  ;
+	jooh+Interj:jooh  PCLE_HAH  ;
+	jooh+Pcle:jooh  INTJ_HAH  ;
+kas
+	kas+Interj:kas  #  ;
+	kas+Interj:kas  PCLE_HAH  ;
+	kas+Pcle:kas  INTJ_HAH  ;
+tralalaa
+	tralalaa+Interj:tralalaa  PCLE_HAH  ;
+	tralalaa+Pcle:tralalaa  INTJ_HAH  ;
+mäiskis
+	mäiskis+Interj:mäiskis  PCLE_HAH  ;
+	mäiskis+Pcle:mäiskis  INTJ_HAH  ;
+senkin
+	senkin+Interj:senkin  PCLE_HAH  ;
+	senkin+Pcle:senkin  INTJ_HAH  ;
+moiskis
+	moiskis+Interj:moiskis  PCLE_HAH  ;
+	moiskis+Pcle:moiskis  INTJ_HAH  ;
+pumps
+	pumps+Interj:pumps  PCLE_HAH  ;
+	pumps+Pcle:pumps  INTJ_HAH  ;
+kruts
+	kruts+Interj:kruts  PCLE_HAH  ;
+	kruts+Pcle:kruts  INTJ_HAH  ;
+paskat
+	paskat+Interj:paskat  PCLE_HAH  ;
+	paskat+Pcle:paskat  INTJ_HAH  ;
+klop
+	klop+Interj:klop  PCLE_HAH  ;
+	klop+Pcle:klop  INTJ_HAH  ;
+pluts
+	pluts+Interj:pluts  PCLE_HAH  ;
+	pluts+Pcle:pluts  INTJ_HAH  ;
+jaah
+	jaah+Interj:jaah  PCLE_HAH  ;
+	jaah+Pcle:jaah  INTJ_HAH  ;
+höpsistä
+	höpsistä+Interj:höpsistä  #  ;
+	höpsistä+Interj:höpsistä  PCLE_HAH  ;
+	höpsistä+Pcle:höpsistä  INTJ_HAH  ;
+aih
+	aih+Interj:aih  PCLE_HAH  ;
+	aih+Pcle:aih  INTJ_HAH  ;
+morjens
+	morjens+Interj:morjens  #  ;
+	morjens+Interj:morjens  PCLE_HAH  ;
+	morjens+Pcle:morjens  INTJ_HAH  ;
+moro
+	moro+Interj:moro  #  ;
+	moro+Interj:moro  PCLE_HAH  ;
+	moro+Pcle:moro  INTJ_HAH  ;
+poksis
+	poksis+Interj:poksis  PCLE_HAH  ;
+	poksis+Pcle:poksis  INTJ_HAH  ;
+he
+	he+Interj:he  #  ;
+	he+Interj:he  PCLE_HAH  ;
+	he+Pcle:he  INTJ_OO  ;
+top
+	top+Interj:top  #  ;
+	top+Interj:top  PCLE_HAH  ;
+	top+Pcle:top  INTJ_HAH  ;
+voi
+	voi+Interj:voi  #  ;
+	voi+Interj:voi  PCLE_HAH  ;
+	voi+Pcle:voi  INTJ_HAH  ;
+klik
+	klik+Interj:klik  PCLE_HAH  ;
+	klik+Pcle:klik  INTJ_HAH  ;
+räiskis
+	räiskis+Interj:räiskis  PCLE_HAH  ;
+	räiskis+Pcle:räiskis  INTJ_HAH  ;
+raps
+	raps+Interj:raps  PCLE_HAH  ;
+	raps+Pcle:raps  INTJ_HAH  ;
+oo
+	oo+Interj:oo  #  ;
+	oo+Interj:oo  PCLE_HAH  ;
+	oo+Pcle:oo  INTJ_OO  ;
+jumpe
+	jumpe+Interj:jumpe  PCLE_HAH  ;
+	jumpe+Pcle:jumpe  INTJ_HAH  ;
+räks
+	räks+Interj:räks  PCLE_HAH  ;
+	räks+Pcle:räks  INTJ_HAH  ;
+hih
+	hih+Interj:hih  #  ;
+	hih+Interj:hih  PCLE_HAH  ;
+	hih+Pcle:hih  INTJ_HAH  ;
+prrr
+	prrr+Interj:prrr  PCLE_HAH  ;
+	prrr+Pcle:prrr  INTJ_HAH  ;
+pus
+	pus+Interj:pus  #  ;
+	pus+Interj:pus  PCLE_HAH  ;
+	pus+Pcle:pus  INTJ_HAH  ;
+poks
+	poks+Interj:poks  PCLE_HAH  ;
+	poks+Pcle:poks  INTJ_HAH  ;
+au
+	au+Interj:au  PCLE_HAH  ;
+	au+Pcle:au  INTJ_HAH  ;

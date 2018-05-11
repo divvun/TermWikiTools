@@ -1,0 +1,1271 @@
+malerijja
+	malerijja+Area/NO+Sem/Dummytag:maleri ALLEGORI ;
+	malerijja+Area/SE+Sem/Dummytag:måleri ALLEGORI ; !What swe Målning, how does this become målerijja?
+pensjonissta
+	pensjonissta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pensioni TURIST ;
+	pensjonissta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pensjoni TURIST ; !GG
+belludahka
+	belludahka+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:bellud AHKA ;
+	belludahka+N+Sem/Dummytag+Sg+Nom:belludak%> K ;
+vuodoinvestierim
+	vuodoinvestierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:vuodo#investierim VSBST-ODD ;
+	vuodoinvestierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:vuodo#investerim VSBST-ODD ;
+fonologijja
+	fonologijja+Sem/Dummytag:fonologi ALLEGORI ;
+	fonologijja+Sem/Dummytag:fonologi ALLEGORI ;
+maskinierim
+	maskinierim+Area/NO+CmpN/SgN+Sem/Dummytag:maskinierim VSBST-ODD ;
+	maskinierim+Area/SE+CmpN/SgN+Sem/Dummytag:maskinerim VSBST-ODD ;
+jiegŋasnjuhtje
+	jiegŋasnjuhtje+v1+Sem/Dummytag:jiegŋa#snjuhtje MUORRA ;
+	jiegŋasnjuhtje+v2+Sem/Dummytag:jiegŋa#sjnjuhtje MUORRA ;
+ribrresnjárttjá
+	ribrresnjárttjá+v1+Sem/Dummytag:ribrre#snjárttjá MUORRA ;
+	ribrresnjárttjá+v2+Sem/Dummytag:ribrre#sjnjárttjá MUORRA ;
+paniella
+	paniella+Area/NO+Sem/Dummytag:paniella MUORRA_LOAN ; !
+	paniella+Area/SE+Sem/Dummytag:panella MUORRA_LOAN ; !
+termokopiierim
+	termokopiierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:termo#kopi^ierim VSBST-ODD ;
+	termokopiierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:termo#kopi^erim VSBST-ODD ;
+kilomiehtar
+	kilomiehtar+Area/NO+v1+Use/DNorm+Sem/Dummytag:kilomiehttar SÅHKÅR ;
+	kilomiehtar+Area/NO+v2+Use/DNorm+Sem/Dummytag:tjilumiehttar SÅHKÅR ;
+	kilomiehtar+Area/SE+v1+Use/DNorm+Sem/Dummytag:kilomehttar SÅHKÅR ;
+	kilomiehtar+Area/SE+v2+Use/DNorm+Sem/Dummytag:tjilumehttar SÅHKÅR ;
+fenrihkka
+	fenrihkka+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:fenrihkka MUORRA_LOAN ;
+	fenrihkka+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:fä9nrihkka MUORRA_LOAN ;
+kopiierim
+	kopiierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:kopi^ierim VSBST-ODD ;
+	kopiierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:kopi^erim VSBST-ODD ;
+dáfo
+	dáfo+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dáfo NOADE ;
+	dáfo+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dáho NOADE ;
+visjonerra
+	visjonerra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:visionerra MUORRA_LOAN ;
+	visjonerra+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:visjonerra MUORRA_LOAN ; !GG
+snjierák
+	snjierák+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjierág9 GAHPER ;
+	snjierák+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjierág9 GAHPER ;
+minuhtta
+	minuhtta+v1+Sem/Dummytag:minu INSTITUTT ;
+	minuhtta+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:minuvtta MUORRA_LOAN ;
+mánnomiehtar
+	mánnomiehtar+Area/NO+Use/DNorm+Sem/Dummytag:mánno#miehttar SÅHKÅR ;
+	mánnomiehtar+Area/SE+Use/DNorm+Sem/Dummytag:mánno#mehttar SÅHKÅR ;
+suvenijrra
+	suvenijrra+Area/NO+Sem/Dummytag:suvenijrra MUORRA_LOAN ; ! NOR suvenir
+	suvenijrra+Area/SE+Sem/Dummytag:souvenijrra MUORRA_LOAN ; !SW souvenir
+ekspropriierimrievtesvuohta
+	ekspropriierimrievtesvuohta+Area/NO+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:eks^propriierim#rievtesvuohta VUOHTANOUN ; !
+	ekspropriierimrievtesvuohta+Area/SE+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:eks^proprierim#rievtesvuohta VUOHTANOUN ; !
+vuostoj
+	vuostoj+Sem/Dummytag:vuosstoh9 ÅRES ; !As Kintel
+	vuostoj+Sem/Dummytag:vuosstu ÅLMÅJ ; !Korhonen has this and the Kintel version
+impresjonissma
+	impresjonissma+Area/SE+Sem/Dummytag:im^pressioni FANATISM ;
+	impresjonissma+Sem/Dummytag:im^presjoni FANATISM ; !GG
+purttu
+	purttu+Sem/Dummytag:porto KINO_UNASS ;
+	purttu+Sem/Dummytag:purttu MUORRA_LOAN ;
+	purttu+Sem/Dummytag:purttu ÅLMÅJ ;
+gámaldahka
+	gámaldahka+N+Sem/Dummytag+Sg+Nom:gámaldak%> K ;
+	gámaldahka+Sem/Dummytag:gámald AHKA ;
+inkássu
+	inkássu+Sem/Dummytag:inkás'su GUOMOJ ;
+	inkássu+Sem/Dummytag:inkás'su MUORRA_LOAN ;
+tsihtsesjkunjok
+	tsihtsesjkunjok+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:tsihtse#sjkunjog9 GAHPER ;
+	tsihtsesjkunjok+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:tsihtse#skunjog9 GAHPER ;
+iesjbierggimøkonomijja
+	iesjbierggimøkonomijja+Sem/Dummytag:iesj#bierggim#økonomi ALLEGORI ;
+	iesjbierggimøkonomijja+Use/NotDNorm+Sem/Dummytag:iesj#bierggim#ekonomi ALLEGORI ;
+vinndan
+	vinndan+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:vinndan GAHPER ;
+	vinndan+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:vindán GAHPER ;
+diehtotábllo
+	diehtotábllo+v1+Sem/Dummytag:diehto#tábllo MUORRA ; !LOAN
+	diehtotábllo+v2+Sem/Dummytag:diehto#dábllo MUORRA ; !LOAN
+hávssta
+	hávssta+Sem/Dummytag:hávssta MUORRA ;
+	hávssta+Sem/Dummytag:hávstag8 BENA ;
+perspektijvva
+	perspektijvva+Sem/Dummytag:per^spekt ADJEKTIV ;
+	perspektijvva+Sem/Dummytag:per^spekt ADJEKTIV ;
+stárro
+	stárro+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:stár'ro MUORRA ;
+	stárro+Sem/Dummytag:stárro MUORRA ;
+arkeologijja
+	arkeologijja+Sem/Dummytag:arkeologi ALLEGORI ;
+	arkeologijja+Sem/Dummytag:arkeologi ALLEGORI ;
+snáhpá
+	snáhpá+v1+Sem/Dummytag:snáhpá MUORRA ; !In Kintel
+	snáhpá+v2+Sem/Dummytag:snáhppá MUORRA ; !Used in Tjaktjalasta
+tradisjonalissma
+	tradisjonalissma+Area/SE+Sem/Dummytag:traditionali FANATISM ;
+	tradisjonalissma+Sem/Dummytag:tradisjonali FANATISM ; !GG
+identifisierimapposisjåvnnå
+	identifisierimapposisjåvnnå+Area/NO+Sem/Dummytag:identifisierim#apposi INSTITUTION ;
+	identifisierimapposisjåvnnå+Area/SE+Sem/Dummytag:identifiserim#apposi INSTITUTION ;
+åhpaduspládna
+	åhpaduspládna+Sem/Dummytag:åhpadus#pl ORGAN ;
+	åhpaduspládna+Sem/Dummytag:åhpadus#pládna MUORRA ;
+rekruttierimprográmma
+	rekruttierimprográmma+Area/NO+Sem/Dummytag:re^kruttierim#pro^gr TELEGRAM ;
+	rekruttierimprográmma+Area/SE+Sem/Dummytag:re^kryterim#pro^gr TELEGRAM ;
+økolåvggå
+	økolåvggå+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:økol DEMAGOG ;
+	økolåvggå+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ekol DEMAGOG ;
+investierim
+	investierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:investierim VSBST-ODD ;
+	investierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:investerim VSBST-ODD ;
+griffeltábllo
+	griffeltábllo+OLang/NOB+v1+Sem/Dummytag:griffel#tábllo MUORRA_LOAN ; !LOAN
+	griffeltábllo+OLang/NOB+v2+Sem/Dummytag:griffel#dábllo MUORRA_LOAN ; !LOAN
+sáhka
+	sáhka+Area/SE+Sem/Dummytag:såhka MUORRA ; !LOAN
+	sáhka+Sem/Dummytag:sáhka MUORRA ;
+	sáhka+Sem/Dummytag:sáhka MUORRA ; !LOAN Sag
+snjilltjavárre
+	snjilltjavárre+v1+Sem/Dummytag:snjilltja#várre MUORRA ;
+	snjilltjavárre+v2+Sem/Dummytag:sjnjilltja#várre MUORRA ;
+snjággetjuojkka
+	snjággetjuojkka+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjágge#tjuojkka MUORRA ;
+	snjággetjuojkka+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjágge#tjuojkka MUORRA ;
+iesjevaluierim
+	iesjevaluierim+Area/NO+Sem/Dummytag:iesj#evaluierim VSBST-ODD ;
+	iesjevaluierim+Area/SE+Sem/Dummytag:iesj#evaluerim VSBST-ODD ;
+vielvoj
+	vielvoj+Sem/Dummytag:vielvvoh9 ÅRES ; ! also vielvvuh9
+	vielvoj+Sem/Dummytag:vielvvuh9 ÅRES ; ! also vielvvoh9
+káffa
+	káffa+v1+Sem/Dummytag:káffa MUORRA ; !LOAN
+	káffa+v2+Sem/Dummytag:gáffa MUORRA ; !LOAN
+sopránu
+	sopránu+Sem/Dummytag:soprádnu ÅLMÅJ ; !LOAN
+	sopránu+Sem/Dummytag:sopránu NOADE ; !LOAN
+freskomalerijja
+	freskomalerijja+Area/NO+Sem/Dummytag:fresko#maleri ALLEGORI ;
+	freskomalerijja+Area/SE+Sem/Dummytag:fresko#måleri ALLEGORI ; !What? Målning
+snjássjka
+	snjássjka+v1+Sem/Dummytag:snjássjka MUORRA ;
+	snjássjka+v2+Sem/Dummytag:sjnjássjka MUORRA ;
+identifisierimoperasjåvnnå
+	identifisierimoperasjåvnnå+Area/NO+Sem/Dummytag:identifisierim#opera INSTITUTION ;
+	identifisierimoperasjåvnnå+Area/SE+Sem/Dummytag:identifiserim#opera INSTITUTION ;
+jiednasnjárttjátjuodja
+	jiednasnjárttjátjuodja+v1+Sem/Dummytag:jiedna#snjárttjá#tjuodja MUORRA ;
+	jiednasnjárttjátjuodja+v2+Sem/Dummytag:jiedna#sjnjárttjá#tjuodja MUORRA ;
+snjierrá
+	snjierrá+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjierrá MUORRA ;
+	snjierrá+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjierrá MUORRA ;
+økonåvmmå
+	økonåvmmå+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:økon AGRONOM ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+	økonåvmmå+Use/NG+Use/NotDNorm+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ekon AGRONOM ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+suverenitiehtta
+	suverenitiehtta+Area/NO+Sem/Dummytag:suverenit ALFABET ; !
+	suverenitiehtta+Area/SE+Sem/Dummytag:suverä9nit ALFABET ; !
+dokumentárra
+	dokumentárra+Area/NO+Sem/Dummytag:dokument SEMINAR ;
+	dokumentárra+Area/SE+Sem/Dummytag:dokumentær'ra MUORRA_LOAN ;
+parkierim
+	parkierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:parkierim VSBST-ODD ;
+	parkierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:parkerim VSBST-ODD ;
+girkkosnjurttje
+	girkkosnjurttje+v1+Sem/Dummytag:girkko#snjurttje MUORRA ;
+	girkkosnjurttje+v2+Sem/Dummytag:girkko#sjnjurttje MUORRA ;
+gåhppå
+	gåhppå+v1+Sem/Dummytag:gåhppå MUORRA ;
+	gåhppå+v2+Sem/Dummytag:kåhppå MUORRA ; !LOAN
+jugástahka
+	jugástahka+N+Sem/Dummytag+Sg+Nom:jugástak%> K ;
+	jugástahka+Sem/Dummytag:jugást AHKA ;
+agurkka
+	agurkka+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:agurkka MUORRA_LOAN ; !SW gurka
+	agurkka+Area/SE+Sem/Dummytag:gurkká MUORRA ; !LOAN !SW gurka
+kommánndu
+	kommánndu+Sem/Dummytag:kom^mánndu NOADE ; !LOAN
+	kommánndu+Sem/Dummytag:kom^mánndu ÅLMÅJ ; !LOAN
+kaniella
+	kaniella+Area/NO+Sem/Dummytag:kaniella MUORRA_LOAN ;
+	kaniella+Area/SE+Sem/Dummytag:kanella MUORRA_LOAN ;
+dåktårgráda
+	dåktårgráda+Sem/Dummytag:doktor#gráda NOADE ; !LOAN
+	dåktårgráda+Sem/Dummytag:dåktår#gráda NOADE ; !LOAN
+bessamkårttå
+	bessamkårttå+v1+Sem/Dummytag:bessam#kårttå MUORRA ; !LOAN
+	bessamkårttå+v2+Sem/Dummytag:bessam#gårttå MUORRA ; !LOAN
+mielggasnjárttjá
+	mielggasnjárttjá+v1+Sem/Dummytag:mielgga#snjárttjá MUORRA ;
+	mielggasnjárttjá+v2+Sem/Dummytag:mielgga#sjnjárttjá MUORRA ;
+snjissjkom
+	snjissjkom+v1+Sem/Dummytag:snjissjkom GAHPER ;
+	snjissjkom+v2+Sem/Dummytag:sjnjissjkom GAHPER ;
+nelihkka
+	nelihkka+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:neli ANTIKK ;
+	nelihkka+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:nejlihkka MUORRA_LOAN ;
+brievva
+	brievva+Area/NO+Sem/Dummytag:brievva MUORRA ; ! Err/Lex
+	brievva+Area/SE+Sem/Dummytag:brevva MUORRA ; ! Err/Lex
+budsjæhtta
+	budsjæhtta+Area/NO+Sem/Dummytag:budsj TABLETT ;
+	budsjæhtta+Area/SE+Sem/Dummytag:budjæhtta MUORRA_LOAN ; !not TABLETT because we don't want budjett- as cmp.
+låhkke
+	låhkke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:låhkke ACTOR ;
+	låhkke+Sem/Dummytag:låhkke MUORRA ;
+roavve
+	roavve+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:roavve MUORRA ;
+	roavve+Sem/Dummytag:roav've MUORRA ;
+gådde
+	gådde+CmpN/SgN+CmpN/SgG+CmpN/PlG+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:gådde ACTOR ;
+	gådde+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gådde MUORRA ;
+valludahka
+	valludahka+N+Sem/Dummytag+Sg+Nom:valludak%> K ;
+	valludahka+Sem/Dummytag:vallud AHKA ;
+tjiellu
+	tjiellu+Area/NO+Sem/Dummytag:tjiellu GUOMOJ ; !LOAN
+	tjiellu+Area/NO+Sem/Dummytag:tjiellu MUORRA ; !LOAN
+	tjiellu+Area/SE+Sem/Dummytag:tjel'lu GUOMOJ ; !LOAN
+	tjiellu+Area/SE+Sem/Dummytag:tjellu MUORRA ; !LOAN
+vitalisierimprográmma
+	vitalisierimprográmma+Area/NO+Sem/Dummytag:vitalisierim#pro^gr TELEGRAM ;
+	vitalisierimprográmma+Area/SE+Sem/Dummytag:vitaliserim#pro^gr TELEGRAM ;
+intendánnta
+	intendánnta+Area/NO+Sem/Dummytag:intend VARIANT ; ! sw:intendent, nor:intendant
+	intendánnta+Area/SE+Sem/Dummytag:intend PATENT ; !
+tiedja
+	tiedja+Area/NO+Sem/Dummytag:tiedja MUORRA ; !LOAN
+	tiedja+Area/SE+Sem/Dummytag:tedja MUORRA ; !LOAN
+oahppopládna
+	oahppopládna+Sem/Dummytag:oahppo#pl ORGAN ;
+	oahppopládna+Sem/Dummytag:oahppo#pládna MUORRA ;
+dållåsnjibttjo
+	dållåsnjibttjo+v1+Sem/Dummytag:dållå#snjibttjo MUORRA ;
+	dållåsnjibttjo+v2+Sem/Dummytag:dållå#snjipptjo MUORRA ;
+	dållåsnjibttjo+v3+Sem/Dummytag:dållå#sjnjibttjo MUORRA ;
+	dållåsnjibttjo+v4+Sem/Dummytag:dållå#snjipptjo MUORRA ;
+dievválahka
+	dievválahka+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dievvál AHKA ;
+	dievválahka+N+Sem/Dummytag+Sg+Nom:dievválak%> K ;
+baromiehtar
+	baromiehtar+Area/NO+Use/DNorm+Sem/Dummytag:baromiehttar SÅHKÅR ;
+	baromiehtar+Area/SE+Use/DNorm+Sem/Dummytag:baromehttar SÅHKÅR ;
+resurssa
+	resurssa+Area/NO+Sem/Dummytag:ressurssa MUORRA_LOAN ; !
+	resurssa+Area/SE+Sem/Dummytag:resurssa MUORRA_LOAN ;
+nationalbiejvve
+	nationalbiejvve+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:national#biejvve MUORRA_LOAN ;
+	nationalbiejvve+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:national#biejvve MUORRA_LOAN ;
+oarjje
+	oarjje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:oarjje MUORRA ;
+	oarjje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:oarjje ÅLGGO ;
+gádnes
+	gádnes+Sem/Dummytag:gáddne SARVES ; ! also ÅRES
+	gádnes+Sem/Dummytag:gáddnes ÅRES ; ! also SARVES
+hypotiessa
+	hypotiessa+Area/NO+Sem/Dummytag:hypotiessa MUORRA_LOAN ;
+	hypotiessa+Area/SE+Sem/Dummytag:hypotessa MUORRA_LOAN ;
+várro
+	várro+Sem/Dummytag:vár'ro MUORRA ;
+	várro+Sem/Dummytag:várro MUORRA ;
+dusijnna
+	dusijnna+Area/NO+Sem/Dummytag:dus BENSIN ;
+	dusijnna+Area/SE+Sem/Dummytag:duss BENSIN ;
+økosystiebma
+	økosystiebma+Area/NO+Sem/Dummytag:økosyst SYSTEM ;
+	økosystiebma+Use/NotDNorm+Sem/Dummytag:ekosyst SYSTEM ;
+snjuhtjenjunjálkko
+	snjuhtjenjunjálkko+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjuhtje#njunj#álkko MUORRA ;
+	snjuhtjenjunjálkko+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjuhtje#njunj#álkko MUORRA ;
+ájggepládna
+	ájggepládna+Sem/Dummytag:ájgge#pl ORGAN ;
+	ájggepládna+Sem/Dummytag:ájgge#pládna MUORRA ;
+kalkulierim
+	kalkulierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:kalkulierim VSBST-ODD ;
+	kalkulierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:kalkulerim VSBST-ODD ;
+preambiella
+	preambiella+Area/NO+Sem/Dummytag:pre^ambiella MUORRA_LOAN ; ! preambel,innledning til en traktat
+	preambiella+Area/SE+Sem/Dummytag:pre^ambella MUORRA_LOAN ; ! preambel,innledning til en traktat
+masjinierim
+	masjinierim+Area/NO+CmpN/SgN+Sem/Dummytag:masjinierim VSBST-ODD ;
+	masjinierim+Area/SE+CmpN/SgN+Sem/Dummytag:masjinerim VSBST-ODD ;
+pruvssá
+	pruvssá+Sem/Dummytag:pruvssá MUORRA_LOAN ; !LOAN
+	pruvssá+Sem/Dummytag:pruvssá MUORRA_LOAN ; !LOAN
+staffelijja
+	staffelijja+Area/NO+Sem/Dummytag:staffeli ALLEGORI ;
+	staffelijja+Area/SE+Sem/Dummytag:staffli ALLEGORI ;
+snjaktje
+	snjaktje+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjaktje MUORRA ;
+	snjaktje+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjaktji MUORRA ;
+	snjaktje+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjaktje MUORRA ;
+	snjaktje+v4+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjaktji MUORRA ;
+dijstahka
+	dijstahka+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:dijs^t AHKA ;
+	dijstahka+N+Sem/Dummytag+Sg+Nom:dijstak%> K ;
+prosjæktatjielggidus
+	prosjæktatjielggidus+Area/SE+Sem/Dummytag:projækta#tjielggiduss GÅNÅGIS ;
+	prosjæktatjielggidus+Sem/Dummytag:prosjækta#tjielggiduss GÅNÅGIS ;
+instrumentpaniella
+	instrumentpaniella+Area/NO+Sem/Dummytag:in^strument#paniella MUORRA_LOAN ;
+	instrumentpaniella+Area/SE+Sem/Dummytag:in^strument#panella MUORRA_LOAN ;
+budsjæhttarámma
+	budsjæhttarámma+Area/NO+Sem/Dummytag:budsjæhtta#rámma MUORRA_LOAN ;
+	budsjæhttarámma+Area/SE+Sem/Dummytag:budjæhtta#rámma MUORRA_LOAN ;
+syntiessa
+	syntiessa+Area/NO+Sem/Dummytag:syntiessa MUORRA_LOAN ;
+	syntiessa+Area/SE+Sem/Dummytag:syntessa MUORRA_LOAN ;
+viehkke
+	viehkke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:viehkke ACTOR ;
+	viehkke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:viehkke MUORRA ;
+dåktårjurissta
+	dåktårjurissta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:doktor#juri TURIST ;
+	dåktårjurissta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dåktår#juri TURIST ;
+njunjes
+	njunjes+Sem/Dummytag:njunnje SARVES ; ! also ÅRES
+	njunjes+Sem/Dummytag:njunnjes ÅRES ; ! also SARVES
+sellerijja
+	sellerijja+Sem/Dummytag:selleri ALLEGORI ;
+	sellerijja+Sem/Dummytag:selleri NOADE_BADASS ;
+páhpergoabrre
+	páhpergoabrre+v1+Sem/Dummytag:páhper#goabrre MUORRA ; !LOAN
+	páhpergoabrre+v2+Sem/Dummytag:báhper#goabrre MUORRA ; !!LOAN
+sivijllaøkonåvmmå
+	sivijllaøkonåvmmå+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sivijlla#økon AGRONOM ; !GG
+	sivijllaøkonåvmmå+Use/NotDNorm+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:civijlla#ekon AGRONOM ;
+	sivijllaøkonåvmmå+Use/NotDNorm+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sivijlla#ekon AGRONOM ; !GG
+jårggålimbarggo
+	jårggålimbarggo+Sem/Dummytag:jårggålim#barggo MUORRA ;
+	jårggålimbarggo+Sem/Dummytag:jårggålim#barggo MUORRA ;
+pænna
+	pænna+v1+Sem/Dummytag:pæn'na MUORRA ; !LOAN
+	pænna+v2+Sem/Dummytag:bæn'na MUORRA ; !LOAN
+dævgádahka
+	dævgádahka+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dævgád AHKA ;
+	dævgádahka+N+Sem/Dummytag+Sg+Nom:dævgádak%> K ;
+gáger
+	gáger+Sem/Dummytag:gáhker9 GÁMAS ; ! also ÅRES
+	gáger+Sem/Dummytag:gáhker9 ÅRES ; ! also GÁMAS
+tækstatjoahkke
+	tækstatjoahkke+Sem/Dummytag:tæksta#tjoahk'ke NOADE ;
+	tækstatjoahkke+Sem/Dummytag:tæksta#tjoahk'ke NOADE ;
+ieŋŋilsgiella
+	ieŋŋilsgiella+v1+Sem/Dummytag:ieŋŋils#giel SÁMEGIEL ;
+	ieŋŋilsgiella+v2+Sem/Dummytag:ieŋŋgis#giel SÁMEGIEL ;
+tjáhppissjkunjok
+	tjáhppissjkunjok+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:tjáhppis#sjkunjog9 GAHPER ;
+	tjáhppissjkunjok+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:tjáhppis#skunjog9 GAHPER ;
+histåvrrå
+	histåvrrå+Area/SE+Sem/Dummytag:histårjjå MUORRA_LOAN ;
+	histåvrrå+Sem/Dummytag:histåvrrå MUORRA_LOAN ;
+nihta
+	nihta+Sem/Dummytag:nihta MUORRA ;
+	nihta+Sem/Dummytag:nihttag8 BENA ;
+millilihtar
+	millilihtar+v1+Sem/Dummytag:milli#lihttar SÅHKÅR ; !LOAN
+	millilihtar+v2+Sem/Dummytag:milli#lijttar9 SÅHKÅR ; !LOAN
+moriedna
+	moriedna+Area/SE+Sem/Dummytag:moræjnna MUORRA_LOAN ; !
+	moriedna+Sem/Dummytag:moriedna MUORRA_LOAN ; !Sw morän NOR morene
+motorisierim
+	motorisierim+Area/NO+CmpN/SgN+Sem/Dummytag:motorisierim VSBST-ODD ;
+	motorisierim+Area/SE+CmpN/SgN+Sem/Dummytag:motoriserim VSBST-ODD ;
+tjilu
+	tjilu+Sem/Dummytag:tjil'lu GUOMOJ ; ! LOAN
+	tjilu+Sem/Dummytag:tjillu MUORRA ; !LOAN
+	tjilu+Sem/Dummytag:tjilu NOADE ; ! LOAN
+ekkoloadda
+	ekkoloadda+Area/NO+Sem/Dummytag:ekko#loadda MUORRA_LOAN ; !Sw ekolod
+	ekkoloadda+Area/SE+Sem/Dummytag:eko#loadda MUORRA_LOAN ; !
+tijmmapládna
+	tijmmapládna+v1+Sem/Dummytag:tijmma#pládna MUORRA ; !LOAN
+	tijmmapládna+v2+Sem/Dummytag:dijmma#pládna MUORRA ; !LOAN
+sentilihtar
+	sentilihtar+v1+Sem/Dummytag:senti#lihttar SÅHKÅR ; !LOAN
+	sentilihtar+v2+Sem/Dummytag:senti#lijttar9 SÅHKÅR ; !LOAN
+timiádna
+	timiádna+Area/NO+Sem/Dummytag:tim^i ORGAN ;
+	timiádna+Area/SE+Sem/Dummytag:timj ORGAN ;
+páhperlihtte
+	páhperlihtte+v1+Sem/Dummytag:páhper#lihtte MUORRA ; !!LOAN
+	páhperlihtte+v2+Sem/Dummytag:báhper#lihtte MUORRA ; !!LOAN
+hyperbiella
+	hyperbiella+Area/NO+Sem/Dummytag:hyperbiella MUORRA_LOAN ;
+	hyperbiella+Area/SE+Sem/Dummytag:hyperbella MUORRA_LOAN ;
+tjivnnu
+	tjivnnu+Sem/Dummytag:kino KINO_UNASS ;
+	tjivnnu+Sem/Dummytag:tjivnnu MUORRA_LOAN ;
+	tjivnnu+Sem/Dummytag:tjivnnu ÅLMÅJ ;
+girru
+	girru+Sem/Dummytag:gir'ru GUOMOJ ;
+	girru+Sem/Dummytag:gir'ru MUORRA_LOAN ;
+ekspropriierim
+	ekspropriierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:eks^propriierim VSBST-ODD ; !
+	ekspropriierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:eks^proprierim VSBST-ODD ; !
+doajmmapládna
+	doajmmapládna+Sem/Dummytag:doajmma#pl ORGAN ;
+	doajmmapládna+Sem/Dummytag:doajmma#pládna MUORRA ;
+prosjektijlla
+	prosjektijlla+Area/SE+Sem/Dummytag:projekt TEKSTIL ;
+	prosjektijlla+Sem/Dummytag:prosjekt TEKSTIL ; !GG
+kolonialissma
+	kolonialissma+Sem/Dummytag:koloni^ali FANATISM ;
+	kolonialissma+Sem/Dummytag:koloni^ali FANATISM ;
+dæppa
+	dæppa+Area/NO+Sem/Dummytag:dæ9bbag8 BENA ;
+	dæppa+Area/SE+Sem/Dummytag:dä9bbag8 BENA ;
+oregádnu
+	oregádnu+Sem/Dummytag:oregádnu MUORRA_LOAN ;
+	oregádnu+Sem/Dummytag:oregádnu ÅLMÅJ ;
+sjámmpu
+	sjámmpu+Sem/Dummytag:sjámmpu NOADE ; !LOAN
+	sjámmpu+Sem/Dummytag:sjámmpu ÅLMÅJ ; !LOAN
+roahkka
+	roahkka+Sem/Dummytag:roahkka MUORRA ;
+	roahkka+Sem/Dummytag:roahkka NOADE_BADASS ;
+snjibttjo
+	snjibttjo+v1+Sem/Dummytag:snjibttjo MUORRA ;
+	snjibttjo+v2+Sem/Dummytag:sjnjibttjo MUORRA ;
+stratesjijjapládna
+	stratesjijjapládna+Sem/Dummytag:strategi#pl ORGAN ;
+	stratesjijjapládna+Sem/Dummytag:stratesjijja#pl ORGAN ;
+geologijja
+	geologijja+Sem/Dummytag:geologi ALLEGORI ;
+	geologijja+Sem/Dummytag:geologi ALLEGORI ;
+snjierrápopulasjåvnnå
+	snjierrápopulasjåvnnå+v1+Sem/Dummytag:snjierrá#popula INSTITUTION ;
+	snjierrápopulasjåvnnå+v2+Sem/Dummytag:sjnjierrá#popula INSTITUTION ;
+kamiella
+	kamiella+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:kamiella MUORRA_LOAN ;
+	kamiella+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:kamella MUORRA_LOAN ;
+bájnnomtábllo
+	bájnnomtábllo+v1+Sem/Dummytag:bájnnom#tábllo MUORRA ; !LOAN
+	bájnnomtábllo+v2+Sem/Dummytag:bájnnom#dábllo MUORRA ; !LOAN
+kakávvu
+	kakávvu+Sem/Dummytag:kakáv'vu GUOMOJ ;
+	kakávvu+Sem/Dummytag:kakávvu MUORRA_LOAN ;
+giedna
+	giedna+Area/NO+Sem/Dummytag:giedna MUORRA ; !LOAN
+	giedna+Area/SE+Sem/Dummytag:gedna MUORRA ; !LOAN
+lihtar
+	lihtar+v1+Sem/Dummytag:lihttar SÅHKÅR ; !LOAN
+	lihtar+v2+Sem/Dummytag:lijttar9 SÅHKÅR ; !LOAN
+presisierimapposisjåvnnå
+	presisierimapposisjåvnnå+Area/NO+Sem/Dummytag:presisierim#apposi INSTITUTION ;
+	presisierimapposisjåvnnå+Area/SE+Sem/Dummytag:presiserim#apposi INSTITUTION ;
+ieŋŋils
+	ieŋŋils+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ieŋŋils GAHPER ; !LOAN Kintel
+	ieŋŋils+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ieŋŋgis GAHPER ; !LOAN Korhonen
+kommisjonerra
+	kommisjonerra+Area/SE+Sem/Dummytag:kommissionerra MUORRA_LOAN ;
+	kommisjonerra+Sem/Dummytag:kommisjonerra MUORRA_LOAN ; !GG
+snjutjeknjuorges
+	snjutjeknjuorges+v1+Sem/Dummytag:snjutjek#njuorgge SARVES ;
+	snjutjeknjuorges+v2+Sem/Dummytag:sjnjutjek#njuorgge SARVES ;
+inventierim
+	inventierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:inventierim VSBST-ODD ;
+	inventierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:inventerim VSBST-ODD ;
+senkapitalissma
+	senkapitalissma+Area/NO+Sem/Dummytag:sen#kapitali FANATISM ;
+	senkapitalissma+Area/SE+Sem/Dummytag:sein#kapitali FANATISM ;
+gummij
+	gummij+v1+Sem/Dummytag:gum'mi PREMIE ;
+	gummij+v2+Sem/Dummytag:gum'mi MUORRA_LOAN ;
+rosijnna
+	rosijnna+Area/NO+Sem/Dummytag:ros BENSIN ;
+	rosijnna+Area/SE+Sem/Dummytag:russ BENSIN ;
+mielle
+	mielle+Sem/Dummytag:miel'le MUORRA ;
+	mielle+Sem/Dummytag:mielle MUORRA ;
+karbondioksijdda
+	karbondioksijdda+Area/NO+Sem/Dummytag:karbon#di^oksijdda MUORRA_LOAN ;
+	karbondioksijdda+Area/SE+Sem/Dummytag:kol#di^oksijdda MUORRA_LOAN ; !Karbondioksid in NOR
+guovddel
+	guovddel+CmpN/SgN+CmpN/SgG+Sem/Dummytag:guovddel GAHPER ;
+	guovddel+Sem/Dummytag:guovddel BADJEL ;
+illo
+	illo+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:il'lo MUORRA ;
+	illo+Sem/Dummytag:illo MUORRA ;
+pijppa
+	pijppa+v1+Sem/Dummytag:pijppa MUORRA ; !LOAN
+	pijppa+v2+Sem/Dummytag:bijppa MUORRA ; !LOAN
+kompåsstå
+	kompåsstå+v1+Sem/Dummytag:kompåsstå MUORRA_LOAN ; !
+	kompåsstå+v2+Sem/Dummytag:kompoassta MUORRA_LOAN ;
+milliarderra
+	milliarderra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Area/SE+Sem/Dummytag:miljar^derra MUORRA_LOAN ;
+	milliarderra+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:milliarderra MUORRA_LOAN ; !Used on both sides
+hárre
+	hárre+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:hár're MUORRA ; !harr (Thymallus thymallus)
+	hárre+Sem/Dummytag:hárre MUORRA ; !Måte, dan hárráj
+persepsjåvnnå
+	persepsjåvnnå+Area/SE+Sem/Dummytag:percep INSTITUTION ;
+	persepsjåvnnå+Sem/Dummytag:persep INSTITUTION ; !GG
+lædna
+	lædna+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lä9dna MUORRA ;
+	lædna+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:læ9dna MUORRA ;
+ájlistaktjoaggulvis
+	ájlistaktjoaggulvis+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ájlistak#tjoaggulviss GÅNÅGIS ;
+	ájlistaktjoaggulvis+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pinssa#tjoaggulviss GÅNÅGIS ; !LOAN
+bruhttu
+	bruhttu+Sem/Dummytag:bruhttu NOADE ;
+	bruhttu+Sem/Dummytag:bruhttu ÅLMÅJ ;
+prosjækta
+	prosjækta+Area/SE+Sem/Dummytag:projækta MUORRA_LOAN ; ! Not in KOLLEKT because of SW projekt
+	prosjækta+Sem/Dummytag:prosjækta MUORRA_LOAN ; !  Used in both SW and NOR even thou projekt in SW
+snjurttje
+	snjurttje+v1+Sem/Dummytag:snjurttje MUORRA ;
+	snjurttje+v2+Sem/Dummytag:sjnjurttje MUORRA ;
+biesse
+	biesse+Sem/Build:biesse MUORRA ; ! bo
+	biesse+Sem/Dummytag:bies'se MUORRA ; ! næver
+fierij
+	fierij+Area/NO+Sem/Dummytag:fierri PREMIE ;
+	fierij+Area/SE+Sem/Dummytag:ferri PREMIE ;
+kånntå
+	kånntå+Sem/Dummytag:kånntå MUORRA ; !LOAN
+	kånntå+Use/DNorm+Sem/Dummytag:kånntu ÅLMÅJ ;
+	kånntå+Use/NotDNorm+Sem/Dummytag:kånntå MUORRA ;
+spælla
+	spælla+Area/NO+Sem/Dummytag:spæl'la MUORRA ; !LOAN NOR+Sem/Dummytag: "spill" -> spælla
+	spælla+Area/SE+Sem/Dummytag:spella MUORRA ; !LOAN SWE "spel", standarized this way.
+rekruhtta
+	rekruhtta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:re^kru INSTITUTT ;
+	rekruhtta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:re^kryhtta MUORRA_LOAN ;
+økologijja
+	økologijja+Area/NO+Sem/Dummytag:økologi ALLEGORI ;
+	økologijja+Area/SE+Use/NotDNorm+Sem/Dummytag:ekologi ALLEGORI ;
+væjdda
+	væjdda+Sem/Dummytag:vä9jdda MUORRA ;
+	væjdda+Sem/Dummytag:væ9jdda MUORRA ;
+	væjdda+Sem/Dummytag:væjdda MUORRA ;
+snjavtjok
+	snjavtjok+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjavtjog9 GAHPER ;
+	snjavtjok+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjavtjog9 GAHPER ;
+rihta
+	rihta+Sem/Dummytag:rihta MUORRA ;
+	rihta+Sem/Dummytag:rihta MUORRA ;
+østrogiedna
+	østrogiedna+Area/NO+Sem/Dummytag:østrog HYDROGEN ;
+	østrogiedna+Area/SE+Sem/Dummytag:östrog HYDROGEN ;
+konjunksjåvnnå
+	konjunksjåvnnå+Sem/Dummytag:kon^junk INSTITUTION ;
+	konjunksjåvnnå+Sem/Dummytag:konjunk INSTITUTION ;
+tidnik
+	tidnik+Sem/Dummytag:didnig9 GAHPER ; !LOAN tidnik
+	tidnik+Sem/Dummytag:dignig9 GAHPER ; !LOAN tidnik
+	tidnik+Sem/Dummytag:tidnig9 GAHPER ; !LOAN
+pánna
+	pánna+v1+Sem/Dummytag:pán'na MUORRA ; !LOAN
+	pánna+v2+Sem/Dummytag:bán'na MUORRA ; !LOAN
+mánnodahka
+	mánnodahka+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:mánnod AHKA ;
+	mánnodahka+N+Sem/Dummytag+Sg+Nom:mánnodak%> K ;
+løytnánnta
+	løytnánnta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lø9ytn VARIANT ;
+	løytnánnta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lö9jtn VARIANT ;
+dynábmu
+	dynábmu+Sem/Dummytag:dynábmu MUORRA_LOAN ;
+	dynábmu+Sem/Dummytag:dynábmu ÅLMÅJ ;
+tábllo
+	tábllo+v1+Sem/Dummytag:tábllo MUORRA ; !LOAN
+	tábllo+v2+Sem/Dummytag:tábllo MUORRA ; !LOAN
+paramiehtar
+	paramiehtar+Area/NO+Use/DNorm+Sem/Dummytag:paramiehttar SÅHKÅR ;
+	paramiehtar+Area/SE+Use/DNorm+Sem/Dummytag:paramehttar SÅHKÅR ;
+presskonferánssa
+	presskonferánssa+Area/SE+Sem/Dummytag:press9#konfer VALENS ;
+	presskonferánssa+Sem/Dummytag:press9#konferánssa MUORRA_LOAN ;
+psykologijja
+	psykologijja+Sem/Dummytag:psykologi ALLEGORI ;
+	psykologijja+Sem/Dummytag:psykologi ALLEGORI ;
+áktur
+	áktur+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:áktur GAHPER ; !LOAN
+	áktur+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:akt FAKTOR ;
+satelihtta
+	satelihtta+Sem/Dummytag:sateli INSTITUTT ;
+	satelihtta+Sem/Dummytag:sateli INSTITUTT ;
+eksorsissta
+	eksorsissta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:exorsi TURIST ;
+	eksorsissta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:eksorsi TURIST ; !GG
+debæhtta
+	debæhtta+v1+Sem/Dummytag:debæhtta MUORRA_LOAN ; !
+	debæhtta+v2+Sem/Dummytag:debihtta MUORRA_LOAN ;
+gouachemalerijja
+	gouachemalerijja+Area/NO+Sem/Dummytag:gouache#maleri ALLEGORI ;
+	gouachemalerijja+Area/SE+Sem/Dummytag:gouache#måleri ALLEGORI ; ! What?
+kalkuvnna
+	kalkuvnna+Area/NO+Sem/Dummytag:kalkuvnna MUORRA_LOAN ;
+	kalkuvnna+Area/SE+Sem/Dummytag:kalk TELEFON ; !
+snjárttjá
+	snjárttjá+v1+Sem/Dummytag:snjárttjá MUORRA ;
+	snjárttjá+v2+Sem/Dummytag:sjnjárttjá MUORRA ;
+buolládahka
+	buolládahka+Sem/Dummytag:buollá^d AHKA ;
+	buolládahka+Sem/Dummytag:buollád AHKA ;
+snjierábiesse
+	snjierábiesse+v1+Sem/Dummytag:snjierá#biesse MUORRA ;
+	snjierábiesse+v2+Sem/Dummytag:sjnjierá#biesse MUORRA ;
+trompiehtta
+	trompiehtta+Area/NO+Sem/Dummytag:tromp ALFABET ; !
+	trompiehtta+Area/SE+Sem/Dummytag:trump ALFABET ; !
+vattáldahka
+	vattáldahka+N+Sem/Dummytag+Sg+Nom:vattáldak%> K ;
+	vattáldahka+Sem/Dummytag:vattáld AHKA ;
+radio
+	radio+Sem/Dummytag:radio KINO_UNASS ;
+	radio+Sem/Dummytag:radio KINO_UNASS ;
+skierre
+	skierre+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:skierre MUORRA ;
+	skierre+Sem/Dummytag:skier're MUORRA ;
+eksaminánnda
+	eksaminánnda+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:examinánnda MUORRA_LOAN ;
+	eksaminánnda+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:eksaminánnda MUORRA_LOAN ; !GG
+telekonferánssa
+	telekonferánssa+Area/SE+Sem/Dummytag:tele#konfer VALENS ;
+	telekonferánssa+Sem/Dummytag:tele#konferánssa MUORRA_LOAN ;
+skredderijja
+	skredderijja+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:skredderi ALLEGORI ;
+	skredderijja+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:skrä9dderi ALLEGORI ;
+tulipádna
+	tulipádna+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:tulip ORGAN ;
+	tulipádna+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:tulp ORGAN ;
+slajppatállik
+	slajppatállik+v1+Sem/Dummytag:slajppa#tállig9 GAHPER ; !LOAN
+	slajppatállik+v2+Sem/Dummytag:slajppa#dállig9 GAHPER ; !LOAN
+guhkkudahka
+	guhkkudahka+v1+Sem/Feat:guhkkud AHKA ;
+	guhkkudahka+v2+Sem/Feat:guhkud AHKA ;
+iesjartikulierim
+	iesjartikulierim+Area/NO+Sem/Dummytag:iesj#artikulierim VSBST-ODD ;
+	iesjartikulierim+Area/SE+Sem/Dummytag:iesj#artikulerim VSBST-ODD ;
+krysantiebma
+	krysantiebma+Area/NO+Sem/Dummytag:krysantiebma MUORRA_LOAN ;
+	krysantiebma+Area/SE+Sem/Dummytag:krysantebma MUORRA_LOAN ;
+seriøsitiehtta
+	seriøsitiehtta+Area/NO+Sem/Dummytag:seri^øsit ALFABET ; !
+	seriøsitiehtta+Area/SE+Sem/Dummytag:seri^osit ALFABET ; !
+snjilltjamánno
+	snjilltjamánno+v1+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:snjilltja#mánno MUORRA ;
+	snjilltjamánno+v2+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:sjnjilltja#mánno MUORRA ;
+nævvo
+	nævvo+Sem/Dummytag:nævvo MUORRA ; !AK
+	nævvo+Use/NG+Sem/Dummytag:næv'vo MUORRA ; !OK
+etnoøkologijja
+	etnoøkologijja+Sem/Dummytag:etno#økologi ALLEGORI ;
+	etnoøkologijja+Use/NotDNorm+Sem/Dummytag:etno#ekologi ALLEGORI ;
+værmádahka
+	værmádahka+Area/SE+Sem/Dummytag:værmmád AHKA ;
+	værmádahka+Sem/Dummytag:værmád AHKA ;
+konfesjonalissma
+	konfesjonalissma+Area/SE+Sem/Dummytag:konfes^sionali FANATISM ;
+	konfesjonalissma+Sem/Dummytag:konfesjonali FANATISM ; !GG
+ideálla
+	ideálla+Sem/Dummytag:ide^ AREAL ;
+	ideálla+Sem/Dummytag:ide^ AREAL ;
+havarijja
+	havarijja+Area/NO+Sem/Dummytag:havari ALLEGORI ;
+	havarijja+Area/SE+Sem/Dummytag:haveri ALLEGORI ;
+biologijja
+	biologijja+Sem/Dummytag:biologi ALLEGORI ;
+	biologijja+Sem/Dummytag:biologi ALLEGORI ;
+refleksjåvnnå
+	refleksjåvnnå+Sem/Dummytag:re^flek INSTITUTION ;
+	refleksjåvnnå+Sem/Dummytag:re^flek INSTITUTION ;
+klubba
+	klubba+OLang/NOB+Sem/Dummytag:klubba MUORRA ; !LOAN klubb
+	klubba+Sem/Dummytag:klubba MUORRA ; !LOAN
+idjasjkunjok
+	idjasjkunjok+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:idja#sjkunjog9 GAHPER ;
+	idjasjkunjok+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Ani:idja#skunjog9 GAHPER ;
+snjipptjo
+	snjipptjo+Sem/Dummytag:sjnjipptjo MUORRA ;
+	snjipptjo+Sem/Dummytag:snjipptjo MUORRA ;
+maŋŋekalkulierim
+	maŋŋekalkulierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:maŋŋe#kalkulierim VSBST-ODD ;
+	maŋŋekalkulierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:maŋŋe#kalkulerim VSBST-ODD ;
+linjálla
+	linjálla+Sem/Dummytag:lin^j AREAL ;
+	linjálla+Sem/Dummytag:linj AREAL ;
+pensjonerra
+	pensjonerra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pensionerra MUORRA_LOAN ;
+	pensjonerra+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pensjonerra MUORRA_LOAN ; !GG
+parlamentarihkkárkonferánssa
+	parlamentarihkkárkonferánssa+Area/SE+Sem/Dummytag:parlamentarihkkár#konfer VALENS ;
+	parlamentarihkkárkonferánssa+Sem/Dummytag:parlamentarihkkár#konferánssa MUORRA_LOAN ;
+sentimiehtar
+	sentimiehtar+Area/NO+Use/DNorm+Sem/Dummytag:sentimiehttar SÅHKÅR ;
+	sentimiehtar+Area/SE+Use/DNorm+Sem/Dummytag:sentimehttar SÅHKÅR ;
+offisierra
+	offisierra+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:offisierra MUORRA_LOAN ;
+	offisierra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:offiserra MUORRA_LOAN ;
+basáldahka
+	basáldahka+N+Sem/Dummytag+Sg+Nom:basáldak%> K ;
+	basáldahka+Sem/Dummytag:basáld AHKA ;
+mánájgárddekonferánssa
+	mánájgárddekonferánssa+Area/SE+Sem/Dummytag:mánáj#gárdde#konfer VALENS ;
+	mánájgárddekonferánssa+Sem/Dummytag:mánáj#gárdde#konferánssa MUORRA_LOAN ;
+bioprospektierim
+	bioprospektierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:bio^pro^spektierim VSBST-ODD ;
+	bioprospektierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:bio^pro^spekterim VSBST-ODD ;
+årro
+	årro+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:år'ro ACTOR ;
+	årro+Sem/Dummytag:årro MUORRA ;
+dåktårkontåvrrå
+	dåktårkontåvrrå+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:doktor#kont FAKTOR ;
+	dåktårkontåvrrå+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dåktår#kont FAKTOR ;
+såffå
+	såffå+Sem/Dummytag:såf'få MUORRA ; !LOAN
+	såffå+Sem/Dummytag:såffå MUORRA ; !LOAN
+industrikonsesjåvnnå
+	industrikonsesjåvnnå+Area/SE+Sem/Dummytag:industri#konce MISSION ; !
+	industrikonsesjåvnnå+Sem/Dummytag:indu^stri#konse MISSION ; !GG
+kårttå
+	kårttå+v1+Sem/Dummytag:kårttå MUORRA ; !LOAN
+	kårttå+v2+Sem/Dummytag:gårttå MUORRA ; !LOAN
+stratehka
+	stratehka+Area/NO+Sem/Dummytag:stratiehka MUORRA_LOAN ;
+	stratehka+Area/SE+Sem/Dummytag:stratehka MUORRA_LOAN ;
+agænndá
+	agænndá+Sem/Dummytag:agenda NOADE_BADASS ;
+	agænndá+Sem/Dummytag:agænndá MUORRA ;
+billæhtta
+	billæhtta+Area/NO+Sem/Dummytag:bil MUORRA_LOAN ; !OBS
+	billæhtta+Area/NO+Sem/Dummytag:bill TABLETT ; !OBS
+	billæhtta+Area/SE+Sem/Dummytag:bilj TABLETT ;
+mánnávoaŋnna
+	mánnávoaŋnna+Sem/Dummytag:mánná#voaŋnna MUORRA ;
+	mánnávoaŋnna+Area/SE+Sem/Dummytag:mánná#váŋnna MUORRA ;
+kánu
+	kánu+Sem/Dummytag:kán'nu ÅLMÅJ ; !LOAN
+	kánu+Sem/Dummytag:kánu NOADE ; !LOAN
+regulierimpládna
+	regulierimpládna+Area/NO+Sem/Dummytag:regulierim#pl ORGAN ;
+	regulierimpládna+Area/SE+Sem/Dummytag:regulerim#pl ORGAN ;
+tiennisbádna
+	tiennisbádna+Sem/Dummytag:tennis#bádna MUORRA_LOAN ;
+	tiennisbádna+Sem/Dummytag:tiennis#bádna MUORRA_LOAN ;
+bomhullohárppo
+	bomhullohárppo+Sem/Dummytag:bomhullo#hárppo MUORRA_LOAN ; !
+	bomhullohárppo+Sem/Dummytag:bomullo#hárppo MUORRA_LOAN ; !
+soapptse
+	soapptse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:soapptse MUORRA ;
+	soapptse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:soapptse MUORRA ;
+kapelládna
+	kapelládna+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:kapell ORGAN ; !nor Kapellan
+	kapelládna+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:kapl ORGAN ; ! sw Kaplan
+parantiessa
+	parantiessa+Area/NO+Sem/Dummytag:parantiessa MUORRA_LOAN ;
+	parantiessa+Area/SE+Sem/Dummytag:parantessa MUORRA_LOAN ;
+krystálla
+	krystálla+Area/NO+Sem/Dummytag:krystál'la MUORRA_LOAN ; !
+	krystálla+Area/SE+Sem/Dummytag:kristál'la MUORRA_LOAN ; !
+appelsijnna
+	appelsijnna+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:appels BENSIN ;
+	appelsijnna+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:apels BENSIN ;
+violijnnatjiellu
+	violijnnatjiellu+Area/NO+Sem/Dummytag:vi^olijnna#tjiel'lu GUOMOJ ;
+	violijnnatjiellu+Area/NO+Sem/Dummytag:vi^olijnna#tjiellu MUORRA ;
+	violijnnatjiellu+Area/SE+Sem/Dummytag:vi^olijnna#tjel'lu GUOMOJ ;
+	violijnnatjiellu+Area/SE+Sem/Dummytag:vi^olijnna#tjellu MUORRA ;
+	violijnnatjiellu+Sem/Dummytag:vi^olijnna#sello NOADE_BADASS ;
+	violijnnatjiellu+Sem/Dummytag:vi^olin#sello NOADE_BADASS ;
+lijggebefálla
+	lijggebefálla+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lijgge#bef AREAL ;
+	lijggebefálla+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lijgge#befä9lla MUORRA_LOAN ;
+sypræssa
+	sypræssa+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:cypræs'sa MUORRA_LOAN ;
+	sypræssa+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:sypræs'sa MUORRA_LOAN ; !GG
+foannda
+	foannda+Area/SE+Sem/Dummytag:fånndå MUORRA ; !LOAN [fån+Sem/Dummytag:d] forkjsellig uttale på norsk og svensk
+	foannda+Sem/Dummytag:foannda MUORRA ; !LOAN fond
+diskontierim
+	diskontierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:diskontierim VSBST-ODD ;
+	diskontierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:diskonterim VSBST-ODD ;
+spellamautomáhtta
+	spellamautomáhtta+Area/NO+Sem/Dummytag:spæl'lam#autom ADVOKAT ;
+	spellamautomáhtta+Area/SE+Sem/Dummytag:spellam#autom ADVOKAT ;
+oberstløytnánnta
+	oberstløytnánnta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:oberst9#lø9ytn VARIANT ;
+	oberstløytnánnta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:oberst#lö9jtn VARIANT ;
+termomiehtar
+	termomiehtar+Area/NO+Use/DNorm+Sem/Dummytag:termomiehttar SÅHKÅR ;
+	termomiehtar+Area/SE+Use/DNorm+Sem/Dummytag:termomehttar SÅHKÅR ;
+antænnjo
+	antænnjo+v1+Sem/Obj:antæn'njo MUORRA_LOAN ;
+	antænnjo+v2+Sem/Obj:antæn'nja MUORRA_LOAN ;
+jiednasnjárttjá
+	jiednasnjárttjá+v1+Sem/Dummytag:jiedna#snjárttjá MUORRA ;
+	jiednasnjárttjá+v2+Sem/Dummytag:jiedna#sjnjárttjá MUORRA ;
+páhperbiehkke
+	páhperbiehkke+v1+Sem/Dummytag:páhper#biehkke MUORRA ; !LOAN
+	páhperbiehkke+v2+Sem/Dummytag:báhper#biehkke MUORRA ; !LOAN
+adusierim
+	adusierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:adusierim VSBST-ODD ;
+	adusierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:aduserim VSBST-ODD ;
+assosiasjåvnnå
+	assosiasjåvnnå+Area/SE+Sem/Dummytag:associ^a INSTITUTION ;
+	assosiasjåvnnå+Sem/Dummytag:assosi^a INSTITUTION ; !GG
+poassta
+	poassta+v1+Sem/Dummytag:poassta MUORRA ; !LOAN
+	poassta+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:påvsstå MUORRA ;
+	poassta+v3+Sem/Dummytag:båvsstå MUORRA ; !LOAN
+byrådja
+	byrådja+Sem/Dummytag:byrå NOADE_BADASS ;
+	byrådja+Sem/Dummytag:byrådja MUORRA_LOAN ;
+jáffo
+	jáffo+Sem/Dummytag:jáf'fo MUORRA ;
+	jáffo+Sem/Dummytag:jáffo MUORRA ; ! this is cheating, Spiik says III-I
+proletárra
+	proletárra+Area/NO+Sem/Dummytag:prolet SEMINAR ;
+	proletárra+Area/SE+Sem/Dummytag:proletær'ra MUORRA_LOAN ;
+ruhtabirástak
+	ruhtabirástak+N+Sem/Dummytag+Sg+Nom:ruhta#birástak%> K ;
+	ruhtabirástak+Sem/Dummytag:ruhta#birást AHKA ;
+viesso
+	viesso+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:vies'so MUORRA ;
+	viesso+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:viesso MUORRA ;
+pensjonprosænnta
+	pensjonprosænnta+Area/SE+Sem/Dummytag:pension#prosænnta MUORRA_LOAN ; ! Not in PATENT because of SW procent
+	pensjonprosænnta+Sem/Dummytag:pensjon#prosænnta MUORRA_LOAN ; ! Not in PATENT because of SW procent !GG
+turkijssa
+	turkijssa+Area/NO+Sem/Dummytag:turk PARADIS ;
+	turkijssa+Area/SE+Sem/Dummytag:turkåvsså MUORRA_LOAN ; !SE turkos NOR turkis
+márkkanøkonomijja
+	márkkanøkonomijja+Sem/Dummytag:márkkan#økonomi ALLEGORI ;
+	márkkanøkonomijja+Use/NotDNorm+Sem/Dummytag:márkkan#ekonomi ALLEGORI ;
+bomhullo
+	bomhullo+Sem/Dummytag:bomhul'lo MUORRA_LOAN ; !
+	bomhullo+Sem/Dummytag:bomul'lo MUORRA_LOAN ;
+bássa
+	bássa+Sem/Dummytag:bás'sa MUORRA ; !LOAN bass
+	bássa+Sem/Dummytag:bássa MUORRA ; !LOAN base/bas
+triddju
+	triddju+Sem/Dummytag:triddju GUOMOJ ; !LOAN
+	triddju+Sem/Dummytag:triddju MUORRA ; !LOAN
+ruhtadimpládna
+	ruhtadimpládna+Sem/Dummytag:ruhtadim#pl ORGAN ;
+	ruhtadimpládna+Sem/Dummytag:ruhtadim#pládna MUORRA ;
+revisjonissma
+	revisjonissma+Area/SE+Sem/Dummytag:revisioni FANATISM ; !
+	revisjonissma+Sem/Dummytag:revisjoni FANATISM ; !GG
+mopehta
+	mopehta+Area/NO+Sem/Dummytag:mopiehta MUORRA_LOAN ;
+	mopehta+Area/SE+Sem/Dummytag:mopehta MUORRA_LOAN ;
+gitarissta
+	gitarissta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gitari TURIST ;
+	gitarissta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gitarri TURIST ;
+råhka
+	råhka+Sem/Dummytag:råhka MUORRA ;
+	råhka+Sem/Dummytag:råhka MUORRA ;
+lagosdemokratijja
+	lagosdemokratijja+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lagos#demo^krati ALLEGORI ;
+	lagosdemokratijja+Sem/Dummytag:lagos#demo^krati ALLEGORI ;
+prosjæktajådediddje
+	prosjæktajådediddje+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:projækta#jådediddje ACTOR ;
+	prosjæktajådediddje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:prosjækta#jådediddje ACTOR ;
+bierjjedahka
+	bierjjedahka+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:bierjjed AHKA ;
+	bierjjedahka+N+Sem/Dummytag+Sg+Nom:bierjjedak%> K ;
+makrijlla
+	makrijlla+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:makril'la MUORRA_LOAN ;
+	makrijlla+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:makrijlla MUORRA_LOAN ;
+kloahkka
+	kloahkka+v1+Sem/Dummytag:kloahkka MUORRA ;
+	kloahkka+v2+Sem/Dummytag:kloahkko MUORRA ;
+snjurgun
+	snjurgun+v1+Sem/Dummytag:snjurgun FIERUN ;
+	snjurgun+v2+Sem/Dummytag:sjnjurgun FIERUN ;
+piánu
+	piánu+Sem/Dummytag:pi^án'nu GUOMOJ ; !LOAN
+	piánu+Sem/Dummytag:pi^ánu NOADE ; !LOAN
+serviæhtta
+	serviæhtta+Area/NO+Sem/Dummytag:servi^ TABLETT ;
+	serviæhtta+Area/SE+Sem/Dummytag:serv TABLETT ; ! servett
+kvantifisierimapposisjåvnnå
+	kvantifisierimapposisjåvnnå+Area/NO+Sem/Dummytag:kvantifisierim#apposi INSTITUTION ;
+	kvantifisierimapposisjåvnnå+Area/SE+Sem/Dummytag:kvantifiserim#apposi INSTITUTION ;
+stráddu
+	stráddu+Sem/Dummytag:strád'du NOADE ; !LOAN
+	stráddu+Sem/Dummytag:stráddu ÅLMÅJ ; !LOAN
+dubáhkka
+	dubáhkka+v1+Sem/Dummytag:dubáhkka MUORRA ; !LOAN newer rules this should be tobáhkka, but it is older so.
+	dubáhkka+v2+Sem/Dummytag:tobáhkka MUORRA ; !LOAN
+pasiænnta
+	pasiænnta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pasi^ PATENT ; !SW patient
+	pasiænnta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:pati^ PATENT ; !SW patient
+prosjæktapládna
+	prosjæktapládna+Area/SE+Sem/Dummytag:projækta#pl ORGAN ;
+	prosjæktapládna+Sem/Dummytag:prosjækta#pl ORGAN ;
+lånåstushiståvrrå
+	lånåstushiståvrrå+Area/SE+Sem/Dummytag:lånåstus#histårjjå MUORRA_LOAN ;
+	lånåstushiståvrrå+Sem/Dummytag:lånåstus#histåvrrå MUORRA_LOAN ;
+meriádna
+	meriádna+Area/NO+Sem/Dummytag:meriádna MUORRA_LOAN ; !Origanum majorana, sw mejram, nor merian
+	meriádna+Area/SE+Sem/Dummytag:mejrábma MUORRA_LOAN ; !Origanum majorana, sw mejram, nor merian
+berun
+	berun+v1+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:berun GAHPER ;
+	berun+v2+Sem/Dummytag:perun GAHPER ; !berun in Kintel
+befálla
+	befálla+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:bef AREAL ;
+	befálla+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:befä9lla MUORRA_LOAN ;
+revijsur
+	revijsur+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:revijsur GAHPER ;
+	revijsur+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:revisor GAHPER_BADASS ;
+	revijsur+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:revisur GAHPER_BADASS ;
+hiejttemsnjurgganis
+	hiejttemsnjurgganis+v1+Sem/Dummytag:hiejttem#snjurgganiss GÅNÅGIS ;
+	hiejttemsnjurgganis+v2+Sem/Dummytag:hiejttem#sjnjurgganiss GÅNÅGIS ;
+tijmma
+	tijmma+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tijmma MUORRA ; !LOAN
+	tijmma+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dijmma MUORRA ; !LOAN
+várresnjássjka
+	várresnjássjka+v1+Sem/Dummytag:várre#snjássjka MUORRA ;
+	várresnjássjka+v2+Sem/Dummytag:várre#sjnjássjka MUORRA ;
+fáhkapládna
+	fáhkapládna+Sem/Dummytag:fáhka#pl ORGAN ;
+	fáhkapládna+Sem/Dummytag:fáhka#pládna MUORRA ;
+misjonerra
+	misjonerra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:missionerra MUORRA_LOAN ;
+	misjonerra+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:misjonerra MUORRA_LOAN ; !GG
+epihkka
+	epihkka+Area/NO+Sem/Dummytag:epihkka MUORRA_LOAN ;
+	epihkka+Area/SE+Sem/Dummytag:epijkka MUORRA_LOAN ;
+diamiehtar
+	diamiehtar+Area/NO+Use/DNorm+Sem/Dummytag:dia#miehttar SÅHKÅR ;
+	diamiehtar+Area/SE+Use/DNorm+Sem/Dummytag:dia#mehttar SÅHKÅR ;
+stratesjijja
+	stratesjijja+Area/NO+Sem/Dummytag:stratesjij'ja MUORRA_LOAN ;
+	stratesjijja+Area/SE+Sem/Dummytag:stratesjijja MUORRA_LOAN ; !LOAN
+	stratesjijja+Sem/Dummytag:stratesji ALLEGORI ;
+aksjonissta
+	aksjonissta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:aksjoni TURIST ; !GG
+	aksjonissta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:aktioni TURIST ; !GG
+konferánssa
+	konferánssa+Area/SE+Sem/Dummytag:konfer VALENS ;
+	konferánssa+Sem/Dummytag:konferánssa MUORRA_LOAN ;
+basse
+	basse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:bas'se ACTOR ;
+	basse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:basse MUORRA ;
+millionerra
+	millionerra+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Area/SE+Sem/Dummytag:miljo^nerra MUORRA_LOAN ;
+	millionerra+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:mill^ionerra MUORRA_LOAN ; !Used on both sides
+etnografijja
+	etnografijja+Sem/Dummytag:etno^grafi ALLEGORI ;
+	etnografijja+Sem/Dummytag:etno^grafi ALLEGORI ;
+meierijja
+	meierijja+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:me^ieri ALLEGORI ;
+	meierijja+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:mejeri ALLEGORI ;
+suodjalimpládna
+	suodjalimpládna+Sem/Dummytag:suodjalim#pl ORGAN ;
+	suodjalimpládna+Sem/Dummytag:suodjalim#pládna MUORRA ;
+majoniessa
+	majoniessa+Area/NO+Sem/Dummytag:majoniessa MUORRA_LOAN ;
+	majoniessa+Area/SE+Sem/Dummytag:majonessa MUORRA_LOAN ;
+arkipiella
+	arkipiella+Area/NO+Sem/Dummytag:arkipiella MUORRA_LOAN ; ! Øygrupp,e akripelag SW, arkipel NOR
+	arkipiella+Area/SE+Sem/Dummytag:arkipella MUORRA_LOAN ; ! Øygrupp,e akripelag SW, arkipel NOR, if used in sweden this would be the form.
+páhper
+	páhper+v1+Sem/Dummytag:páhpper SÅHKÅR ; !LOAN
+	páhper+v2+Sem/Dummytag:báhpper SÅHKÅR ; ! !LOAN
+siviløkonåvmmå
+	siviløkonåvmmå+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sivil#økon AGRONOM ;
+	siviløkonåvmmå+Use/NotDNorm+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sivil#ekon AGRONOM ;
+	siviløkonåvmmå+Use/NotDNorm+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:civil#ekon AGRONOM ;
+vuobmalistállik
+	vuobmalistállik+v1+Sem/Dummytag:vuobmalis#tállig9 GAHPER ; !LOAN
+	vuobmalistállik+v2+Sem/Dummytag:vuobmalis#dállig9 GAHPER ; !LOAN
+åvddåprosjækta
+	åvddåprosjækta+Area/SE+Sem/Dummytag:åvddå#projækta MUORRA_LOAN ; ! Not in KOLLEKT because of SW projekt
+	åvddåprosjækta+Sem/Dummytag:åvddå#prosjækta MUORRA_LOAN ; ! Not in KOLLEKT because of SW projekt
+morfologijja
+	morfologijja+Sem/Dummytag:morfologi ALLEGORI ;
+	morfologijja+Sem/Dummytag:morfologi ALLEGORI ;
+antikrissta
+	antikrissta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:anti#kris'sta NOADE ;
+	antikrissta+Sem/Dummytag:anti#kri TURIST ;
+biŋŋgu
+	biŋŋgu+Sem/Dummytag:biŋ'ŋgu NOADE ; !LOAN bingo
+	biŋŋgu+Sem/Dummytag:biŋŋgu ÅLMÅJ ; !LOAN bingo
+hektolihtar
+	hektolihtar+v1+Sem/Dummytag:hekto#lihttar SÅHKÅR ; !LOAN
+	hektolihtar+v2+Sem/Dummytag:hekto#lijttar9 SÅHKÅR ; !LOAN
+referánssa
+	referánssa+Area/SE+Sem/Dummytag:refer VALENS ;
+	referánssa+Sem/Dummytag:referánssa MUORRA_LOAN ;
+ekvalisierimapposisjåvnnå
+	ekvalisierimapposisjåvnnå+Area/NO+Sem/Dummytag:ekvalisierim#apposi INSTITUTION ;
+	ekvalisierimapposisjåvnnå+Area/SE+Sem/Dummytag:ekvaliserim#apposi INSTITUTION ;
+lærkadahka
+	lærkadahka+Area/NO+Sem/Dummytag:læ9rkad AHKA ;
+	lærkadahka+Area/SE+Sem/Dummytag:lä9rkad AHKA ;
+hållamájggelissta
+	hållamájggelissta+Sem/Dummytag:hållam#ájgge#lissta MUORRA ;
+	hållamájggelissta+Sem/Dummytag:hållam#ájgge#lissta MUORRA ;
+gállo
+	gállo+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gállo MUORRA ;
+	gállo+Sem/Dummytag:gál'lo MUORRA ;
+gártjes
+	gártjes+Sem/Dummytag:gárttje SARVES ; ! also ÅRES
+	gártjes+Sem/Dummytag:gárttjes ÅRES ; ! also SARVES
+snjuhtje
+	snjuhtje+v1+Sem/Dummytag:snjuhtje MUORRA ;
+	snjuhtje+v2+Sem/Dummytag:sjnjuhtje MUORRA ;
+millimiehtar
+	millimiehtar+Area/NO+Use/DNorm+Sem/Dummytag:milli#miehttar SÅHKÅR ;
+	millimiehtar+Area/SE+Use/DNorm+Sem/Dummytag:milli#mehttar SÅHKÅR ;
+tállik
+	tállik+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tállig9 GAHPER ; !LOAN
+	tállik+v2+Sem/Dummytag:dállig9 GAHPER ; !LOAN tallrik (tallerken)
+korporálla
+	korporálla+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:korpor AREAL ;
+	korporálla+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:korpr AREAL ;
+konsendierim
+	konsendierim+Area/NO+CmpN/SgN+Sem/Dummytag:konsendierim VSBST-ODD ;
+	konsendierim+Area/SE+CmpN/SgN+Sem/Dummytag:konsenderim VSBST-ODD ;
+sálldu
+	sálldu+Sem/Dummytag:sálldu NOADE ; !LOAN
+	sálldu+Sem/Dummytag:sálldu ÅLMÅJ ; !LOAN
+sámekonferánssa
+	sámekonferánssa+Area/SE+Sem/Dummytag:sáme#konfer VALENS ;
+	sámekonferánssa+Sem/Dummytag:sáme#konferánssa MUORRA_LOAN ;
+snjierága
+	snjierága+v1+CmpN/PlG+Sem/Dummytag:snjierág9 SNJIERÁGA ;
+	snjierága+v2+CmpN/PlG+Sem/Dummytag:sjnjierág9 SNJIERÁGA ;
+sálltu
+	sálltu+Sem/Dummytag:sálltu NOADE ; !LOAN
+	sálltu+Sem/Dummytag:sálltu ÅLMÅJ ; !LOAN
+pårnnu
+	pårnnu+Sem/Dummytag:pårnnu MUORRA_LOAN ;
+	pårnnu+Sem/Dummytag:pårnnu ÅLMÅJ ;
+snjilltja
+	snjilltja+v1+Sem/Dummytag:snjilltja MUORRA ;
+	snjilltja+v2+Sem/Dummytag:sjnjilltja MUORRA ;
+sjelæhtta
+	sjelæhtta+Area/NO+Sem/Dummytag:sjel TABLETT ;
+	sjelæhtta+Area/SE+Sem/Dummytag:skel TABLETT ;
+fotosyntiessa
+	fotosyntiessa+Area/NO+Sem/Dummytag:foto#syntiessa MUORRA_LOAN ;
+	fotosyntiessa+Area/SE+Sem/Dummytag:foto#syntessa MUORRA_LOAN ;
+poasstagiro
+	poasstagiro+v1+Sem/Dummytag:poassta#giro KINO_UNASS ;
+	poasstagiro+v2+Sem/Dummytag:påvsstå#giro KINO_UNASS ;
+prosjæktabarggo
+	prosjæktabarggo+Area/SE+Sem/Dummytag:projækta#barggo MUORRA_LOAN ;
+	prosjæktabarggo+Sem/Dummytag:prosjækta#barggo MUORRA_LOAN ;
+brigadierra
+	brigadierra+Area/NO+Sem/Dummytag:brigadierra MUORRA_LOAN ; !
+	brigadierra+Area/SE+Sem/Dummytag:brigaderra MUORRA_LOAN ; !
+jahkepládna
+	jahkepládna+Sem/Dummytag:jahke#pl ORGAN ;
+	jahkepládna+Sem/Dummytag:jahke#pládna MUORRA ;
+låptur
+	låptur+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:låptur GAHPER ; !Delfin
+	låptur+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:låbdur GAHPER ; !Delfin
+dujskagiella
+	dujskagiella+v1+Sem/Dummytag:dujska#giel SÁMEGIEL ;
+	dujskagiella+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tusska MUORRA ; !LOAN tysk?
+háldadimpládna
+	háldadimpládna+Sem/Dummytag:háldadim#pl ORGAN ;
+	háldadimpládna+Sem/Dummytag:háldadim#pládna MUORRA ;
+strávve
+	strávve+v1+Sem/Dummytag:stráv've MUORRA ; !LOAN
+	strávve+v2+Sem/Dummytag:ráv've MUORRA ; !LOAN strøm
+miehtar
+	miehtar+Area/NO+Use/DNorm+Sem/Dummytag:miehttar SÅHKÅR ;
+	miehtar+Area/SE+Use/DNorm+Sem/Dummytag:mehttar SÅHKÅR ;
+nuorajkonferánssa
+	nuorajkonferánssa+Area/SE+Sem/Dummytag:nuoraj#konfer VALENS ;
+	nuorajkonferánssa+Sem/Dummytag:nuoraj#konferánssa MUORRA_LOAN ;
+giellapládna
+	giellapládna+Sem/Dummytag:giella#pl ORGAN ;
+	giellapládna+Sem/Dummytag:giella#pládna MUORRA ;
+hierarkijja
+	hierarkijja+Sem/Dummytag:hi^er^ark ALLEGORI ;
+	hierarkijja+Sem/Dummytag:hi^er^arki ALLEGORI ;
+samojehta
+	samojehta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:samojiehta MUORRA ;
+	samojehta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:samojehta MUORRA ; !like moped-mopehta
+logopehta
+	logopehta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:logopiehta MUORRA ;
+	logopehta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:logopehta MUORRA ; !like moped-mopehta
+hievvil
+	hievvil+v1+Area/NO+Sem/Tool:hievvil GAHPER ; !LOAN
+	hievvil+v2+Area/SE+Sem/Tool:hivvil GAHPER ; !LOAN
+tijmmabielle
+	tijmmabielle+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tijmma#bielle MUORRA ; !LOAN
+	tijmmabielle+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dijmma#bielle MUORRA ; !LOAN
+hæktu
+	hæktu+Sem/Dummytag:hæktu MUORRA ; !LOAN
+	hæktu+Sem/Dummytag:hæktu ÅLMÅJ ; !LOAN
+tjállemtábllo
+	tjállemtábllo+v1+Sem/Dummytag:tjállem#tábllo MUORRA ; !LOAN
+	tjállemtábllo+v2+Sem/Dummytag:tjállem#dábllo MUORRA ; !LOAN
+priemij
+	priemij+Area/NO+Sem/Dummytag:priebmi PREMIE ;
+	priemij+Area/SE+Sem/Dummytag:prebmi PREMIE ;
+desimiehtar
+	desimiehtar+Area/NO+Use/DNorm+Sem/Dummytag:desi#miehttar SÅHKÅR ;
+	desimiehtar+Area/SE+Use/DNorm+Sem/Dummytag:desi#mehttar SÅHKÅR ;
+rámmapládna
+	rámmapládna+Sem/Dummytag:rámma#pl ORGAN ;
+	rámmapládna+Sem/Dummytag:rámma#pládna MUORRA ;
+balláhta
+	balláhta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:balláda NOADE ;
+	balláhta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:balláhta MUORRA_LOAN ;
+oahppapládna
+	oahppapládna+Sem/Dummytag:oahppa#pl ORGAN ;
+	oahppapládna+Sem/Dummytag:oahppa#pládna MUORRA ;
+syrijnna
+	syrijnna+Area/NO+Sem/Dummytag:syr BENSIN ;
+	syrijnna+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:syr HYDROGEN ; !SW Syren, NOR Syrin
+trafikktjuovgga
+	trafikktjuovgga+Area/NO+Sem/Dummytag:trafikk#tjuovgga MUORRA_LOAN ;
+	trafikktjuovgga+Area/SE+Sem/Dummytag:trafik#tjuovgga MUORRA_LOAN ;
+generalløytnánnta
+	generalløytnánnta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:general#lø9ytn VARIANT ;
+	generalløytnánnta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:general#lö9jtn VARIANT ;
+kábal
+	kábal+Area/SE+Sem/Dummytag:kabella MUORRA_LOAN ;
+	kábal+Sem/Dummytag:káhpal GÁMAS ; !LOAN
+lávllo
+	lávllo+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:lávllo ACTOR ;
+	lávllo+Sem/Dummytag:lávllo MUORRA ;
+toarnna
+	toarnna+v1+Sem/Dummytag:toarnna MUORRA ;
+	toarnna+v2+Sem/Dummytag:doarnna MUORRA ; !LOAN
+baktierij
+	baktierij+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:baktierri PREMIE ;
+	baktierij+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:bakterri PREMIE ;
+tekstijllakonvertierim
+	tekstijllakonvertierim+Area/NO+CmpN/SgN+Sem/Dummytag:tekstijlla#konvertierim VSBST-ODD ;
+	tekstijllakonvertierim+Area/SE+CmpN/SgN+Sem/Dummytag:tekstijlla#konverterim VSBST-ODD ;
+automatisierim
+	automatisierim+Area/NO+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:automatisierim VSBST-ODD ;
+	automatisierim+Area/SE+CmpN/SgN+CmpN/DefSgGen+CmpN/DefPlGen+CmpN/SgNomLeft+CmpN/SgGenLeft+CmpN/PlGenLeft+Sem/Dummytag:automatiserim VSBST-ODD ;
+økonomijja
+	økonomijja+Sem/Dummytag:økonomi ALLEGORI ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+	økonomijja+Use/NG+Use/NotDNorm+Sem/Dummytag:ekonomi ALLEGORI ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+tsoapptse
+	tsoapptse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tsoapptse MUORRA ;
+	tsoapptse+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tsoapptse MUORRA ;
+párra
+	párra+v1+Sem/Dummytag:párra MUORRA ; !LOAN
+	párra+v2+Sem/Dummytag:bárra MUORRA ; !LOAN
+boaksa
+	boaksa+Sem/Dummytag:b BOAKSA_BADASS ; ! LOAN
+	boaksa+Sem/Dummytag:boaksa MUORRA ; !LOAN !boaksa-båvsa, this is correct, but maybe a bit foreign to LU speakers who want to say boaksa-*båksa
+sæhtta
+	sæhtta+Sem/Dummytag:s TABLETT ;
+	sæhtta+Sem/Dummytag:sæhtta MUORRA ;
+tálligasj
+	tálligasj+v1+Sem/Dummytag:tálligadtj BEDNAGASJ ; !LOAN liten tallik
+	tálligasj+v2+Sem/Dummytag:dálligadtj BEDNAGASJ ; !LOAN liten tallik
+árvvopoassta
+	árvvopoassta+v1+Sem/Dummytag:árvvo#poassta MUORRA ;
+	árvvopoassta+v2+Sem/Dummytag:árvvo#båvsstå MUORRA ; !LOAN
+pijppár
+	pijppár+v1+Sem/Dummytag:pijppár GAHPER ; !Actor
+	pijppár+v2+Sem/Dummytag:bijppár GAHPER ; !Actor
+tiedjagáddno
+	tiedjagáddno+Area/NO+Sem/Dummytag:tiedja#gáddno MUORRA ;
+	tiedjagáddno+Area/SE+Sem/Dummytag:tedja#gáddno MUORRA ;
+fidusmalerijja
+	fidusmalerijja+Area/NO+Sem/Dummytag:fidus#maleri ALLEGORI ;
+	fidusmalerijja+Area/SE+Sem/Dummytag:fidus#måleri ALLEGORI ; ! What? Målning
+oarre
+	oarre+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:oar're MUORRA ; !ekorn
+	oarre+Sem/Dummytag:oarre MUORRA ; !grunn, årsak, påskudd, ærend, anledning,
+snjurgoj
+	snjurgoj+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjurggu ÅLMÅJ ;
+	snjurgoj+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjurggu ÅLMÅJ ;
+dramatihkkár
+	dramatihkkár+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dramatijkkár GAHPER ; !LOAN
+	dramatihkkár+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dramatihkkár GAHPER ; !LOAN
+sierij
+	sierij+Area/NO+Sem/Dummytag:sierri PREMIE ;
+	sierij+Area/SE+Sem/Dummytag:serri PREMIE ;
+økonomikonsulænnta
+	økonomikonsulænnta+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:økonomi#konsul PATENT ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+	økonomikonsulænnta+Use/NG+Use/NotDNorm+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ekonomi#konsul PATENT ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+bisstru
+	bisstru+Sem/Dummytag:bisstru MUORRA ; !LOAN
+	bisstru+Sem/Dummytag:bisstru ÅLMÅJ ; !LOAN
+gálles
+	gálles+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gál'le SARVES ;
+	gálles+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gál'les ÅRES ;
+økoturissma
+	økoturissma+Area/NO+Sem/Dummytag:øko#turi FANATISM ;
+	økoturissma+Use/NotDNorm+Sem/Dummytag:eko#turi FANATISM ;
+tiennis
+	tiennis+Area/NO+Sem/Dummytag:tiennis GAHPER ; !LOAN
+	tiennis+Area/SE+Sem/Dummytag:tennis GAHPER ;
+okkupasjåvnnå
+	okkupasjåvnnå+Area/SE+Sem/Dummytag:ockupa INSTITUTION ;
+	okkupasjåvnnå+Sem/Dummytag:okkupa INSTITUTION ; !GG
+økonomipládna
+	økonomipládna+Sem/Dummytag:økonomi#pl ORGAN ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+	økonomipládna+Use/NG+Use/NotDNorm+Sem/Dummytag:ekonomi#pl ORGAN ; !"økonomi" is standarized with e, so it's a exeption from the standarization rule.
+nubbegiella
+	nubbegiella+N+Sem/Dummytag+Abe:nuppe#giela%>»Q1da K ;
+	nubbegiella+N+Sem/Dummytag+Abe:nuppe#giela%>»Q1dak K ;
+	nubbegiella+N+Sem/Dummytag+Der4+Der/ahtes:nuppe#giela%>»Q1d AHTES ;
+	nubbegiella+N+Sem/Dummytag+Der4+Der/ahtes:nuppe#giela%>»Q1g AHTES ;
+	nubbegiella+N+Sem/Dummytag+Ess:nubben#giella%>n K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Acc:nuppijt#giela%>jt K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Com:nuppij#giela%>j K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Ela:nuppijs#giela%>js K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Gen:nuppij#giela%>j K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Ill:nuppijd#giela%>jda K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Ine:nuppijn#giela%>jn K ;
+	nubbegiella+N+Sem/Dummytag+Pl+Nom:nuppe#giela%> K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Acc:nuppe#giela%>v K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Acc:nuppev#giela%>v K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Com:nuppijn#giela%>jn K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Ela:nuppe#giela%>s K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Ela:nuppet#giela%>s K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Gen:nuppe#giela%> K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Ill:nuppe#giella%>j K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Ine:nuppe#giela%>n K ;
+	nubbegiella+N+Sem/Dummytag+Sg+Nom:nubbe#giella%> K ;
+gitárra
+	gitárra+Area/NO+Sem/Dummytag:git SEMINAR ;
+	gitárra+Area/SE+Sem/Dummytag:gitár'ra MUORRA_LOAN ;
+spináhtta
+	spináhtta+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:spin ADVOKAT ;
+	spináhtta+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:spen ADVOKAT ; !spinat
+karbohydráhtta
+	karbohydráhtta+Area/NO+Sem/Dummytag:karbo#hydr ADVOKAT ;
+	karbohydráhtta+Area/SE+Sem/Dummytag:kol#hydr ADVOKAT ; !Karbohydrat nor
+biskoahppa
+	biskoahppa+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:biskoahppa MUORRA_LOAN ;
+	biskoahppa+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:biskåhppå MUORRA_LOAN ;
+gássa
+	gássa+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gás'sa MUORRA ; !Gass
+	gássa+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gássa MUORRA ; !Gås
+appelsinsárdde
+	appelsinsárdde+Area/NO+Sem/Dummytag:apelsin#sárdde MUORRA_LOAN ; !
+	appelsinsárdde+Area/NO+Sem/Dummytag:appelsin#sárdde MUORRA_LOAN ; !
+præssakonferánssa
+	præssakonferánssa+Area/SE+Sem/Dummytag:præs'sa#konfer VALENS ;
+	præssakonferánssa+Sem/Dummytag:præs'sa#konferánssa MUORRA_LOAN ;
+profesjonalissma
+	profesjonalissma+Area/SE+Sem/Dummytag:professionali FANATISM ;
+	profesjonalissma+Sem/Dummytag:profesjonali FANATISM ; !GG
+budsjæhttajahke
+	budsjæhttajahke+Area/NO+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:budsjæhtta#jahke MUORRA_LOAN ;
+	budsjæhttajahke+Area/SE+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:budjæhtta#jahke MUORRA_LOAN ;
+snjuktja
+	snjuktja+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:snjuktja MUORRA ;
+	snjuktja+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sjnjuktja MUORRA ;
+snjuktjamánno
+	snjuktjamánno+v1+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:snjuktja#mánno MUORRA ;
+	snjuktjamánno+v2+CmpN/SgN+CmpN/SgG+CmpN/DefPlGen+Sem/Dummytag:sjnjuktja#mánno MUORRA ;
+desilihtar
+	desilihtar+v1+Sem/Dummytag:desi#lihttar SÅHKÅR ; !LOAN
+	desilihtar+v2+Sem/Dummytag:desi#lijttar9 SÅHKÅR ; !LOAN
+librresnjárttjá
+	librresnjárttjá+v1+Sem/Dummytag:librre#snjárttjá MUORRA ;
+	librresnjárttjá+v2+Sem/Dummytag:librre#sjnjárttjá MUORRA ;

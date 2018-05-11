@@ -1,0 +1,168 @@
+beskjeden
+	beskjeden a1 ;
+	beskjeden a5 ;
+brun
+	brun a1 ;
+	brun a1 ;
+varm
+	varm a1 ;
+	varm a1 ;
+skjør
+	skjør a1 ;
+	skjør a1 ;
+rein
+	rein a1 ;
+	rein a1 ;
+nordøstre
+	nordøstre a3 ;
+	nordøstre a3 ;
+bisk
+	bisk m1 ;
+	bisk a2 ;
+materiell
+	materiell a1 ;
+	materiell n1sg ;
+svart
+	svart a1 ;
+	svart a2 ;
+tverr
+	tverr a1 ;
+	tverr a2 ;
+anonym
+	anonym a1 ;
+	anonym a1 ;
+veloverveid
+	veloverveid a1 ;
+	veloverveid a3 ;
+splendid
+	splendid a1 ;
+	splendid a3 ;
+gløgg
+	gløgg a1 ;
+	gløgg m1 ;
+full
+	full:full7 a1 ;
+	full GOD ;
+interessert
+	interessert a2 ;
+	interessert a4 ;
+sann
+	sann a1 ;
+	sann a1 ;
+oppreid
+	oppreid a1 ;
+	oppreid a3 ;
+utstående
+	utstående a2 ;
+	utstående a3 ;
+intern
+	intern a1 ;
+	intern a1 ;
+sakkyndig
+	sakkyndig a2 ;
+	sakkyndig a2 ;
+østre
+	østre a3 ;
+	østre a3 ;
+fjern
+	fjern a1 ;
+	fjern a1 ;
+funksjonshemmet
+	funksjonshemmet a4  ;
+	funksjonshemmet a4 ;
+seig
+	seig a1 ;
+	seig a2 ;
+snar
+	snar a1 ;
+	snar a1 ;
+ujevn
+	ujevn a1 ;
+	ujevn a2 ;
+utleid
+	utleid a1 ;
+	utleid a2 ;
+velpleid
+	velpleid a1 ;
+	velpleid a2 ;
+uklar
+	uklar a1 ;
+	uklar a1 ;
+skarp
+	skarp a1 ;
+	skarp a1 ;
+vill
+	vill a1 ;
+	vill a2lig ;
+spe
+	spe+A+Sg+Indef+Msc:spe # ;
+	spe+A+Sg+Indef+Fem:spe # ;
+tørr
+	tørr a1 ;
+	tørr a1 ;
+veldedig
+	veldedig a2 ;
+	veldedig a2 ;
+grei
+	grei a1 ;
+	grei aV ;
+tynn
+	tynn a1 ;
+	tynn a1 ;
+djup
+	djup a1 ;
+	djup a1 ;
+jam
+	jam GOD ;
+	jam GAMMEL ;
+tett
+	tett a1 ;
+	tett a2 ;
+slank
+	slank a1 ;
+	slank a2 ;
+fornøyd
+	fornøyd a2 ;
+	fornøyd a3 ;
+falsk
+	falsk a1 ;
+	falsk a2 ;
+rett
+	rett a1 ;
+	rett a2 ;
+rede
+	rede a2 ;
+	rede a3 ;
+enorm
+	enorm a1 ;
+	enorm a1 ;
+negativ
+	negativ a1 ;
+	negativ a2 ;
+klar
+	klar a1 ;
+	klar a1 ;
+grunn
+	grunn a1 ;
+	grunn a1 ;
+marin
+	marin a1 ;
+	marin a1 ;
+forbeholden
+	forbeholden a5 ;
+	forbeholden a1 ;
+feit
+	feit a1 ;
+	feit a2 ;
+lat
+	lat a1 ;
+	lat a2 ;
+fast
+	fast a1 ;
+	fast a2 ;
+jevn
+	jevn a1 ;
+	jevn a1 ;
+	jevn a2 ;
+	jevn GOD ;
+	jevn GAMMEL ;

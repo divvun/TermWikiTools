@@ -1,0 +1,62 @@
+Ruošâ peln
+	Ruošâ% peln+MWE:Ruošâ% beln ADV ;
+	Ruošâ% peln+MWE:Ruošâ% peln ADV ;
+Ruotâ pel
+	Ruotâ% pel+MWE:Ruotâ% bel ADV ;
+	Ruotâ% pel+MWE:Ruotâ% pel ADV ;
+Ruotâ pele
+	Ruotâ% pele+MWE:Ruotâ% bele ADV ;
+	Ruotâ% pele+MWE:Ruotâ% pele ADV ;
+Ruošâ pel
+	Ruošâ% pel+MWE:Ruošâ% bel ADV ;
+	Ruošâ% pel+MWE:Ruošâ% pel ADV ;
+Taažâ peln
+	Taažâ% peln+MWE:Taažâ% beln ADV ;
+	Taažâ% peln+MWE:Taažâ% peln ADV ;
+siste
+	siste:siste ADV "sisässä" ;
+	siste:sistest PxADV ;
+Ruošâ pele
+	Ruošâ% pele+MWE:Ruošâ% bele ADV ;
+	Ruošâ% pele+MWE:Ruošâ% pele ADV ;
+te
+	te ADV ;
+	te+Adv+Qst:tego # ;
+siämmáá
+	siämmáá+Adv+Foc/ge:siámmááge # ;
+	siämmáá+Adv+Foc/go:siámmáágo # ;
+	siämmáá:siämmáá ADV ;
+suullân
+	suullân+Use/NG:suulân ADV ; ! XXX dict = suLân, corpus = suullân
+	suullân:suullân ADV ;
+nuuvt
+	nuuvt+Adv+Foc/go:nuuvtko # ;
+	nuuvt+Adv+Foc/ge:nuuvtke # ;
+	nuuvt:nuuvt ADV "sekä" ;
+Ruotâ peln
+	Ruotâ% peln+MWE:Ruotâ% beln ADV ;
+	Ruotâ% peln+MWE:Ruotâ% peln ADV ;
+Suomâ pele
+	Suomâ% pele+MWE:Suomâ% bele ADV ;
+	Suomâ% pele+MWE:Suomâ% pele ADV ;
+Taažâ pel
+	Taažâ% pel+MWE:Taažâ% bel ADV ;
+	Taažâ% pel+MWE:Taažâ% pel ADV ;
+pirrâ
+	pirrâ+Use/NG:pirrâs PxADV ; ! N+Px? No, back to Adv+Px due to MT
+	pirrâ:pirrâ ADV "ympäri" ;
+ovdii
+	ovdii ADV ;
+	ovdii BEL-ADV "etupuolella" ;
+Suomâ pel
+	Suomâ% pel+MWE:Suomâ% bel ADV ;
+	Suomâ% pel+MWE:Suomâ% pel ADV ;
+Taažâ pele
+	Taažâ% pele+MWE:Taažâ% bele ADV ;
+	Taažâ% pele+MWE:Taažâ% pele ADV ;
+maŋa
+	maŋa BEL-ADV "perässäpäin" ;
+	maŋa:maŋa ADV "jälkeenpäin" ;
+Suomâ peln
+	Suomâ% peln+MWE:Suomâ% beln ADV ;
+	Suomâ% peln+MWE:Suomâ% peln ADV ;

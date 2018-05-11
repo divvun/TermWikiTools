@@ -1,0 +1,822 @@
+dålhtjoeh
+	dålhtjoeh+v1+CmpN/SgN+CmpN/SgG+Sem/Hum:dålhtj oehATTR_oen_ADVERB ; !LA iflg. LMM
+	dålhtjoeh+v2+CmpN/SgN+CmpN/SgG+Sem/Hum:dålhtj oehATTR_anADVERB ;
+	dålhtjoeh+v3+CmpN/SgN+CmpN/SgG+Sem/Hum:dålhtj ahATTR_anADVERB ;
+	dålhtjoeh+v4+CmpN/SgN+CmpN/SgG+Sem/Hum:dålhtj AH_&_OEH_ODD1 ; ! Dulhtjie
+ovjearohke
+	ovjearohke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ov^jearohk ATTR_S ; ! corp
+	ovjearohke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ov^jearohk oeCe_OECE_ODD ; ! corp
+båadtsoeh
+	båadtsoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtja ATTR_H ;
+	båadtsoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtsa ATTR_H ;
+	båadtsoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtsoe ATTR_H ;
+laabjoeh
+	laabjoeh+v7+Sem/Hum:laabj as_oes_A_OE_EVEN3 ;
+	laabjoeh+v6+Sem/Hum:laabj oehATTR_anADVERB ; !
+	laabjoeh+v1+Sem/Hum:laabj oeh_OEH_ODD1 ;
+	laabjoeh+v5+Sem/Hum:laabj oeh_ah_OE_A_EVEN3 ; ! ! laabja= substantiv laabjoeh (Northsouthsámi) laabjah(Southsouthsámi) ! GÅR IKKE!
+låabpoes
+	låabpoes+v3+Sem/Dummytag:låabpa ATTR_S ;
+	låabpoes+v1+Sem/Dummytag:låabpoe ATTR_H ; !OE' eller 'A'
+	låabpoes+v2+Sem/Dummytag:låabpoe ATTR_S ;
+måasoes
+	måasoes+v2+Sem/Dummytag:måasa ATTR_S ;
+	måasoes+v1+Sem/Dummytag:måasoe ATTR_S ;
+mådtsoes
+	mådtsoes+v2+Sem/Dummytag:mådts as_AS_ODD1 ;
+	mådtsoes+v1+Sem/Dummytag:mådts oes_OES_ODD1 ;
+åhtsoes
+	åhtsoes+A+Sem/Dummytag+Cmp/Attr:åhtsoe R ;! åhtsoes
+	åhtsoes+Sem/Dummytag:åhtsoe ATTR_S ;
+friskies
+	friskies+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:frisk ies_IES_IE_EVEN3 ; ! Klasse 3
+	friskies+v2+Sem/Hum:frisk es_E_EVEN3 ;
+pleasoeh
+	pleasoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:pleas oehATTR_oen_ADVERB ; !LK
+	pleasoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:pleas oeh_ahATTR_anADVERB ; !pleasoeh-pleasan oeCASE
+skaajmoes
+	skaajmoes+Sem/Dummytag:skaajm oes_OES_ODD1as ; !Pred=Substantiv +Sem/Dummytag:skaajmesisnie - skaajme(substantiv) skaajmasåbpoe
+	skaajmoes+Sem/Dummytag:skaajmoe s_S_ODD ;
+tseagkoeh
+	tseagkoeh+v1+Sem/Dummytag:tseagk oehATTR_anADVERB ; !tseagkoehkåbpoe. pred-an er mindre vanlig, veldig vanlig i comp.
+	tseagkoeh+v2+Sem/Dummytag:tseagk ahATTR_anADVERB ; !
+	tseagkoeh+v3+Sem/Dummytag:tseagk oehATTR_oen_ADVERB ; !
+skågroeh
+	skågroeh+Sem/Dummytag:skagr ahATTR_anADVERB ; !
+	skågroeh+Sem/Dummytag:skagr oehATTR_oen_ADVERB ; !
+	skågroeh+Sem/Dummytag:skågr oehATTR_anADVERB ;! LMM bare attr
+byögke
+	byögke+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:byögk e_ES_ODDEVEN2 ; ! Klasse 2 !
+	byögke+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:byögke ATTR_S ;
+jearohke
+	jearohke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:jearohk oeCe_OECE_ODD ;
+	jearohke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Dummytag:jearohk ATTR_S ;
+slaabroeh
+	slaabroeh+A+Sem/Dummytag+Cmp/Attr:slaabre R ;
+	slaabroeh+Sem/Dummytag:slaabr AH_&_OEH_ODD1 ;!slabroehkåbpoe
+skåalloeh
+	skåalloeh+Sem/Dummytag:skuall oehATTR_oen_ADVERB ;! skoelle= subst. "refleks"
+	skåalloeh+Sem/Dummytag:skåall oehATTR_anADVERB ; ! !skåalloeh skåalloeh/skåallan
+ïpmeres
+	ïpmeres ATTR_0 ;
+	ïpmeres+Sem/Dummytag:ïpmer Ces_CES_CE_ODD ;
+rarhmoeh
+	rarhmoeh+Sem/Dummytag:rarhm oehATTR_anADVERB ; !
+	rarhmoeh+Sem/Dummytag:rarhm oehATTR_oen_ADVERB ;
+rïektes
+	rïektes+Hom1+Sem/Dummytag: REAKTOE ; ! e(2)-st. jfr KOMM Pred+Sem/Dummytag: reaktoe = RIKTIG, ekte, sannhet
+	rïektes+Hom2+Sem/Dummytag: REAKTOE ; !
+rutjkes
+	rutjkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rutjke s_S_ODDNOCOMP ;
+	rutjkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rutjkehk HKE_ODD_COMP ;
+	rutjkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:rutjke EVENCOMP ;
+slajvoeh
+	slajvoeh+Sem/Dummytag:slajv oehATTR_anADVERB ; !
+	slajvoeh+Sem/Dummytag:slajv oehATTR_oen_ADVERB ; !
+	slajvoeh+Sem/Dummytag:slajv oeh_ahATTR_anADVERB ; !slejvie
+tjelmiebeeles
+	tjelmiebeeles+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjelmie#beele s_S_ODDNOCOMP ;
+	tjelmiebeeles+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjelmie#byölehk Ce_CE_ODDNOCOMP ;
+hïerves
+	hïerves+Use/NG+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:hyörvehke PRED_0 ;
+	hïerves+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:hïerve s_S_ODDNOCOMP ; !
+	hïerves+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:hïervehk HKE_ODD_COMP ;
+råavhtsoeh
+	råavhtsoeh+Sem/Dummytag:ruavhts ahATTR_anADVERB ; ! åa--> ua?
+	råavhtsoeh+Sem/Dummytag:råavhts oehATTR_anADVERB ; !
+	råavhtsoeh+Sem/Dummytag:råavhts oehATTR_oen_ADVERB ; ! , Pred=Substantiv=råavtja,råavtsa
+njeerpes
+	njeerpes+Use/NG:njeerpes ODDCOMP ; !e(3)-st.
+	njeerpes+v1+Sem/Dummytag:njeerp es_ES_EVEN ; ! e(3)-st.
+	njeerpes+v2+Sem/Dummytag:njåårpehk HKE_ODD_COMP ;
+sïjmijes
+	sïjmijes+Sem/Dummytag:sïjm ijes_ijs_IJE_ODD ; !LMM også pred
+	sïjmijes+Sem/Dummytag:sïjmij ijes_ijs_IJE_ODD ;
+ovdaerpies
+	ovdaerpies+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ov^duarpatj DIMINCOMP ; !
+	ovdaerpies+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ov^dåarpatj DIMINCOMP ; !
+	ovdaerpies+Sem/Dummytag:ov^daerp ies_IES_EVEN1 ; ! corp
+skïelpe
+	skïelpe+Sem/Dummytag:skïelp e_ES_ODDEVEN2 ; ! Klasse 2 ! e(2)-st. system2
+	skïelpe+Sem/Dummytag:skïelpes ATTR_0 ; ! e(2)-st. system2
+stæhtjoeh
+	stæhtjoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stæhtj oehATTR_anADVERB ; !
+	stæhtjoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stæhtj oehATTR_oen_ADVERB ; !
+rööpsesmasten
+	rööpsesmasten+Sem/Hum:reepsesmast MAST ;
+	rööpsesmasten+Sem/Hum:rööpsesmast MAST ;
+aavre
+	aavre+v1+Sem/Dummytag:aavr e_E_EVENNOCOMP1 ;
+	aavre+v2+Sem/Dummytag:aavrehk HKE_ODD_COMP ;
+snjætjkoeh
+	snjætjkoeh+Sem/Dummytag:snjætjk AH_&_OEH_ODD1 ; ! LMM+Sem/Dummytag: bare attr
+	snjætjkoeh+Sem/Dummytag:snjætjk oehATTR_anADVERB ; !
+leajpeldh
+	leajpeldh+Sem/Dummytag:leajpeld ATTR_H ; !slå sammen attr og pred?
+	leajpeldh+Sem/Dummytag:leajpeldh PRED_0 "orebarket" ; !SOUTH
+preanghkoeh
+	preanghkoeh+Sem/Dummytag:preanghk oehATTR_anADVERB ; !preanghkoeh preanghkoeh/preanghkan
+	preanghkoeh+Sem/Dummytag:preanghk oehATTR_oen_ADVERB ; !
+baaktjes
+	baaktjes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:bååktjehk HKE_ODD_COMP ; ! CHECK OPP!
+	baaktjes+v1+Sem/Dummytag:baaktje ATTR_S ;
+vaajnohke
+	vaajnohke+Sem/Dummytag:vaajnoehk oeCe_OECE_ODD ;
+	vaajnohke+Sem/Hum:vaajnohk Ce_CE_ODD ;
+reajnoes
+	reajnoes+Sem/Dummytag:reajn as_AS_ODD1 ;
+	reajnoes+Sem/Dummytag:reajn oes_OES_ODD1 ;
+fahkoes
+	fahkoes+Use/NG+Sem/Hum:fahkan PRED_0 ;! pred er verbgentiv.
+	fahkoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:fahkoe s_S_ODDNOCOMP ;
+	fahkoes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:fahk as_AS_ODD1NOCOMP ;
+gïenghke
+	gïenghke+v1+Sem/Dummytag:gïenghk e_ES_ODDEVEN2 ; ! Klasse 2 !SYSTEM2 ! e(2)-st. system2 pred også gïenghkehke
+	gïenghke+v2+Sem/Dummytag:gïenghkehk HKE_ODD_COMP ; !SYSTEM2 ! e(2)-st. system2 pred også gïenghkehke
+gæhtjoeh
+	gæhtjoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gæhtj AH_&_OEH_ODD1 ; !SOUTH
+	gæhtjoeh+v2+Sem/Hum:gyhtjehk HKE_ODD_COMP ; ! attr. gæhtjoeh gæhtjah
+målfoes
+	målfoes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:malf as_oes_A_OE_EVEN3 ;
+	målfoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:målf as_oes_A_OE_EVEN3 ;
+gæjroeh
+	gæjroeh+v1+Sem/Dummytag:gæjr oehATTR_anADVERB ; ! !NORTH !
+	gæjroeh+v2+Sem/Dummytag:gæjr oehATTR_oen_ADVERB ;
+vætnjoeh
+	vætnjoeh+Sem/Dummytag:vætnj oehATTR_oen_ADVERB ;
+	vætnjoeh+Sem/Dummytag:vætnj oehATTR_oen_ADVERB ; !vridd, skjev
+ïskeres
+	ïskeres+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ysker Ces_CES_ODD ;
+	ïskeres+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ïsker Ces_CES_ODD ; !ïskerabpa/råbpoe
+sïerre
+	sïerre+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sïerr e_ES_ODDEVEN2 ; ! Klasse 2 !-sïerrebe/sïerremes ! e(1)-st.
+	sïerre+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sïerres ATTR_0 ; !- sïerresåbpoe/sïerresommes (Majavatn)
+hearskoes
+	hearskoes+Use/NG+Sem/Dummytag:hearsko EVENCOMP ;
+	hearskoes+Sem/Dummytag:hearsk as_oes_A_OE_EVEN3 ;
+reelle
+	reelle+v1+OLang/NOB+Sem/Dummytag:re^ell e_ES_LOAN ;
+	reelle+v2+OLang/NOB+Sem/Dummytag:rejell e_ES_LOAN ;
+stinkes
+	stinkes+Sem/Dummytag:stink es_ES_EVEN ; ! e(3)-st.
+	stinkes+Sem/Dummytag:stynkehk HKE_ODD_COMP ; ! e(3)-st.
+laabroeh
+	laabroeh+v3+Sem/Hum:laabr ahATTR_anADVERB ; ! ! laabra= substantiv
+	laabroeh+v2+Sem/Hum:laabr oehATTR_anADVERB ; !
+	laabroeh+v4+Sem/Hum:laabr oehATTR_oen_ADVERB ; ! ! laabra= substantiv
+læhkoeladtje
+	læhkoeladtje+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:lahkoeladtj e_E_EVENNOCOMP1 ;
+	læhkoeladtje+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:læhkoeladtj e_E_EVENNOCOMP1 ;
+åhtoes
+	åhtoes+Sem/Dummytag:åhtoe s_S_ODDNOCOMP ;!Slå sammen til et lexicon
+	åhtoes+Use/NG+Sem/Dummytag:åhta s_S_ODDNOCOMP ; ! LMM+Sem/Dummytag: as attr.!MLK+Sem/Dummytag: tror ikke
+snjålloeh
+	snjålloeh+A+Sem/Dummytag+Cmp/Attr:snjalle R ;! snjålloeh og snjalle adj fungerer som cmp
+	snjålloeh+Sem/Dummytag:snjåll oehATTR_anADVERB ; !
+såvsoeh
+	såvsoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:såvs oehATTR_anADVERB ; !
+	såvsoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:såvs ahATTR_anADVERB ;
+	såvsoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:såvs oehATTR_oen_ADVERB ;
+gålhpoeh
+	gålhpoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gålhp oeh_OEH_ODD1 ;! Substantiv 'gulhpie’
+	gålhpoeh+v1+Sem/Dummytag:gålhp oehATTR_oen_ADVERB ;
+	gålhpoeh+v2+Sem/Dummytag:galhp oeh_OEH_ODD1 ;
+	gålhpoeh+v3+Sem/Dummytag:galhp ahATTR_anADVERB ;
+fæjhroeh
+	fæjhroeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:fæjhr oehATTR_oen_ADVERB ; !
+	fæjhroeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:fæjhr oehATTR_anADVERB ; !
+jåabpoeh
+	jåabpoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jåabp oeh_ahATTR_anADVERB ;!oeCASE
+	jåabpoeh+Sem/Hum:jåabpe EVENCOMP ;
+svalkoes
+	svalkoes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:svalk as_AS_ODD1 ;
+	svalkoes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:svalk oes_OES_ODD1as ;
+	svalkoes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:svalkoes ODDCOMP ; !svalkoesåbpoe, svalkasåbpoe (JPK)
+rærvah
+	rærvah+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:rædv ahATTR_anADVERB ; ! Substantiv= 'rirvie'
+	rærvah+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:rærv ahATTR_anADVERB ; ! Substantiv = 'rirvie'
+njåajjoeh
+	njåajjoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njåajj oehATTR_anADVERB ; !
+	njåajjoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:njåajj oehATTR_oen_ADVERB ;
+tjåalpoeh
+	tjåalpoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåalp oeh_OEH_ODD1 ; !LA+Sem/Dummytag: tjåalpah er også lemma! MLK+Sem/Dummytag: I think this one 'tjåalpa’ is also a substantiv, i north-southsámi it would be tjåalpoeh/tjåalpan- which would be 'tjåalpe' as a substantiv. In south-southsámi they have an -a- instead of -oe-.
+	tjåalpoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåalp ahATTR_anADVERB ; ! lemma = standard form
+	tjåalpoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåalp oehATTR_anADVERB ;
+	tjåalpoeh+v4+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåalp oehATTR_oen_ADVERB ; !
+åenehks
+	åenehks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:åeniehk Cs_CE_ODD ; ! tidlegare hks_hke_HKS_HKE_ODD! COMP+Sem/Dummytag:IE KB+Sem/Dummytag: åeniehkommes/åanahkommes? korp+Sem/Dummytag: også åenehkes attr/pred
+	åenehks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Dummytag:åenie EVENCOMP ;
+læhkoes
+	læhkoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:læhk oes_OES_ODD1 ; ! Pred=Substantiv+Sem/Dummytag: innesiv læhkosne, læhkose etc
+	læhkoes+v2+Sem/Hum:læhk as_AS_ODD1 ;
+gyönegs
+	gyönegs+Sem/Dummytag:gyönehk HKE_ODD_COMP ;
+	gyönegs+Use/NG+Sem/Dummytag:gyöneg Cs_CS_CE_ODD ; !Dublett?
+klåadtoeh
+	klåadtoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:klåadt AH_&_OEH_ODD1 ;
+	klåadtoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:klåadt oehATTR_anADVERB ;
+snjadtsah
+	snjadtsah+v1+Sem/Dummytag:snjadts ahATTR_anADVERB ;
+	snjadtsah+v2+Sem/Dummytag:snjadts oehATTR_oen_ADVERB ;
+tjuekies
+	tjuekies+Sem/Dummytag:tjuekie ATTR_S ;
+	tjuekies+Sem/Dummytag:tjuekie ATTR_S ; !tjuekies daelvie
+mådtsoeh
+	mådtsoeh+v2+Sem/Dummytag:mådts oehATTR_anADVERB ; !
+	mådtsoeh+v1+Sem/Dummytag:mådts oehATTR_oen_ADVERB ; !
+jïlle
+	jïlle+Sem/Hum:jallatj DIMINCOMP ;
+	jïlle+Sem/Hum:jillie EVENCOMP ;
+	jïlle+Sem/Hum:jïll e_E_EVENNOCOMP1 ; ! e(1)-st.
+samskoes
+	samskoes+Sem/Hum:samsk asATTR_anADVERB ; !
+	samskoes+Sem/Hum:samsk oesATTR_oen_an_ADVERB ; !
+bårmoeh
+	bårmoeh+v1+Sem/Dummytag:bårm oehATTR_oen_ADVERB ;!
+	bårmoeh+v2+Sem/Dummytag:bårm oehATTR_anADVERB ; !
+pleahkoeh
+	pleahkoeh+Sem/Dummytag:pleahk oehATTR_anADVERB ; !
+	pleahkoeh+Sem/Dummytag:pleahk oehATTR_oen_ADVERB ;
+veaksehks
+	veaksehks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:veaksahk ODDCOMP ; ! tidlegare hks_hke_HKS_HKE_ODD! COMP+Sem/Dummytag:A veaksahkåbpoe
+	veaksehks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:veaksehk Cs_CE_ODDNOCOMP ; ! tidlegare hks_hke_HKS_HKE_ODD! COMP+Sem/Dummytag:A veaksahkåbpoeF
+gaajhkesåårts
+	gaajhkesåårts+v1+Sem/Dummytag:gaajhke#såårt ATTR_S ;
+	gaajhkesåårts+v2+Sem/Dummytag:gaajhke#såarht ATTR_S ;
+voejelihks
+	voejelihks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:voejel ihks_IHKS_igs_IGS_EVENNOCOMP ;
+	voejelihks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:voejelag s_S_ODDNOCOMP ;
+stunkes
+	stunkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stunk es_ES_EVEN ; ! e(3)-st.
+	stunkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stunkes ODDCOMP ; ! e(3)-st.
+ohtje
+	ohtje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:ohtj e_E_EVENNOCOMP1 ; !
+	ohtje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:uhtje EVENCOMP ; !
+radtsoeh
+	radtsoeh+A+Sem/Hum+Cmp/Attr:radtsoe R ;
+	radtsoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:radts oeh_OEH_ODD1 ;
+snjædtjah
+	snjædtjah+A+Sem/Dummytag+Cmp/Attr:snjædtja R ;! snjædtjoeh
+	snjædtjah+Sem/Dummytag:snjædtj ahATTR_anADVERB ;
+spirituaale
+	spirituaale+v1+OLang/NOB+Sem/Dummytag:spiritua AALE ;
+	spirituaale+v2+OLang/NOB+Sem/Dummytag:spirituva AALE ;
+ovnohkens
+	ovnohkens+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:ovnohken Cs_CS_ODD ;
+	ovnohkens+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:ovnohken es_ES_EVENNOCOMP1 ;
+dearkoes
+	dearkoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:deark oes_OES_ODD1 ; ! MLK+Sem/Dummytag: no Comp, only Superl. ! dearkan? dearkoen?
+	dearkoes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:deark as_AS_ODD1 ;
+gaahpoeh
+	gaahpoeh+A+Sem/Dummytag+Cmp/Attr:gaahpoe R ; ! gaahpoeh = attr, gaahpoe=cmp, gaahpan = adv. => Attr og R adj fungerer som cmp.
+	gaahpoeh+Sem/Dummytag:gaahpoe ATTR_H ; ! pred. gaahpan
+nåljoeh
+	nåljoeh+v1+Sem/Dummytag:nålj oehATTR_oen_ADVERB ;
+	nåljoeh+v2+Sem/Dummytag:nålj oeh_ahATTR_anADVERB ;!nulje, NIEJTE
+liskes
+	liskes+Sem/Dummytag:liske s_S_ODD ;
+	liskes+Use/NG+Sem/Dummytag:loskehk HKE_ODD_COMP ;
+lïnghkes
+	lïnghkes PRED_0 ;
+	lïnghkes+Sem/Dummytag:lïnghke s_S_ODD ;
+båarhtoes
+	båarhtoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:båarht oes_OES_ODD1as ;
+	båarhtoes+v2+Sem/Dummytag:båarht as_oes_A_OE_EVEN3 ; !from adj-file, Komp+Sem/Dummytag: båarhtobe, båarhtomes ! Klasse 3
+tåaskoeh
+	tåaskoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tåask oehATTR_oen_ADVERB ; !U
+	tåaskoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tuask ahATTR_anADVERB ; ! åa--> ua?
+	tåaskoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tåask oehATTR_anADVERB ;!ikke vanlig å komparere slik.
+stuarehks
+	stuarehks+Sem/Dummytag:stuarehk Cs_CE_ODD ;
+	stuarehks+Sem/Hum:stuarehk Cs_CE_ODD ;
+trovkes
+	trovkes+Sem/Dummytag:trovk es_ES_EVEN ;
+	trovkes+Sem/Dummytag:trovkehk HKE_ODD_COMP ;
+fïerske
+	fïerske+Sem/Hum:fïersk e_ES_ODDEVEN2 ; ! Klasse 2
+	fïerske+Use/NG+Sem/Hum:fïerskes ODDCOMP ; !XXX komp med -s-? ja
+onne
+	onne+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:onn e_E_EVENNOCOMP1 ;
+	onne+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:unnie EVENCOMP ;
+	onne+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:onne EVENCOMP ;
+gåvsoeh
+	gåvsoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gåvs AH_&_OEH_ODD1 ; !SgNomCmp !gevsie
+	gåvsoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gåvs oehATTR_anADVERB ; !Substantiv 'gevsie'
+gåaroes
+	gåaroes+v1+Sem/Dummytag:gåaroe s_S_ODDNOCOMP ;
+	gåaroes+v2+Sem/Dummytag:gåara s_S_ODD ;
+kråavhkoeh
+	kråavhkoeh+Sem/Dummytag:kråavhk AH_&_OEH_ODD1 ;
+	kråavhkoeh+Sem/Dummytag:kråavhk oehATTR_anADVERB ; !
+steadtjoeh
+	steadtjoeh+Sem/Dummytag:steadtj oehATTR_anADVERB ; ! !'OE' eller 'A'
+	steadtjoeh+Sem/Dummytag:steadtj oehATTR_oen_ADVERB ; !
+seajkes
+	seajkes+Sem/Dummytag:seajkas ODDCOMP ;!glatt, jevn
+	seajkes+Sem/Dummytag:seajke s_S_ODD ;!glatt, jevn
+skåernies
+	skåernies+Sem/Dummytag:skåern ies_IES_EVEN1 ;
+	skåernies+Sem/Dummytag:skåerniehk HKE_ODD_COMP ;
+bïegkes
+	bïegkes+Sem/Dummytag:beagkas ODDCOMP ; ! -beagkasåbpoe - kommer fra beagkoes !UMLAUT COMP
+	bïegkes+Sem/Dummytag:bïegke s_S_ODDNOCOMP ;
+stonkes
+	stonkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stonk es_ES_EVEN ; ! e(3)-st.
+	stonkes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stonkes ODDCOMP ; ! e(3)-st.
+minngeles
+	minngeles+v2+Sem/Dummytag:minngel s_S_ODDNOCOMP ; !OBS minngels?
+	minngeles+v1+Sem/Dummytag:minngele s_S_ODDNOCOMP ;
+ealjohts
+	ealjohts+Sem/Hum:ealjoeht oehts_OEHTS_ODDhtCOMP ; !
+	ealjohts+Use/NG+Sem/Hum:ealjoeht ODDCOMP ; ! LMM (NG fordi eg slepp å splitte oehts..., tt)
+baahke
+	baahke+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:baahk e_ES_ODDEVEN2 ; ! Klasse 2 ! e(2)-st. system2
+	baahke+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:baahke ATTR_S ;
+slabroeh
+	slabroeh+Sem/Dummytag:slabr ahATTR_anADVERB ; !slabrah-bieljie +Sem/Dummytag:nedhengende
+	slabroeh+Sem/Dummytag:slabr oehATTR_anADVERB ; ! !slabroeh-bieljie, slabre-bieljie
+	slabroeh+Sem/Dummytag:slabr oehATTR_oen_ADVERB ; !slabrah-bieljie +Sem/Dummytag:nedhengende
+klåtnjah
+	klåtnjah+Sem/Hum:klytnjehk HKE_ODD_COMP ; !attr. klytnjehks, klåtnjoeh, klåtnjah
+	klåtnjah+Sem/Hum:klåtnj AH_&_OEH_ODD1 ;
+båadtsoes
+	båadtsoes+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtja ATTR_S ;
+	båadtsoes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtsa ATTR_S ;
+	båadtsoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båadtsoe ATTR_S ;
+jalke
+	jalke+Sem/Dummytag:jalk e_E_EVEN ; !attr=jalke og pred = jalke, e(1)-st. jalkebe-jalkemes
+	jalke+Sem/Dummytag:jolkehk HKE_ODD_COMP ; ! CHECK OPP OM DISSE SKAL HA DENNE TYPE OPPFØRING?
+tjevties
+	tjevties+Sem/Dummytag:tjevt ies_IES_IE_EVEN3 ; !OBS check for dublett
+	tjevties+Use/NG+Sem/Dummytag:tjavtehk HKE_ODD_COMP ;
+	tjevties+Use/NG+Sem/Dummytag:tjevt ies_IE_EVEN3 ; ! Klasse 3 !OBS check for dublett
+nannoes
+	nannoes+v2+Sem/Dummytag:nann as_AS_EVEN1 ;
+	nannoes+v1+Sem/Dummytag:nanno es_ES_EVENNOCOMP1;
+	nannoes+v1+Sem/Dummytag:nenne EVENCOMP ;
+byölehts
+	byölehts+Sem/Dummytag:byöleht ATTR_S ; 	!OBS attr + pred i en?
+	byölehts+Sem/Dummytag:byölehth PRED_0 ;	!OBS attr + pred i en?
+mårhtjoeh
+	mårhtjoeh+v2+Sem/Dummytag:mårhtj oehATTR_anADVERB ; !
+	mårhtjoeh+v1+Sem/Dummytag:mårhtj oehATTR_oen_ADVERB ;
+gavhtoeh
+	gavhtoeh+A+Sem/Dummytag+Cmp/Attr:gavhtoe R ;! gavhtoeh og gavhtoe adj fungerer som cmp
+	gavhtoeh+Sem/Dummytag:gavht oehATTR_anADVERB ; !
+kråhtjoeh
+	kråhtjoeh+v3+Sem/Dummytag:krahtj ahATTR_anADVERB ;
+	kråhtjoeh+v2+Sem/Dummytag:krahtj oehATTR_oen_ADVERB ;
+	kråhtjoeh+v1+Sem/Dummytag:kråhtj oehATTR_oen_ADVERB ;
+	kråhtjoeh+v4+Sem/Dummytag:råhtj oehATTR_oen_ADVERB ;
+skuallehke
+	skuallehke+Sem/Dummytag:skualleh Ce_CE_ODD ;
+	skuallehke+Sem/Dummytag:skuallehk Ce_CE_ODD ;
+uhtsie
+	uhtsie+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:uhts ie_IE_EVEN1 ;
+	uhtsie+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Dummytag:uhtsies ATTR_0 ;
+gyvjeh
+	gyvjeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gyvje ATTR_H ; !attr. gyvjeh
+	gyvjeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gyvjehk HKE_ODD_COMP ; !attr. gyvjeh
+eksepsjonelle
+	eksepsjonelle+v1+OLang/NOB+Sem/Dummytag:eksepsjonell e_ES_LOAN ;
+	eksepsjonelle+v2+OLang/NOB+Sem/Dummytag:eksepsjovnell e_ES_LOAN ;
+sårhpoeh
+	sårhpoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sårhp oeh_OEH_ODD1 ; !SYSTEM1,attr=pred
+	sårhpoeh+Sem/Dummytag:sarhp oehATTR_oen_ADVERB ;
+skaavhtes
+	skaavhtes+Sem/Dummytag:skaavhte ATTR_0 ;
+	skaavhtes+Use/NG+Sem/Dummytag:skaavhte ATTR_S ;
+sabtje
+	sabtje+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:sabtj e_ES_ODDEVEN2 ; ! Klasse 2 !Attr=sabtje,Pred=sabtjes ! e(2)-st. system2
+	sabtje+Sem/Dummytag:sabtjes ATTR_0 ; !sabtjesåbpoe = sabtjodh= bli fuktig, bli dösen !LA
+snjæjhtjoeh
+	snjæjhtjoeh+Sem/Dummytag:snjæjhtj oehATTR_anADVERB ; !
+	snjæjhtjoeh+Sem/Dummytag:snjæjhtj oehATTR_oen_ADVERB ; !
+orretjalmh
+	orretjalmh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:orre#tjalm h_H_EVENNOCOMP ;
+	orretjalmh+Sem/Hum:orre#tjalmeg Ce_CE_ODDNOCOMP ; !LA
+tjeakoes
+	tjeakoes+v1+Sem/Dummytag:tjeak oes_OES_ODD1 ; !tjeakoesåbpoe XXXoehkåbpoe, vai ahkåbpoe? LMM+Sem/Dummytag: bare attr
+	tjeakoes+v2+Sem/Dummytag:tjeak as_AS_ODD1 ; ! LMM bare attr
+rånhtjoeh
+	rånhtjoeh+Sem/Dummytag:rånhtjoe ATTR_H ; ! ieCASE+Sem/Dummytag: 'runhtjie' , strunhtjie
+	rånhtjoeh+Sem/Dummytag:strånhtjoe ATTR_H ; ! ieCASE+Sem/Dummytag: 'strunhtjie', 'runhtjie'
+byjreskeburrie
+	byjreskeburrie+v2:byjreske% burr ie_IE_EVENNOCOMP ; ! OBS, skal denne være med?
+	byjreskeburrie+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:byjreskeburr ie_IE_EVENNOCOMP ; !
+båavhroeh
+	båavhroeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:båavhr oehATTR_anADVERB ; ! !
+	båavhroeh+v2+Sem/Dummytag:båavhr oehATTR_oen_ADVERB ; ! !SOUTH
+striehkies
+	striehkies+Sem/Dummytag:streahkehk Ce_CE_ODD ; !XXX COMP+Sem/Dummytag:A ! attr. striehkies OBS
+	striehkies+Sem/Dummytag:striehk ies_IES_IE_EVEN3 ;
+giedtsies
+	giedtsies+v1+Sem/Dummytag:giedts ies_IES_IE_EVEN3 ; ! Klasse 3 !no 3-syll paradigm -giedtsebe, giedtsemes
+	giedtsies+v2+Sem/Dummytag:gyödtsehk HKE_ODD_COMP ;
+båantoes
+	båantoes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båant oes_OES_ODD1ahk ;
+	båantoes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båant as_AS_ODD1 ;!båantahkåbpoe - denne er ikke komp. av båantas, men av båantah - båantehke/båantohke
+	båantoes+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:båant ah_AH_ODD1 ;
+båetije
+	båetije+A+Attr+Use/MT+Sem/Dummytag:båetije FINAL1 ;
+	båetije+Sem/Dummytag:båetij PRED_ije_ODDNOCOMP ; !handlernomen- nomen agentis
+tjïevhles
+	tjïevhles+Sem/Dummytag:tjielhve s_S_ODD ; !SOUTH
+	tjïevhles+Sem/Dummytag:tjyövlehk HKE_ODD_COMP ;
+	tjïevhles+Sem/Dummytag:tjïevhle s_S_ODD ;
+jïjtjeraareh
+	jïjtjeraareh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jïjtje#raar AAREH ;
+	jïjtjeraareh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jïjtje#råårehk HKE_ODD_COMP ;
+marngoeh
+	marngoeh+v2+Sem/Dummytag:marng oehATTR_anADVERB ; !
+	marngoeh+v1+Sem/Dummytag:marng oehATTR_oen_ADVERB ;
+jolle
+	jolle+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:joll e_E_EVEN ; ! e(1)-st.
+	jolle+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:jollehk HKE_ODD_COMP ; ! e(1)-st.
+skålnjoeh
+	skålnjoeh+Sem/Dummytag:skålnj oehATTR_oen_ADVERB ; !
+	skålnjoeh+Sem/Dummytag:skålnj oeh_OEH_ODD1 ;
+stueries
+	stueries+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stuerie s_S_ODDNOCOMP ; ! stueriehkåbpoe
+	stueries+Sem/Dummytag:stueriehk ODDCOMP;
+faamohks
+	faamohks+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:faamohk oeCs_OECS_OECE_ODD ; ! corp+Sem/Dummytag: faamohks faamohke
+	faamohks+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:faamohke s_S_ODDNOCOMP ;
+tjïjhtjengïeleh
+	tjïjhtjengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjïjhtjen#gïel eh_EH_ODDNOCOMP1 ;
+	tjïjhtjengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjïjhtjen#gïeleldh A_LDH ;
+nænnoes
+	nænnoes+v1+Sem/Dummytag:nænno es_ES_EVEN ;!
+	nænnoes+Use/NG+Sem/Dummytag:nenne EVENCOMP ; ! Klasse 3
+	nænnoes+Use/NG+Sem/Dummytag:nænn oes_OES_ODD1EVEN ; ! Klasse 3 - nænnoesåbpoe, nænnoesommes
+vilhties
+	vilhties+Sem/Dummytag:vilhtie ATTR_S ;
+	vilhties+Sem/Dummytag:vilhtie ATTR_S ; ! substantiv= vilhtie= skråning
+klåtnjoeh
+	klåtnjoeh+Sem/Dummytag:klytnjehk HKE_ODD_COMP ; !attr. klytnjehks, klåtnjoeh, klåtnjah
+	klåtnjoeh+Sem/Dummytag:klåtnj oehATTR_anADVERB ;
+sæjkoeh
+	sæjkoeh+Sem/Dummytag:sæjk oehATTR_anADVERB ; !
+	sæjkoeh+Sem/Dummytag:sæjk oehATTR_oen_ADVERB ;
+gaarroeh
+	gaarroeh+v1+Sem/Dummytag:gaarr oehATTR_anADVERB ;! "som går el. står brett med beina" ! av gaerrie
+	gaarroeh+v2+Sem/Hum:gaarr AH_&_OEH_ODD1 "som går el. står brett med beina" ;!av gaerrie
+kråavvoeh
+	kråavvoeh+v2+Sem/Hum:kruavv ahATTR_anADVERB ; ! ! Åa--> ua?
+	kråavvoeh+v1+Sem/Hum:kråavv oehATTR_oen_ADVERB ; !
+rååpsehke
+	rååpsehke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:reepsehk Ce_CE_ODD ; ! attr. rööpses, *reepses
+	rååpsehke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rååpsehk Ce_CE_ODD ; ! attr. rööpses, *reepses
+tjualah
+	tjualah+Sem/Dummytag:tjual ahATTR_anADVERB ; ! åa--> ua?
+	tjualah+Sem/Dummytag:tjuala ATTR_H ; !KB
+ræjhkoes
+	ræjhkoes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:ræjhkoe ATTR_S ;
+	ræjhkoes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:ræjhka ATTR_S ;
+mårroeh
+	mårroeh+v1+Sem/Dummytag:mårr oeh_OEH_ODD1 ;
+	mårroeh+v2+Sem/Dummytag:mårr oeh_ah_OE_A_EVEN3 ; ! Bergsland tar feil, attributt -h, må ha en ODDCASE!
+jïjnje
+	jïjnje+Sem/Dummytag:jeanatj DIMINCOMP ;
+	jïjnje+Sem/Dummytag:jïjnj e_E_EVEN ;
+bagkoeh
+	bagkoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+v2+Sem/Dummytag:bagkoe ATTR_H ;
+	bagkoeh+v1+Sem/Dummytag:bagkoe ATTR_H ;
+jåalhkoes
+	jåalhkoes+v1+Sem/Dummytag:jåalhk oes_OES_ODD1 ;
+	jåalhkoes+v2+Sem/Dummytag:jåalhka s_S_ODD ;
+buasjerge
+	buasjerge+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:buasjarg Ce_CE_ODD ;
+	buasjerge+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:buasjerg Ce_CE_ODD ;
+måedtiesåårts
+	måedtiesåårts+v2+Sem/Hum:måedtie#såarhts ATTR_0 ;
+	måedtiesåårts+v1+Sem/Hum:måedtie#såårts ATTR_0 ;
+jåasoeh
+	jåasoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jåas oehATTR_oen_ADVERB ;
+	jåasoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jåas oeh_OEH_ODD1 ; !jåasah iflg LMM. MLK+Sem/Dummytag:ja, -ah,-as er sørlig dialekt og -oeh,-oes nordlig dialekt.
+dåankoeh
+	dåankoeh+v1+Sem/Dummytag:dåank oeh_ahATTR_anADVERB ; ! SOUTH, vet ikke. kanskje dåankoeh-dåankan
+	dåankoeh+v2+Sem/Dummytag:tjåank oeh_ahATTR_anADVERB ;! SOUTH, vet ikke.
+voenges
+	voenges+Sem/Dummytag:voenge ATTR_S ;
+	voenges+Sem/Dummytag:voenge s_S_ODD ;
+tjåaloeh
+	tjåaloeh+Sem/Dummytag:tjåal oehATTR_anADVERB ; !
+	tjåaloeh+Sem/Dummytag:tjåal oehATTR_oen_ADVERB ; !
+gaastoeh
+	gaastoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gaast oehATTR_anADVERB ; ! !!SgNomCmp LMM
+	gaastoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gaast AH_&_OEH_ODD1 ; !SgNomCmp
+	gaastoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gaast e_ES_ODDEVEN2 ; ! Klasse 2 !SOUTH! TAKE A LOOK AT THIS ONE!! EVENCOMP???!SgNomCmp
+aatjmehke
+	aatjmehke+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:aatjmehk Ce_CE_ODD ;!ironisk om mnsk.
+	aatjmehke+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:aatjmoehk oeCe_OECE_ODD ;!ironisk om mnsk.
+jassijes
+	jassijes+v1+Sem/Dummytag:jassij ijes_ijs_IJE_ODDNOCOMP ; ! COMP +Sem/Dummytag: jassajåbpoe
+	jassijes+v2+Sem/Dummytag:jassaj ODDCOMP ; ! COMP +Sem/Dummytag: jassajåbpoe! MLK+Sem/Dummytag: derivert av 'jæssoe’
+mæjkes
+	mæjkes+Sem/Dummytag:mæjkas ODDCOMP ; !- mæjkasåbpoe
+	mæjkes+Sem/Dummytag:mæjke s_S_ODDNOCOMP ; !- mæjkasåbpoe
+gåpmoeh
+	gåpmoeh+A+Sem/Dummytag+Cmp/Attr:gåpmoe R ; ! gåpmoeh attr, gåpman
+	gåpmoeh+v2+Sem/Dummytag:gåpmoe ATTR_H ;! ACASE
+dånghkoeh
+	dånghkoeh+Sem/Dummytag:dånghk oeh_OEH_ODD1 ; !NORTH!SYSTEM1, ATTR OG PRED= DÅNGHKOEH
+	dånghkoeh+Sem/Dummytag:dånghkahk ODDCOMP ; !dånghkahkåbpoe
+hösate
+	hösate+OLang/NOB+Sem/Dummytag:hösat PRED_0 ; !Saaran gærja
+	hösate+OLang/NOB+Sem/Dummytag:hösate ATTR_0 ; !Saaran gærja
+njïeljengïeleh
+	njïeljengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njïeljen#gïel eh_EH_ODDNOCOMP1 ;
+	njïeljengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njïeljen#gïeleldh A_LDH ;
+plaave
+	plaave+Sem/Dummytag:plaav e_ES_ODDEVEN2 ;
+	plaave+Sem/Dummytag:plaav e_E_EVEN ;
+hååkene
+	hååkene+Sem/Hum:hååke PRED_NE_ODD;
+	hååkene+Sem/Hum:hååkene PRED_0 ;! Substantiv eller adv.fila
+jåabpah
+	jåabpah+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:jåabp AH_&_OEH_ODD1 ;!MAANA-NOMEN-NOMEN
+	jåabpah+Sem/Dummytag:jåabpe EVENCOMP ;
+seadtoes
+	seadtoes+Sem/Dummytag:seadt as_AS_ODD1 ; ! -seadtasabpa
+	seadtoes+Sem/Dummytag:seadt oes_OES_ODD1 ; !-seadtoesåbpoe
+geeles
+	geeles+Sem/Dummytag:geele s_S_ODDNOCOMP ; !-geelesåbpoe - Look at this.
+	geeles+Sem/Dummytag:gåålehk HKE_ODD_COMP ;
+barras
+	barras+v1+Sem/Dummytag:barr as_AS_ODD1 ; !
+	barras+v2+Sem/Dummytag:barr oesATTR_oen_an_ADVERB ; !
+sudties
+	sudties+Sem/Dummytag:sudt ies_IES_IE_EVEN3NOCOMP ;
+	sudties+Sem/Dummytag:sudtiek ODDCOMP ; !-sudtiekåbpoe
+tjïektjeburrie
+	tjïektjeburrie:tjïektjeburr ie_IE_EVENNOCOMP ; !
+	tjïektjeburrie+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:tjïektjebuer ie_IE_EVENNOCOMP ; !
+svaaloes
+	svaaloes+Sem/Dummytag:svaal as_AS_ODD1 ;
+	svaaloes+Sem/Dummytag:svaal oes_OES_ODD1 ;
+tjålhtoeh
+	tjålhtoeh+v1+Sem/Dummytag:tjålht oehATTR_anADVERB ; !
+	tjålhtoeh+v2+Sem/Dummytag:tjålht ahATTR_anADVERB ; !
+	tjålhtoeh+v3+Sem/Dummytag:tjålht oehATTR_oen_ADVERB ; !
+tjåarhtjah
+	tjåarhtjah:tjåarhtja ATTR_H ;
+	tjåarhtjah+A+Sem/Dummytag+Cmp/Attr:tjåarhtja R ;
+snjåammoeh
+	snjåammoeh+Sem/Dummytag:snjåamm oehATTR_anADVERB ; !
+	snjåammoeh+Sem/Dummytag:snjåamm oehATTR_oen_ADVERB ;
+rovnegs
+	rovnegs+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rovneg Cs_CS_CE_ODD ; ! corp + LMM, corp rovnekåbpoe
+	rovnegs+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:rovneg Ces_Ce_CES_CE_ODDNOCOMP ; !LA i corp, se rovnegs
+båajoes
+	båajoes+v1+Sem/Dummytag:båajoe s_S_ODDNOCOMP ;
+	båajoes+v2+Sem/Dummytag:båaj as_AS_ODD1NOCOMP ; !
+gyjhtelihks
+	gyjhtelihks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gyjhtel ODDCOMP ;
+	gyjhtelihks+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gyjhtel ihks_IHKS_igs_IGS_EVENNOCOMP ;
+håmhpoeh
+	håmhpoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:håmhp oeh_OEH_ODD1 ;
+	håmhpoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:hamhp ah_AH_ODD1 ;
+kråånehke
+	kråånehke+Sem/Dummytag:kråånehk Ce_CE_ODD ; ! pred
+	kråånehke+Sem/Dummytag:kråånehk HKE_ODD_COMP ;!CHECK OPP OM DISSE SKAL HA DENNE TYPE OPPFØRING?
+sjeavohth
+	sjeavohth+Sem/Dummytag:sjeavoehth ODDCOMP ;
+	sjeavohth+Sem/Dummytag:sjeavohth PRED_0 ;
+åavroes
+	åavroes+Sem/Dummytag:åavr as_oes_A_OE_EVEN3 ;
+	åavroes+Sem/Dummytag:åavr oes_OES_ODD1as ; !"åavroes bijjjie-het dag"
+gaektsiengïeleh
+	gaektsiengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gaektsien#gïel eh_EH_ODDNOCOMP1 ;
+	gaektsiengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:gaektsien#gïeleldh A_LDH ; !OBS
+eensi
+	eensi+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:eens EENSI ; ! eensi- eensigåbpoe
+	eensi+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:ins EENSI ;! + dyr og instr.
+stabnjoeh
+	stabnjoeh+Sem/Dummytag:stabnj oehATTR_anADVERB ; ! !' OE' eller 'A'
+	stabnjoeh+Sem/Dummytag:stabnj oehATTR_oen_ADVERB ; !
+söökes
+	söökes+A+Sem/Dummytag+Cmp/Attr:såakoe R ;! Söökes= attr. - suekebe
+	söökes+Sem/Dummytag: SOOKES ; !LA
+måaskoes
+	måaskoes+v2+Sem/Dummytag:måask as_AS_EVEN1 ; !
+	måaskoes+v1+Sem/Dummytag:måask oes_OES_ODD1as ;
+måskoes
+	måskoes+v2+Sem/Dummytag:måsk as_AS_ODD1NOCOMP ;
+	måskoes+v1+Sem/Dummytag:måsk oes_OES_ODD1NOCOMP ;
+gaajvoeh
+	gaajvoeh+A+Sem/Dummytag+Cmp/Attr:gaajva R ;
+	gaajvoeh+Sem/Dummytag:gaajvoe ATTR_H ;
+mannoes
+	mannoes+Sem/Dummytag:manno es_ES_EVENNOCOMP1; !LA LMM+Sem/Dummytag: mannoes monnehke mynnehke mennebe
+	mannoes+Sem/Dummytag:menne EVENCOMP ; !LA LMM+Sem/Dummytag: mannoes monnehke mynnehke mennebe
+praade
+	praade+Sem/Dummytag:praad e_ES_ODDEVEN2 ; ! Klasse 2 ! e(1)-st. +Sem/Dummytag:ok
+	praade+Sem/Dummytag:praades ATTR_0 ; ! e(1)-st. !LA
+leamoes
+	leamoes+v1+Sem/Dummytag:leam oes_OES_ODD1 ;
+	leamoes+v2+Sem/Dummytag:leama s_S_ODD ;
+slåaptjoeh
+	slåaptjoeh+Sem/Dummytag:slåaptj oehATTR_anADVERB ;
+	slåaptjoeh+Sem/Dummytag:slåaptj oehATTR_oen_ADVERB ;
+nåmhpoeh
+	nåmhpoeh+Sem/Dummytag:nåmhp oehATTR_anADVERB ;
+	nåmhpoeh+Sem/Dummytag:nåmhp oeh_OEH_ODD1 ;
+leavhmoes
+	leavhmoes+Sem/Dummytag:leavhmo EVENCOMP ; !slå sammen tre oppføringer?
+	leavhmoes+Sem/Dummytag:leavhmoes ATTR_0 ;
+	leavhmoes+Sem/Dummytag:leavhmoes PRED_0 ;
+nænnas
+	nænnas+Sem/Dummytag:nænn as_AS_EVEN1 ;
+	nænnas+Sem/Dummytag:nænn as_AS_EVEN1 ; !Klasse 3
+sööjmes
+	sööjmes+v1+CmpN/SgN+Sem/Hum:sööjm es_ES_EVEN ;
+	sööjmes+v2+CmpN/SgN+Sem/Hum:seejm es_ES_EVEN ;
+krahtjoeh
+	krahtjoeh+Sem/Dummytag:krahtj AH_&_OEH_ODD1 ;
+	krahtjoeh+Sem/Dummytag:krahtjan PRED_0 ; !krahtjoeh Krahtjoeh/krahtjoen !
+lïejpeldh
+	lïejpeldh+Sem/Dummytag:lïejpeld ATTR_H ; !slå sammen attr og pred til en oppføring?
+	lïejpeldh+Sem/Dummytag:lïejpeldh PRED_0 "orebarket" ;
+reejnes
+	reejnes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:raajne EVENCOMP ;
+	reejnes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:reejn es_ES_EVEN ;
+råpsoeh
+	råpsoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:raps AH_&_OEH_ODD1 ;
+	råpsoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:råps AH_&_OEH_ODD1 ; !nervös sky, rapsoeh aLmetje, bovtse
+stuarijs
+	stuarijs+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stuarijes ATTR_0 ;
+	stuarijs+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stuarijs ATTR_0 ; ! -jes også?
+uktsiengïeleh
+	uktsiengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:uktsien#gïel eh_EH_ODDNOCOMP1 ;! osv..+Sem/Dummytag:-)
+	uktsiengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:uktsien#gïeleldh A_LDH ;! osv..+Sem/Dummytag:-)
+bårras
+	bårras+v1+Sem/Dummytag:bårr as_AS_ODD1 ;
+	bårras+v2+Sem/Dummytag:bårra asATTR_anADVERB ; !
+slaaptjoeh
+	slaaptjoeh+A+Sem/Dummytag+Cmp/Attr:slaaptje R ;
+	slaaptjoeh+Sem/Dummytag:slaaptj oehATTR_oen_ADVERB ; !
+saegkie
+	saegkie+Sem/Dummytag:saagkehk HKE_ODD_COMP ;
+	saegkie+Sem/Dummytag:saegkie ATTR_0 ;
+	saegkie+Sem/Dummytag:saegkie EVENCOMP ;
+siegkies
+	siegkies+Sem/Dummytag:siegk ies_IES_IE_EVEN3 ; ! Klasse 3 ! ! Klasse 3no 3-syll paradigm
+	siegkies+Sem/Dummytag:syögkehk HKE_ODD_COMP ;!CHECK OPP OM DISSE SKAL HA DENNE TYPE OPPFØRING?
+kråavhtjoeh
+	kråavhtjoeh+v2+Sem/Dummytag:kruavhtj ahATTR_anADVERB ; ! åa-->ua?
+	kråavhtjoeh+v1+Sem/Dummytag:kråavhtj oehATTR_anADVERB ; !
+	kråavhtjoeh+v3+Sem/Dummytag:kråavhtj oehATTR_oen_ADVERB ; !
+vaajmoes
+	vaajmoes+Sem/Dummytag:vaajma s_S_ODD ;
+	vaajmoes+Sem/Dummytag:vaajmoe s_S_ODD ; !LA
+najvoeh
+	najvoeh+v2+Sem/Dummytag:najv oehATTR_anADVERB ; !
+	najvoeh+v1+Sem/Dummytag:najv oehATTR_oen_ADVERB ;
+stïerhke
+	stïerhke+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:stïerhk e_ES_ODDEVEN2 ;
+	stïerhke+Sem/Dummytag:stïerhk e_ES_ODDEVEN2 ; ! Klasse 2
+rårhvoeh
+	rårhvoeh+Sem/Dummytag:rårhv AH_&_OEH_ODD1 ; !SOUTH, where Pred=rårhvohke
+	rårhvoeh+Sem/Dummytag:rårhvoehk oeCe_OECE_ODD ; !
+snajvoeh
+	snajvoeh+Sem/Dummytag:snajv oehATTR_anADVERB ; !LA iflg. LMM !hovmodig
+	snajvoeh+Sem/Dummytag:snajv oehATTR_oen_ADVERB ; !
+njuajjah
+	njuajjah+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njuajj ahATTR_anADVERB ; !
+	njuajjah+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njuajj ah_AH_ODD1 ; !
+staereles
+	staereles+Sem/Dummytag:staeriel Ces_CE_ODD ;
+	staereles+Sem/Dummytag:staeriel ODDCOMP ; ! VED COMP+Sem/Dummytag:IE staeries. staeries-staaran
+snåagkoeh
+	snåagkoeh+Sem/Dummytag:snoegke PRED_0 ; !snoegke (substantiv) - snoegkesjidh-> snoegkedidh OBS
+	snåagkoeh+Sem/Dummytag:snåagk oeh_OEH_ODD1 ;
+rudtjege
+	rudtjege+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rudtj e_E_EVEN ;
+	rudtjege+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:rudtjeg Ce_CE_ODD ; ! EGE= EVEN OD ODD COMP +Sem/Dummytag: rudtjebe, rudtjegåbpoe +Sem/Dummytag: I think this one goes as 'radtjehke' -a-	arbeidsom, flittig, ivrig' | 'ege' and 'ehke’ are often mixed pronunciation in south-sámi (ex. vuelegs,vuelehks) I think this one "rudtjege" has the same process of pronunciation as the mentioned examples; this one 'rudtjege' should be splitted and goes as e_E_EVEN, and the comp. is therefor 'rudtjeh-rudtjebe-rudtjemes' and 'rudtjehke-rudtjehkåbpoe-rudtjehkommes'.
+truvkes
+	truvkes+Sem/Dummytag:truvk es_ES_EVEN ;
+	truvkes+Sem/Dummytag:truvkehk HKE_ODD_COMP ;
+spåarjoeh
+	spåarjoeh+Sem/Dummytag:spåarj oehATTR_anADVERB ;
+	spåarjoeh+Sem/Dummytag:spåarj oehATTR_oen_ADVERB ; !, ALSO NORMATIVITY ISSUE ua
+jabjoeh
+	jabjoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jabj oehATTR_oen_ADVERB ;
+	jabjoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:jabj oehATTR_anADVERB ; !
+rïekte
+	rïekte+Sem/Dummytag:ryöktehk HKE_ODD_COMP ;
+	rïekte+Sem/Dummytag:rååktehk HKE_ODD_COMP ;!
+	rïekte+Sem/Dummytag:rïekt e_ES_ODDEVEN2 ;
+dæljoeh
+	dæljoeh+v1+CmpN/SgN+CmpN/SgG+Sem/Hum:dælj oehATTR_oen_ADVERB ;
+	dæljoeh+v2+CmpN/SgN+CmpN/SgG+Sem/Hum:dælj oehATTR_anADVERB ;
+tsåatske
+	tsåatske+Sem/Dummytag:tsåatsk e_ES_ODDEVEN2 ; ! Klasse 2
+	tsåatske+Use/NG+Sem/Dummytag:tsåatske ATTR_S ;
+vïjhtengïeleh
+	vïjhtengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:vïjhten#gïel eh_EH_ODDNOCOMP1 ;
+	vïjhtengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:vïjhten#gïeleldh A_LDH ;
+gïemhpe
+	gïemhpe+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:gïemhp e_ES_ODDEVEN2 ; ! attr=gïemhpe (durativ-s) og pred=gïemhpes ! e(2)-st. system2
+	gïemhpe+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:gïemhpe ATTR_S ;
+vijsies
+	vijsies+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:vijs ies_IES_EVEN1 ;
+	vijsies+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Dummytag:væjsahk HKE_ODD_COMP ;
+snavrah
+	snavrah+Sem/Dummytag:snavr ahATTR_anADVERB ; !avbrukket om bein
+	snavrah+Sem/Dummytag:snavr oehATTR_oen_ADVERB ; !avbrukket om bein
+njieljienjoelkh
+	njieljienjoelkh+CmpN/SgN+CmpN/SgG+CmpN/PlG:njieljien#joelk ATTR_H ; !OBS
+	njieljienjoelkh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:njieljien#joelk Ch_CE_ODDNOCOMP ;
+åajvoeh
+	åajvoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:åajv AH_&_OEH_ODD1 ;! ODDCASE og ODDCOMP
+	åajvoeh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:åajv oehATTR_anADVERB ; ! NB!! denne går ikke! Bergsland tar feil, attributt -h, må ha en ODDCASE!! tidligere oeh_OE
+	åajvoeh+Sem/Dummytag:åajv as_oes_A_OE_EVEN3 ; ! åajvebe, åajvemes, EVENCASE and EVENCOMP
+tjåadtjoeh
+	tjåadtjoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåadtj oeh_ahATTR_anADVERB ; ! oeCASE
+	tjåadtjoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåadtj ahATTR_anADVERB ; !
+	tjåadtjoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:tjåadtj oehATTR_oen_ADVERB ; !
+slaahpoegeeles
+	slaahpoegeeles+Sem/Dummytag:slaahpoe#geele s_S_ODDNOCOMP ;
+	slaahpoegeeles+Sem/Dummytag:slaahpoe#gåålehk HKE_ODD_COMP ;
+göövjes
+	göövjes+v1+Sem/Dummytag:göövj es_ES_EVEN ;
+	göövjes+v2+Sem/Dummytag:gïevjehk HKE_ODD_COMP ;
+	göövjes+v3+Sem/Dummytag:gyövjehk HKE_ODD_COMP ;
+	göövjes+v4+Sem/Dummytag:geevj es_ES_EVEN ;
+båtnjoeh
+	båtnjoeh+v1+Sem/Dummytag:båtnj oehATTR_oen_ADVERB ; ! Ikke vanlig å komp. Ååpsen båtnjan, MAANA-NOMEN-NOMEN, oeCASE
+	båtnjoeh+v2+Sem/Dummytag:båtnj AH_&_OEH_ODD1 ;
+skaajmes
+	skaajmes+Sem/Dummytag:skaajme s_S_ODD ;
+	skaajmes+Sem/Dummytag:skaajmehk HKE_ODD_COMP ;
+lohkemes
+	lohkemes ATTR_0 ;
+	lohkemes+Sem/Dummytag:lohkemes ATTR_0 ;
+sapts
+	sapts+Sem/Dummytag:sapt s_S_ODDNOCOMP ;
+	sapts+Sem/Dummytag:saptses ODDCOMP ; !saptsesåbpoe-saptsesommes
+tjïevlehks
+	tjïevlehks+Sem/Dummytag:tjïevlehk Cs_CE_ODD ;
+	tjïevlehks+Sem/Dummytag:tjïevlehk Cs_CS_ODD ;
+	tjïevlehks+Sem/Hum:tjïevlehk Cs_CE_ODD ;
+gåarvoeh
+	gåarvoeh+v1+Sem/Dummytag:gåarv oehATTR_anADVERB ;
+	gåarvoeh+v2+Sem/Dummytag:gåarv oehATTR_oen_ADVERB ;
+bæjngoeh
+	bæjngoeh+CmpN/SgN+CmpNP/Pref+A+Sem/Dummytag+Cmp/Attr:bæjngoe R ;
+	bæjngoeh+Sem/Dummytag:bæjng oeh_ahATTR_anADVERB ; !
+laahtjeres
+	laahtjeres+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:laahtjar Ces_CES_ODD ; ! VED COMP+Sem/Dummytag:A OBS: dublett?
+	laahtjeres+Sem/Hum:laahtjer Ces_CE_ODD ;
+nuljes
+	nuljes+v2+Sem/Dummytag:nalja s_S_ODD ;!
+	nuljes+v1+Sem/Dummytag:nulje s_S_ODD ;!!CHECK UP! Substantiv = nulje, nalja
+govhtengïeleh
+	govhtengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:govhten#gïel eh_EH_ODDNOCOMP1 ;
+	govhtengïeleh+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:govhten#gïeleldh A_LDH ;
+frååpmes
+	frååpmes+CmpN/SgN+CmpN/SgG+CmpN/PlG+Use/NG+Sem/Hum:frååpmehk HKE_ODD_COMP ;
+	frååpmes+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:frååpme s_S_ODD ;
+	frååpmes+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:fraapma s_S_ODD ;
+	frååpmes+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:freepme s_S_ODD ; !SOUTH
+aareh
+	aareh+v1+Sem/Dummytag:aar AAREH ; !aarebi,aaremes. aerebe, aeremes
+	aareh+v2+Sem/Dummytag:aare ATTR_S ;! Ikke enig i at disse to betyr "det samme", men ok! det er nyanseforskjell mellom aareh og aares
+gabte
+	gabte+v1+Sem/Dummytag:gab GAMTE2 ;! gabtegåbpoe - pred også+Sem/Dummytag: gamtege
+	gabte+v2+Sem/Dummytag:gebt ies_IE_EVEN3 ; ! Klasse 3
+gualijes
+	gualijes+Sem/Dummytag:gualaj ODDCOMP ; ! -e pred and comp
+	gualijes+Sem/Dummytag:gualij ijes_ijs_IJE_ODDNOCOMP ; ! -e pred and comp
+raagkoeh
+	raagkoeh+Sem/Hum:raagk oehATTR_anADVERB ; !
+	raagkoeh+Sem/Hum:raagk oehATTR_oen_ADVERB ;
+lapsoes
+	lapsoes+v2+Sem/Dummytag:laps as_AS_ODD1 ;
+	lapsoes+v1+Sem/Dummytag:laps oes_OES_ODD1 ;
+tryjjes
+	tryjjes+Sem/Dummytag:tryjj es_ES_EVEN ;
+	tryjjes+Sem/Dummytag:tråjj es_ES_EVEN ;
+	tryjjes+Sem/Dummytag:tröjj es_ES_EVEN ;
+	tryjjes+Sem/Dummytag:trööjj es_ES_EVEN ;
+daerpies
+	daerpies+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Dummytag:dåarpatj DIMINCOMP ; !egentlig
+	daerpies+Sem/Dummytag:daerp ies_IES_EVENNOCOMP1 ; ! LK+Sem/Dummytag: nocomp
+gamte
+	gamte+Use/NG+Sem/Dummytag:gamtege PRED_0 ;! gamtegåbpoe? CHECK!
+	gamte+v1+Sem/Dummytag:gam GAMTE2 ;!
+	gamte+v2+Sem/Dummytag:gemt ies_IE_EVEN3 ; ! Klasse 3 ! e(1)-st. !LA
+nåjjoeh
+	nåjjoeh+v3+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:nåjj ahATTR_anADVERB ; !
+	nåjjoeh+v2+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:nåjj oehATTR_oen_ADVERB ;
+	nåjjoeh+v1+CmpN/SgN+CmpN/SgG+CmpN/PlG+Sem/Hum:nåjj oeh_OEH_ODD1 ; !'OE' eller 'A'
+kråabjoeh
+	kråabjoeh+Sem/Dummytag:kråabj AH_&_OEH_ODD1 ;
+	kråabjoeh+Sem/Dummytag:kråabj oehATTR_anADVERB ;
+stoere
+	stoere+Sem/Dummytag:st NOERE_STOERE2 ;
+	stoere+Use/NG+Sem/Dummytag:stoerr e_E_EVENNOCOMP1 ;
+gelliesåarts
+	gelliesåarts+v2+Sem/Dummytag:gellie#såarht ATTR_S ; !samediggediedahus 2012
+	gelliesåarts+v1+Sem/Dummytag:gellie#såart ATTR_S ;

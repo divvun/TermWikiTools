@@ -1,0 +1,791 @@
+bo
+	            bo       SETTE   ;
+	bo v4 ;
+anrike
+	anrike v1 ;
+	anrike vx ;
+fra
+	           fra       SKRIVE  ;
+	           fra       STJELE  ;
+	           fra       TA      ;
+	           fra       TRE_V   ;
+	fra FALLE  ;
+	fra SI ;
+	fra GÅ ;
+tjåke
+	tjåke v1 ;
+	tjåke vx ;
+grille
+	grille v1 ;
+	grille vx ;
+små
+	           små       SITTE   ;
+	           små       SKRIKE  ;
+	           små       SLÅSS   ;
+	           små       SOVE    ;
+	           små       SYNGE   ;
+røyke
+	røyke v2 ;
+	røyke vx ;
+opp
+	           opp       DRA     ;
+	           opp       DRIVE   ;
+	           opp       SI      ;
+	           opp       STÅ     ;
+	           opp       TA      ;
+	           opp       TRE_V   ;
+rage
+	rage v1 ;
+	rage vx ;
+buske
+	buske v1 ;
+	buske vx ;
+trille
+	trille v1 ;
+	trille vx ;
+rein
+	          rein       GJØRE   ;
+	          rein       SKRIVE  ;
+kavle
+	kavle v1 ;
+	kavle vx ;
+lyske
+	lyske v1 ;
+	lyske vx ;
+adlyde
+	        adlyde:ad    LYDE    ;
+	adlyde vx ;
+fram
+	          fram       BRINGE  ;
+	          fram       GÅ      ;
+	          fram       LEGGE   ;
+	          fram       SETTE   ;
+	          fram       SKRIVE  ;
+	          fram       STÅ     ;
+	          fram       TRE_V   ;
+forårsake
+	forårsake v1 ;
+	forårsake vx ;
+folle
+	folle v1 ;
+	folle vx ;
+bi
+	            bi       BRINGE  ;
+	            bi       DRA     ;
+	            bi       FALLE   ;
+	            bi       LEGGE   ;
+	            bi       SETTE   ;
+	            bi       STÅ     ;
+veie
+	veie v3 ;
+	veie vx ;
+hauke
+	hauke v1 ;
+	hauke vx ;
+overtyde
+	overtyde v13 ;
+	overtyde vx ;
+stege
+	stege v1 ;
+	stege vx ;
+over
+	          over       BRINGE  ;
+	          over       DRA     ;
+	          over       DRIVE   ;
+	          over       FALLE   ;
+	          over       FLY     ;
+	          over       GI      ;
+	          over       GÅ      ;
+	          over       SE      ;
+	          over       SETTE   ;
+	          over       SMØRE   ;
+	          over       TA      ;
+	          over       TREKKE  ;
+	          over       VINNE   ;
+	          over       XREKKE  ;
+	over STIGE  ;
+tulle
+	tulle v1 ;
+	tulle vx ;
+pole
+	pole v12 ;
+	pole vx ;
+fri
+	           fri       FINNE   ;
+	           fri       GJØRE   ;
+	           fri       TA      ;
+	fri v4 ;
+forlike
+	forlike v2 ;
+	forlike vx ;
+mislike
+	mislike v2 ;
+	mislike vx ;
+stole
+	stole v2 ;
+	stole vx ;
+reke
+	reke v2 ;
+	reke vx ;
+grunn
+	         grunn       GI      ;
+	         grunn       LEGGE   ;
+forkle
+	forkle v4 ;
+	forkle vx ;
+dreie
+	dreie v13 ;
+	dreie vx ;
+forskrekke
+	forskrekke v1 ;
+	forskrekke v1 ;
+trylle
+	trylle v1 ;
+	trylle vx ;
+ved
+	           ved       BLI     ;
+	           ved       GÅ      ;
+	           ved       KOMME   ;
+	           ved       LEGGE   ;
+	           ved       STÅ     ;
+	           ved       TA      ;
+til
+	           til       BRINGE  ;
+	           til       BYDE    ;
+	           til       FALLE   ;
+	           til       FLYTE   ;
+	           til       GI      ;
+	           til       KOMME   ;
+	           til       LEGGE   ;
+	           til       LIGGE   ;
+	           til       RIVE    ;
+	           til       SETTE   ;
+	           til       STÅ     ;
+	           til       TREKKE  ;
+	           til       TRE_V   ;
+	           til       TVINGE  ;
+	til SI ;
+hylle
+	hylle v1 ;
+	hylle vx ;
+svine
+	         svine       BINDE   ;
+	svine v1 ;
+bakke
+	bakke v1 ;
+	bakke vx ;
+med
+	           med       GI      ;
+	           med       GI      ;
+	med GÅ ;
+an
+	            an       BRINGE  ;
+	            an       FALLE   ;
+	            an       GI      ;
+	            an       GRIPE   ;
+	            an       GÅ      ;
+	            an       KOMME   ;
+	            an       LEGGE   ;
+	            an       SE      ;
+	            an       SETTE   ;
+	            an       SLÅ     ;
+	            an       STÅ     ;
+	            an       TA      ;
+kvekke
+	        kvekke       XREKKE  ;
+	kvekke vx ;
+like
+	like v2 ;
+	like vx ;
+spole
+	spole v2 ;
+	spole vx ;
+vake
+	vake v12 ;
+	vake vx ;
+skam
+	          skam       FARE    ;
+	          skam       SLÅ     ;
+berike
+	berike v1 ;
+	berike vx ;
+innvie
+	innvie v14 ;
+	innvie vx ;
+segle
+	segle v1 ;
+	segle vx ;
+smake
+	smake v2 ;
+	smake vx ;
+bie
+	bie v1 ;
+	bie v4 ;
+jage
+	jage v13 ;
+	jage vx ;
+bleke
+	bleke v12 ;
+	bleke vx ;
+flenge
+	flenge v12 ;
+	flenge vx ;
+overveie
+	overveie v3 ;
+	overveie vx ;
+sage
+	sage v13 ;
+	sage vx ;
+avveie
+	avveie v3 ;
+	avveie vx ;
+mis
+	           mis       FARE    ;
+	           mis       TA      ;
+lekke
+	lekke v1 ;
+	lekke vx ;
+duke
+	duke v1 ;
+	duke vx ;
+greie
+	greie v13 ;
+	greie vx ;
+st
+	            st       XIKKE   ;
+	            st       XREKKE  ;
+smule
+	smule v12 ;
+	smule v2 ;
+sprike
+	sprike v12 ;
+	sprike vx ;
+skrelle
+	skrelle v1 ;
+	skrelle vx ;
+hevle
+	hevle v1 ;
+	hevle vx ;
+av
+	            av       BRYTE   ;
+	            av       FINNE   ;
+	            av       GI      ;
+	            av       GJØRE   ;
+	            av       GÅ      ;
+	            av       HENGE   ;
+	            av       HJELPE  ;
+	            av       LEGGE   ;
+	            av       RIVE    ;
+	            av       SE      ;
+	            av       SETTE   ;
+	            av       SKJÆRE  ;
+	            av       SKRIVE  ;
+	            av       SLÅ     ;
+	            av       STÅ     ;
+	            av       TA      ;
+	            av       TVINGE  ;
+	            av       VIKE    ;
+	av SI ;
+ruske
+	ruske v1 ;
+	ruske vx ;
+gjen
+	          gjen       DRIVE   ;
+	          gjen       FINNE   ;
+	          gjen       GI      ;
+	          gjen       GJELDE  ;
+	          gjen       SE      ;
+	          gjen       TA      ;
+	          gjen       VELGE   ;
+	          gjen       VINNE   ;
+mot
+	           mot       SETTE   ;
+	           mot       STÅ     ;
+	           mot       TA      ;
+ferdes
+	ferdes v1-s ;
+	ferdes vx ;
+halle
+	halle v1 ;
+	halle vx ;
+forut
+	         forut       SE      ;
+	         forut       SETTE   ;
+	         forut       SI      ;
+måke
+	måke v12 ;
+	måke vx ;
+vie
+	vie v14 ;
+	vie vx ;
+oppveie
+	oppveie v3 ;
+	oppveie vx ;
+utbreie
+	utbreie v3 ;
+	utbreie vx ;
+ule
+	ule v2 ;
+	ule vx ;
+fortolle
+	fortolle v1 ;
+	fortolle vx ;
+gaule
+	gaule v12 ;
+	gaule v1 ;
+sleike
+	sleike v12 ;
+	sleike vx ;
+visle
+	visle v1 ;
+	visle vx ;
+rande
+	rande v1 ;
+	rande vx ;
+sluke
+	sluke v2 ;
+	sluke vx ;
+smeike
+	smeike v2 ;
+	smeike vx ;
+dulle
+	dulle v1 ;
+	dulle vx ;
+forvelle
+	forvelle v1 ;
+	forvelle vx ;
+sake
+	sake v1 ;
+	sake vx ;
+b
+	             b       XITE    ;
+	             b       XREKKE  ;
+meie
+	meie v13 ;
+	meie vx ;
+ile
+	ile v2 ;
+	ile vx ;
+fraråde
+	fraråde v1 ;
+	fraråde v1 ;
+hen
+	           hen       GI      ;
+	           hen       LEGGE   ;
+	           hen       SYNKE   ;
+hule
+	hule v2 ;
+	hule v2 ;
+veve
+	veve v1 ;
+	veve v3 ;
+svelle
+	svelle v2 ;
+	svelle vx ;
+bøte
+	          bøte       LEGGE   ;
+	bøte vx ;
+vare
+	vare v2 ;
+	vare TA ;
+fortrylle
+	fortrylle v1 ;
+	fortrylle vx ;
+skumle
+	skumle v1 ;
+	skumle vx ;
+ned
+	           ned       KOMME   ;
+	           ned       LEGGE   ;
+	           ned       SETTE   ;
+misbruke
+	misbruke v2 ;
+	misbruke vx ;
+beile
+	beile v12 ;
+	beile vx ;
+rake
+	rake v12 ;
+	rake vx ;
+stride
+	stride v3 ;
+	stride vx ;
+angle
+	angle v1 ;
+	angle vx ;
+dekke
+	dekke v1 ;
+	dekke vx ;
+steike
+	steike v2 ;
+	steike vx ;
+kveike
+	kveike v2 ;
+	kveike vx ;
+ake
+	ake v2 ;
+	ake vx ;
+røde
+	røde v3 ;
+	røde vx ;
+pris
+	          pris       GI      ;
+	          pris       SETTE   ;
+kole
+	kole v1 ;
+	kole vx ;
+imøte
+	         imøte       KOMME   ;
+	         imøte       SE      ;
+	imøte GÅ  ;
+unn
+	           unn       GÅ      ;
+	           unn       SE      ;
+	           unn       TA      ;
+	           unn       VIKE    ;
+	           unn       VÆRE    ;
+	unn DRA  ;
+koke
+	koke v2 ;
+	koke vx ;
+kurle
+	kurle v1 ;
+	kurle v1 ;
+dryge
+	dryge v3 ;
+	dryge vx ;
+forville
+	forville v1 ;
+	forville vx ;
+forsage
+	forsage v1 ;
+	forsage vx ;
+gnage
+	gnage v2 ;
+	gnage v3 ;
+inne
+	          inne       BÆRE    ;
+	          inne       HA      ;
+	          inne       STÅ     ;
+fort
+	          fort       SETTE   ;
+	          fort       XREKKE  ;
+kneppe
+	kneppe v2 ;
+	kneppe vx ;
+om
+	            om       GI      ;
+	            om       GJØRE   ;
+	            om       GÅ      ;
+	            om       KOMME   ;
+	            om       SETTE   ;
+	            om       SKRIVE  ;
+forgylle
+	forgylle v2 ;
+	forgylle v2 ;
+bule
+	bule v12 ;
+	bule v1 ;
+spjåke
+	spjåke v12 ;
+	spjåke vx ;
+skratle
+	skratle v1 ;
+	skratle v1 ;
+for
+	           for       BINDE   ;
+	           for       BLI     ;
+	           for       BRYTE   ;
+	           for       DRIVE   ;
+	           for       FALLE   ;
+	           for       FØLGE   ;
+	           for       GJELDE  ;
+	           for       GRIPE   ;
+	           for       GÅ      ;
+	           for       LEGGE   ;
+	           for       SE      ;
+	           for       SOVE    ;
+	           for       STÅ     ;
+	           for       TELLE   ;
+	           for       TIE     ;
+	           for       TREKKE  ;
+lage
+	lage v13 ;
+	lage vx ;
+ødsle
+	ødsle v1 ;
+	ødsle v1 ;
+trelle
+	trelle v1 ;
+	trelle vx ;
+pille
+	pille v1 ;
+	pille vx ;
+inn
+	           inn       BINDE   ;
+	           inn       BRINGE  ;
+	           inn       DRA     ;
+	           inn       FINNE   ;
+	           inn       GI      ;
+	           inn       GÅ      ;
+	           inn       SE      ;
+	           inn       SETTE   ;
+	           inn       SKYTE   ;
+	           inn       TA      ;
+	           inn       TRE_V   ;
+	inn LEGGE ;
+	inn DRIVE  ;
+	inn SKRIVE  ;
+våge
+	våge v13 ;
+	våge vx ;
+kvele
+	kvele v2 ;
+	kvele vx ;
+øyde
+	          øyde       LEGGE   ;
+	øyde v3 ;
+	øyde vx ;
+stykke
+	stykke v1 ;
+	stykke vx ;
+skule
+	skule v2 ;
+	skule v2 ;
+sole
+	sole v12 ;
+	sole vx ;
+fore
+	          fore       FALLE   ;
+	          fore       GI      ;
+	          fore       GRIPE   ;
+	          fore       GÅ      ;
+	          fore       KOMME   ;
+	          fore       LEGGE   ;
+	          fore       LIGGE   ;
+	          fore       SKRIVE  ;
+	          fore       SLÅ     ;
+	          fore       SPØRRE  ;
+	          fore       STÅ     ;
+	          fore       TA      ;
+	          fore       TREKKE  ;
+	fore v1 ;
+jule
+	jule v2 ;
+	jule v2 ;
+sukle
+	sukle v1 ;
+	sukle vx ;
+på
+	            på       GRIPE   ;
+	            på       LEGGE   ;
+	            på       SETTE   ;
+	            på       SMØRE   ;
+	            på       STÅ     ;
+	            på       TA      ;
+	            på       TVINGE  ;
+	på DRA  ;
+	på LIGGE ;
+	på GÅ ;
+rede
+	          rede       GJØRE   ;
+	rede v1 ;
+velle
+	velle v1 ;
+	velle vx ;
+leike
+	leike v12 ;
+	leike vx ;
+ledsage
+	ledsage v1 ;
+	ledsage vx ;
+plage
+	plage v1 ;
+	plage v13 ;
+leke
+	          leke       SLÅSS   ;
+	leke v2 ;
+	leke vx ;
+avdekke
+	avdekke v1 ;
+	avdekke vx ;
+sp
+	            sp       XREKKE  ;
+	            sp       XREKKE  ;
+ombestemme
+	ombestemme v2 ;
+	ombestemme v2 ;
+kaldrøyke
+	kaldrøyke v2 ;
+	kaldrøyke vx ;
+skjule
+	skjule v2 ;
+	skjule v2 ;
+bleike
+	bleike v12 ;
+	bleike vx ;
+nage
+	nage v13 ;
+	nage vx ;
+stulle
+	stulle v1 ;
+	stulle vx ;
+sprede
+	sprede v23 ;
+	sprede vx ;
+kvie
+	kvie v14 ;
+	kvie vx ;
+god
+	           god       GJØRE   ;
+	           god       SKRIVE  ;
+	           god       TA      ;
+surmule
+	surmule v2 ;
+	surmule v2 ;
+klenge
+	klenge v2 ;
+	klenge vx ;
+sulle
+	sulle v1 ;
+	sulle vx ;
+loge
+	loge v1 ;
+	loge vx ;
+kjevle
+	kjevle v1 ;
+	kjevle vx ;
+megle
+	megle v1 ;
+	megle vx ;
+sammen
+	        sammen       BINDE   ;
+	        sammen       SKRIVE  ;
+utstyre
+	utstyre v2 ;
+	utstyre v2 ;
+klar
+	          klar       GJØRE   ;
+	          klar       LEGGE   ;
+ut
+	            ut       BRINGE  ;
+	            ut       BRYTE   ;
+	            ut       GI      ;
+	            ut       GJØRE   ;
+	            ut       GÅ      ;
+	            ut       KOMME   ;
+	            ut       SE      ;
+	            ut       SETTE   ;
+	            ut       SI      ;
+	            ut       SKRIVE  ;
+	            ut       SPØRRE  ;
+	            ut       STÅ     ;
+	            ut       TA      ;
+prelle
+	prelle v1 ;
+	prelle vx ;
+frem
+	          frem       BRINGE  ;
+	          frem       GÅ      ;
+	          frem       KOMME   ;
+	          frem       LEGGE   ;
+	          frem       SETTE   ;
+	          frem       SKRIVE  ;
+	          frem       STÅ     ;
+	          frem       TRE     ;
+kike
+	kike v1 ;
+	kike vx ;
+bløt
+	          bløt       GJØRE   ;
+	          bløt       LEGGE   ;
+be
+	              be:          BE      ;
+	            be       DRA     ;
+	            be       FINNE   ;
+	            be       GI      ;
+	            be       GRIPE   ;
+	            be       GÅ      ;
+	            be       HENGE   ;
+	            be       KOMME   ;
+	            be       LEGGE   ;
+	            be       SE      ;
+	            be       SETTE   ;
+	            be       SITTE   ;
+	            be       SKJÆRE  ;
+	            be       SKRIVE  ;
+	            be       SKYTE   ;
+	            be       SLÅ     ;
+	            be       SOVE    ;
+	            be       STIGE   ;
+	            be       STIKKE  ;
+	            be       STJELE  ;
+	            be       STRIDE  ;
+	            be       STÅ     ;
+	            be       SYNGE   ;
+	            be       TA      ;
+rulle
+	rulle v1 ;
+	rulle vx ;
+skatte
+	        skatte       LEGGE   ;
+	skatte v1 ;
+farge
+	         farge       LEGGE   ;
+	farge v1 ;
+forsake
+	forsake v1 ;
+	forsake vx ;
+bestykke
+	bestykke v1 ;
+	bestykke vx ;
+bekle
+	bekle v4 ;
+	bekle vx ;
+reie
+	reie v3 ;
+	reie vx ;
+forlenge
+	forlenge v1 ;
+	forlenge vx ;
+krølle
+	krølle v1 ;
+	krølle vx ;
+tylle
+	tylle v1 ;
+	tylle vx ;
+sprelle
+	sprelle v1 ;
+	sprelle vx ;
+etter
+	         etter       FØLGE   ;
+	         etter       GI      ;
+	         etter       KOMME   ;
+	         etter       SE      ;
+	         etter       SPØRRE  ;
+under
+	         under       LEGGE   ;
+	         under       SKRIDE  ;
+	         under       SKRIVE  ;
+	under GI ;
+fast
+	          fast       LEGGE   ;
+	          fast       SETTE   ;
+understreke
+	understreke v12 ;
+	understreke vx ;
+ren
+	           ren       GJØRE   ;
+	           ren       SKRIVE  ;
+ydmyke
+	ydmyke v12 ;
+	ydmyke vx ;
+trolle
+	trolle v1 ;
+	trolle vx ;
+uthole
+	uthole v2 ;
+	uthole vx ;
+tilkjenne
+	     tilkjenne       GI      ;
+	tilkjenne v2 ;

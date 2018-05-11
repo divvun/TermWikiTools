@@ -511,9 +511,10 @@ class FileHandler(object):
                         upper = line_dict['upper'].split('+')[0].replace(
                             '%', '')
                         # if analyser.is_known(self.lang, upper):
-                        dupes[upper].append(lexc_line)
-                        self.print_stem(upper, line_dict)
-                        self.print_contlex(line_dict['contlex'])
+                        if upper:
+                            dupes[upper].append(lexc_line)
+                            self.print_stem(upper, line_dict)
+                            self.print_contlex(line_dict['contlex'])
 
         self.print_dupes(dupes)
 

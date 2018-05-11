@@ -43,6 +43,7 @@ The name of a Stem page:
 Stem:<Lemma> <Contlex>
 """
 
+import datetime
 import io
 import os
 import re
@@ -383,7 +384,7 @@ class FileHandler(object):
     filetemplate = os.path.join(
         os.getenv('GTHOME'), 'langs/{}/src/morphology/stems/{}.lexc')
 
-    def __init__(self, lang: str, stemfile: str) -> None:
+    def __init__(self, lang: str, stemfile: str, outdir: str) -> None:
         """Initialise the FileHandler class.
 
         Args:
@@ -394,6 +395,7 @@ class FileHandler(object):
         self.stemfile = stemfile
         self.contlexes = set()
         self.filename = self.filetemplate.format(lang, stemfile)
+        self.outdir = outdir
 
     @property
     def termwikilang(self) -> str:
@@ -422,6 +424,14 @@ class FileHandler(object):
         return '{} {} {}'.format(self.termwikilang, self.termwikipos,
                                  contlex.replace('/', '\\'))
 
+    @staticmethod
+    def write_file(filename: str, stringlist: list) -> None:
+        if os.path.exists(filename):
+            print('{} already exists'.format(filename))
+        else:
+            with open(filename, 'w') as file_:
+                print('\n'.join(stringlist), file=file_)
+
     def print_stem(self, lemma: str, line_dict: dict) -> None:
         """Produce the content and name of a TermWiki Stem page.
 
@@ -439,10 +449,9 @@ class FileHandler(object):
         if line_dict['comment']:
             stem.append('|Comment={}'.format(line_dict['comment']))
         stem.append('}}')
-        print('Stem:{} {}'.format(lemma, self.contlex_name(
-            line_dict['contlex'])))
-        print('\n'.join(stem))
-        print()
+        stemname = '{}/Stem:{} {}'.format(self.outdir, lemma,
+                                          self.contlex_name(line_dict['contlex']))
+        self.write_file(stemname, stem)
 
     def print_contlex(self, contlex: str) -> None:
         """Produce the content and name of a TermWiki Contlex page.
@@ -457,9 +466,9 @@ class FileHandler(object):
             content.append('|Language={}'.format(self.termwikilang))
             content.append('|Pos={}'.format(self.termwikipos))
             content.append('}}')
-            print('Contlex:{}'.format(self.contlex_name(contlex)))
-            print('\n'.join(content))
-            print()
+            contname = '{}/Contlex:{}'.format(self.outdir,
+                                              self.contlex_name(contlex))
+            self.write_file(contname, content)
 
     def parse_file(self) -> None:
         """Parse the lexc stem file."""
@@ -484,9 +493,11 @@ class FileHandler(object):
 
 def main() -> None:
     """Parse the files and lexicons as directed in WANTED_LEXICONS."""
+    outdir = datetime.datetime.now().isoformat()
+    os.makedirs(outdir)
     for lang in WANTED_LEXICONS:
         for stemfile in WANTED_LEXICONS[lang]:
-            filehandler = FileHandler(lang, stemfile)
+            filehandler = FileHandler(lang, stemfile, outdir)
             filehandler.parse_file()
 
 

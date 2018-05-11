@@ -210,10 +210,6 @@ WANTED_LEXICONS = {
             'pos': 'A',
             'lexicons': ['AdjectiveRoot'],
         },
-        'adpositions': {
-            'pos': 'Adp',
-            'lexicons': ['Adposition'],
-        },
         'adverbs': {
             'pos': 'Adv',
             'lexicons': ['Adverb'],

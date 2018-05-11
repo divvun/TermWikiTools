@@ -97,6 +97,28 @@ WANTED_LEXICONS = {
         'subjunctions': ['Subjunction'],
         'verbs': ['irregular-verb', 'regular-verb'],
     },
+    'fin': {
+        'adjectives': ['ADJECTIVE'],
+        'adverbs': ['ADVERB'],
+        'cc': ['CC'],
+        'cs': ['CS'],
+        'interj': ['INTERJECTION'],
+        'nouns': ['NOUN'],
+        'particles': ['PARTICLE'],
+        'pp': ['ADPOSITION'],
+        'verbs': ['VERB'],
+    },
+    'smn': {
+        'adjectives': ['AdjectiveRoot'],
+        'adpositions': ['Pre', 'Post'],
+        'adverbs': ['Adverb'],
+        'conjunctions': ['Conjunction'],
+        'interjections': ['Interjection'],
+        'nouns': ['Noun'],
+        'particles': ['Particle'],
+        'subjunctions': ['Subjunction'],
+        'verbs': ['VGenVerbs', 'Verbs'],
+    },
 }
 """dict: Govern which files and lexicons to extract for the given languages."""
 

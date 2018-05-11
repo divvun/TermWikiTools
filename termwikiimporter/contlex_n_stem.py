@@ -426,6 +426,7 @@ class FileHandler(object):
 
     @staticmethod
     def write_file(filename: str, stringlist: list) -> None:
+        """Write stem and contlex wiki files."""
         if os.path.exists(filename):
             pass
             # print('{} already exists'.format(filename))
@@ -472,6 +473,24 @@ class FileHandler(object):
                                               self.contlex_name(contlex))
             self.write_file(contname, content)
 
+    def print_dupes(self, dupe_dict: dict) -> None:
+        """Print list of duplicates.
+
+        Only print if there is any content.
+        """
+        dupe_list = []
+
+        for lemma in dupe_dict:
+            if len(dupe_dict[lemma]) > 1:
+                dupe_list.append(lemma)
+                for line in dupe_dict[lemma]:
+                    dupe_list.append('\t{}'.format(line.rstrip()))
+
+        if dupe_list:
+            with io.open('dupes-{}-{}.txt'.format(
+                    self.termwikilang, self.termwikipos), 'w') as dupefile:
+                print('\n'.join(dupe_list), file=dupefile)
+
     def parse_file(self) -> None:
         """Parse the lexc stem file."""
         dupes = defaultdict(list)
@@ -496,13 +515,7 @@ class FileHandler(object):
                         self.print_stem(upper, line_dict)
                         self.print_contlex(line_dict['contlex'])
 
-        with io.open('dupes-{}-{}.txt'.format(
-                self.termwikilang, self.termwikipos), 'w') as dupefile:
-            for lemma in dupes:
-                if len(dupes[lemma]) > 1:
-                    print(lemma, file=dupefile)
-                    for line in dupes[lemma]:
-                        print('\t{}'.format(line.rstrip()), file=dupefile)
+        self.print_dupes(dupes)
 
 
 def main() -> None:

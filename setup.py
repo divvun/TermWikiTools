@@ -18,6 +18,7 @@ setup(
             'termexport = termwikiimporter.exporter:write_to_termwiki',
             'termbot = termwikiimporter.bot:main',
             'termmover = termwikiimporter.mover:main',
+            'dictexport = termwikiimporter.dicts2wiki:main',
         ]
     },
     install_requires=[

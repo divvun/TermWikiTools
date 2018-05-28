@@ -19,6 +19,7 @@
 #
 """Functions to import and export giella xml dicts to the TermWiki."""
 
+import datetime
 import glob
 import os
 
@@ -35,7 +36,7 @@ GIELLA2TERMWIKI = {
 }
 
 
-def dict2wiki(dictionary_xml: etree.ElementTree):
+def dict2wiki(dictionary_xml: etree.ElementTree, outdir):
     """Turn a giella dictionary file into wiki.
 
     Args:
@@ -44,10 +45,14 @@ def dict2wiki(dictionary_xml: etree.ElementTree):
     origlang = dictionary_xml.getroot().get(
         '{http://www.w3.org/XML/1998/namespace}lang')
     for entry in dictionary_xml.iter('e'):
-        expression2text(GIELLA2TERMWIKI[origlang], entry)
+        try:
+            expression2text(GIELLA2TERMWIKI[origlang], entry, outdir)
+        except UserWarning as uppser:
+            print(str(uppser))
+            print(etree.tostring(entry, encoding='unicode'))
 
 
-def expression2text(entry_lang: str, entry_xml: etree.Element) -> None:
+def expression2text(entry_lang: str, entry_xml: etree.Element, outdir) -> None:
     """Turn an dictionary xml entry into wiki exportable dict.
 
     Args:
@@ -59,12 +64,31 @@ def expression2text(entry_lang: str, entry_xml: etree.Element) -> None:
     """
     lemma_group = entry_xml.find('lg')
     if lemma_group is not None:
-        handle_lg(lemma_group, entry_lang)
+        handle_lg(lemma_group, entry_lang, outdir)
         for meaning_group in entry_xml.iter('mg'):
-            handle_mg(meaning_group)
+            handle_mg(meaning_group, outdir)
 
 
-def handle_lg(lemma_group, entry_lang):
+giella2termwiki = {
+    'fin': 'fi',
+    'nob': 'nb',
+    'sma': 'sma',
+    'sme': 'se',
+    'smj': 'smj',
+    'smn': 'smn',
+}
+
+
+def l2wiki(lemma, lang, pos, outdir):
+    with open('{}/Stem:{} {} {}'.format(outdir, lemma.replace('/', '\\'), lang, pos), 'w') as lemma:
+        print('|Lemma={}'.format(lemma), file=lemma)
+        print('|Lang={}'.format(lang), file=lemma)
+        print('|Pos={}'.format(pos), file=lemma)
+
+
+def handle_lg(lemma_group, entry_lang, outdir):
+    if entry_lang is None:
+        raise UserWarning('Lemmagroup, no lang')
     for attr in lemma_group.keys():
         if attr not in ['freq']:
             raise SystemExit('{} tag: {} attr: {}'.format(
@@ -91,8 +115,10 @@ def handle_lg(lemma_group, entry_lang):
                     huff.append(child.get(attr))
             if lemma_group.get('freq'):
                 huff.append(lemma_group.get('freq'))
-
-            #print(', '.join(huff))
+            try:
+                l2wiki(child.text, entry_lang, child.get('pos').title(), outdir)
+            except AttributeError:
+                print('error in {}'.format(etree.tostring(lemma_group, encoding='unicode')))
 
         elif child.tag in [
                 'lsub', 'lc', 'analysis', 'mini_paradigm', 'lemma_ref'
@@ -103,12 +129,12 @@ def handle_lg(lemma_group, entry_lang):
                 if attr not in []:
                     raise SystemExit('{} tag: {} attr: {}'.format(
                         91, child.tag, attr))
-            print(child.tag)
+            print(child.tag, etree.tostring(child, encoding='unicode'))
         else:
             raise SystemExit(102, etree.tostring(child, encoding='unicode'))
 
 
-def handle_mg(meaning_group):
+def handle_mg(meaning_group, outdir):
     for attr in meaning_group.keys():
         if attr not in ['src', 're', 'id', 'x']:
             # ditch id
@@ -122,14 +148,14 @@ def handle_mg(meaning_group):
             print(etree.tostring(child, encoding='unicode'))
             raise SystemExit('line: {} tag: {} '.format(115, child.tag))
         elif child.tag == 'tg':
-            handle_tg(child)
+            handle_tg(child, outdir)
         elif child.tag == 're':
             handle_re(child)
         else:
             raise SystemExit(128)
 
 
-def handle_tg(translation_group):
+def handle_tg(translation_group, outdir):
     for attr in translation_group.keys():
         if attr not in [
                 '{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'
@@ -150,10 +176,9 @@ def handle_tg(translation_group):
             'xg': handle_tg_xg,
             're': handle_tg_re,
             'morph_expl': handle_morph,
-            'l': handle_tg_l,
         }
 
-        uff[child.tag](child)
+        uff[child.tag](child, translation_group.get('{http://www.w3.org/XML/1998/namespace}lang'), outdir)
 
 
 def handle_re(res):
@@ -171,16 +196,71 @@ def handle_re(res):
             raise SystemExit('line: {} tag: {} '.format(176, child.tag))
 
 
-def handle_t(translation):
+def handle_t(translation, translation_lang, outdir):
+    if translation.get('type') == 'expl' or translation.get('t_type') == 'expl':
+        # TODO: handle type
+        # print('Skip t element: {}'.format(translation.get('type')))
+        return
+
+    if translation_lang is None:
+        #Gi advarsel og ikke skriv ut om tg xml:lang ikke er samme som til språk i xml-fila sitt navn …
+        raise UserWarning('No lang, translation')
+    if not translation.get('pos'):
+        raise UserWarning('No pos, translation')
+    if translation.text is None:
+        raise UserWarning('No translation, translation')
+
     for attr in translation.keys():
         if attr not in [
-                'pos', 'freq', 'nr', 'wf', 'l_par', 'syn_dash', 't_tld', 'mwe',
-                'attr', 'r_par', 'syn', 're', 'xxx', 'stem', 'pg', 'dialect',
-                'hid', 'margo', 'soggi', 'type', 'case', 'src', 'num', 'illpl',
-                'class', 'context', 'minip', 'p3p', 'vow', 'umlaut', 'diph',
-                'mod', 'pers', 'alt_str', 'dial', 'href', 'stat', 'value',
-                't_type', 'spec', 'var', 'sem_type', 'reg', 'country',
-                'comment', 'x', 'gen_only'
+                'alt_str',
+                'attr',
+                'case',
+                'class',
+                'comment',
+                'context',
+                'country',
+                'dial',
+                'dialect',
+                'diph',
+                'expl',
+                'freq',
+                'gen_only',
+                'grammar',
+                'hid',
+                'href',
+                'illpl',
+                'l_par',
+                'margo',
+                'minip',
+                'mod',
+                'mwe',
+                'nr',
+                'num',
+                'p3p',
+                'pers',
+                'pg',
+                'pos',
+                'r_par',
+                're',
+                'reg',
+                'sem_type',
+                'soggi',
+                'spec',
+                'src',
+                'stat',
+                'stem',
+                'syn',
+                'syn_dash',
+                't_tld',
+                't_type',
+                'type',
+                'umlaut',
+                'value',
+                'var',
+                'vow',
+                'wf',
+                'x',
+                'xxx',
         ]:
             #
             print(etree.tostring(translation, encoding='unicode'))
@@ -193,11 +273,16 @@ def handle_t(translation):
             print(etree.tostring(child, encoding='unicode'))
             raise SystemExit('line: {} tag: {} '.format(202, child.tag))
 
+    try:
+        l2wiki(translation.text, translation_lang, translation.get('pos').title(), outdir)
+    except AttributeError:
+        print('error in {}'.format(etree.tostring(translation, encoding='unicode')))
 
-def handle_tg_xg(example_group):
+
+
+def handle_tg_xg(example_group, translation_lang, outdir):
     for attr in example_group.keys():
         if attr not in ['re']:
-            #
             print(etree.tostring(example_group, encoding='unicode'))
             raise SystemExit('line: {} tag: {} attr: {}'.format(
                 211, example_group.tag, attr))
@@ -209,7 +294,7 @@ def handle_tg_xg(example_group):
             raise SystemExit('line: {} tag: {} '.format(219, child.tag))
 
 
-def handle_tg_re(restriction):
+def handle_tg_re(restriction, translation_lang, outdir):
     for attr in restriction.keys():
         if attr not in ['fra_ref', 'x', 'comment']:
             #
@@ -224,7 +309,7 @@ def handle_tg_re(restriction):
             raise SystemExit('line: {} tag: {} '.format(235, child.tag))
 
 
-def handle_morph(morphology):
+def handle_morph(morphology, translation_lang, outdir):
     for attr in morphology.keys():
         if attr not in []:
             #
@@ -239,22 +324,10 @@ def handle_morph(morphology):
             raise SystemExit('line: {} tag: {} '.format(219, child.tag))
 
 
-def handle_tg_l(lemma):
-    for attr in lemma.keys():
-        if attr not in ['pos']:
-            #
-            print(etree.tostring(lemma, encoding='unicode'))
-            raise SystemExit('line: {} tag: {} attr: {}'.format(
-                259, lemma.tag, attr))
-
-    for child in lemma:
-        if child.tag not in []:
-            # ditch:
-            print(etree.tostring(child, encoding='unicode'))
-            raise SystemExit('line: {} tag: {} '.format(267, child.tag))
-
-
 def main():
+    outdir = datetime.datetime.now().isoformat()
+    os.makedirs(outdir)
+
     parser = etree.XMLParser(remove_comments=True)
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
@@ -265,6 +338,7 @@ def main():
         dict_root = os.path.join(
             os.getenv('GTHOME'), 'words/dicts', pair, 'src')
         for xml_file in glob.glob(dict_root + '/*.xml'):
-            if not xml_file.endswith('meta.xml'):
+            if not xml_file.endswith('meta.xml') and not 'Der_' in xml_file:
+                # TODO: handle Der_ files
                 print(xml_file)
-                dict2wiki(etree.parse(xml_file, parser=parser))
+                dict2wiki(etree.parse(xml_file, parser=parser), outdir)

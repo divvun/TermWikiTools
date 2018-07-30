@@ -157,13 +157,13 @@ class TranslationGroup(object):
             '{{Example', ex[0], ex[1], '}}')
 
     def has_wanted_attributes(self, element: etree.Element):
-        for attr in element.keys():
-            if attr not in self.wanted_attributes[element.tag]:
+        for attribute in element.keys():
+            if attribute not in self.wanted_attributes[element.tag]:
                 print(
                     etree.tostring(element, encoding='unicode'),
                     file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), element.tag, attr))
+                    lineno(), element.tag, attribute))
 
     def has_wanted_children(self, element: etree.Element):
         for child in element:
@@ -216,8 +216,7 @@ class TranslationGroup(object):
 
     def handle_tg_xg(self, example_group: etree.Element) -> None:
         self.has_wanted_attributes(example_group)
-        for child in example_group:
-            self.has_wanted_children(example_group)
+        self.has_wanted_children(example_group)
 
         if (example_group.find('x').text is not None
                 and example_group.find('xt').text is not None):
@@ -226,15 +225,11 @@ class TranslationGroup(object):
 
     def handle_tg_re(self, restriction):
         self.has_wanted_attributes(restriction)
-
-        for child in restriction:
-            self.has_wanted_children(restriction)
+        self.has_wanted_children(restriction)
 
     def handle_morph(self, morphology):
         self.has_wanted_attributes(morphology)
-
-        for child in morphology:
-            self.has_wanted_children(morphology)
+        self.has_wanted_children(morphology)
 
 
 @attr.s
@@ -303,13 +298,13 @@ class DictParser(object):
     }
 
     def has_wanted_attributes(self, element: etree.Element):
-        for attr in element.keys():
-            if attr not in self.wanted_attributes[element.tag]:
+        for attribute in element.keys():
+            if attribute not in self.wanted_attributes[element.tag]:
                 print(
                     etree.tostring(element, encoding='unicode'),
                     file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), element.tag, attr))
+                    lineno(), element.tag, attribute))
 
     def has_wanted_children(self, element: etree.Element):
         for child in element:
@@ -328,8 +323,8 @@ class DictParser(object):
         origlang = dictionary_xml.getroot().get(
             '{http://www.w3.org/XML/1998/namespace}lang')
         if origlang != self.fromlang:
-            raise SystemExit('origlang! {} {}'.format(lineno(), origlang,
-                                                      self.fromlang))
+            raise SystemExit('{} origlang! {} {}'.format(
+                lineno(), origlang, self.fromlang))
 
         for entry in dictionary_xml.iter('e'):
             FOUND['total'] += 1
@@ -348,9 +343,9 @@ class DictParser(object):
         """
         lemma_group = entry_xml.find('lg')
         if lemma_group is not None:
-            lg = self.handle_lg(lemma_group)
+            lg_dict = self.handle_lg(lemma_group)
             for meaning_group in entry_xml.iter('mg'):
-                self.handle_mg(meaning_group, lg)
+                self.handle_mg(meaning_group, lg_dict)
         else:
             # TODO: why?
             FOUND['e_no_lg'] += 1
@@ -394,7 +389,7 @@ class DictParser(object):
 
         return lg_dict
 
-    def handle_tg(self, child: etree.Element, lg):
+    def handle_tg(self, child: etree.Element, lg_dict):
         self.has_wanted_attributes(child)
         self.has_wanted_children(child)
 
@@ -404,19 +399,20 @@ class DictParser(object):
                 'tg of wrong language. Is {}, should be {}'.format(
                     tg_lang, self.tolang))
         else:
-            tg = TranslationGroup(self.tolang)
-            tg.handle_tg(child)
+            translation_group = TranslationGroup(self.tolang)
+            translation_group.handle_tg(child)
             print('{}\n|Stempage={}\n|Translation stem={}\n{}'.format(
-                '{{Dictionary', lg['stem'].pagename, tg.translations, '}}'))
-            print(tg.examples)
+                '{{Dictionary', lg_dict['stem'].pagename,
+                translation_group.translations, '}}'))
+            print(translation_group.examples)
             print()
 
-    def handle_mg(self, meaning_group: etree.Element, lg: dict):
+    def handle_mg(self, meaning_group: etree.Element, lg_dict: dict):
         self.has_wanted_attributes(meaning_group)
         self.has_wanted_children(meaning_group)
 
         for child in meaning_group.iter('tg'):
-            self.handle_tg(child, lg)
+            self.handle_tg(child, lg_dict)
 
         for child in meaning_group.iter('re'):
             self.handle_re(child)

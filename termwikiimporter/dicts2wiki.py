@@ -53,9 +53,17 @@ class Stem(object):
     lemma = attr.ib(validator=attr.validators.instance_of(str))
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))
-    filename = attr.ib(cmp=False)
 
-    def __str__(self):
+    @property
+    def pagename(self):
+        return '{} {} {}'.format(self.lemma, self.lang, self.pos)
+
+    @property
+    def stempagename(self):
+        return '{}:{}'.format(type(self).__name__, self.pagename)
+
+    @property
+    def content(self):
         return '{}{}\nLemma={}\nLang={}\nPos={}\n{}'.format(
             '{{',
             type(self).__name__,
@@ -65,181 +73,57 @@ class Stem(object):
             '}}')
 
 
-@attr.s
-class DictParser(object):
-    fromlang = attr.ib()
-    tolang = attr.ib()
-    filename = attr.ib()
+class TranslationGroup(object):
+    wanted_attributes = {
+        'tg': ['{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'],
+        'xg': ['re'],
+        're': ['fra_ref', 'x', 'comment'],
+        'morph_expl': [],
+    }
+    wanted_children = {
+        'tg': ['t', 'xg', 're', 'morph_expl'],
+        'xg': ['x', 'xt', 're'],
+        're': [],
+        'morph_expl': [],
+    }
 
-    def dict2wiki(self):
-        """Turn a giella dictionary file into wiki."""
-        parser = etree.XMLParser(remove_comments=True)
-        dictionary_xml = etree.parse(self.filename, parser=parser)
+    def __init__(self, tolang):
+        self.tolang = tolang
+        self.translation_group = collections.defaultdict(list)
 
-        origlang = dictionary_xml.getroot().get(
-            '{http://www.w3.org/XML/1998/namespace}lang')
-        if origlang != self.fromlang:
-            raise SystemExit('origlang! {} {}'.format(lineno(), origlang, self.fromlang))
+    @property
+    def translations(self):
+        return '@@'.join([stem.pagename
+                          for stem in self.translation_group['t']])
 
-        for entry in dictionary_xml.iter('e'):
-            found['total'] += 1
-            try:
-                self.expression2text(entry)
-            except UserWarning as uppser:
-                print(str(uppser), file=sys.stderr)
-                print(etree.tostring(entry, encoding='unicode'), file=sys.stderr)
+    @property
+    def examples(self):
+        return '\n'.join([self.formatted_example(ex)
+                          for ex in self.translation_group['examples']])
 
-    def expression2text(self, entry_xml: etree.Element) -> None:
-        """Turn an dictionary xml entry into wiki exportable dict.
+    @staticmethod
+    def formatted_example(ex):
+        return '{}\n|Original language={}\n|Translation={}\n{}'.format(
+            '{{Example', ex[0], ex[1], '}}')
 
-        Args:
-            entry_xml: An dictionary entry xml element.
-        """
-        lemma_group = entry_xml.find('lg')
-        if lemma_group is not None:
-            self.handle_lg(lemma_group)
-            for meaning_group in entry_xml.iter('mg'):
-                self.handle_mg(meaning_group)
-        else:
-            # TODO: why?
-            found['e_no_lg'] += 1
-
-    def handle_lg(self, lemma_group):
-        for attr in lemma_group.keys():
-            if attr not in ['freq']:
-                raise SystemExit('{} tag: {} attr: {}'.format(
-                    lineno(), lemma_group.tag, attr))
-
-        for child in lemma_group:
-            if child.tag == 'l':
-                if 'x' in child.get('pos') or 'X' in child.get('pos'):
-                    raise UserWarning('X in pos')
-                found['l_in_lg'] += 1
-                for attr in child.keys():
-                    if attr not in [
-                            'alt_str',
-                            'attr',
-                            'case',
-                            'class',
-                            'comma',
-                            'comment',
-                            'context',
-                            'dialect',
-                            'diph',
-                            'hid',
-                            'illpl',
-                            'margo',
-                            'minip',
-                            'mod',
-                            'nr',
-                            'num',
-                            'orig_entry',
-                            'p3p',
-                            'paradigme',
-                            'pg',
-                            'pos',
-                            'r1_par',
-                            'r2_par',
-                            're',
-                            'sem_type',
-                            'soggi',
-                            'spec',
-                            'src',
-                            'stem',
-                            'syn',
-                            'syn_or',
-                            't_type',
-                            'til_ref',
-                            'tt',
-                            'tt_auto',
-                            'type',
-                            'umlaut',
-                            'value',
-                            'vmax',
-                            'vow',
-                    ]:
-                        raise SystemExit('{} tag: {} attr: {} -- {}'.format(
-                            lineno(), child.tag, attr, child.text))
-
-                huff = [child.text, self.fromlang]
-                for attr in ['pos', 'type', 'nr']:
-                    if child.get(attr):
-                        huff.append(child.get(attr))
-                if lemma_group.get('freq'):
-                    huff.append(lemma_group.get('freq'))
-                try:
-                    self.l2wiki(child.text, GIELLA2TERMWIKI[self.fromlang],
-                                child.get('pos').title())
-                except AttributeError:
-                    print('error in {}'.format(etree.tostring(lemma_group, encoding='unicode')), file=sys.stderr)
-
-            elif child.tag in [
-                    'lsub', 'lc', 'analysis', 'mini_paradigm', 'lemma_ref'
-            ]:
-                pass
-            elif child.tag == 'l_ref':
-                for attr in child.keys():
-                    if attr not in []:
-                        raise SystemExit('{} tag: {} attr: {}'.format(
-                            lineno(), child.tag, attr))
-                print(child.tag, etree.tostring(child, encoding='unicode'), file=sys.stderr)
-            else:
-                raise SystemExit(lineno(), etree.tostring(child, encoding='unicode'))
-
-    def l2wiki(self, lemma, language, pos):
-        stem = Stem(lemma=lemma, lang=language, pos=pos, filename=self.filename)
-        if stem in lemmadict[lemma]:
-            found['exists'] += 1
-        else:
-            lemmadict[lemma].add(stem)
-            found['added'] += 1
-            found[language] += 1
-
-        #print(stem)
-
-    def handle_mg(self, meaning_group):
-        for attr in meaning_group.keys():
-            if attr not in ['src', 're', 'id', 'x']:
-                # ditch id
-                print(etree.tostring(meaning_group, encoding='unicode'), file=sys.stderr)
+    def has_wanted_attributes(self, element: etree.Element):
+        for attr in element.keys():
+            if attr not in self.wanted_attributes[element.tag]:
+                print(etree.tostring(element, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), meaning_group.tag, attr))
+                    lineno(), element.tag, attr))
 
-        for child in meaning_group:
-            if child.tag == 'tg':
-                tg_lang = child.get('{http://www.w3.org/XML/1998/namespace}lang')
-                if tg_lang != self.tolang:
-                    print(tg_lang, self.tolang, file=sys.stderr)
-
-                if tg_lang == self.tolang:
-                    self.handle_tg(child)
-                else:
-                    raise UserWarning(
-                        'tg of wrong language. Is {}, should be {}'.format(
-                            tg_lang, self.tolang))
-            elif child.tag == 're':
-                self.handle_re(child)
-            else:
+    def has_wanted_children(self, element: etree.Element):
+        for child in element:
+            if child.tag not in self.wanted_children[element.tag]:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
-    def handle_tg(self, translation_group):
-        for attr in translation_group.keys():
-            if attr not in [
-                    '{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'
-            ]:
-                # ditch: check
-                print(etree.tostring(translation_group, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), translation_group.tag, attr))
-
-        for child in translation_group:
-            if child.tag not in ['t', 'xg', 're', 'morph_expl']:
-                # ditch:
-                print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
-
+    def handle_tg(self, translation_element: etree.Element):
+        self.has_wanted_attributes(translation_element)
+        self.has_wanted_children(translation_element)
+        for child in translation_element:
             uff = {
                 't': self.handle_t,
                 'xg': self.handle_tg_xg,
@@ -249,7 +133,7 @@ class DictParser(object):
 
             uff[child.tag](child)
 
-    def handle_t(self, translation):
+    def handle_t(self, translation) -> None:
         if translation.get('type') == 'expl' or translation.get('t_type') == 'expl':
             # TODO: handle type
             # print('Skip t element: {}'.format(translation.get('type')))
@@ -326,64 +210,182 @@ class DictParser(object):
                 raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
         try:
-            self.l2wiki(translation.text, GIELLA2TERMWIKI[self.tolang], translation.get('pos').title())
+            self.translation_group['t'].append(l2wiki(
+                translation.text,
+                GIELLA2TERMWIKI[self.tolang],
+                translation.get('pos').title()))
         except AttributeError:
             print('error in {}'.format(etree.tostring(translation, encoding='unicode')), file=sys.stderr)
 
-    def handle_tg_xg(self, example_group):
-        for attr in example_group.keys():
-            if attr not in ['re']:
-                print(etree.tostring(example_group, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), example_group.tag, attr))
-
+    def handle_tg_xg(self, example_group: etree.Element) -> None:
+        self.has_wanted_attributes(example_group)
         for child in example_group:
-            if child.tag not in ['x', 'xt', 're']:
-                # ditch:
-                print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
+            self.has_wanted_children(example_group)
+
+        if (example_group.find('x').text is not None and
+            example_group.find('xt').text is not None):
+            self.translation_group['examples'].append(
+                (example_group.find('x').text,
+                example_group.find('xt').text))
 
     def handle_tg_re(self, restriction):
-        for attr in restriction.keys():
-            if attr not in ['fra_ref', 'x', 'comment']:
-                #
-                print(etree.tostring(restriction, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), restriction.tag, attr))
+        self.has_wanted_attributes(restriction)
 
         for child in restriction:
-            if child.tag not in []:
-                # ditch:
-                print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
+            self.has_wanted_children(restriction)
 
     def handle_morph(self, morphology):
-        for attr in morphology.keys():
-            if attr not in []:
-                #
-                print(etree.tostring(morphology, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), morphology.tag, attr))
+        self.has_wanted_attributes(morphology)
 
         for child in morphology:
-            if child.tag not in []:
+            self.has_wanted_children(morphology)
+
+
+@attr.s
+class DictParser(object):
+    fromlang = attr.ib()
+    tolang = attr.ib()
+    filename = attr.ib()
+
+    wanted_attributes = {
+        'lg': ['freq'],
+        'l': ['alt_str', 'attr', 'case', 'class', 'comma', 'comment', 'context', 'dialect', 'diph', 'hid', 'illpl', 'margo', 'minip', 'mod', 'nr', 'num', 'orig_entry', 'p3p', 'paradigme', 'pg', 'pos', 'r1_par', 'r2_par', 're', 'sem_type', 'soggi', 'spec', 'src', 'stem', 'syn', 'syn_or', 't_type', 'til_ref', 'tt', 'tt_auto', 'type', 'umlaut', 'value', 'vmax', 'vow',],
+        'l_ref': [],
+        'mg': ['src', 're', 'id', 'x'],
+        'tg': ['{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'],
+        're': ['x', 'comment'],
+    }
+    wanted_children = {
+        'lg': ['l', 'lsub', 'lc', 'analysis', 'mini_paradigm', 'lemma_ref', 'l_ref'],
+        'l': [],
+        'l_ref': [],
+        'mg': ['tg', 're'],
+        'tg': ['t', 'xg', 're'],
+        're': [],
+    }
+
+    def has_wanted_attributes(self, element: etree.Element):
+        for attr in element.keys():
+            if attr not in self.wanted_attributes[element.tag]:
+                print(etree.tostring(element, encoding='unicode'), file=sys.stderr)
+                raise SystemExit('line: {} tag: {} attr: {}'.format(
+                    lineno(), element.tag, attr))
+
+    def has_wanted_children(self, element: etree.Element):
+        for child in element:
+            if child.tag not in self.wanted_children[element.tag]:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
+
+    def dict2wiki(self):
+        """Turn a giella dictionary file into wiki."""
+        parser = etree.XMLParser(remove_comments=True)
+        dictionary_xml = etree.parse(self.filename, parser=parser)
+
+        origlang = dictionary_xml.getroot().get(
+            '{http://www.w3.org/XML/1998/namespace}lang')
+        if origlang != self.fromlang:
+            raise SystemExit('origlang! {} {}'.format(lineno(), origlang, self.fromlang))
+
+        for entry in dictionary_xml.iter('e'):
+            found['total'] += 1
+            try:
+                self.expression2text(entry)
+            except UserWarning as uppser:
+                print(str(uppser), file=sys.stderr)
+                print(etree.tostring(entry, encoding='unicode'), file=sys.stderr)
+
+    def expression2text(self, entry_xml: etree.Element) -> None:
+        """Turn an dictionary xml entry into wiki exportable dict.
+
+        Args:
+            entry_xml: An dictionary entry xml element.
+        """
+        lemma_group = entry_xml.find('lg')
+        if lemma_group is not None:
+            lg = self.handle_lg(lemma_group)
+            for meaning_group in entry_xml.iter('mg'):
+                self.handle_mg(meaning_group, lg)
+        else:
+            # TODO: why?
+            found['e_no_lg'] += 1
+
+    def handle_l(self, child: etree.Element, lg_dict):
+        self.has_wanted_attributes(child)
+        self.has_wanted_children(child)
+
+        if 'x' in child.get('pos') or 'X' in child.get('pos'):
+            raise UserWarning('X in pos')
+
+        found['l_in_lg'] += 1
+        lg_dict['stem'] = l2wiki(child.text, GIELLA2TERMWIKI[self.fromlang], child.get('pos').title())
+
+    def handle_lref(self, child: etree.Element):
+        self.has_wanted_attributes(child)
+        self.has_wanted_children(child)
+        print(child.tag, etree.tostring(child, encoding='unicode'), file=sys.stderr)
+
+    def handle_lg(self, lemma_group: etree.Element) -> dict:
+        self.has_wanted_attributes(lemma_group)
+        self.has_wanted_children(lemma_group)
+
+        lg_dict = {}
+
+        for child in lemma_group.iter('l'):
+            try:
+                self.handle_l(child, lg_dict)
+            except AttributeError:
+                print('error in {}'.format(etree.tostring(lemma_group, encoding='unicode')), file=sys.stderr)
+
+        for child in lemma_group.iter('l_ref'):
+            self.handle_lref(child)
+
+        return lg_dict
+
+    def handle_tg(self, child: etree.Element, lg):
+        self.has_wanted_attributes(child)
+        self.has_wanted_children(child)
+
+        tg_lang = child.get('{http://www.w3.org/XML/1998/namespace}lang')
+        if tg_lang != self.tolang:
+            raise UserWarning(
+                'tg of wrong language. Is {}, should be {}'.format(
+                    tg_lang, self.tolang))
+        else:
+            tg = TranslationGroup(self.tolang)
+            tg.handle_tg(child)
+            print('{}\n|Stempage={}\n|Translation stem={}\n{}'.format(
+                '{{Dictionary', lg['stem'].pagename, tg.translations,
+                '}}'))
+            print(tg.examples)
+            print()
+
+    def handle_mg(self, meaning_group: etree.Element, lg: dict):
+        self.has_wanted_attributes(meaning_group)
+        self.has_wanted_children(meaning_group)
+
+        for child in meaning_group.iter('tg'):
+            self.handle_tg(child, lg)
+
+        for child in meaning_group.iter('re'):
+            self.handle_re(child)
 
     def handle_re(self, res):
-        for attr in res.keys():
-            if attr not in []:
-                #
-                print(etree.tostring(res, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), res.tag, attr))
+        self.has_wanted_attributes(res)
+        self.has_wanted_children(res)
 
-        for child in res:
-            if child.tag not in []:
-                # ditch:
-                print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
+
+def l2wiki(lemma: str, language: str, pos: str) -> Stem:
+    stem = Stem(lemma=lemma, lang=language, pos=pos)
+    if stem in lemmadict[lemma]:
+        found['exists'] += 1
+    else:
+        lemmadict[lemma].add(stem)
+        found['added'] += 1
+        found[language] += 1
+
+    return stem
 
 
 def filter_x() -> None:

@@ -75,12 +75,64 @@ class TranslationGroup(object):
         'xg': ['re'],
         're': ['fra_ref', 'x', 'comment'],
         'morph_expl': [],
+        't': [
+            'alt_str',
+            'attr',
+            'case',
+            'class',
+            'comment',
+            'context',
+            'country',
+            'dial',
+            'dialect',
+            'diph',
+            'expl',
+            'freq',
+            'gen_only',
+            'grammar',
+            'hid',
+            'href',
+            'illpl',
+            'l_par',
+            'margo',
+            'minip',
+            'mod',
+            'mwe',
+            'nr',
+            'num',
+            'p3p',
+            'pers',
+            'pg',
+            'pos',
+            'r_par',
+            're',
+            'reg',
+            'sem_type',
+            'soggi',
+            'spec',
+            'src',
+            'stat',
+            'stem',
+            'syn',
+            'syn_dash',
+            't_tld',
+            't_type',
+            'type',
+            'umlaut',
+            'value',
+            'var',
+            'vow',
+            'wf',
+            'x',
+            'xxx',
+        ],
     }
     wanted_children = {
         'tg': ['t', 'xg', 're', 'morph_expl'],
         'xg': ['x', 'xt', 're'],
         're': [],
         'morph_expl': [],
+        't': [],
     }
 
     def __init__(self, tolang):
@@ -136,6 +188,9 @@ class TranslationGroup(object):
             uff[child.tag](child)
 
     def handle_t(self, translation) -> None:
+        self.has_wanted_attributes(translation)
+        self.has_wanted_children(translation)
+
         if translation.get('type') == 'expl' or translation.get(
                 't_type') == 'expl':
             # TODO: handle type
@@ -148,73 +203,6 @@ class TranslationGroup(object):
             raise UserWarning('No translation, translation')
         if 'x' in translation.get('pos') or 'X' in translation.get('pos'):
             raise UserWarning('X in pos, translation')
-
-        for attr in translation.keys():
-            if attr not in [
-                    'alt_str',
-                    'attr',
-                    'case',
-                    'class',
-                    'comment',
-                    'context',
-                    'country',
-                    'dial',
-                    'dialect',
-                    'diph',
-                    'expl',
-                    'freq',
-                    'gen_only',
-                    'grammar',
-                    'hid',
-                    'href',
-                    'illpl',
-                    'l_par',
-                    'margo',
-                    'minip',
-                    'mod',
-                    'mwe',
-                    'nr',
-                    'num',
-                    'p3p',
-                    'pers',
-                    'pg',
-                    'pos',
-                    'r_par',
-                    're',
-                    'reg',
-                    'sem_type',
-                    'soggi',
-                    'spec',
-                    'src',
-                    'stat',
-                    'stem',
-                    'syn',
-                    'syn_dash',
-                    't_tld',
-                    't_type',
-                    'type',
-                    'umlaut',
-                    'value',
-                    'var',
-                    'vow',
-                    'wf',
-                    'x',
-                    'xxx',
-            ]:
-                #
-                print(
-                    etree.tostring(translation, encoding='unicode'),
-                    file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), translation.tag, attr))
-
-        for child in translation:
-            if child.tag not in []:
-                # ditch:
-                print(
-                    etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(
-                    lineno(), child.tag))
 
         try:
             self.translation_group['t'].append(

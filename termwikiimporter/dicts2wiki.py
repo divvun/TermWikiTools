@@ -47,6 +47,7 @@ class Stem(object):
     lemma = attr.ib(validator=attr.validators.instance_of(str))
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))
+    filename = attr.ib(cmp=False)
 
     def __str__(self):
         return '{}{}\nLemma={}\nLang={}\nPos={}\n{}'.format(

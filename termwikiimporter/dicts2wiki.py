@@ -120,11 +120,9 @@ class TranslationGroup(object):
             self.translation_group['t'].append(
                 l2wiki(translation.text, GIELLA2TERMWIKI[self.tolang],
                        translation.get('pos').title()))
-        except AttributeError:
-            print(
-                'error in {}'.format(
-                    etree.tostring(translation, encoding='unicode')),
-                file=sys.stderr)
+        else:
+            raise UserWarning('translation fails in {}\n{}\n'.format(
+                lineno(), etree.tostring(translation, encoding='unicode')))
 
     def handle_tg_xg(self, example_group: etree.Element) -> None:
         if (example_group.find('x').text is not None
@@ -161,9 +159,8 @@ class DictParser(object):
             try:
                 self.expression2text(entry)
             except UserWarning as uppser:
-                print(str(uppser), file=sys.stderr)
-                print(
-                    etree.tostring(entry, encoding='unicode'), file=sys.stderr)
+                print(lineno(), self.filename, str(uppser), file=sys.stderr)
+                print(etree.tostring(entry, encoding='unicode'), file=sys.stderr)
 
     def expression2text(self, entry_xml: etree.Element) -> None:
         """Turn an dictionary xml entry into wiki exportable dict.

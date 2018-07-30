@@ -210,11 +210,8 @@ class DictParser(object):
 
     def handle_tg(self, child: etree.Element, lg_dict):
         tg_lang = child.get('{http://www.w3.org/XML/1998/namespace}lang')
-        if tg_lang != self.tolang:
-            raise UserWarning(
-                'tg of wrong language. Is {}, should be {}'.format(
-                    tg_lang, self.tolang))
-        else:
+        if tg_lang == self.tolang:
+            # Do not care about entries not in self.tolang
             translation_group = TranslationGroup(self.tolang)
             translation_group.handle_tg(child)
             print('{}\n|Stempage={}\n|Translation stem={}\n{}'.format(

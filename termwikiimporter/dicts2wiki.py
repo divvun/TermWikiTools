@@ -111,13 +111,46 @@ class DictParser(object):
                 found['l_in_lg'] += 1
                 for attr in child.keys():
                     if attr not in [
-                            'pos', 'type', 'nr', 'vmax', 'illpl', 'hid', 'r1_par',
-                            'tt_auto', 'comma', 'r2_par', 'syn', 'tt', 'syn_or',
-                            'src', 'value', 't_type', 're', 'alt_str', 'til_ref',
-                            'orig_entry', 'case', 'mod', 'sem_type', 'pg', 'stem',
-                            'dialect', 'margo', 'soggi', 'class', 'umlaut', 'vow',
-                            'p3p', 'diph', 'context', 'minip', 'num', 'attr',
-                            'spec', 'comment', 'paradigme'
+                            'alt_str',
+                            'attr',
+                            'case',
+                            'class',
+                            'comma',
+                            'comment',
+                            'context',
+                            'dialect',
+                            'diph',
+                            'hid',
+                            'illpl',
+                            'margo',
+                            'minip',
+                            'mod',
+                            'nr',
+                            'num',
+                            'orig_entry',
+                            'p3p',
+                            'paradigme',
+                            'pg',
+                            'pos',
+                            'r1_par',
+                            'r2_par',
+                            're',
+                            'sem_type',
+                            'soggi',
+                            'spec',
+                            'src',
+                            'stem',
+                            'syn',
+                            'syn_or',
+                            't_type',
+                            'til_ref',
+                            'tt',
+                            'tt_auto',
+                            'type',
+                            'umlaut',
+                            'value',
+                            'vmax',
+                            'vow',
                     ]:
                         raise SystemExit('{} tag: {} attr: {} -- {}'.format(
                             74, child.tag, attr, child.text))
@@ -352,10 +385,25 @@ def main():
     os.makedirs(outdir)
 
     for pair in [
-            'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
-            'smafin', 'smanob', 'smasme', 'smeeng', 'smefin', 'smenob',
-            'smesma', 'smesmj', 'smesmn', 'smjnob', 'smjsme', 'smnsme',
-            'swesma'
+        'finsme',
+        'finsmn',
+        'nobsma',
+        'nobsme',
+        'nobsmj',
+        'nobsmj',
+        'smafin',
+        'smanob',
+        'smasme',
+        'smeeng',
+        'smefin',
+        'smenob',
+        'smesma',
+        'smesmj',
+        'smesmn',
+        'smjnob',
+        'smjsme',
+        'smnsme',
+        'swesma'
     ]:
         dict_root = os.path.join(
             os.getenv('GTHOME'), 'words/dicts', pair, 'src')

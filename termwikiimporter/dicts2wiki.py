@@ -44,8 +44,8 @@ GIELLA2TERMWIKI = {
     'smn': 'smn',
     'swe': 'sv',
 }
-lemmadict = collections.defaultdict(set)
-found = collections.defaultdict(int)
+LEMMADICT = collections.defaultdict(set)
+FOUND = collections.defaultdict(int)
 
 
 @attr.s(frozen=True)
@@ -289,7 +289,7 @@ class DictParser(object):
             raise SystemExit('origlang! {} {}'.format(lineno(), origlang, self.fromlang))
 
         for entry in dictionary_xml.iter('e'):
-            found['total'] += 1
+            FOUND['total'] += 1
             try:
                 self.expression2text(entry)
             except UserWarning as uppser:
@@ -309,7 +309,7 @@ class DictParser(object):
                 self.handle_mg(meaning_group, lg)
         else:
             # TODO: why?
-            found['e_no_lg'] += 1
+            FOUND['e_no_lg'] += 1
 
     def handle_l(self, child: etree.Element, lg_dict):
         self.has_wanted_attributes(child)
@@ -318,7 +318,7 @@ class DictParser(object):
         if 'x' in child.get('pos') or 'X' in child.get('pos'):
             raise UserWarning('X in pos')
 
-        found['l_in_lg'] += 1
+        FOUND['l_in_lg'] += 1
         lg_dict['stem'] = l2wiki(child.text, GIELLA2TERMWIKI[self.fromlang], child.get('pos').title())
 
     def handle_lref(self, child: etree.Element):
@@ -378,21 +378,21 @@ class DictParser(object):
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:
     stem = Stem(lemma=lemma, lang=language, pos=pos)
-    if stem in lemmadict[lemma]:
-        found['exists'] += 1
+    if stem in LEMMADICT[lemma]:
+        FOUND['exists'] += 1
     else:
-        lemmadict[lemma].add(stem)
-        found['added'] += 1
-        found[language] += 1
+        LEMMADICT[lemma].add(stem)
+        FOUND['added'] += 1
+        FOUND[language] += 1
 
     return stem
 
 
 def filter_x() -> None:
-    for lemma in lemmadict:
+    for lemma in LEMMADICT:
         foundx = False
         stemstrs = []
-        for stem in lemmadict[lemma]:
+        for stem in LEMMADICT[lemma]:
             if 'X' in stem.pos:
                 foundx = True
             stemstrs.append(str(stem))
@@ -405,12 +405,12 @@ def filter_x() -> None:
 def report_findings():
     notlang = ['added', 'exists', 'total', 'e_no_lg', 'l_in_lg']
     for key in notlang:
-        print(key, found[key])
-    print('Try added', found['added'] + found['exists'])
+        print(key, FOUND[key])
+    print('Try added', FOUND['added'] + FOUND['exists'])
 
-    for key in found:
+    for key in FOUND:
         if key not in notlang:
-            print(key, found[key])
+            print(key, FOUND[key])
 
 
 def parse_dicts():

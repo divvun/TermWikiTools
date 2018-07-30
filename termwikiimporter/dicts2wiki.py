@@ -102,27 +102,39 @@ class TranslationGroup(object):
 
             uff[child.tag](child)
 
+    def handle_t_grammar(self):
+        # TODO: handle properly
+        pass
+
+    def handle_t_type(self):
+        # TODO: handle properly
+        pass
+
+    def handle_t_pos_x(self):
+        # TODO: handle properly
+        pass
+
     def handle_t(self, translation) -> None:
         if translation.get('type') == 'expl' or translation.get(
                 't_type') == 'expl':
             # TODO: handle type
             # print('Skip t element: {}'.format(translation.get('type')))
-            return
-
-        if not translation.get('pos'):
-            raise UserWarning('No pos, translation')
-        if translation.text is None:
-            raise UserWarning('No translation, translation')
-        if 'x' in translation.get('pos') or 'X' in translation.get('pos'):
-            raise UserWarning('X in pos, translation')
-
-        try:
+            self.handle_t_type()
+        elif not translation.get('pos') and translation.get('type') == 'grammar':
+            self.handle_t_grammar()
+        elif translation.text is None or not translation.text.strip():
+            # TODO: Handle properly. Should these entries be deleted,
+            # or perhaps a warning should be sent the maintainers.
+            raise UserWarning('No translation')
+        elif translation.get('pos') and ('x' in translation.get('pos') or
+                                         'X' in translation.get('pos')):
+            self.handle_t_pos_x()
+        elif translation.get('pos'):
             self.translation_group['t'].append(
                 l2wiki(translation.text, GIELLA2TERMWIKI[self.tolang],
                        translation.get('pos').title()))
         else:
-            raise UserWarning('translation fails in {}\n{}\n'.format(
-                lineno(), etree.tostring(translation, encoding='unicode')))
+            raise UserWarning('Other error in t')
 
     def handle_tg_xg(self, example_group: etree.Element) -> None:
         if (example_group.find('x').text is not None
@@ -159,8 +171,10 @@ class DictParser(object):
             try:
                 self.expression2text(entry)
             except UserWarning as uppser:
-                print(lineno(), self.filename, str(uppser), file=sys.stderr)
-                print(etree.tostring(entry, encoding='unicode'), file=sys.stderr)
+                print('{}:\nError: {}\nElement:\n{}'.format(
+                    self.filename, str(uppser),
+                    etree.tostring(entry, encoding='unicode')),
+                    file=sys.stderr)
 
     def expression2text(self, entry_xml: etree.Element) -> None:
         """Turn an dictionary xml entry into wiki exportable dict.
@@ -183,10 +197,9 @@ class DictParser(object):
                                  child.get('pos').title())
 
     def handle_lref(self, child: etree.Element):
-        print(
-            child.tag,
-            etree.tostring(child, encoding='unicode'),
-            file=sys.stderr)
+        # TODO: Handle properly
+        pass
+        # print(child.tag, etree.tostring(child, encoding='unicode'), file=sys.stderr)
 
     def handle_lg(self, lemma_group: etree.Element) -> dict:
         lg_dict = {}
@@ -279,7 +292,7 @@ def parse_dicts() -> None:
                 except etree.XMLSyntaxError as error:
                     print(
                         'Syntax error in {} '
-                        'with the following error:\n{}'.format(xml_file, error), file=sys.stderr)
+                        'with the following error:\n{}\n'.format(xml_file, error), file=sys.stderr)
 
 
 def main() -> None:

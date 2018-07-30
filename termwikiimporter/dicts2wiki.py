@@ -282,8 +282,10 @@ def parse_dicts() -> None:
                     dictparser = DictParser(
                         filename=xml_file, fromlang=pair[:3], tolang=pair[3:])
                     dictparser.dict2wiki()
-                except etree.XMLSyntaxError:
-                    print('Syntax error in {}'.format(xml_file), file=sys.stderr)
+                except etree.XMLSyntaxError as error:
+                    print(
+                        'Syntax error in {} '
+                        'with the following error:\n{}'.format(xml_file, error), file=sys.stderr)
 
 
 def main() -> None:

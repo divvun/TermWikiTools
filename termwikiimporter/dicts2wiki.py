@@ -181,7 +181,7 @@ class DictParser(object):
                 raise SystemExit(102, etree.tostring(child, encoding='unicode'))
 
     def l2wiki(self, lemma, language, pos):
-        stem = Stem(lemma=lemma, lang=language, pos=pos)
+        stem = Stem(lemma=lemma, lang=language, pos=pos, filename=self.filename)
         if stem in lemmadict[lemma]:
             found['exists'] += 1
         else:

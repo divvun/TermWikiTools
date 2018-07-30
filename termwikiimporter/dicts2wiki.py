@@ -102,7 +102,7 @@ class DictParser(object):
 
         for child in lemma_group:
             if child.tag == 'l':
-                if 'x' in child.get('pos'):
+                if 'x' in child.get('pos') or 'X' in child.get('pos'):
                     raise UserWarning('X in pos')
                 found['l_in_lg'] += 1
                 for attr in child.keys():
@@ -216,6 +216,8 @@ class DictParser(object):
             raise UserWarning('No pos, translation')
         if translation.text is None:
             raise UserWarning('No translation, translation')
+        if 'x' in translation.get('pos') or 'X' in translation.get('pos'):
+            raise UserWarning('X in pos, translation')
 
         for attr in translation.keys():
             if attr not in [

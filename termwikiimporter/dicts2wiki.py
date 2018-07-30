@@ -18,13 +18,13 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 """Functions to import and export giella xml dicts to the TermWiki."""
-import attr
 import collections
 import glob
 import inspect
 import os
 import sys
 
+import attr
 from lxml import etree
 
 

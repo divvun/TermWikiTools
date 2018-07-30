@@ -192,13 +192,7 @@ class DictParser(object):
         lg_dict = {}
 
         for child in lemma_group.iter('l'):
-            try:
-                self.handle_l(child, lg_dict)
-            except AttributeError:
-                print(
-                    'error in {}'.format(
-                        etree.tostring(lemma_group, encoding='unicode')),
-                    file=sys.stderr)
+            self.handle_l(child, lg_dict)
 
         for child in lemma_group.iter('l_ref'):
             self.handle_lref(child)

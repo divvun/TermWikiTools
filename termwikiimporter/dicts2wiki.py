@@ -448,7 +448,7 @@ def filter_x() -> None:
             print()
 
 
-def report_findings():
+def report_findings() -> None:
     notlang = ['added', 'exists', 'total', 'e_no_lg', 'l_in_lg']
     for key in notlang:
         print(key, FOUND[key])
@@ -459,7 +459,7 @@ def report_findings():
             print(key, FOUND[key])
 
 
-def parse_dicts():
+def parse_dicts() -> None:
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
             'smafin', 'smanob', 'smasme', 'smeeng', 'smefin', 'smenob',
@@ -477,7 +477,7 @@ def parse_dicts():
                 dictparser.dict2wiki()
 
 
-def main():
+def main() -> None:
     parse_dicts()
     filter_x()
     report_findings()

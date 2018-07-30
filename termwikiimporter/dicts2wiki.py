@@ -379,7 +379,32 @@ class DictParser(object):
                 raise SystemExit('line: {} tag: {} '.format(176, child.tag))
 
 
-def main():
+def filter_x() -> None:
+    for lemma in lemmadict:
+        foundx = False
+        stemstrs = []
+        for stem in lemmadict[lemma]:
+            if 'X' in stem.pos:
+                foundx = True
+            stemstrs.append(str(stem))
+
+        if foundx:
+            print('\n'.join(stemstrs))
+            print()
+
+
+def report_findings():
+    notlang = ['added', 'exists', 'total', 'e_no_lg', 'l_in_lg']
+    for key in notlang:
+        print(key, found[key])
+    print('Try added', found['added'] + found['exists'])
+
+    for key in found:
+        if key not in notlang:
+            print(key, found[key])
+
+
+def parse_dicts():
     for pair in [
         'finsme',
         'finsmn',
@@ -410,17 +435,8 @@ def main():
                 dictparser = DictParser(filename=xml_file, fromlang=pair[:3], tolang=pair[3:])
                 dictparser.dict2wiki()
 
-    for lemma in lemmadict:
-        if len(lemmadict[lemma]) > 1:
-            for stem in lemmadict[lemma]:
-                print('{}: {}'.format(lemma, stem))
-            print()
 
-    notlang = ['added', 'exists', 'total', 'e_no_lg', 'l_in_lg']
-    for key in notlang:
-        print(key, found[key])
-    print('Try added', found['added'] + found['exists'])
-
-    for key in found:
-        if key not in notlang:
-            print(key, found[key])
+def main():
+    parse_dicts()
+    filter_x()
+    report_findings()

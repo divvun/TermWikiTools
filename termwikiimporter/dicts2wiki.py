@@ -48,11 +48,14 @@ class Stem(object):
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))
 
-    #def __str__(self):
-        #"""
-        #Automatically created by attrs.
-        #"""
-        #return '\n'.join([uff for uff in self.__dict__.iteritems()])
+    def __str__(self):
+        return '{}{}\nLemma={}\nLang={}\nPos={}\n{}'.format(
+            '{{',
+            type(self).__name__,
+            self.lemma,
+            self.lang,
+            self.pos,
+            '}}')
 
 
 @attr.s

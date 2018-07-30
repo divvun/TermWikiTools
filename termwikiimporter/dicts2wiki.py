@@ -20,7 +20,6 @@
 """Functions to import and export giella xml dicts to the TermWiki."""
 import attr
 import collections
-import datetime
 import glob
 import os
 import sys
@@ -381,9 +380,6 @@ class DictParser(object):
 
 
 def main():
-    outdir = datetime.datetime.now().isoformat()
-    os.makedirs(outdir)
-
     for pair in [
         'finsme',
         'finsmn',

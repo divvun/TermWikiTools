@@ -70,71 +70,6 @@ class Stem(object):
 
 
 class TranslationGroup(object):
-    wanted_attributes = {
-        'tg': ['{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'],
-        'xg': ['re'],
-        're': ['fra_ref', 'x', 'comment'],
-        'morph_expl': [],
-        't': [
-            'alt_str',
-            'attr',
-            'case',
-            'class',
-            'comment',
-            'context',
-            'country',
-            'dial',
-            'dialect',
-            'diph',
-            'expl',
-            'freq',
-            'gen_only',
-            'grammar',
-            'hid',
-            'href',
-            'illpl',
-            'l_par',
-            'margo',
-            'minip',
-            'mod',
-            'mwe',
-            'nr',
-            'num',
-            'p3p',
-            'pers',
-            'pg',
-            'pos',
-            'r_par',
-            're',
-            'reg',
-            'sem_type',
-            'soggi',
-            'spec',
-            'src',
-            'stat',
-            'stem',
-            'syn',
-            'syn_dash',
-            't_tld',
-            't_type',
-            'type',
-            'umlaut',
-            'value',
-            'var',
-            'vow',
-            'wf',
-            'x',
-            'xxx',
-        ],
-    }
-    wanted_children = {
-        'tg': ['t', 'xg', 're', 'morph_expl'],
-        'xg': ['x', 'xt', 're'],
-        're': [],
-        'morph_expl': [],
-        't': [],
-    }
-
     def __init__(self, tolang):
         self.tolang = tolang
         self.translation_group = collections.defaultdict(list)
@@ -156,27 +91,7 @@ class TranslationGroup(object):
         return '{}\n|Original language={}\n|Translation={}\n{}'.format(
             '{{Example', ex[0], ex[1], '}}')
 
-    def has_wanted_attributes(self, element: etree.Element):
-        for attribute in element.keys():
-            if attribute not in self.wanted_attributes[element.tag]:
-                print(
-                    etree.tostring(element, encoding='unicode'),
-                    file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), element.tag, attribute))
-
-    def has_wanted_children(self, element: etree.Element):
-        for child in element:
-            if child.tag not in self.wanted_children[element.tag]:
-                # ditch:
-                print(
-                    etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(
-                    lineno(), child.tag))
-
     def handle_tg(self, translation_element: etree.Element):
-        self.has_wanted_attributes(translation_element)
-        self.has_wanted_children(translation_element)
         for child in translation_element:
             uff = {
                 't': self.handle_t,
@@ -188,9 +103,6 @@ class TranslationGroup(object):
             uff[child.tag](child)
 
     def handle_t(self, translation) -> None:
-        self.has_wanted_attributes(translation)
-        self.has_wanted_children(translation)
-
         if translation.get('type') == 'expl' or translation.get(
                 't_type') == 'expl':
             # TODO: handle type
@@ -215,21 +127,16 @@ class TranslationGroup(object):
                 file=sys.stderr)
 
     def handle_tg_xg(self, example_group: etree.Element) -> None:
-        self.has_wanted_attributes(example_group)
-        self.has_wanted_children(example_group)
-
         if (example_group.find('x').text is not None
                 and example_group.find('xt').text is not None):
             self.translation_group['examples'].append(
                 (example_group.find('x').text, example_group.find('xt').text))
 
     def handle_tg_re(self, restriction):
-        self.has_wanted_attributes(restriction)
-        self.has_wanted_children(restriction)
+        pass
 
     def handle_morph(self, morphology):
-        self.has_wanted_attributes(morphology)
-        self.has_wanted_children(morphology)
+        pass
 
 
 @attr.s
@@ -237,83 +144,6 @@ class DictParser(object):
     fromlang = attr.ib()
     tolang = attr.ib()
     filename = attr.ib()
-
-    wanted_attributes = {
-        'lg': ['freq'],
-        'l': [
-            'alt_str',
-            'attr',
-            'case',
-            'class',
-            'comma',
-            'comment',
-            'context',
-            'dialect',
-            'diph',
-            'hid',
-            'illpl',
-            'margo',
-            'minip',
-            'mod',
-            'nr',
-            'num',
-            'orig_entry',
-            'p3p',
-            'paradigme',
-            'pg',
-            'pos',
-            'r1_par',
-            'r2_par',
-            're',
-            'sem_type',
-            'soggi',
-            'spec',
-            'src',
-            'stem',
-            'syn',
-            'syn_or',
-            't_type',
-            'til_ref',
-            'tt',
-            'tt_auto',
-            'type',
-            'umlaut',
-            'value',
-            'vmax',
-            'vow',
-        ],
-        'l_ref': [],
-        'mg': ['src', 're', 'id', 'x'],
-        'tg': ['{http://www.w3.org/XML/1998/namespace}lang', 're', 'check'],
-        're': ['x', 'comment'],
-    }
-    wanted_children = {
-        'lg':
-        ['l', 'lsub', 'lc', 'analysis', 'mini_paradigm', 'lemma_ref', 'l_ref'],
-        'l': [],
-        'l_ref': [],
-        'mg': ['tg', 're'],
-        'tg': ['t', 'xg', 're'],
-        're': [],
-    }
-
-    def has_wanted_attributes(self, element: etree.Element):
-        for attribute in element.keys():
-            if attribute not in self.wanted_attributes[element.tag]:
-                print(
-                    etree.tostring(element, encoding='unicode'),
-                    file=sys.stderr)
-                raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    lineno(), element.tag, attribute))
-
-    def has_wanted_children(self, element: etree.Element):
-        for child in element:
-            if child.tag not in self.wanted_children[element.tag]:
-                # ditch:
-                print(
-                    etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(
-                    lineno(), child.tag))
 
     def dict2wiki(self):
         """Turn a giella dictionary file into wiki."""
@@ -351,28 +181,17 @@ class DictParser(object):
             FOUND['e_no_lg'] += 1
 
     def handle_l(self, child: etree.Element, lg_dict):
-        self.has_wanted_attributes(child)
-        self.has_wanted_children(child)
-
-        if 'x' in child.get('pos') or 'X' in child.get('pos'):
-            raise UserWarning('X in pos')
-
         FOUND['l_in_lg'] += 1
         lg_dict['stem'] = l2wiki(child.text, GIELLA2TERMWIKI[self.fromlang],
                                  child.get('pos').title())
 
     def handle_lref(self, child: etree.Element):
-        self.has_wanted_attributes(child)
-        self.has_wanted_children(child)
         print(
             child.tag,
             etree.tostring(child, encoding='unicode'),
             file=sys.stderr)
 
     def handle_lg(self, lemma_group: etree.Element) -> dict:
-        self.has_wanted_attributes(lemma_group)
-        self.has_wanted_children(lemma_group)
-
         lg_dict = {}
 
         for child in lemma_group.iter('l'):
@@ -390,9 +209,6 @@ class DictParser(object):
         return lg_dict
 
     def handle_tg(self, child: etree.Element, lg_dict):
-        self.has_wanted_attributes(child)
-        self.has_wanted_children(child)
-
         tg_lang = child.get('{http://www.w3.org/XML/1998/namespace}lang')
         if tg_lang != self.tolang:
             raise UserWarning(
@@ -408,9 +224,6 @@ class DictParser(object):
             print()
 
     def handle_mg(self, meaning_group: etree.Element, lg_dict: dict):
-        self.has_wanted_attributes(meaning_group)
-        self.has_wanted_children(meaning_group)
-
         for child in meaning_group.iter('tg'):
             self.handle_tg(child, lg_dict)
 
@@ -418,8 +231,7 @@ class DictParser(object):
             self.handle_re(child)
 
     def handle_re(self, res):
-        self.has_wanted_attributes(res)
-        self.has_wanted_children(res)
+        pass
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

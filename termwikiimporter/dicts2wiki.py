@@ -147,7 +147,7 @@ class DictParser(object):
 
     def dict2wiki(self):
         """Turn a giella dictionary file into wiki."""
-        parser = etree.XMLParser(remove_comments=True)
+        parser = etree.XMLParser(remove_comments=True, dtd_validation=True)
         dictionary_xml = etree.parse(self.filename, parser=parser)
 
         origlang = dictionary_xml.getroot().get(
@@ -283,10 +283,13 @@ def parse_dicts() -> None:
         for xml_file in glob.glob(dict_root + '/*.xml'):
             if not xml_file.endswith('meta.xml') and 'Der_' not in xml_file:
                 # TODO: handle Der_ files
-                print(xml_file)
-                dictparser = DictParser(
-                    filename=xml_file, fromlang=pair[:3], tolang=pair[3:])
-                dictparser.dict2wiki()
+                try:
+                    print(xml_file)
+                    dictparser = DictParser(
+                        filename=xml_file, fromlang=pair[:3], tolang=pair[3:])
+                    dictparser.dict2wiki()
+                except etree.XMLSyntaxError:
+                    print('Syntax error in {}'.format(xml_file), file=sys.stderr)
 
 
 def main() -> None:

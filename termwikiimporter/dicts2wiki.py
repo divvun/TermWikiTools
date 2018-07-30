@@ -21,10 +21,17 @@
 import attr
 import collections
 import glob
+import inspect
 import os
 import sys
 
 from lxml import etree
+
+
+def lineno():
+    """Return the current line number in our program."""
+    return inspect.currentframe().f_back.f_lineno
+
 
 GIELLA2TERMWIKI = {
     'eng': 'en',
@@ -72,7 +79,7 @@ class DictParser(object):
         origlang = dictionary_xml.getroot().get(
             '{http://www.w3.org/XML/1998/namespace}lang')
         if origlang != self.fromlang:
-            raise SystemExit('origlang! {} {}'.format(origlang, self.fromlang))
+            raise SystemExit('origlang! {} {}'.format(lineno(), origlang, self.fromlang))
 
         for entry in dictionary_xml.iter('e'):
             found['total'] += 1
@@ -101,7 +108,7 @@ class DictParser(object):
         for attr in lemma_group.keys():
             if attr not in ['freq']:
                 raise SystemExit('{} tag: {} attr: {}'.format(
-                    68, lemma_group.tag, attr))
+                    lineno(), lemma_group.tag, attr))
 
         for child in lemma_group:
             if child.tag == 'l':
@@ -152,7 +159,7 @@ class DictParser(object):
                             'vow',
                     ]:
                         raise SystemExit('{} tag: {} attr: {} -- {}'.format(
-                            74, child.tag, attr, child.text))
+                            lineno(), child.tag, attr, child.text))
 
                 huff = [child.text, self.fromlang]
                 for attr in ['pos', 'type', 'nr']:
@@ -174,10 +181,10 @@ class DictParser(object):
                 for attr in child.keys():
                     if attr not in []:
                         raise SystemExit('{} tag: {} attr: {}'.format(
-                            91, child.tag, attr))
+                            lineno(), child.tag, attr))
                 print(child.tag, etree.tostring(child, encoding='unicode'), file=sys.stderr)
             else:
-                raise SystemExit(102, etree.tostring(child, encoding='unicode'))
+                raise SystemExit(lineno(), etree.tostring(child, encoding='unicode'))
 
     def l2wiki(self, lemma, language, pos):
         stem = Stem(lemma=lemma, lang=language, pos=pos, filename=self.filename)
@@ -196,7 +203,7 @@ class DictParser(object):
                 # ditch id
                 print(etree.tostring(meaning_group, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    108, meaning_group.tag, attr))
+                    lineno(), meaning_group.tag, attr))
 
         for child in meaning_group:
             if child.tag == 'tg':
@@ -215,7 +222,7 @@ class DictParser(object):
             else:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(115, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
     def handle_tg(self, translation_group):
         for attr in translation_group.keys():
@@ -225,13 +232,13 @@ class DictParser(object):
                 # ditch: check
                 print(etree.tostring(translation_group, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    136, translation_group.tag, attr))
+                    lineno(), translation_group.tag, attr))
 
         for child in translation_group:
             if child.tag not in ['t', 'xg', 're', 'morph_expl']:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(144, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
             uff = {
                 't': self.handle_t,
@@ -310,13 +317,13 @@ class DictParser(object):
                 #
                 print(etree.tostring(translation, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    194, translation.tag, attr))
+                    lineno(), translation.tag, attr))
 
         for child in translation:
             if child.tag not in []:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(202, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
         try:
             self.l2wiki(translation.text, GIELLA2TERMWIKI[self.tolang], translation.get('pos').title())
@@ -328,13 +335,13 @@ class DictParser(object):
             if attr not in ['re']:
                 print(etree.tostring(example_group, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    211, example_group.tag, attr))
+                    lineno(), example_group.tag, attr))
 
         for child in example_group:
             if child.tag not in ['x', 'xt', 're']:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(219, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
     def handle_tg_re(self, restriction):
         for attr in restriction.keys():
@@ -342,13 +349,13 @@ class DictParser(object):
                 #
                 print(etree.tostring(restriction, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    227, restriction.tag, attr))
+                    lineno(), restriction.tag, attr))
 
         for child in restriction:
             if child.tag not in []:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(235, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
     def handle_morph(self, morphology):
         for attr in morphology.keys():
@@ -356,13 +363,13 @@ class DictParser(object):
                 #
                 print(etree.tostring(morphology, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    211, morphology.tag, attr))
+                    lineno(), morphology.tag, attr))
 
         for child in morphology:
             if child.tag not in []:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(219, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
     def handle_re(self, res):
         for attr in res.keys():
@@ -370,13 +377,13 @@ class DictParser(object):
                 #
                 print(etree.tostring(res, encoding='unicode'), file=sys.stderr)
                 raise SystemExit('line: {} tag: {} attr: {}'.format(
-                    167, res.tag, attr))
+                    lineno(), res.tag, attr))
 
         for child in res:
             if child.tag not in []:
                 # ditch:
                 print(etree.tostring(child, encoding='unicode'), file=sys.stderr)
-                raise SystemExit('line: {} tag: {} '.format(176, child.tag))
+                raise SystemExit('line: {} tag: {} '.format(lineno(), child.tag))
 
 
 def filter_x() -> None:

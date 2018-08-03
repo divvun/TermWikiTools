@@ -64,7 +64,7 @@ class Stem(object):
 
     @property
     def content(self):
-        return '{}{}\nLemma={}\nLang={}\nPos={}\n{}'.format(
+        return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}'.format(
             '{{',
             type(self).__name__, self.lemma, self.lang, self.pos, '}}')
 

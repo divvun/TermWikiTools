@@ -69,6 +69,14 @@ class Stem(object):
             type(self).__name__, self.lemma, self.lang, self.pos, '}}')
 
 
+@attr.s(frozen=True)
+class Example(object):
+    """Representation of a giella xg dictionary element."""
+    restriction = attr.ib(validator=attr.validators.instance_of(str))
+    orig = attr.ib(validator=attr.validators.instance_of(str))
+    translation = attr.ib(validator=attr.validators.instance_of(str))
+    orig_source = attr.ib(validator=attr.validators.instance_of(str))
+    translation_source = attr.ib(validator=attr.validators.instance_of(str))
 
 
 @attr.s
@@ -163,6 +171,23 @@ def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
             lemma=t_element.text,
             lang=language,
             pos=t_element.get('pos'))
+
+
+def xg2example(example_group: etree.Element) -> Example:
+    """Turn an xg giella dictionary element into an Example object."""
+    restriction = example_group.get('re') \
+        if example_group.get('re') is not None else ''
+    orig_source = example_group.find('.//x[@src]').get('src') \
+        if example_group.find('.//x[@src]') is not None else ''
+    translation_source = example_group.find('.//xt[@src]').get('src') \
+        if example_group.find('.//xt[@src]') is not None else ''
+
+    return Example(
+        restriction=restriction,
+        orig=example_group.find('.//x').text,
+        translation=example_group.find('.//xt').text,
+        orig_source=orig_source,
+        translation_source=translation_source)
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

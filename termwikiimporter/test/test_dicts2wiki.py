@@ -95,6 +95,14 @@ class TestDicts(unittest.TestCase):
         want = dicts2wiki.Stem(lemma='ansikt', lang='nob', pos='N')
         self.assertEqual(got, want)
 
+    def test_xg2example(self):
+        got = dicts2wiki.xg2example(self.dictxml.find('.//xg'))
+        want = dicts2wiki.Example(
+            restriction='Kunne vært tryne',
+            orig='Duohtavuohta časká njeacce vuostá.',
+            translation='Sannheta slår mot ansiktet.',
+            orig_source='a',
+            translation_source='b')
         self.assertEqual(got, want)
 
         self.assertEqual(got, want)

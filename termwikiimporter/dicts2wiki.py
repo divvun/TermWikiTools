@@ -70,6 +70,13 @@ class Stem(object):
 
 
 @attr.s(frozen=True)
+class Translation(object):
+    """Representation of a giella tg dictionary element."""
+    restriction = attr.ib(validator=attr.validators.instance_of(str))
+    translations = attr.ib(validator=attr.validators.instance_of(set))
+    examples = attr.ib(validator=attr.validators.instance_of(set))
+
+
 class Example(object):
     """Representation of a giella xg dictionary element."""
     restriction = attr.ib(validator=attr.validators.instance_of(str))
@@ -188,6 +195,21 @@ def xg2example(example_group: etree.Element) -> Example:
         translation=example_group.find('.//xt').text,
         orig_source=orig_source,
         translation_source=translation_source)
+
+
+def tg2translation(tg_element: etree.Element) -> Translation:
+    """Turn a tg giella dictionary element into a Translation object."""
+    restriction = tg_element.find('./re').text \
+        if tg_element.find('./re') is not None else ''
+    translations = {l_or_t2stem(t_element, get_lang(tg_element))
+                    for t_element in tg_element.xpath('.//t[@pos]')}
+    examples = {xg2example(example_group)
+                for example_group in tg_element.iter('xg')}
+
+    return Translation(
+        restriction=restriction,
+        translations=translations,
+        examples=examples)
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

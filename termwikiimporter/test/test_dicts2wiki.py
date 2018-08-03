@@ -105,4 +105,11 @@ class TestDicts(unittest.TestCase):
             translation_source='b')
         self.assertEqual(got, want)
 
+    def test_tg2translation(self):
+        want = dicts2wiki.Translation(
+            restriction='i negative sammenhenger',
+            translations=self.translations,
+            examples=self.examples)
+        got = dicts2wiki.tg2translation(self.dictxml.find('.//tg'))
+
         self.assertEqual(got, want)

@@ -113,3 +113,15 @@ class TestDicts(unittest.TestCase):
         got = dicts2wiki.tg2translation(self.dictxml.find('.//tg'))
 
         self.assertEqual(got, want)
+
+    def test_e2dict(self):
+        self.maxDiff = None
+        want = (
+            dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N'),
+            [dicts2wiki.Translation(
+                restriction='i negative sammenhenger',
+                translations=self.translations,
+                examples=self.examples)])
+        got = dicts2wiki.e2dict(self.dictxml, 'sme', 'nob')
+
+        self.assertTupleEqual(want, got)

@@ -212,6 +212,15 @@ def tg2translation(tg_element: etree.Element) -> Translation:
         examples=examples)
 
 
+def e2dict(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
+    """Turn an e giella dictionary element in to a tuple."""
+    return (
+        l_or_t2stem(entry.find('.//l'), fromlang),
+        [tg2translation(translation_group)
+         for translation_group in entry.iter('tg')
+         if get_lang(translation_group) == tolang])
+
+
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:
     stem = Stem(lemma=lemma, lang=language, pos=pos)
     if stem in LEMMADICT[lemma]:

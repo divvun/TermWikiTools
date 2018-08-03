@@ -50,6 +50,7 @@ FOUND = collections.defaultdict(int)
 
 @attr.s(frozen=True)
 class Stem(object):
+    """Representation of giella l and t dictionary elements."""
     lemma = attr.ib(validator=attr.validators.instance_of(str))
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))

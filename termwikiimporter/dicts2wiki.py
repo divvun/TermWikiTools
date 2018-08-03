@@ -157,6 +157,14 @@ class DictParser(object):
         pass
 
 
+def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
+    """Turn either an l or t giella dictionary element into a Stem object."""
+    return Stem(
+            lemma=t_element.text,
+            lang=language,
+            pos=t_element.get('pos'))
+
+
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:
     stem = Stem(lemma=lemma, lang=language, pos=pos)
     if stem in LEMMADICT[lemma]:

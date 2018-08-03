@@ -82,6 +82,18 @@ class TestDicts(unittest.TestCase):
                 orig_source='',
                 translation_source=''))  # nopep8
 
+    def test_l2stem(self):
+        got = dicts2wiki.l_or_t2stem(
+            self.dictxml.find('.//l'),
+            dicts2wiki.get_lang(self.dictxml.getroot()))
+        want = dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')
+        self.assertEqual(got, want)
+
+    def test_t2stem(self):
+        got = dicts2wiki.l_or_t2stem(self.dictxml.find('.//t'),
+                                     dicts2wiki.get_lang(self.dictxml.find('.//tg')))
+        want = dicts2wiki.Stem(lemma='ansikt', lang='nob', pos='N')
+        self.assertEqual(got, want)
 
         self.assertEqual(got, want)
 

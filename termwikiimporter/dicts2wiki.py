@@ -212,6 +212,11 @@ def tg2translation(tg_element: etree.Element) -> Translation:
         examples=examples)
 
 
+def get_lang(element: etree.Element) -> str:
+    """Get the xml:lang attribute of an etree Element."""
+    return element.get('{http://www.w3.org/XML/1998/namespace}lang')
+
+
 def e2dict(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
     """Turn an e giella dictionary element in to a tuple."""
     return (

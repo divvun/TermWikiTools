@@ -123,7 +123,7 @@ class TestDicts(unittest.TestCase):
                 restriction='i negative sammenhenger',
                 translations=self.translations,
                 examples=self.examples)])
-        got = dicts2wiki.e2tuple(self.dictxml, 'sme', 'nob')
+        got = dicts2wiki.e2tuple(self.dictxml.find('.//e'), 'sme', 'nob')
 
         self.assertTupleEqual(want, got)
 

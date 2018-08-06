@@ -49,20 +49,24 @@ GIELLA2TERMWIKI = {
 @attr.s(frozen=True)
 class Stem(object):
     """Representation of giella l and t dictionary elements."""
+
     lemma = attr.ib(validator=attr.validators.instance_of(str))
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))
 
     @property
     def pagename(self):
+        """Construct a page name from the content of class."""
         return '{} {} {}'.format(self.lemma, self.lang, self.pos)
 
     @property
     def stempagename(self):
+        """Construct a page name from the content of class."""
         return '{}:{}'.format(type(self).__name__, self.pagename)
 
     @property
     def content(self):
+        """Construct a termwiki page from the content of the class."""
         return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}'.format(
             '{{',
             type(self).__name__, self.lemma, self.lang, self.pos, '}}')
@@ -71,6 +75,7 @@ class Stem(object):
 @attr.s(frozen=True)
 class Translation(object):
     """Representation of a giella tg dictionary element."""
+
     restriction = attr.ib(validator=attr.validators.instance_of(str))
     translations = attr.ib(validator=attr.validators.instance_of(set))
     examples = attr.ib(validator=attr.validators.instance_of(set))
@@ -79,6 +84,7 @@ class Translation(object):
 @attr.s(frozen=True)
 class Example(object):
     """Representation of a giella xg dictionary element."""
+
     restriction = attr.ib(validator=attr.validators.instance_of(str))
     orig = attr.ib(validator=attr.validators.instance_of(str))
     translation = attr.ib(validator=attr.validators.instance_of(str))
@@ -87,7 +93,10 @@ class Example(object):
 
 
 class XmlDictExtractor(object):
+    """Class to extract info from a giella xml dictionary."""
+
     def __init__(self, dictxml):
+        """Initialise the XmlDictExtractor class."""
         self.dictxml = dictxml
         langpair = dictxml.getroot().get('id')
         self.fromlang = langpair[:3]
@@ -168,6 +177,7 @@ class XmlDictExtractor(object):
 
 
 def valid_xmldict():
+    """Parse xml dictionaries."""
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
             'smafin', 'smanob', 'smasme', 'smeeng', 'smefin', 'smenob',
@@ -205,6 +215,7 @@ def valid_xmldict():
 
 
 def parse_dicts() -> None:
+    """Extract xml dictionaries them to a dict."""
     stemdict = collections.defaultdict(list)
 
     for dictxml in valid_xmldict():
@@ -214,4 +225,5 @@ def parse_dicts() -> None:
 
 
 def main() -> None:
+    """Parse the xml dictionaries."""
     parse_dicts()

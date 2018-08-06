@@ -19,11 +19,10 @@
 """Test the functions and classes found in dicts2wiki."""
 
 import unittest
+from collections import defaultdict
 from io import StringIO
 
 from lxml import etree
-from parameterized import parameterized
-from collections import defaultdict
 
 from termwikiimporter import dicts2wiki
 

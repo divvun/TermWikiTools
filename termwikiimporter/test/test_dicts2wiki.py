@@ -115,7 +115,7 @@ class TestDicts(unittest.TestCase):
 
         self.assertEqual(got, want)
 
-    def test_e2dict(self):
+    def test_e2tuple(self):
         self.maxDiff = None
         want = (
             dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N'),
@@ -123,7 +123,7 @@ class TestDicts(unittest.TestCase):
                 restriction='i negative sammenhenger',
                 translations=self.translations,
                 examples=self.examples)])
-        got = dicts2wiki.e2dict(self.dictxml, 'sme', 'nob')
+        got = dicts2wiki.e2tuple(self.dictxml, 'sme', 'nob')
 
         self.assertTupleEqual(want, got)
 

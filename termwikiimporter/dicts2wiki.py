@@ -222,7 +222,7 @@ def get_lang(element: etree.Element) -> str:
     return element.get('{http://www.w3.org/XML/1998/namespace}lang')
 
 
-def e2dict(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
+def e2tuple(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
     """Turn an e giella dictionary element in to a tuple."""
     return (
         l_or_t2stem(entry.find('.//l'), fromlang),

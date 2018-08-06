@@ -232,15 +232,21 @@ def e2tuple(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
 
 
 def register_stems(dictxml: etree.ElementTree,
-                   stemdict: collections.defaultdict) -> None:
+                   stemdict: collections.defaultdict,
+                   tolang: str) -> None:
     """Register all stems found in a giella dictionary file."""
     origlang = get_lang(dictxml.getroot())
 
     for stem in dictxml.xpath('.//l[@pos]'):
         stemdict[l_or_t2stem(stem, origlang)]
 
-    for stem in dictxml.xpath('.//t[@pos]'):
-        stemdict[l_or_t2stem(stem, get_lang(stem.getparent()))]
+    for translation_group in dictxml.xpath(
+            './/tg[@xml:lang="{}"]'.format(tolang),
+            namespaces={'xml': 'http://www.w3.org/XML/1998/namespace'}):
+        for translation in translation_group.iter('t'):
+            stemdict[l_or_t2stem(translation, tolang)]
+
+
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

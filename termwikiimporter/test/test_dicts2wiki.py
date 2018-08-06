@@ -134,7 +134,7 @@ class TestDicts(unittest.TestCase):
         want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
 
         got = defaultdict(list)
-        dicts2wiki.register_stems(self.dictxml, got)
+        dicts2wiki.register_stems(self.dictxml, got, 'nob')
 
         self.assertDictEqual(got, want)
 

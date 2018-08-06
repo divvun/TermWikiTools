@@ -227,6 +227,18 @@ def e2dict(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
          if get_lang(translation_group) == tolang])
 
 
+def register_stems(dictxml: etree.ElementTree,
+                   stemdict: collections.defaultdict) -> None:
+    """Register all stems found in a giella dictionary file."""
+    origlang = get_lang(dictxml.getroot())
+
+    for stem in dictxml.xpath('.//l[@pos]'):
+        stemdict[l_or_t2stem(stem, origlang)]
+
+    for stem in dictxml.xpath('.//t[@pos]'):
+        stemdict[l_or_t2stem(stem, get_lang(stem.getparent()))]
+
+
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:
     stem = Stem(lemma=lemma, lang=language, pos=pos)
     if stem in LEMMADICT[lemma]:

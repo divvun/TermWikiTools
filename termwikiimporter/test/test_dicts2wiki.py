@@ -23,6 +23,7 @@ from io import StringIO
 
 from lxml import etree
 from parameterized import parameterized
+from collections import defaultdict
 
 from termwikiimporter import dicts2wiki
 
@@ -125,3 +126,15 @@ class TestDicts(unittest.TestCase):
         got = dicts2wiki.e2dict(self.dictxml, 'sme', 'nob')
 
         self.assertTupleEqual(want, got)
+
+    def test_registerstems(self):
+        want = defaultdict(list)
+        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')]
+        want[dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob')]
+        want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
+
+        got = defaultdict(list)
+        dicts2wiki.register_stems(self.dictxml, got)
+
+        self.assertDictEqual(got, want)
+

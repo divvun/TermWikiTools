@@ -125,17 +125,27 @@ class XmlDictExtractor(object):
             orig_source=orig_source,
             translation_source=translation_source)
 
+    @staticmethod
+    def is_valid_example(example_group: etree.Element) -> bool:
+        """Check if an xg element has valid content."""
+        return example_group.find(
+            './x').text is not None and example_group.find(
+                './xt').text is not None
+
     def tg2translation(self, tg_element: etree.Element) -> Translation:
         """Turn a tg giella dictionary element into a Translation object."""
-        restriction = tg_element.find('./re').text \
-            if tg_element.find('./re') is not None else ''
+        re_element = tg_element.find('./re')
+        restriction = re_element.text \
+            if re_element is not None and re_element.text is not None else ''
         translations = {
             self.l_or_t2stem(t_element, self.get_lang(tg_element))
             for t_element in tg_element.xpath('.//t[@pos]')
+            if t_element.text is not None
         }
         examples = {
             self.xg2example(example_group)
             for example_group in tg_element.iter('xg')
+            if self.is_valid_example(example_group)
         }
 
         return Translation(
@@ -166,7 +176,9 @@ class XmlDictExtractor(object):
         for translation_group in self.dictxml.iter('tg'):
             if self.get_lang(translation_group) == self.tolang:
                 for translation in translation_group.iter('t'):
-                    stemdict[self.l_or_t2stem(translation, self.tolang)]
+                    if translation.text is not None and translation.get(
+                            'pos') is not None:
+                        stemdict[self.l_or_t2stem(translation, self.tolang)]
 
     def r2dict(self, stemdict: collections.defaultdict) -> None:
         """Copy a giella dictionary file into a dict."""

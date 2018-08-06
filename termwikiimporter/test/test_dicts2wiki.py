@@ -42,6 +42,8 @@ class TestDicts(unittest.TestCase):
                         <re>i negative sammenhenger</re>
                         <t pos="N">ansikt</t>
                         <t pos="N">tryne</t>
+                        <t>no pos example</t>
+                        <t pos="no text example" />
                         <xg re="Kunne vært tryne">
                             <x src="a">Duohtavuohta časká njeacce vuostá.</x>
                             <xt src="b">Sannheta slår mot ansiktet.</xt>
@@ -49,6 +51,16 @@ class TestDicts(unittest.TestCase):
                         <xg>
                             <x>Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.</x>
                             <xt>Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.</xt>
+                        </xg>
+                        <xg>
+                            <re />
+                            <x>No text in re element</x>
+                            <xt>No text in re element</xt>
+                        </xg>
+                        <xg>
+                            <re>No text in x and xt elements</re>
+                            <x />
+                            <xt />
                         </xg>
                     </tg>
                 </mg>
@@ -75,6 +87,13 @@ class TestDicts(unittest.TestCase):
                 'Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.',  # nopep8
                 translation=
                 'Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.',  # nopep8
+                restriction='',
+                orig_source='',
+                translation_source=''))  # nopep8
+        self.examples.add(
+            dicts2wiki.Example(
+                orig='No text in re element',
+                translation='No text in re element',
                 restriction='',
                 orig_source='',
                 translation_source=''))  # nopep8

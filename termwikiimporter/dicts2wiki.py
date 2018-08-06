@@ -228,7 +228,7 @@ def valid_xmldict():
 
 def parse_dicts() -> None:
     """Extract xml dictionaries them to a dict."""
-    stemdict = collections.defaultdict(list)
+    stemdict = collections.defaultdict(list)  # type: collections.defaultdict
 
     for dictxml in valid_xmldict():
         xmldictextractor = XmlDictExtractor(dictxml=dictxml)

@@ -44,8 +44,6 @@ GIELLA2TERMWIKI = {
     'smn': 'smn',
     'swe': 'sv',
 }
-LEMMADICT = collections.defaultdict(set)
-FOUND = collections.defaultdict(int)
 
 
 @attr.s(frozen=True)
@@ -85,92 +83,6 @@ class Example(object):
     translation = attr.ib(validator=attr.validators.instance_of(str))
     orig_source = attr.ib(validator=attr.validators.instance_of(str))
     translation_source = attr.ib(validator=attr.validators.instance_of(str))
-
-
-@attr.s
-class DictParser(object):
-    fromlang = attr.ib()
-    tolang = attr.ib()
-    filename = attr.ib()
-
-    def dict2wiki(self):
-        """Turn a giella dictionary file into wiki."""
-        parser = etree.XMLParser(remove_comments=True, dtd_validation=True)
-        dictionary_xml = etree.parse(self.filename, parser=parser)
-
-        origlang = dictionary_xml.getroot().get(
-            '{http://www.w3.org/XML/1998/namespace}lang')
-        if origlang != self.fromlang:
-            raise SystemExit('{} origlang! {} {}'.format(
-                lineno(), origlang, self.fromlang))
-
-        for entry in dictionary_xml.iter('e'):
-            FOUND['total'] += 1
-            try:
-                self.expression2text(entry)
-            except UserWarning as uppser:
-                print('{}:\nError: {}\nElement:\n{}'.format(
-                    self.filename, str(uppser),
-                    etree.tostring(entry, encoding='unicode')),
-                    file=sys.stderr)
-
-    def expression2text(self, entry_xml: etree.Element) -> None:
-        """Turn an dictionary xml entry into wiki exportable dict.
-
-        Args:
-            entry_xml: An dictionary entry xml element.
-        """
-        lemma_group = entry_xml.find('lg')
-        if lemma_group is not None:
-            lg_dict = self.handle_lg(lemma_group)
-            for meaning_group in entry_xml.iter('mg'):
-                self.handle_mg(meaning_group, lg_dict)
-        else:
-            # TODO: why?
-            FOUND['e_no_lg'] += 1
-
-    def handle_l(self, child: etree.Element, lg_dict):
-        FOUND['l_in_lg'] += 1
-        lg_dict['stem'] = l2wiki(child.text, GIELLA2TERMWIKI[self.fromlang],
-                                 child.get('pos').title())
-
-    def handle_lref(self, child: etree.Element):
-        # TODO: Handle properly
-        pass
-        # print(child.tag, etree.tostring(child, encoding='unicode'), file=sys.stderr)
-
-    def handle_lg(self, lemma_group: etree.Element) -> dict:
-        lg_dict = {}
-
-        for child in lemma_group.iter('l'):
-            self.handle_l(child, lg_dict)
-
-        for child in lemma_group.iter('l_ref'):
-            self.handle_lref(child)
-
-        return lg_dict
-
-    def handle_tg(self, child: etree.Element, lg_dict):
-        tg_lang = child.get('{http://www.w3.org/XML/1998/namespace}lang')
-        if tg_lang == self.tolang:
-            # Do not care about entries not in self.tolang
-            translation_group = TranslationGroup(self.tolang)
-            translation_group.handle_tg(child)
-            print('{}\n|Stempage={}\n|Translation stem={}\n{}'.format(
-                '{{Dictionary', lg_dict['stem'].pagename,
-                translation_group.translations, '}}'))
-            print(translation_group.examples)
-            print()
-
-    def handle_mg(self, meaning_group: etree.Element, lg_dict: dict):
-        for child in meaning_group.iter('tg'):
-            self.handle_tg(child, lg_dict)
-
-        for child in meaning_group.iter('re'):
-            self.handle_re(child)
-
-    def handle_re(self, res):
-        pass
 
 
 @attr.s
@@ -253,43 +165,6 @@ class XmlDictExtractor(object):
             stemdict[entry[0]] = entry[1]
 
 
-def l2wiki(lemma: str, language: str, pos: str) -> Stem:
-    stem = Stem(lemma=lemma, lang=language, pos=pos)
-    if stem in LEMMADICT[lemma]:
-        FOUND['exists'] += 1
-    else:
-        LEMMADICT[lemma].add(stem)
-        FOUND['added'] += 1
-        FOUND[language] += 1
-
-    return stem
-
-
-def filter_x() -> None:
-    for lemma in LEMMADICT:
-        foundx = False
-        stemstrs = []
-        for stem in LEMMADICT[lemma]:
-            if 'X' in stem.pos:
-                foundx = True
-            stemstrs.append(str(stem))
-
-        if foundx:
-            print('\n'.join(stemstrs))
-            print()
-
-
-def report_findings() -> None:
-    notlang = ['added', 'exists', 'total', 'e_no_lg', 'l_in_lg']
-    for key in notlang:
-        print(key, FOUND[key])
-    print('Try added', FOUND['added'] + FOUND['exists'])
-
-    for key in FOUND:
-        if key not in notlang:
-            print(key, FOUND[key])
-
-
 def parse_dicts() -> None:
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
@@ -315,5 +190,3 @@ def parse_dicts() -> None:
 
 def main() -> None:
     parse_dicts()
-    filter_x()
-    report_findings()

@@ -240,11 +240,10 @@ def register_stems(dictxml: etree.ElementTree,
     for stem in dictxml.xpath('.//l[@pos]'):
         stemdict[l_or_t2stem(stem, origlang)]
 
-    for translation_group in dictxml.xpath(
-            './/tg[@xml:lang="{}"]'.format(tolang),
-            namespaces={'xml': 'http://www.w3.org/XML/1998/namespace'}):
-        for translation in translation_group.iter('t'):
-            stemdict[l_or_t2stem(translation, tolang)]
+    for translation_group in dictxml.iter('tg'):
+        if get_lang(translation_group) == tolang:
+            for translation in translation_group.iter('t'):
+                stemdict[l_or_t2stem(translation, tolang)]
 
 
 def r2dict(dictxml: etree.ElementTree,

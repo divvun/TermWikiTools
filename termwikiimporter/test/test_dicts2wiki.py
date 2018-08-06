@@ -30,6 +30,7 @@ from termwikiimporter import dicts2wiki
 
 class TestDicts(unittest.TestCase):
     """Test dicts xml to wiki functions."""
+
     def setUp(self):
         self.dictxml = etree.parse(
             StringIO('''<r id="smenob" xml:lang="sme">
@@ -57,15 +58,9 @@ class TestDicts(unittest.TestCase):
         '''))  # nopep8
         self.translations = set()
         self.translations.add(
-            dicts2wiki.Stem(
-                lemma='ansikt',
-                pos='N',
-                lang='nob'))
+            dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob'))
         self.translations.add(
-            dicts2wiki.Stem(
-                lemma='tryne',
-                pos='N',
-                lang='nob'))
+            dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob'))
 
         self.examples = set()
         self.examples.add(
@@ -84,8 +79,7 @@ class TestDicts(unittest.TestCase):
                 restriction='',
                 orig_source='',
                 translation_source=''))  # nopep8
-        self.xmldictextractor = dicts2wiki.XmlDictExtractor(
-            fromlang='sme', tolang='nob', dictxml=self.dictxml)
+        self.xmldictextractor = dicts2wiki.XmlDictExtractor(self.dictxml)
 
     def test_l2stem(self):
         got = self.xmldictextractor.l_or_t2stem(
@@ -116,19 +110,19 @@ class TestDicts(unittest.TestCase):
             restriction='i negative sammenhenger',
             translations=self.translations,
             examples=self.examples)
-        got = dicts2wiki.tg2translation(self.dictxml.find('.//tg'))
+        got = self.xmldictextractor.tg2translation(self.dictxml.find('.//tg'))
 
         self.assertEqual(got, want)
 
     def test_e2tuple(self):
         self.maxDiff = None
-        want = (
-            dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N'),
-            [dicts2wiki.Translation(
+        want = (dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N'), [
+            dicts2wiki.Translation(
                 restriction='i negative sammenhenger',
                 translations=self.translations,
-                examples=self.examples)])
-        got = dicts2wiki.e2tuple(self.dictxml.find('.//e'), 'sme', 'nob')
+                examples=self.examples)
+        ])
+        got = self.xmldictextractor.e2tuple(self.dictxml.find('.//e'))
 
         self.assertTupleEqual(want, got)
 
@@ -139,7 +133,7 @@ class TestDicts(unittest.TestCase):
         want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
 
         got = defaultdict(list)
-        dicts2wiki.register_stems(self.dictxml, got, 'nob')
+        self.xmldictextractor.register_stems(got)
 
         self.assertDictEqual(got, want)
 
@@ -157,6 +151,6 @@ class TestDicts(unittest.TestCase):
                 examples=self.examples)]
 
         got = defaultdict(list)
-        dicts2wiki.r2dict(self.dictxml, got, 'sme', 'nob')
+        self.xmldictextractor.r2dict(got)
 
         self.assertDictEqual(got, want)

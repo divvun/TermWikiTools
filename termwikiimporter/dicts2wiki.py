@@ -202,10 +202,14 @@ def tg2translation(tg_element: etree.Element) -> Translation:
     """Turn a tg giella dictionary element into a Translation object."""
     restriction = tg_element.find('./re').text \
         if tg_element.find('./re') is not None else ''
-    translations = {l_or_t2stem(t_element, get_lang(tg_element))
-                    for t_element in tg_element.xpath('.//t[@pos]')}
-    examples = {xg2example(example_group)
-                for example_group in tg_element.iter('xg')}
+    translations = {
+        l_or_t2stem(t_element, get_lang(tg_element))
+        for t_element in tg_element.xpath('.//t[@pos]')
+    }
+    examples = {
+        xg2example(example_group)
+        for example_group in tg_element.iter('xg')
+    }
 
     return Translation(
         restriction=restriction,

@@ -77,27 +77,32 @@ class TestDicts(unittest.TestCase):
                 translation_source='b'))
         self.examples.add(
             dicts2wiki.Example(
-                orig='Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.',  # nopep8
-                translation='Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.',  # nopep8
+                orig=
+                'Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.',  # nopep8
+                translation=
+                'Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.',  # nopep8
                 restriction='',
                 orig_source='',
                 translation_source=''))  # nopep8
+        self.xmldictextractor = dicts2wiki.XmlDictExtractor(
+            fromlang='sme', tolang='nob', dictxml=self.dictxml)
 
     def test_l2stem(self):
-        got = dicts2wiki.l_or_t2stem(
+        got = self.xmldictextractor.l_or_t2stem(
             self.dictxml.find('.//l'),
-            dicts2wiki.get_lang(self.dictxml.getroot()))
+            self.xmldictextractor.get_lang(self.dictxml.getroot()))
         want = dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')
         self.assertEqual(got, want)
 
     def test_t2stem(self):
-        got = dicts2wiki.l_or_t2stem(self.dictxml.find('.//t'),
-                                     dicts2wiki.get_lang(self.dictxml.find('.//tg')))
+        got = self.xmldictextractor.l_or_t2stem(
+            self.dictxml.find('.//t'),
+            self.xmldictextractor.get_lang(self.dictxml.find('.//tg')))
         want = dicts2wiki.Stem(lemma='ansikt', lang='nob', pos='N')
         self.assertEqual(got, want)
 
     def test_xg2example(self):
-        got = dicts2wiki.xg2example(self.dictxml.find('.//xg'))
+        got = self.xmldictextractor.xg2example(self.dictxml.find('.//xg'))
         want = dicts2wiki.Example(
             restriction='Kunne vært tryne',
             orig='Duohtavuohta časká njeacce vuostá.',

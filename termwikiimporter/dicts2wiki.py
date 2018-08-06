@@ -173,87 +173,84 @@ class DictParser(object):
         pass
 
 
-def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
-    """Turn either an l or t giella dictionary element into a Stem object."""
-    return Stem(
-            lemma=t_element.text,
-            lang=language,
-            pos=t_element.get('pos'))
+@attr.s
+class XmlDictExtractor(object):
+    fromlang = attr.ib()
+    tolang = attr.ib()
+    dictxml = attr.ib()
 
+    @staticmethod
+    def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
+        """Turn either an l or t giella dictionary element into a Stem object."""
+        return Stem(
+            lemma=t_element.text, lang=language, pos=t_element.get('pos'))
 
-def xg2example(example_group: etree.Element) -> Example:
-    """Turn an xg giella dictionary element into an Example object."""
-    restriction = example_group.get('re') \
-        if example_group.get('re') is not None else ''
-    orig_source = example_group.find('.//x[@src]').get('src') \
-        if example_group.find('.//x[@src]') is not None else ''
-    translation_source = example_group.find('.//xt[@src]').get('src') \
-        if example_group.find('.//xt[@src]') is not None else ''
+    @staticmethod
+    def xg2example(example_group: etree.Element) -> Example:
+        """Turn an xg giella dictionary element into an Example object."""
+        restriction = example_group.get('re') \
+            if example_group.get('re') is not None else ''
+        orig_source = example_group.find('.//x[@src]').get('src') \
+            if example_group.find('.//x[@src]') is not None else ''
+        translation_source = example_group.find('.//xt[@src]').get('src') \
+            if example_group.find('.//xt[@src]') is not None else ''
 
-    return Example(
-        restriction=restriction,
-        orig=example_group.find('.//x').text,
-        translation=example_group.find('.//xt').text,
-        orig_source=orig_source,
-        translation_source=translation_source)
+        return Example(
+            restriction=restriction,
+            orig=example_group.find('.//x').text,
+            translation=example_group.find('.//xt').text,
+            orig_source=orig_source,
+            translation_source=translation_source)
 
+    def tg2translation(self, tg_element: etree.Element) -> Translation:
+        """Turn a tg giella dictionary element into a Translation object."""
+        restriction = tg_element.find('./re').text \
+            if tg_element.find('./re') is not None else ''
+        translations = {
+            self.l_or_t2stem(t_element, self.get_lang(tg_element))
+            for t_element in tg_element.xpath('.//t[@pos]')
+        }
+        examples = {
+            self.xg2example(example_group)
+            for example_group in tg_element.iter('xg')
+        }
 
-def tg2translation(tg_element: etree.Element) -> Translation:
-    """Turn a tg giella dictionary element into a Translation object."""
-    restriction = tg_element.find('./re').text \
-        if tg_element.find('./re') is not None else ''
-    translations = {
-        l_or_t2stem(t_element, get_lang(tg_element))
-        for t_element in tg_element.xpath('.//t[@pos]')
-    }
-    examples = {
-        xg2example(example_group)
-        for example_group in tg_element.iter('xg')
-    }
+        return Translation(
+            restriction=restriction,
+            translations=translations,
+            examples=examples)
 
-    return Translation(
-        restriction=restriction,
-        translations=translations,
-        examples=examples)
+    @staticmethod
+    def get_lang(element: etree.Element) -> str:
+        """Get the xml:lang attribute of an etree Element."""
+        return element.get('{http://www.w3.org/XML/1998/namespace}lang')
 
+    def e2tuple(self, entry: etree.Element) -> tuple:
+        """Turn an e giella dictionary element in to a tuple."""
+        return (self.l_or_t2stem(entry.find('.//l'), self.fromlang), [
+            self.tg2translation(translation_group)
+            for translation_group in entry.iter('tg')
+            if self.get_lang(translation_group) == self.tolang
+        ])
 
-def get_lang(element: etree.Element) -> str:
-    """Get the xml:lang attribute of an etree Element."""
-    return element.get('{http://www.w3.org/XML/1998/namespace}lang')
+    def register_stems(self, stemdict: collections.defaultdict) -> None:
+        """Register all stems found in a giella dictionary file."""
+        origlang = self.get_lang(self.dictxml.getroot())
 
+        for stem in self.dictxml.xpath('.//l[@pos]'):
+            stemdict[self.l_or_t2stem(stem, origlang)]
 
-def e2tuple(entry: etree.Element, fromlang: str, tolang: str) -> tuple:
-    """Turn an e giella dictionary element in to a tuple."""
-    return (
-        l_or_t2stem(entry.find('.//l'), fromlang),
-        [tg2translation(translation_group)
-         for translation_group in entry.iter('tg')
-         if get_lang(translation_group) == tolang])
+        for translation_group in self.dictxml.iter('tg'):
+            if self.get_lang(translation_group) == self.tolang:
+                for translation in translation_group.iter('t'):
+                    stemdict[self.l_or_t2stem(translation, self.tolang)]
 
-
-def register_stems(dictxml: etree.ElementTree,
-                   stemdict: collections.defaultdict,
-                   tolang: str) -> None:
-    """Register all stems found in a giella dictionary file."""
-    origlang = get_lang(dictxml.getroot())
-
-    for stem in dictxml.xpath('.//l[@pos]'):
-        stemdict[l_or_t2stem(stem, origlang)]
-
-    for translation_group in dictxml.iter('tg'):
-        if get_lang(translation_group) == tolang:
-            for translation in translation_group.iter('t'):
-                stemdict[l_or_t2stem(translation, tolang)]
-
-
-def r2dict(dictxml: etree.ElementTree,
-           stemdict: collections.defaultdict,
-           fromlang: str, tolang: str) -> None:
-    """Copy a giella dictionary file into a dict."""
-    register_stems(dictxml, stemdict, tolang)
-    for entry_element in dictxml.iter('e'):
-        entry = e2tuple(entry_element, fromlang, tolang)
-        stemdict[entry[0]] = entry[1]
+    def r2dict(self, stemdict: collections.defaultdict) -> None:
+        """Copy a giella dictionary file into a dict."""
+        self.register_stems(stemdict)
+        for entry_element in self.dictxml.iter('e'):
+            entry = self.e2tuple(entry_element)
+            stemdict[entry[0]] = entry[1]
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

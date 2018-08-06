@@ -247,6 +247,14 @@ def register_stems(dictxml: etree.ElementTree,
             stemdict[l_or_t2stem(translation, tolang)]
 
 
+def r2dict(dictxml: etree.ElementTree,
+           stemdict: collections.defaultdict,
+           fromlang: str, tolang: str) -> None:
+    """Copy a giella dictionary file into a dict."""
+    register_stems(dictxml, stemdict, tolang)
+    for entry_element in dictxml.iter('e'):
+        entry = e2tuple(entry_element, fromlang, tolang)
+        stemdict[entry[0]] = entry[1]
 
 
 def l2wiki(lemma: str, language: str, pos: str) -> Stem:

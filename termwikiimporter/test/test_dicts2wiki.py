@@ -138,3 +138,20 @@ class TestDicts(unittest.TestCase):
 
         self.assertDictEqual(got, want)
 
+    def test_r2dict(self):
+        self.maxDiff = None
+        want = defaultdict(list)
+        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')]
+        want[dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob')]
+        want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
+
+        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')] = \
+            [dicts2wiki.Translation(
+                restriction='i negative sammenhenger',
+                translations=self.translations,
+                examples=self.examples)]
+
+        got = defaultdict(list)
+        dicts2wiki.r2dict(self.dictxml, got, 'sme', 'nob')
+
+        self.assertDictEqual(got, want)

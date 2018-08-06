@@ -76,6 +76,7 @@ class Translation(object):
     examples = attr.ib(validator=attr.validators.instance_of(set))
 
 
+@attr.s(frozen=True)
 class Example(object):
     """Representation of a giella xg dictionary element."""
     restriction = attr.ib(validator=attr.validators.instance_of(str))
@@ -85,11 +86,12 @@ class Example(object):
     translation_source = attr.ib(validator=attr.validators.instance_of(str))
 
 
-@attr.s
 class XmlDictExtractor(object):
-    fromlang = attr.ib()
-    tolang = attr.ib()
-    dictxml = attr.ib()
+    def __init__(self, dictxml):
+        self.dictxml = dictxml
+        langpair = dictxml.getroot().get('id')
+        self.fromlang = langpair[:3]
+        self.tolang = langpair[3:]
 
     @staticmethod
     def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
@@ -165,7 +167,7 @@ class XmlDictExtractor(object):
             stemdict[entry[0]] = entry[1]
 
 
-def parse_dicts() -> None:
+def valid_xmldict():
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
             'smafin', 'smanob', 'smasme', 'smeeng', 'smefin', 'smenob',
@@ -178,14 +180,37 @@ def parse_dicts() -> None:
             if not xml_file.endswith('meta.xml') and 'Der_' not in xml_file:
                 # TODO: handle Der_ files
                 try:
-                    print(xml_file)
-                    dictparser = DictParser(
-                        filename=xml_file, fromlang=pair[:3], tolang=pair[3:])
-                    dictparser.dict2wiki()
+                    parser = etree.XMLParser(
+                        remove_comments=True, dtd_validation=True)
+                    dictxml = etree.parse(xml_file, parser=parser)
+
+                    origlang = dictxml.getroot().get(
+                        '{http://www.w3.org/XML/1998/namespace}lang')
+                    if origlang != pair[:3]:
+                        raise SystemExit('{} origlang! {} {}'.format(
+                            lineno(), origlang, pair[:3]))
+
+                    dict_id = dictxml.getroot().get('id')
+                    if pair != dict_id:
+                        raise SystemExit('{} language pair! {} {}'.format(
+                            lineno(), origlang, pair))
+
+                    yield dictxml
                 except etree.XMLSyntaxError as error:
                     print(
                         'Syntax error in {} '
-                        'with the following error:\n{}\n'.format(xml_file, error), file=sys.stderr)
+                        'with the following error:\n{}\n'.format(
+                            xml_file, error),
+                        file=sys.stderr)
+
+
+def parse_dicts() -> None:
+    stemdict = collections.defaultdict(list)
+
+    for dictxml in valid_xmldict():
+        xmldictextractor = XmlDictExtractor(dictxml=dictxml)
+        xmldictextractor.register_stems(stemdict)
+        xmldictextractor.r2dict(stemdict)
 
 
 def main() -> None:

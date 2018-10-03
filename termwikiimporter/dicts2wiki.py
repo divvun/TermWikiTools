@@ -20,17 +20,11 @@
 """Functions to import and export giella xml dicts to the TermWiki."""
 import collections
 import glob
-import inspect
 import os
 import sys
 
 import attr
 from lxml import etree
-
-
-def lineno():
-    """Return the current line number in our program."""
-    return inspect.currentframe().f_back.f_lineno
 
 
 @attr.s(frozen=True)
@@ -113,7 +107,7 @@ class Example(object):
 class XmlDictExtractor(object):
     """Class to extract info from a giella xml dictionary."""
 
-    def __init__(self, dictxml):
+    def __init__(self, dictxml: etree.ElementTree) -> None:
         """Initialise the XmlDictExtractor class."""
         self.dictxml = dictxml
         langpair = dictxml.getroot().get('id')
@@ -121,7 +115,7 @@ class XmlDictExtractor(object):
         self.tolang = langpair[3:]
 
     def l_or_t2stem(self, element: etree.Element) -> Stem:
-        """Turn either an l or t giella dictionary element into a Stem object."""
+        """Turn the given giella dictionary element into a Stem object."""
         return Stem(
             lemma=element.text,
             lang=self.tolang if element.tag == 't' else self.fromlang,
@@ -231,13 +225,17 @@ def valid_xmldict():
                     origlang = dictxml.getroot().get(
                         '{http://www.w3.org/XML/1998/namespace}lang')
                     if origlang != pair[:3]:
-                        raise SystemExit('{} origlang! {} {}'.format(
-                            lineno(), origlang, pair[:3]))
+                        raise SystemExit(
+                            '{}: origlang {} in the file does not match '
+                            'the language in the filename {}'.format(
+                                xml_file, origlang, pair[:3]))
 
                     dict_id = dictxml.getroot().get('id')
                     if pair != dict_id:
-                        raise SystemExit('{} language pair! {} {}'.format(
-                            lineno(), origlang, pair))
+                        raise SystemExit(
+                            '{}: language pair in the file does not match '
+                            'the one given in the filename {}'.format(
+                                xml_file, dict_id, pair))
 
                     yield dictxml
                 except etree.XMLSyntaxError as error:

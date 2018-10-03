@@ -201,7 +201,7 @@ class SiteHandler(object):
             os.getenv('HOME'), '.config', 'term_config.yaml')
         with open(config_file) as config_stream:
             config = yaml.load(config_stream)
-            site = mwclient.Site('satni.uit.no', path='/termwiki/')
+            site = mwclient.Site(('http', 'localhost'), path='/termwiki/')
             site.login(config['username'], config['password'])
 
             print('Logging in to query …')
@@ -225,6 +225,16 @@ class SiteHandler(object):
                     if self.is_concept_tag(page.text()):
                         yield page
                 print()
+
+    def del_expression(self):
+        for page in self.site.Categories['Expressions']:
+            try:
+                print('Deleting: {}'.format(page.name))
+                page.delete(reason='Will be replaced by Stem page')
+            except mwclient.APIError as error:
+                if error.code != 'cantdelete':  # Okay if already deleted
+                    print('Can not delete {}.\nError {}'.format(page.name,
+                                                                error))
 
     @staticmethod
     def is_concept_tag(content):
@@ -324,6 +334,26 @@ class SiteHandler(object):
                         'collections that the normative {} fst '
                         'recognises.'.format(language))
 
+    def revert(self, page):
+        """Automatically sanction expressions that have no collection.
+
+        The theory is that concept pages with no collections mostly are from
+        the risten.no import, and if there are no typos found in an expression
+        they should be sanctioned.
+
+        Args:
+            language (str): the language to sanction
+        """
+        rollback_token = self.site.get_token('rollback')
+        for page in self.content_elements:
+            try:
+                self.site.api('rollback', title=page.name,
+                              user='SDTermImporter',
+                              summary='Use Stempage in Related expression',
+                              markbot='1', token=rollback_token)
+            except mwclient.errors.APIError as error:
+                print(page.name, error)
+
 
 def handle_dump(arguments):
     """Act on the TermWiki dump.
@@ -362,6 +392,10 @@ def handle_site(arguments):
         site.query_replace_text()
     elif arguments[0] == 'auto':
         site.auto_sanction(language=arguments[1])
+    elif arguments[0] == 'revert':
+        site.revert(page=arguments[1])
+    elif arguments[0] == 'del_expression':
+        site.del_expression()
     else:
         print(' '.join(arguments), 'is not supported')
 

@@ -310,7 +310,7 @@ class Concept(object):
     def terms_entries(self):
         def make_entry(expression):
             entry = etree.Element('e')
-            entry.attrib['id'] = '{}\\{}'.format(expression['expression'], expression['language'])
+            entry.attrib['id'] = '{}\\{}'.format(expression['expression'], expression['pos'])
 
             lg = etree.SubElement(entry, 'lg')
             l = etree.SubElement(lg, 'l')

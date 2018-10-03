@@ -65,7 +65,7 @@ class Stem(object):
     @property
     def content(self):
         """Construct a termwiki page from the content of the class."""
-        return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}'.format(
+        return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}\n'.format(
             '{{',
             type(self).__name__, self.lemma, self.langs[self.lang], self.pos,
             '}}')
@@ -79,6 +79,14 @@ class Translation(object):
     translations = attr.ib(validator=attr.validators.instance_of(set))
     examples = attr.ib(validator=attr.validators.instance_of(set))
 
+    @property
+    def content(self):
+        """Construct the translation part of a dict page."""
+        return '|Translation stem={}\n|Restriction={}\n{}\n{}\n'.format(
+            '@@'.join(sorted([stem.pagename for stem in self.translations])),
+            self.restriction, '}}', '\n'.join(
+                sorted([example.content for example in self.examples])))
+
 
 @attr.s(frozen=True)
 class Example(object):
@@ -89,6 +97,17 @@ class Example(object):
     translation = attr.ib(validator=attr.validators.instance_of(str))
     orig_source = attr.ib(validator=attr.validators.instance_of(str))
     translation_source = attr.ib(validator=attr.validators.instance_of(str))
+
+    @property
+    def content(self):
+        """Construct a termwiki template from the content of the class."""
+        return ('{}{}\n|Original={}\n|Source of original={}\n'
+                '|Translation={}\n|Source of translation={}\n'
+                '|Restriction={}\n{}'.format(
+                    '{{',
+                    type(self).__name__, self.orig, self.orig_source,
+                    self.translation, self.translation_source,
+                    self.restriction, '}}'))
 
 
 class XmlDictExtractor(object):
@@ -227,6 +246,21 @@ def valid_xmldict():
                         'with the following error:\n{}\n'.format(
                             xml_file, error),
                         file=sys.stderr)
+
+
+def stemdict2dictpages(stemdict: collections.defaultdict):
+    """Yield a dict pagename and dict content for each translation."""
+    for lemma in stemdict:
+        for number, translation in enumerate(stemdict[lemma], start=1):
+            yield ('Dict:{} {:04d}'.format(lemma.pagename, number),
+                   '{}Dict\n|Stempage={}\n{}'.format('{{', lemma.pagename,
+                                                     translation.content))
+
+
+def stemdict2stempages(stemdict: collections.defaultdict):
+    """Yield a dict pagename and dict content for each translation."""
+    for lemma in stemdict:
+        yield (lemma.stempagename, lemma.content)
 
 
 def parse_dicts() -> None:

@@ -119,6 +119,18 @@ class TestDicts(unittest.TestCase):
             translation_source='b')
         self.assertEqual(got, want)
 
+    def test_xg2example_content(self):
+        got = self.xmldictextractor.xg2example(self.dictxml.find('.//xg'))
+        want = '''{{Example
+|Original=Duohtavuohta časká njeacce vuostá.
+|Source of original=a
+|Translation=Sannheta slår mot ansiktet.
+|Source of translation=b
+|Restriction=Kunne vært tryne
+}}'''
+
+        self.assertEqual(got.content, want)
+
     def test_tg2translation(self):
         want = dicts2wiki.Translation(
             restriction='i negative sammenhenger',
@@ -127,6 +139,37 @@ class TestDicts(unittest.TestCase):
         got = self.xmldictextractor.tg2translation(self.dictxml.find('.//tg'))
 
         self.assertEqual(got, want)
+
+    def test_tg2translation_content(self):
+        self.maxDiff = None
+        want = '''|Translation stem=ansikt nb N@@tryne nb N
+|Restriction=i negative sammenhenger
+}}
+{{Example
+|Original=Duohtavuohta časká njeacce vuostá.
+|Source of original=a
+|Translation=Sannheta slår mot ansiktet.
+|Source of translation=b
+|Restriction=Kunne vært tryne
+}}
+{{Example
+|Original=Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.
+|Source of original=
+|Translation=Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.
+|Source of translation=
+|Restriction=
+}}
+{{Example
+|Original=No text in re element
+|Source of original=
+|Translation=No text in re element
+|Source of translation=
+|Restriction=
+}}
+'''  # nopep8
+        got = self.xmldictextractor.tg2translation(self.dictxml.find('.//tg'))
+
+        self.assertEqual(got.content, want)
 
     def test_e2tuple(self):
         self.maxDiff = None
@@ -168,3 +211,59 @@ class TestDicts(unittest.TestCase):
         self.xmldictextractor.r2dict(got)
 
         self.assertDictEqual(got, want)
+
+    def test_stemdict2dictpages(self):
+        self.maxDiff = None
+
+        stemdict = defaultdict(list)
+        self.xmldictextractor.r2dict(stemdict)
+
+        got = [
+            name_content
+            for name_content in dicts2wiki.stemdict2dictpages(stemdict)
+        ]
+        wantcontent = '''{{Dict
+|Stempage=njeazzi se N
+|Translation stem=ansikt nb N@@tryne nb N
+|Restriction=i negative sammenhenger
+}}
+{{Example
+|Original=Duohtavuohta časká njeacce vuostá.
+|Source of original=a
+|Translation=Sannheta slår mot ansiktet.
+|Source of translation=b
+|Restriction=Kunne vært tryne
+}}
+{{Example
+|Original=Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.
+|Source of original=
+|Translation=Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.
+|Source of translation=
+|Restriction=
+}}
+{{Example
+|Original=No text in re element
+|Source of original=
+|Translation=No text in re element
+|Source of translation=
+|Restriction=
+}}
+'''  # nopep8
+
+        self.assertEqual(len(got), 1)
+        self.assertEqual(got[0][0], 'Dict:njeazzi se N 0001')
+        self.assertEqual(got[0][1], wantcontent)
+
+    def test_stemdict2stempages(self):
+        pagenametemplate = 'Stem:{} {} {}'
+        contenttemplate = '|Lemma={}\n|Lang={}\n|Pos={}\n'
+        want = sorted(
+            [(pagenametemplate.format(*info.split()),
+              '{{Stem\n' + contenttemplate.format(*info.split()) + '}}\n')
+             for info in ['njeazzi se N', 'ansikt nb N', 'tryne nb N']])
+
+        stemdict = defaultdict(list)
+        self.xmldictextractor.r2dict(stemdict)
+        got = sorted([(stem.stempagename, stem.content) for stem in stemdict])
+
+        self.assertListEqual(got, want)

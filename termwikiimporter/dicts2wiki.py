@@ -208,8 +208,8 @@ class XmlDictExtractor(object):
         """Copy a giella dictionary file into a dict."""
         self.register_stems(stemdict)
         for entry_element in self.dictxml.iter('e'):
-            entry = self.e2tuple(entry_element)
-            stemdict[entry[0]] = entry[1]
+            stem, translations = self.e2tuple(entry_element)
+            stemdict[stem].extend(translations)
 
 
 def valid_xmldict():

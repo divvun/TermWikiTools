@@ -129,9 +129,10 @@ class XmlDictExtractor(object):
     @staticmethod
     def is_valid_example(example_group: etree.Element) -> bool:
         """Check if an xg element has valid content."""
-        return example_group.find(
-            './x').text is not None and example_group.find(
-                './xt').text is not None
+        orig = example_group.find('./x')
+        trans = example_group.find('./xt')
+        return (orig.text is not None and orig.text.strip()
+                and trans.text is not None and trans.text.strip())
 
     def translations(self, tg_element: etree.Element):
         """Find the valid t elements of a tg_element."""

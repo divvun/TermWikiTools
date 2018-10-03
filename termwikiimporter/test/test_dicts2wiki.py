@@ -100,16 +100,12 @@ class TestDicts(unittest.TestCase):
         self.xmldictextractor = dicts2wiki.XmlDictExtractor(self.dictxml)
 
     def test_l2stem(self):
-        got = self.xmldictextractor.l_or_t2stem(
-            self.dictxml.find('.//l'),
-            self.xmldictextractor.get_lang(self.dictxml.getroot()))
+        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//l'))
         want = dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')
         self.assertEqual(got, want)
 
     def test_t2stem(self):
-        got = self.xmldictextractor.l_or_t2stem(
-            self.dictxml.find('.//t'),
-            self.xmldictextractor.get_lang(self.dictxml.find('.//tg')))
+        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//t'))
         want = dicts2wiki.Stem(lemma='ansikt', lang='nob', pos='N')
         self.assertEqual(got, want)
 

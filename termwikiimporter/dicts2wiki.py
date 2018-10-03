@@ -102,11 +102,12 @@ class XmlDictExtractor(object):
         self.fromlang = langpair[:3]
         self.tolang = langpair[3:]
 
-    @staticmethod
-    def l_or_t2stem(t_element: etree.Element, language: str) -> Stem:
+    def l_or_t2stem(self, element: etree.Element) -> Stem:
         """Turn either an l or t giella dictionary element into a Stem object."""
         return Stem(
-            lemma=t_element.text, lang=language, pos=t_element.get('pos'))
+            lemma=element.text,
+            lang=self.tolang if element.tag == 't' else self.fromlang,
+            pos=element.get('pos'))
 
     @staticmethod
     def xg2example(example_group: etree.Element) -> Example:
@@ -136,7 +137,7 @@ class XmlDictExtractor(object):
         """Find the valid t elements of a tg_element."""
         for t_element in tg_element.xpath('.//t[@pos]'):
             if t_element.text is not None:
-                yield self.l_or_t2stem(t_element, self.tolang)
+                yield self.l_or_t2stem(t_element)
 
     def tg2translation(self, tg_element: etree.Element) -> Translation:
         """Turn a tg giella dictionary element into a Translation object."""
@@ -162,7 +163,7 @@ class XmlDictExtractor(object):
 
     def e2tuple(self, entry: etree.Element) -> tuple:
         """Turn an e giella dictionary element in to a tuple."""
-        return (self.l_or_t2stem(entry.find('.//l'), self.fromlang), [
+        return (self.l_or_t2stem(entry.find('.//l')), [
             self.tg2translation(translation_group)
             for translation_group in self.translation_groups(entry)
         ])
@@ -175,10 +176,8 @@ class XmlDictExtractor(object):
 
     def register_stems(self, stemdict: collections.defaultdict) -> None:
         """Register all stems found in a giella dictionary file."""
-        origlang = self.get_lang(self.dictxml.getroot())
-
         for stem in self.dictxml.xpath('.//l[@pos]'):
-            stemdict[self.l_or_t2stem(stem, origlang)]
+            stemdict[self.l_or_t2stem(stem)]
 
         for translation_group in self.translation_groups(self.dictxml):
             for stem in self.translations(translation_group):

@@ -77,6 +77,12 @@ class Concept(object):
 
             if ' ' in expression['expression']:
                 expression['pos'] = 'mwe'
+
+            expression['Termpage'] = \
+                '{expression} {language} {pos}'.format(**expression)
+            for key in ['expression', 'language', 'pos']:
+                del expression[key]
+
             if 'collection' in expression:
                 if not self.data.get('collection'):
                     self.data['concept']['collection'] = set()

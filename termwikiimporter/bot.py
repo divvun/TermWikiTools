@@ -178,6 +178,29 @@ class DumpHandler(object):
                     print(title, etree.tostring(
                         content_elt, encoding='unicode'))
 
+    def to_termcenter(self):
+        termcenter = etree.Element('r')
+        terms = {}
+
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+            termcenter.append(concept.termcenter_entry)
+
+            for lang, e_entry in concept.terms_entries:
+                #print(lang, e_entry)
+                if terms.get(lang) is None:
+                    terms[lang] = etree.Element('r')
+
+                terms[lang].append(e_entry)
+
+        with open('terms/termcenter.xml', 'wb') as termc:
+            termc.write(etree.tostring(termcenter, encoding='utf8', pretty_print=True))
+
+        for lang in terms:
+            with open('terms/terms-{}.xml'.format(lang), 'wb') as turms:
+                turms.write(etree.tostring(terms[lang], encoding='utf8', pretty_print=True))
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -375,6 +398,8 @@ def handle_dump(arguments):
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':
         dumphandler.auto_sanction(language=arguments[1])
+    elif arguments[0] == 'terms':
+        dumphandler.to_termcenter()
     else:
         print(' '.join(arguments), 'is not supported')
 

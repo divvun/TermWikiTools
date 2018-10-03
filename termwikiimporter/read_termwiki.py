@@ -76,7 +76,7 @@ class Concept(object):
                 expression['sanctioned'] = 'True'
 
             if ' ' in expression['expression']:
-                expression['pos'] = 'MWE'
+                expression['pos'] = 'mwe'
             if 'collection' in expression:
                 if not self.data.get('collection'):
                     self.data['concept']['collection'] = set()

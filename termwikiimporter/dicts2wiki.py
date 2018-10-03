@@ -33,19 +33,6 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
-GIELLA2TERMWIKI = {
-    'eng': 'en',
-    'fin': 'fi',
-    'fra': 'fr',
-    'nob': 'nb',
-    'sma': 'sma',
-    'sme': 'se',
-    'smj': 'smj',
-    'smn': 'smn',
-    'swe': 'sv',
-}
-
-
 @attr.s(frozen=True)
 class Stem(object):
     """Representation of giella l and t dictionary elements."""
@@ -54,10 +41,21 @@ class Stem(object):
     lang = attr.ib(validator=attr.validators.instance_of(str))
     pos = attr.ib(validator=attr.validators.instance_of(str))
 
+    langs = {
+        'eng': 'en',
+        'fin': 'fi',
+        'nob': 'nb',
+        'sma': 'sma',
+        'sme': 'se',
+        'smj': 'smj',
+        'smn': 'smn',
+        'swe': 'sv',
+    }
+
     @property
     def pagename(self):
         """Construct a page name from the content of class."""
-        return '{} {} {}'.format(self.lemma, self.lang, self.pos)
+        return '{} {} {}'.format(self.lemma, self.langs[self.lang], self.pos)
 
     @property
     def stempagename(self):
@@ -69,7 +67,8 @@ class Stem(object):
         """Construct a termwiki page from the content of the class."""
         return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}'.format(
             '{{',
-            type(self).__name__, self.lemma, self.lang, self.pos, '}}')
+            type(self).__name__, self.lemma, self.langs[self.lang], self.pos,
+            '}}')
 
 
 @attr.s(frozen=True)

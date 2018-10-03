@@ -268,7 +268,7 @@ def stemdict2stempages(stemdict: collections.defaultdict):
         yield (lemma.stempagename, lemma.content)
 
 
-def parse_dicts() -> None:
+def parse_dicts() -> collections.defaultdict:
     """Extract xml dictionaries to a dict."""
     stemdict = collections.defaultdict(list)  # type: collections.defaultdict
 
@@ -276,6 +276,8 @@ def parse_dicts() -> None:
         xmldictextractor = XmlDictExtractor(dictxml=dictxml)
         xmldictextractor.register_stems(stemdict)
         xmldictextractor.r2dict(stemdict)
+
+    return stemdict
 
 
 def main() -> None:

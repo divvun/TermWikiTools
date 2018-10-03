@@ -79,11 +79,6 @@ class Concept(object):
             if ' ' in expression['expression']:
                 expression['pos'] = 'mwe'
 
-            expression['Termpage'] = \
-                '{expression} {language} {pos}'.format(**expression)
-            for key in ['expression', 'language', 'pos']:
-                del expression[key]
-
             if 'collection' in expression:
                 if not self.data.get('collection'):
                     self.data['concept']['collection'] = set()
@@ -91,8 +86,6 @@ class Concept(object):
                     expression['collection'].replace('_', ' '))
                 del expression['collection']
 
-            self.data['related_expressions'].append(expression)
-        elif 'Termpage' in expression:
             self.data['related_expressions'].append(expression)
 
     def from_termwiki(self, text):
@@ -290,20 +283,20 @@ class Concept(object):
     def termcenter_entry(self):
         """Turn a concept info a termcenter entry."""
         entry = etree.Element('e')
-        entry.set('id', self.title)
-        entry.set('category', self.category)
+        entry.attrib['id'] = self.title
+        entry.attrib['category'] = self.category
 
         for expression in self.related_expressions:
-            translation_group = etree.SubElement('tg', entry)
-            translation_group.set('xml:lang',
-                                  expression['lang'])
+            translation_group = etree.SubElement(entry, 'tg')
+            translation_group.set('lang',
+                                  expression['language'])
 
-            translation = etree.SubElement('t', translation_group)
-            translation.set('pos', expression['pos'])
+            translation = etree.SubElement(translation_group, 't')
+            translation.attrib['pos'] = expression['pos']
 
-            xi = etree.SubElement('xi', translation)
-            xi.set('href', 'terms-{}.xml'.format(expression['lang']))
-            xi.set('xpointer', 'xpointer(//e[@id="{expression}\{pos}"]/lg/l/text())'.format(expression))
+            xi = etree.SubElement(translation, 'xi')
+            xi.attrib['href'] = 'terms-{}.xml'.format(expression['language'])
+            xi.attrib['xpointer'] = 'xpointer(//e[@id="{}\\{}"]/lg/l/text())'.format(expression['expression'], expression['pos'])
 
         return entry
 
@@ -311,32 +304,32 @@ class Concept(object):
     def terms_entries(self):
         def make_entry(expression):
             entry = etree.Element('e')
-            entry.set('id', '{expression}\{lang}'.format(expression))
+            entry.attrib['id'] = '{}\\{}'.format(expression['expression'], expression['language'])
 
-            lg = etree.SubElement('lg', entry)
-            l = etree.SubElement('l', lg)
-            l.set('pos', expression['pos'])
+            lg = etree.SubElement(entry, 'lg')
+            l = etree.SubElement(lg, 'l')
+            l.attrib['pos'] = expression['pos']
             l.text = expression['expression']
 
-            status = etree.SubElement('status', entry)
+            status = etree.SubElement(entry, 'status')
             if expression.get('status'):
                 status.text = expression['status']
 
-            sanctioned = etree.SubElement('sanctioned', entry)
-            sanctioned.tree = 'True'
+            sanctioned = etree.SubElement(entry, 'sanctioned')
+            sanctioned.text = 'True'
 
-            mg = etree.SubElement('mg', entry)
-            mg.set('idref', self.title)
+            mg = etree.SubElement(entry, 'mg')
+            mg.attrib['idref'] = self.title
 
-            xi = etree.SubElement('xi', mg)
-            xi.set('xpointer', 'xpointer(//e[@id="{}"]/tg'.format(self.title))
-            xi.set('href', 'termcenter.xml')
+            xi = etree.SubElement(mg, 'xi')
+            xi.attrib['xpointer'] = 'xpointer(//e[@id="{}"]/tg'.format(self.title)
+            xi.attrib['href'] = 'termcenter.xml'
 
-            return expression['lang'], entry
+            return expression['language'], entry
 
         return [make_entry(expression)
                 for expression in self.related_expressions
-                if expression['sanctioned']]
+                if expression['sanctioned'] and expression.get('language') is not None]
 
     def auto_sanction(self, language):
         """Automatically sanction expressions in the given language.

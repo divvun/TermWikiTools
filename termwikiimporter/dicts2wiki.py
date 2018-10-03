@@ -132,16 +132,18 @@ class XmlDictExtractor(object):
             './x').text is not None and example_group.find(
                 './xt').text is not None
 
+    def translations(self, tg_element: etree.Element):
+        """Find the valid t elements of a tg_element."""
+        for t_element in tg_element.xpath('.//t[@pos]'):
+            if t_element.text is not None:
+                yield self.l_or_t2stem(t_element, self.tolang)
+
     def tg2translation(self, tg_element: etree.Element) -> Translation:
         """Turn a tg giella dictionary element into a Translation object."""
         re_element = tg_element.find('./re')
         restriction = re_element.text \
             if re_element is not None and re_element.text is not None else ''
-        translations = {
-            self.l_or_t2stem(t_element, self.get_lang(tg_element))
-            for t_element in tg_element.xpath('.//t[@pos]')
-            if t_element.text is not None
-        }
+        translations = {stem for stem in self.translations(tg_element)}
         examples = {
             self.xg2example(example_group)
             for example_group in tg_element.iter('xg')
@@ -162,9 +164,14 @@ class XmlDictExtractor(object):
         """Turn an e giella dictionary element in to a tuple."""
         return (self.l_or_t2stem(entry.find('.//l'), self.fromlang), [
             self.tg2translation(translation_group)
-            for translation_group in entry.iter('tg')
-            if self.get_lang(translation_group) == self.tolang
+            for translation_group in self.translation_groups(entry)
         ])
+
+    def translation_groups(self, element):
+        """Find tg elements only of the official translation language."""
+        for translation_group in element.xpath('.//tg'):
+            if self.get_lang(translation_group) == self.tolang:
+                yield translation_group
 
     def register_stems(self, stemdict: collections.defaultdict) -> None:
         """Register all stems found in a giella dictionary file."""
@@ -173,12 +180,9 @@ class XmlDictExtractor(object):
         for stem in self.dictxml.xpath('.//l[@pos]'):
             stemdict[self.l_or_t2stem(stem, origlang)]
 
-        for translation_group in self.dictxml.iter('tg'):
-            if self.get_lang(translation_group) == self.tolang:
-                for translation in translation_group.iter('t'):
-                    if translation.text is not None and translation.get(
-                            'pos') is not None:
-                        stemdict[self.l_or_t2stem(translation, self.tolang)]
+        for translation_group in self.translation_groups(self.dictxml):
+            for stem in self.translations(translation_group):
+                stemdict[stem]
 
     def r2dict(self, stemdict: collections.defaultdict) -> None:
         """Copy a giella dictionary file into a dict."""

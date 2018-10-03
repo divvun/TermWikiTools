@@ -208,9 +208,8 @@ def valid_xmldict():
     """Parse xml dictionaries."""
     for pair in [
             'finsme', 'finsmn', 'nobsma', 'nobsme', 'nobsmj', 'nobsmj',
-            'smafin', 'smanob', 'smasme', 'smeeng', 'smefin', 'smenob',
-            'smesma', 'smesmj', 'smesmn', 'smjnob', 'smjsme', 'smnsme',
-            'swesma'
+            'smafin', 'smanob', 'smasme', 'smefin', 'smenob', 'smesma',
+            'smesmj', 'smesmn', 'smjnob', 'smjsme', 'smnsme', 'swesma'
     ]:
         dict_root = os.path.join(
             os.getenv('GTHOME'), 'words/dicts', pair, 'src')

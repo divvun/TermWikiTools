@@ -114,10 +114,18 @@ class XmlDictExtractor(object):
         self.fromlang = langpair[:3]
         self.tolang = langpair[3:]
 
+    @staticmethod
+    def normalise_lemma(lemma: str) -> str:
+        for offending, replacement in [('\n', ' '), ('  ', ' ')]:
+            while offending in lemma:
+                lemma = lemma.replace(offending, replacement)
+
+        return lemma
+
     def l_or_t2stem(self, element: etree.Element) -> Stem:
         """Turn the given giella dictionary element into a Stem object."""
         return Stem(
-            lemma=element.text,
+            lemma=self.normalise_lemma(element.text),
             lang=self.tolang if element.tag == 't' else self.fromlang,
             pos=element.get('pos'))
 

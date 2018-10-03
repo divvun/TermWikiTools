@@ -21,6 +21,7 @@
 import inspect
 import re
 from operator import itemgetter
+from lxml import etree
 
 from termwikiimporter import analyser
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
@@ -90,6 +91,8 @@ class Concept(object):
                     expression['collection'].replace('_', ' '))
                 del expression['collection']
 
+            self.data['related_expressions'].append(expression)
+        elif 'Termpage' in expression:
             self.data['related_expressions'].append(expression)
 
     def from_termwiki(self, text):
@@ -173,7 +176,9 @@ class Concept(object):
             if line == '}}':
                 return wiki_form
             elif line.startswith('|reviewed=') or line.startswith(
-                    '|is_typo') or line.startswith('|has_illegal_char'):
+                    '|is_typo') or line.startswith(
+                        '|has_illegal_char') or line.startswith(
+                            '|in_header') or line.startswith('|no picture'):
                 pass
             elif line.startswith('|'):
                 equality = line.find('=')
@@ -275,6 +280,63 @@ class Concept(object):
         self.concept_str(term_strings)
 
         return '\n'.join(term_strings)
+
+    @property
+    def category(self):
+        colon = self.title.find(':')
+        return self.title[:colon]
+
+    @property
+    def termcenter_entry(self):
+        """Turn a concept info a termcenter entry."""
+        entry = etree.Element('e')
+        entry.set('id', self.title)
+        entry.set('category', self.category)
+
+        for expression in self.related_expressions:
+            translation_group = etree.SubElement('tg', entry)
+            translation_group.set('xml:lang',
+                                  expression['lang'])
+
+            translation = etree.SubElement('t', translation_group)
+            translation.set('pos', expression['pos'])
+
+            xi = etree.SubElement('xi', translation)
+            xi.set('href', 'terms-{}.xml'.format(expression['lang']))
+            xi.set('xpointer', 'xpointer(//e[@id="{expression}\{pos}"]/lg/l/text())'.format(expression))
+
+        return entry
+
+    @property
+    def terms_entries(self):
+        def make_entry(expression):
+            entry = etree.Element('e')
+            entry.set('id', '{expression}\{lang}'.format(expression))
+
+            lg = etree.SubElement('lg', entry)
+            l = etree.SubElement('l', lg)
+            l.set('pos', expression['pos'])
+            l.text = expression['expression']
+
+            status = etree.SubElement('status', entry)
+            if expression.get('status'):
+                status.text = expression['status']
+
+            sanctioned = etree.SubElement('sanctioned', entry)
+            sanctioned.tree = 'True'
+
+            mg = etree.SubElement('mg', entry)
+            mg.set('idref', self.title)
+
+            xi = etree.SubElement('xi', mg)
+            xi.set('xpointer', 'xpointer(//e[@id="{}"]/tg'.format(self.title))
+            xi.set('href', 'termcenter.xml')
+
+            return expression['lang'], entry
+
+        return [make_entry(expression)
+                for expression in self.related_expressions
+                if expression['sanctioned']]
 
     def auto_sanction(self, language):
         """Automatically sanction expressions in the given language.

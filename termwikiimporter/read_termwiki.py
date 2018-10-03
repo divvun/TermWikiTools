@@ -27,6 +27,13 @@ from termwikiimporter import analyser
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 
+XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
+XML_NAMESPACE = 'https://www.w3.org/XML/1998/namespace'
+XI = '{%s}' % XI_NAMESPACE
+XML = '{%s}' % XML_NAMESPACE
+NSMAP = {'xi': XI_NAMESPACE, 'xml': XML_NAMESPACE}
+
+
 def lineno():
     """Return the current line number in our program."""
     return inspect.currentframe().f_back.f_lineno
@@ -288,15 +295,14 @@ class Concept(object):
 
         for expression in self.related_expressions:
             translation_group = etree.SubElement(entry, 'tg')
-            translation_group.set('lang',
-                                  expression['language'])
+            translation_group.attrib[XML + 'lang'] = expression['language']
 
             translation = etree.SubElement(translation_group, 't')
             translation.attrib['pos'] = expression['pos']
 
-            xi = etree.SubElement(translation, 'xi')
+            xi = etree.SubElement(translation, XI + 'include', nsmap=NSMAP)
             xi.attrib['href'] = 'terms-{}.xml'.format(expression['language'])
-            xi.attrib['xpointer'] = 'xpointer(//e[@id="{}\\{}"]/lg/l/text())'.format(expression['expression'], expression['pos'])
+            xi.attrib['xpointer'] = "xpointer(//e[@id='{}\\{}']/lg/l/text())".format(expression['expression'], expression['pos'])
 
         return entry
 
@@ -321,8 +327,8 @@ class Concept(object):
             mg = etree.SubElement(entry, 'mg')
             mg.attrib['idref'] = self.title
 
-            xi = etree.SubElement(mg, 'xi')
-            xi.attrib['xpointer'] = 'xpointer(//e[@id="{}"]/tg'.format(self.title)
+            xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
+            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg".format(self.title)
             xi.attrib['href'] = 'termcenter.xml'
 
             return expression['language'], entry

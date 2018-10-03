@@ -4,6 +4,7 @@
 import collections
 import os
 import sys
+from datetime import date
 
 import yaml
 from lxml import etree
@@ -11,6 +12,11 @@ from lxml import etree
 import mwclient
 from termwikiimporter import read_termwiki
 
+XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
+XML_NAMESPACE = 'https://www.w3.org/XML/1998/namespace'
+XI = '{%s}' % XI_NAMESPACE
+XML = '{%s}' % XML_NAMESPACE
+NSMAP = {'xi': XI_NAMESPACE, 'xml': XML_NAMESPACE}
 NAMESPACES = [
     'Boazodoallu',
     'Dihtorteknologiija ja diehtoteknihkka',
@@ -179,28 +185,32 @@ class DumpHandler(object):
                         content_elt, encoding='unicode'))
 
     def to_termcenter(self):
-        termcenter = etree.Element('r')
+        termcenter = etree.Element('r', nsmap=NSMAP)
+        termcenter.attrib['id'] = 'termwiki'
+        termcenter.attrib['timestamp'] = str(date.today())
         terms = {}
 
         for title, content_elt in self.content_elements:
             concept = read_termwiki.Concept()
             concept.title = title
             concept.from_termwiki(content_elt.text)
+
             termcenter.append(concept.termcenter_entry)
 
             for lang, e_entry in concept.terms_entries:
-                #print(lang, e_entry)
                 if terms.get(lang) is None:
-                    terms[lang] = etree.Element('r')
+                    terms[lang] = etree.Element('r', nsmap=NSMAP)
+                    terms[lang].attrib['id'] = 'termwiki'
+                    terms[lang].attrib['timestamp'] = str(date.today())
 
                 terms[lang].append(e_entry)
 
         with open('terms/termcenter.xml', 'wb') as termc:
-            termc.write(etree.tostring(termcenter, encoding='utf8', pretty_print=True))
+            termc.write(etree.tostring(termcenter, encoding='utf8', pretty_print=True, xml_declaration=True))
 
         for lang in terms:
             with open('terms/terms-{}.xml'.format(lang), 'wb') as turms:
-                turms.write(etree.tostring(terms[lang], encoding='utf8', pretty_print=True))
+                turms.write(etree.tostring(terms[lang], encoding='utf8', pretty_print=True, xml_declaration=True))
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.

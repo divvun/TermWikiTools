@@ -44,3 +44,12 @@ def is_known(language, lemma):
     command = COMMAND_TEMPLATE.format(language).split()
     RUNNER.run(command, to_stdin=bytes(lemma, encoding='utf8'))
     return b'?' not in RUNNER.stdout
+
+
+def analysis(language, lemma):
+    """Check if the given lemma in the given language is known."""
+    if language in WIKI_TO_FST:
+        language = WIKI_TO_FST[language]
+    command = COMMAND_TEMPLATE.format(language).split()
+    RUNNER.run(command, to_stdin=bytes(lemma, encoding='utf8'))
+    return RUNNER.stdout.decode('utf8')

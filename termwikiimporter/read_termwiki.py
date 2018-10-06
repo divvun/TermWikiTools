@@ -328,7 +328,7 @@ class Concept(object):
             mg.attrib['idref'] = self.title
 
             xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
-            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg".format(self.title)
+            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(self.title)
             xi.attrib['href'] = 'termcenter.xml'
 
             return expression['language'], entry

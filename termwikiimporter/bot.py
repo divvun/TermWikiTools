@@ -206,11 +206,13 @@ class DumpHandler(object):
                 terms[lang].append(e_entry)
 
         with open('terms/termcenter.xml', 'wb') as termc:
-            termc.write(etree.tostring(termcenter, encoding='utf8', pretty_print=True, xml_declaration=True))
+            termc.write(etree.tostring(termcenter, encoding='utf-8', pretty_print=True, xml_declaration=True))
 
         for lang in terms:
-            with open('terms/terms-{}.xml'.format(lang), 'wb') as turms:
-                turms.write(etree.tostring(terms[lang], encoding='utf8', pretty_print=True, xml_declaration=True))
+            if lang:
+                with open('terms/terms-{}.xml'.format(lang), 'wb') as turms:
+                    turms.write(etree.tostring(terms[lang], encoding='utf-8', pretty_print=True, xml_declaration=True))
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.

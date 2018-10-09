@@ -123,7 +123,7 @@ class DumpHandler(object):
                 concept.auto_sanction(language)
                 content_elt.text = str(concept)
 
-        self.tree.write(self.dump, pretty_print=True, encoding='utf8')
+        self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
 
     def sum_terms(self, language=None):
         """Sum up sanctioned and none sanctioned terms.

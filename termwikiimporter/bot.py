@@ -49,12 +49,14 @@ class DumpHandler(object):
     """Class that involves using the TermWiki dump.
 
     Attributes:
+        termwiki_xml_root (str): path where termwiki xml files live.
         dump (str): path to the dump file.
         tree (etree.ElementTree): the parsed dump file.
         mediawiki_ns (str): the mediawiki name space found in the dump file.
     """
 
-    dump = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki/dump.xml')
+    termwiki_xml_root = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki')
+    dump = os.path.join(termwiki_xml_root, 'dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
@@ -185,6 +187,20 @@ class DumpHandler(object):
                         content_elt, encoding='unicode'))
 
     def to_termcenter(self):
+        def sort_by_id(termroot):
+            return sorted(termroot, key=lambda child: child.get('id'))
+
+        def write_termfile(filename, root_element):
+            path = os.path.join(self.termwiki_xml_root, 'terms/{}.xml'.format(filename))
+            with open(path, 'wb') as termstream:
+                root_element[:] = sort_by_id(root_element)
+                termstream.write(
+                    etree.tostring(
+                        root_element,
+                        encoding='utf-8',
+                        pretty_print=True,
+                        xml_declaration=True))
+
         termcenter = etree.Element('r', nsmap=NSMAP)
         termcenter.attrib['id'] = 'termwiki'
         termcenter.attrib['timestamp'] = str(date.today())
@@ -205,13 +221,11 @@ class DumpHandler(object):
 
                 terms[lang].append(e_entry)
 
-        with open('terms/termcenter.xml', 'wb') as termc:
-            termc.write(etree.tostring(termcenter, encoding='utf-8', pretty_print=True, xml_declaration=True))
+        write_termfile('termcenter', termcenter)
 
         for lang in terms:
             if lang:
-                with open('terms/terms-{}.xml'.format(lang), 'wb') as turms:
-                    turms.write(etree.tostring(terms[lang], encoding='utf-8', pretty_print=True, xml_declaration=True))
+                write_termfile('terms-{}'.format(lang), terms[lang])
 
 
 class SiteHandler(object):

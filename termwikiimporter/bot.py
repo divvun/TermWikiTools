@@ -229,6 +229,24 @@ class DumpHandler(object):
             if lang:
                 write_termfile('terms-{}'.format(lang), terms[lang])
 
+    def sort_dump(self):
+        root = self.tree.getroot()
+        namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
+
+        pages = root.xpath('.//mw:page', namespaces=namespace)
+        pages[:] = sorted(
+            pages,
+            key=lambda page: page.find('./mw:title', namespaces=namespace).text
+        )
+
+        for page in root.xpath('.//mw:page', namespaces=namespace):
+            page.getparent().remove(page)
+
+        for page in pages:
+            root.append(page)
+
+        self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -429,6 +447,8 @@ def handle_dump(arguments):
         dumphandler.auto_sanction(language=arguments[1])
     elif arguments[0] == 'terms':
         dumphandler.to_termcenter()
+    elif arguments[0] == 'sort':
+        dumphandler.sort_dump()
     else:
         print(' '.join(arguments), 'is not supported')
 

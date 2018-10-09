@@ -6,10 +6,10 @@ import os
 import sys
 from datetime import date
 
+import mwclient
 import yaml
 from lxml import etree
 
-import mwclient
 from termwikiimporter import read_termwiki
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
@@ -55,7 +55,8 @@ class DumpHandler(object):
         mediawiki_ns (str): the mediawiki name space found in the dump file.
     """
 
-    termwiki_xml_root = os.path.join(os.getenv('GTHOME'), 'words/terms/termwiki')
+    termwiki_xml_root = os.path.join(
+        os.getenv('GTHOME'), 'words/terms/termwiki')
     dump = os.path.join(termwiki_xml_root, 'dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
@@ -191,7 +192,8 @@ class DumpHandler(object):
             return sorted(termroot, key=lambda child: child.get('id'))
 
         def write_termfile(filename, root_element):
-            path = os.path.join(self.termwiki_xml_root, 'terms/{}.xml'.format(filename))
+            path = os.path.join(self.termwiki_xml_root,
+                                'terms/{}.xml'.format(filename))
             with open(path, 'wb') as termstream:
                 root_element[:] = sort_by_id(root_element)
                 termstream.write(
@@ -282,8 +284,8 @@ class SiteHandler(object):
                 page.delete(reason='Will be replaced by Stem page')
             except mwclient.APIError as error:
                 if error.code != 'cantdelete':  # Okay if already deleted
-                    print('Can not delete {}.\nError {}'.format(page.name,
-                                                                error))
+                    print('Can not delete {}.\nError {}'.format(
+                        page.name, error))
 
     @staticmethod
     def is_concept_tag(content):
@@ -330,10 +332,9 @@ class SiteHandler(object):
         http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
         https://www.semantic-mediawiki.org/wiki/Help:API
         """
-        query = (
-            '[[Related expression::+]]'
-            '[[Language::{}]]'
-            '[[Sanctioned::False]]'.format(language))
+        query = ('[[Related expression::+]]'
+                 '[[Language::{}]]'
+                 '[[Sanctioned::False]]'.format(language))
 
         for number, answer in enumerate(self.site.ask(query), start=1):
             for title, _ in answer.items():
@@ -361,10 +362,9 @@ class SiteHandler(object):
             language (str): the language to sanction
         """
         ex = 1
-        query = (
-            '[[Related expression::+]]'
-            '[[Language::{}]]'
-            '[[Sanctioned::False]]'.format(language))
+        query = ('[[Related expression::+]]'
+                 '[[Language::{}]]'
+                 '[[Sanctioned::False]]'.format(language))
 
         for number, answer in enumerate(self.site.ask(query), start=1):
             for title, _ in answer.items():
@@ -396,10 +396,13 @@ class SiteHandler(object):
         rollback_token = self.site.get_token('rollback')
         for page in self.content_elements:
             try:
-                self.site.api('rollback', title=page.name,
-                              user='SDTermImporter',
-                              summary='Use Stempage in Related expression',
-                              markbot='1', token=rollback_token)
+                self.site.api(
+                    'rollback',
+                    title=page.name,
+                    user='SDTermImporter',
+                    summary='Use Stempage in Related expression',
+                    markbot='1',
+                    token=rollback_token)
             except mwclient.errors.APIError as error:
                 print(page.name, error)
 

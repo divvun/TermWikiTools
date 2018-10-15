@@ -213,15 +213,16 @@ class DumpHandler(object):
             concept.title = title
             concept.from_termwiki(content_elt.text)
 
-            termcenter.append(concept.termcenter_entry)
+            if concept.has_sanctioned_sami():
+                termcenter.append(concept.termcenter_entry)
 
-            for lang, e_entry in concept.terms_entries:
-                if terms.get(lang) is None:
-                    terms[lang] = etree.Element('r', nsmap=NSMAP)
-                    terms[lang].attrib['id'] = 'termwiki'
-                    terms[lang].attrib['timestamp'] = str(date.today())
+                for lang, e_entry in concept.terms_entries:
+                    if terms.get(lang) is None:
+                        terms[lang] = etree.Element('r', nsmap=NSMAP)
+                        terms[lang].attrib['id'] = 'termwiki'
+                        terms[lang].attrib['timestamp'] = str(date.today())
 
-                terms[lang].append(e_entry)
+                    terms[lang].append(e_entry)
 
         write_termfile('termcenter', termcenter)
 

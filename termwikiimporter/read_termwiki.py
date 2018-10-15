@@ -385,3 +385,10 @@ class Concept(object):
             if expression['language'] == language:
                 if invalid_chars_re.search(expression['expression']):
                     yield expression['expression']
+
+    def has_sanctioned_sami(self):
+        for expression in self.related_expressions:
+            if (expression['language'] in ['se', 'sma', 'smj', 'smn', 'sms'] and expression['sanctioned'] == 'True'):
+                return True
+
+        return False

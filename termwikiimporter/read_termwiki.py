@@ -294,15 +294,16 @@ class Concept(object):
         entry.attrib['category'] = self.category
 
         for expression in self.related_expressions:
-            translation_group = etree.SubElement(entry, 'tg')
-            translation_group.attrib[XML + 'lang'] = expression['language']
+            if expression['sanctioned'] == 'True':
+                translation_group = etree.SubElement(entry, 'tg')
+                translation_group.attrib[XML + 'lang'] = expression['language']
 
-            translation = etree.SubElement(translation_group, 't')
-            translation.attrib['pos'] = expression['pos']
+                translation = etree.SubElement(translation_group, 't')
+                translation.attrib['pos'] = expression['pos']
 
-            xi = etree.SubElement(translation, XI + 'include', nsmap=NSMAP)
-            xi.attrib['href'] = 'terms-{}.xml'.format(expression['language'])
-            xi.attrib['xpointer'] = "xpointer(//e[@id='{}\\{}']/lg/l/text())".format(expression['expression'], expression['pos'])
+                xi = etree.SubElement(translation, XI + 'include', nsmap=NSMAP)
+                xi.attrib['href'] = 'terms-{}.xml'.format(expression['language'])
+                xi.attrib['xpointer'] = "xpointer(//e[@id='{}\\{}']/lg/l/text())".format(expression['expression'], expression['pos'])
 
         return entry
 

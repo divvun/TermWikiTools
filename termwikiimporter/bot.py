@@ -203,32 +203,71 @@ class DumpHandler(object):
                         pretty_print=True,
                         xml_declaration=True))
 
-        termcenter = etree.Element('r', nsmap=NSMAP)
-        termcenter.attrib['id'] = 'termwiki'
-        termcenter.attrib['timestamp'] = str(date.today())
-        terms = {}
+        def make_termcenter():
+            termcenter = etree.Element('r', nsmap=NSMAP)
+            termcenter.attrib['id'] = 'termwiki'
+            termcenter.attrib['timestamp'] = str(date.today())
 
-        for title, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.title = title
-            concept.from_termwiki(content_elt.text)
+            for title, content_elt in self.content_elements:
+                concept = read_termwiki.Concept()
+                concept.title = title
+                concept.from_termwiki(content_elt.text)
 
-            if concept.has_sanctioned_sami():
-                termcenter.append(concept.termcenter_entry)
+                if concept.has_sanctioned_sami():
+                    termcenter.append(concept.termcenter_entry)
 
-                for lang, e_entry in concept.terms_entries:
-                    if terms.get(lang) is None:
-                        terms[lang] = etree.Element('r', nsmap=NSMAP)
-                        terms[lang].attrib['id'] = 'termwiki'
-                        terms[lang].attrib['timestamp'] = str(date.today())
+            write_termfile('termcenter', termcenter)
 
-                    terms[lang].append(e_entry)
+        def make_termfiles():
+            terms = {}
+            for title, content_elt in self.content_elements:
+                concept = read_termwiki.Concept()
+                concept.title = title
+                concept.from_termwiki(content_elt.text)
+                if concept.has_sanctioned_sami():
+                    for e_entry in concept.related_expressions:
+                        lang = e_entry.get('language')
+                        if lang and e_entry.get('sanctioned') == 'True':
+                            if terms.get(lang) is None:
+                                terms[lang] = collections.defaultdict(set)
 
-        write_termfile('termcenter', termcenter)
+                            terms[lang]['{}\\{}'.format(e_entry['expression'], e_entry['pos'])].add(title)
 
-        for lang in terms:
-            if lang:
-                write_termfile('terms-{}'.format(lang), terms[lang])
+            turms = {}
+            for lang in terms:
+                if not turms.get(lang):
+                    turms[lang] = etree.Element('r', nsmap=NSMAP)
+                    turms[lang].attrib['id'] = 'termwiki'
+                    turms[lang].attrib['timestamp'] = str(date.today())
+
+                for id in terms[lang]:
+                    entry = etree.Element('e')
+                    entry.attrib['id'] = id
+
+                    lg = etree.SubElement(entry, 'lg')
+                    l = etree.SubElement(lg, 'l')
+                    l.text, l.attrib['pos'] = id.split('\\')
+
+                    status = etree.SubElement(entry, 'status')
+                    sanctioned = etree.SubElement(entry, 'sanctioned')
+                    sanctioned.text = 'True'
+
+                    for title in terms[lang][id]:
+                        mg = etree.SubElement(entry, 'mg')
+                        mg.attrib['idref'] = title
+
+                        xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
+                        xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(title)
+                        xi.attrib['href'] = 'termcenter.xml'
+
+                    turms[lang].append(entry)
+
+            for lang in turms:
+                if lang:
+                    write_termfile('terms-{}'.format(lang), turms[lang])
+
+        make_termcenter()
+        make_termfiles()
 
     def sort_dump(self):
         root = self.tree.getroot()

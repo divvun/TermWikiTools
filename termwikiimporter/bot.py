@@ -310,7 +310,7 @@ class SiteHandler(object):
             os.getenv('HOME'), '.config', 'term_config.yaml')
         with open(config_file) as config_stream:
             config = yaml.load(config_stream)
-            site = mwclient.Site(('http', 'localhost'), path='/termwiki/')
+            site = mwclient.Site('satni.uit.no', path='/termwiki/')
             site.login(config['username'], config['password'])
 
             print('Logging in to query …')

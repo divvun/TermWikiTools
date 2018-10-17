@@ -252,7 +252,7 @@ class DumpHandler(object):
                     sanctioned = etree.SubElement(entry, 'sanctioned')
                     sanctioned.text = 'True'
 
-                    for title in terms[lang][id]:
+                    for title in sorted(terms[lang][id]):
                         mg = etree.SubElement(entry, 'mg')
                         mg.attrib['idref'] = title
 

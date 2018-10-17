@@ -29,7 +29,8 @@ def write_to_termwiki():
 
     # Initialize Site object
     print('Logging in …')
-    site = bot.get_site()
+    sitehandler = bot.SiteHandler()
+    site = sitehandler.get_site()
 
     page_titles = collections.defaultdict(int)
     all_pages = etree.Element('all_pages')

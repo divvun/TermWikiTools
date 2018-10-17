@@ -38,18 +38,18 @@ class Importer(object):
         pages = etree.Element('pages')
         for concept in self.concepts:
             content = etree.Element('content')
-            content.text = read_termwiki.term_to_string(concept)
+            content.text = str(concept)
 
             page = etree.Element('page')
             try:
                 page.set('title', ':'.join([
-                    concept['concept']['main_category'],
-                    concept['related_expressions'][0]['expression']
+                    concept.category,
+                    concept.data['related_expressions'][0]['expression']
                 ]))
             except TypeError:
                 self.pagecounter += 1
                 page.set('title', ':'.join(
-                    [concept.main_category, 'page_' + str(self.pagecounter)]))
+                    [concept.category, 'page_' + str(self.pagecounter)]))
             page.append(content)
             pages.append(page)
 
@@ -64,14 +64,8 @@ class Importer(object):
 
     def fresh_concept(self):
         """Make a dict that represents a termwiki concept."""
-        concept = {
-            'concept': {
-                'collection': set(),
-            },
-            'concept_infos': [],
-            'related_expressions': []
-        }
-        concept['concept']['collection'].add(
+        concept = read_termwiki.Concept()
+        concept.data['concept']['collection'].add(
             os.path.splitext(os.path.basename(self.filename))[0])
 
         return concept
@@ -82,9 +76,9 @@ class Importer(object):
         Args:
             concept (dict): A termwiki concept
         """
-        read_termwiki.to_concept_info(concept)
-        if (len(concept['related_expressions'])
-                or len(concept['concept_infos'])):
+        concept.to_concept_info()
+        if (len(concept.data['related_expressions'])
+                or len(concept.data['concept_infos'])):
             self.concepts.append(concept)
 
 
@@ -134,7 +128,7 @@ class ExcelImporter(Importer):
                 self.counter['concepts'] += 1
 
                 concept = self.fresh_concept()
-                concept['concept']['main_category'] = ws_info['main_category']
+                concept.data['concept']['main_category'] = ws_info['main_category']
 
                 pos = ''
                 if (ws_info['wordclass'] != 0 and
@@ -149,7 +143,7 @@ class ExcelImporter(Importer):
                             row=row, column=col).value.strip()
                         for expression in self.collect_expressions(
                                 expression_line):
-                            concept['related_expressions'].append({
+                            concept.data['related_expressions'].append({
                                 'expression':
                                 expression,
                                 'pos':
@@ -160,7 +154,7 @@ class ExcelImporter(Importer):
 
                 for info, col in list(ws_info['other_info'].items()):
                     if sheet.cell(row=row, column=col).value is not None:
-                        concept['concept'][info] = sheet.cell(
+                        concept.data['concept'][info] = sheet.cell(
                             row=row, column=col).value.strip()
 
                 self.add_concept(concept)

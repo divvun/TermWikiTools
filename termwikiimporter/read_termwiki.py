@@ -46,7 +46,9 @@ class Concept(object):
         """Initialise the Concept class."""
         self.title = ''
         self.data = {
-            'concept': {},
+            'concept': {
+                'collection': set()
+            },
             'concept_infos': [],
             'related_expressions': [],
             'related_concepts': []

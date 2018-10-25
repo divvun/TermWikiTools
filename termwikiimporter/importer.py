@@ -154,8 +154,8 @@ class ExcelImporter(Importer):
 
                 for info, col in list(ws_info['other_info'].items()):
                     if sheet.cell(row=row, column=col).value is not None:
-                        concept.data['concept'][info] = sheet.cell(
-                            row=row, column=col).value.strip()
+                        concept.data['concept'][info] = str(sheet.cell(
+                            row=row, column=col).value).strip()
 
                 self.add_concept(concept)
 

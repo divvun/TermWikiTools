@@ -302,10 +302,7 @@ class Concept(object):
 
                 translation = etree.SubElement(translation_group, 't')
                 translation.attrib['pos'] = expression['pos']
-
-                xi = etree.SubElement(translation, XI + 'include', nsmap=NSMAP)
-                xi.attrib['href'] = 'terms-{}.xml'.format(expression['language'])
-                xi.attrib['xpointer'] = "xpointer(//e[@id='{}\\{}']/lg/l/text())".format(expression['expression'], expression['pos'])
+                translation.text = expression['expression']
 
         return entry
 

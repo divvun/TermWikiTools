@@ -39,8 +39,23 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
-def fix_sms(expression):
-    """Replace invalid accents with valid ones for the sms language."""
+def fix_sms(expression: str) -> str:
+    """Replace invalid accents with valid ones for the sms language.
+
+    * u2019: RIGHT SINGLE QUOTATION MARK
+    * u0027: APOSTROPHE
+    * u2032: PRIME
+    * u00B4: ACUTE ACCENT
+    * u0301: COMBINING ACUTE ACCENT
+    * u02BC: MODIFIER LETTER APOSTROPHE
+    * u02B9: MODIFIER LETTER PRIME
+
+    Args:
+        expression: a string to check for sms letters
+
+    Returns:
+        A string containing proper sms letters
+    """
     replacement_pairs = [
         (u'\u2019', u'\u02BC'),
         (u'\u0027', u'\u02BC'),

@@ -501,27 +501,12 @@ class SiteHandler(object):
             print(old_name, error, file=sys.stderr)
 
     def improve_pagenames(self):
-        dumphandler = DumpHandler()
-        for title, _ in dumphandler.pages:
-            if '(' in title:
-                orig_page = self.site.pages[title]
-                new_title = title[:title.find('(')].strip()
-                try:
-                    my_title = new_title
-                    page = self.site.pages[new_title]
-                    x = 1
-                    while page.exists:
-                        my_title = f'{new_title} {x}'
-                        page = self.site.pages[my_title]
-                        x += 1
-
-                    print(f'Moving from {orig_page.name} to {my_title}')
-                    orig_page.move(
-                        my_title,
-                        reason='Remove parenthesis from page names',
-                        no_redirect=True)
-                except mwclient.errors.InvalidPageTitle as error:
-                    print(title, error, file=sys.stderr)
+        for page in self.content_elements:
+            my_title = read_termwiki.fix_sms(
+                self.remove_paren(page.name) if '(' in page.name else page.
+                name)
+            if page.name != my_title:
+                self.move_page(page.name, my_title)
 
 
 def handle_dump(arguments):

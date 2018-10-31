@@ -231,7 +231,9 @@ class DumpHandler(object):
                             if terms.get(lang) is None:
                                 terms[lang] = collections.defaultdict(set)
 
-                            terms[lang]['{}\\{}'.format(e_entry['expression'], e_entry['pos'])].add(title)
+                            terms[lang]['{}\\{}'.format(
+                                e_entry['expression'],
+                                e_entry['pos'])].add(title)
 
             turms = {}
             for lang in terms:
@@ -257,7 +259,9 @@ class DumpHandler(object):
                         mg.attrib['idref'] = title
 
                         xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
-                        xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(title)
+                        xi.attrib[
+                            'xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
+                                title)
                         xi.attrib['href'] = 'termcenter.xml'
 
                     turms[lang].append(entry)

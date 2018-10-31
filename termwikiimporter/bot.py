@@ -500,7 +500,7 @@ class SiteHandler(object):
         x = 1
         page = self.site.pages[my_title]
         while page.exists:
-            my_title = f'{new_title} {x}'
+            my_title = '{} {}'.format(new_title, x)
             page = self.site.pages[my_title]
             x += 1
 
@@ -510,7 +510,8 @@ class SiteHandler(object):
         """Move a termwiki page from old to new name."""
         orig_page = self.site.pages[old_name]
         try:
-            print(f'Moving from {orig_page.name} to {new_name}')
+            print('Moving from {orig_page.name} to {new_name}'.format(
+                orig_page.name, new_name))
             orig_page.move(
                 new_name,
                 reason='Remove parenthesis from page names',

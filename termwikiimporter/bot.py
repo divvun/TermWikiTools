@@ -291,6 +291,24 @@ class DumpHandler(object):
 
         self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
 
+    def print_expression_pairs(self, lang1, lang2):
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+            term = concept.data
+
+            if concept.has_sanctioned_sami():
+                langs = {lang1: set(), lang2: set()}
+                for expression in term['related_expressions']:
+                    if expression['language'] == lang1 or expression['language'] == lang2:
+                        if expression['sanctioned'] == 'True':
+                            langs[expression['language']].add(expression['expression'])
+
+                if langs[lang1] and langs[lang2]:
+                    print('{}\t{}'.format(', '.join(langs[lang1]),
+                                            ', '.join(langs[lang2])))
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -480,7 +498,7 @@ class SiteHandler(object):
         new_title = old_title[:old_title.find('(')].strip()
         my_title = new_title
         x = 1
-        page = self.site.pages[new_title]
+        page = self.site.pages[my_title]
         while page.exists:
             my_title = f'{new_title} {x}'
             page = self.site.pages[my_title]

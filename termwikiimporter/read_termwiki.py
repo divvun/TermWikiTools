@@ -21,11 +21,11 @@
 import inspect
 import re
 from operator import itemgetter
+
 from lxml import etree
 
 from termwikiimporter import analyser
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
-
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
 XML_NAMESPACE = 'https://www.w3.org/XML/1998/namespace'
@@ -74,6 +74,22 @@ class Concept(object):
                 for concept in self.data['concept']['collection'].split('@@')
             ])
 
+    @staticmethod
+    def fix_sms(expression):
+        """Replace invalid accents with valid ones for the sms language."""
+        replacement_pairs = [
+            (u'\u2019', u'\u02BC'),
+            (u'\u0027', u'\u02BC'),
+            (u'\u2032', u'\u02B9'),
+            (u'\u00B4', u'\u02B9'),
+            (u'\u0301', u'\u02B9'),
+        ]
+
+        for replacement_pair in replacement_pairs:
+            expression = expression(replacement_pair[0], replacement_pair[1])
+
+        return expression
+
     def clean_up_expression(self, expression):
         """Clean up expression."""
         if 'expression' in expression:
@@ -86,7 +102,7 @@ class Concept(object):
                 expression['sanctioned'] = 'True'
 
             if ' ' in expression['expression']:
-                expression['pos'] = 'mwe'
+                expression['pos'] = 'MWE'
 
             if 'collection' in expression:
                 if not self.data.get('collection'):
@@ -94,6 +110,10 @@ class Concept(object):
                 self.data['concept']['collection'].add(
                     expression['collection'].replace('_', ' '))
                 del expression['collection']
+
+            if expression['language'] == 'sms':
+                expression['expression'] = self.fix_sms(
+                    expression['expression'])
 
             self.data['related_expressions'].append(expression)
 
@@ -310,7 +330,8 @@ class Concept(object):
     def terms_entries(self):
         def make_entry(expression):
             entry = etree.Element('e')
-            entry.attrib['id'] = '{}\\{}'.format(expression['expression'], expression['pos'])
+            entry.attrib['id'] = '{}\\{}'.format(expression['expression'],
+                                                 expression['pos'])
 
             lg = etree.SubElement(entry, 'lg')
             l = etree.SubElement(lg, 'l')
@@ -328,14 +349,17 @@ class Concept(object):
             mg.attrib['idref'] = self.title
 
             xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
-            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(self.title)
+            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
+                self.title)
             xi.attrib['href'] = 'termcenter.xml'
 
             return expression['language'], entry
 
-        return [make_entry(expression)
-                for expression in self.related_expressions
-                if expression['sanctioned'] and expression.get('language') is not None]
+        return [
+            make_entry(expression) for expression in self.related_expressions
+            if expression['sanctioned']
+            and expression.get('language') is not None
+        ]
 
     def auto_sanction(self, language):
         """Automatically sanction expressions in the given language.
@@ -388,7 +412,8 @@ class Concept(object):
 
     def has_sanctioned_sami(self):
         for expression in self.related_expressions:
-            if (expression['language'] in ['se', 'sma', 'smj', 'smn', 'sms'] and expression['sanctioned'] == 'True'):
+            if (expression['language'] in ['se', 'sma', 'smj', 'smn', 'sms']
+                    and expression['sanctioned'] == 'True'):
                 return True
 
         return False

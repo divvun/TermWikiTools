@@ -39,6 +39,23 @@ def lineno():
     return inspect.currentframe().f_back.f_lineno
 
 
+def fix_sms(expression):
+    """Replace invalid accents with valid ones for the sms language."""
+    replacement_pairs = [
+        (u'\u2019', u'\u02BC'),
+        (u'\u0027', u'\u02BC'),
+        (u'\u2032', u'\u02B9'),
+        (u'\u00B4', u'\u02B9'),
+        (u'\u0301', u'\u02B9'),
+    ]
+
+    for replacement_pair in replacement_pairs:
+        expression = expression.replace(replacement_pair[0],
+                                        replacement_pair[1])
+
+    return expression
+
+
 class Concept(object):
     """Class that represents a TermWiki concept."""
 
@@ -74,22 +91,6 @@ class Concept(object):
                 for concept in self.data['concept']['collection'].split('@@')
             ])
 
-    @staticmethod
-    def fix_sms(expression):
-        """Replace invalid accents with valid ones for the sms language."""
-        replacement_pairs = [
-            (u'\u2019', u'\u02BC'),
-            (u'\u0027', u'\u02BC'),
-            (u'\u2032', u'\u02B9'),
-            (u'\u00B4', u'\u02B9'),
-            (u'\u0301', u'\u02B9'),
-        ]
-
-        for replacement_pair in replacement_pairs:
-            expression = expression(replacement_pair[0], replacement_pair[1])
-
-        return expression
-
     def clean_up_expression(self, expression):
         """Clean up expression."""
         if 'expression' in expression:
@@ -112,8 +113,7 @@ class Concept(object):
                 del expression['collection']
 
             if expression['language'] == 'sms':
-                expression['expression'] = self.fix_sms(
-                    expression['expression'])
+                expression['expression'] = fix_sms(expression['expression'])
 
             self.data['related_expressions'].append(expression)
 

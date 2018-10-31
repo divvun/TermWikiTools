@@ -42,14 +42,16 @@ class Importer(object):
 
             page = etree.Element('page')
             try:
-                page.set('title', ':'.join([
-                    concept.category,
-                    concept.data['related_expressions'][0]['expression']
-                ]))
+                page.set(
+                    'title', ':'.join([
+                        concept.category,
+                        concept.data['related_expressions'][0]['expression']
+                    ]))
             except TypeError:
                 self.pagecounter += 1
-                page.set('title', ':'.join(
-                    [concept.category, 'page_' + str(self.pagecounter)]))
+                page.set(
+                    'title', ':'.join(
+                        [concept.category, 'page_' + str(self.pagecounter)]))
             page.append(content)
             pages.append(page)
 
@@ -77,8 +79,8 @@ class Importer(object):
             concept (dict): A termwiki concept
         """
         concept.to_concept_info()
-        if (len(concept.data['related_expressions'])
-                or len(concept.data['concept_infos'])):
+        if (concept.data['related_expressions']
+                or concept.data['concept_infos']):
             self.concepts.append(concept)
 
 
@@ -105,7 +107,7 @@ class ExcelImporter(Importer):
         else:
             for token in self.splitters.split(startline):
                 finaltoken = token.strip().lower()
-                if len(finaltoken) > 0:
+                if finaltoken:
                     expressions.append(finaltoken)
 
         return expressions
@@ -128,7 +130,8 @@ class ExcelImporter(Importer):
                 self.counter['concepts'] += 1
 
                 concept = self.fresh_concept()
-                concept.data['concept']['main_category'] = ws_info['main_category']
+                concept.data['concept']['main_category'] = ws_info[
+                    'main_category']
 
                 pos = ''
                 if (ws_info['wordclass'] != 0 and
@@ -154,8 +157,8 @@ class ExcelImporter(Importer):
 
                 for info, col in list(ws_info['other_info'].items()):
                     if sheet.cell(row=row, column=col).value is not None:
-                        concept.data['concept'][info] = str(sheet.cell(
-                            row=row, column=col).value).strip()
+                        concept.data['concept'][info] = str(
+                            sheet.cell(row=row, column=col).value).strip()
 
                 self.add_concept(concept)
 
@@ -311,8 +314,8 @@ def init_file(filename):
     """Produce the correct Importer according to filename."""
     if filename.endswith('.xlsx'):
         return ExcelImporter(filename)
-    else:
-        return ArbeidImporter(filename)
+
+    return ArbeidImporter(filename)
 
 
 def main():

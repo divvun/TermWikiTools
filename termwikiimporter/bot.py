@@ -301,13 +301,15 @@ class DumpHandler(object):
             if concept.has_sanctioned_sami():
                 langs = {lang1: set(), lang2: set()}
                 for expression in term['related_expressions']:
-                    if expression['language'] == lang1 or expression['language'] == lang2:
+                    if expression['language'] == lang1 or expression[
+                            'language'] == lang2:
                         if expression['sanctioned'] == 'True':
-                            langs[expression['language']].add(expression['expression'])
+                            langs[expression['language']].add(
+                                expression['expression'])
 
                 if langs[lang1] and langs[lang2]:
                     print('{}\t{}'.format(', '.join(langs[lang1]),
-                                            ', '.join(langs[lang2])))
+                                          ', '.join(langs[lang2])))
 
 
 class SiteHandler(object):

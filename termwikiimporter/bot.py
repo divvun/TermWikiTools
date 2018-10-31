@@ -500,7 +500,8 @@ class SiteHandler(object):
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
 
-    def improve_pagenames(self):
+    def improve_pagenames(self) -> None:
+        """Remove characters that break eXist search from page names."""
         for page in self.content_elements:
             my_title = read_termwiki.fix_sms(
                 self.remove_paren(page.name) if '(' in page.name else page.

@@ -468,6 +468,29 @@ class SiteHandler(object):
             except mwclient.errors.APIError as error:
                 print(page.name, error)
 
+    def improve_pagenames(self):
+        dumphandler = DumpHandler()
+        for title, _ in dumphandler.pages:
+            if '(' in title:
+                orig_page = self.site.pages[title]
+                new_title = title[:title.find('(')].strip()
+                try:
+                    my_title = new_title
+                    page = self.site.pages[new_title]
+                    x = 1
+                    while page.exists:
+                        my_title = f'{new_title} {x}'
+                        page = self.site.pages[my_title]
+                        x += 1
+
+                    print(f'Moving from {orig_page.name} to {my_title}')
+                    orig_page.move(
+                        my_title,
+                        reason='Remove parenthesis from page names',
+                        no_redirect=True)
+                except mwclient.errors.InvalidPageTitle as error:
+                    print(title, error, file=sys.stderr)
+
 
 def handle_dump(arguments):
     """Act on the TermWiki dump.
@@ -514,6 +537,8 @@ def handle_site(arguments):
         site.revert(page=arguments[1])
     elif arguments[0] == 'del_expression':
         site.del_expression()
+    elif arguments[0] == 'improve_pagenames':
+        site.improve_pagenames()
     else:
         print(' '.join(arguments), 'is not supported')
 

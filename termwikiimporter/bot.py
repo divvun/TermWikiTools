@@ -468,6 +468,38 @@ class SiteHandler(object):
             except mwclient.errors.APIError as error:
                 print(page.name, error)
 
+    def remove_paren(self, old_title: str) -> str:
+        """Remove parenthesis from termwiki page name.
+
+        Args:
+            old_title: a title containing a parenthesis
+
+        Returns:
+            A new unique page name without parenthesis
+        """
+        new_title = old_title[:old_title.find('(')].strip()
+        my_title = new_title
+        x = 1
+        page = self.site.pages[new_title]
+        while page.exists:
+            my_title = f'{new_title} {x}'
+            page = self.site.pages[my_title]
+            x += 1
+
+        return my_title
+
+    def move_page(self, old_name: str, new_name: str) -> None:
+        """Move a termwiki page from old to new name."""
+        orig_page = self.site.pages[old_name]
+        try:
+            print(f'Moving from {orig_page.name} to {new_name}')
+            orig_page.move(
+                new_name,
+                reason='Remove parenthesis from page names',
+                no_redirect=True)
+        except mwclient.errors.InvalidPageTitle as error:
+            print(old_name, error, file=sys.stderr)
+
     def improve_pagenames(self):
         dumphandler = DumpHandler()
         for title, _ in dumphandler.pages:

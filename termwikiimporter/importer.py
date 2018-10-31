@@ -67,8 +67,8 @@ class Importer(object):
     def fresh_concept(self):
         """Make a dict that represents a termwiki concept."""
         concept = read_termwiki.Concept()
-        concept.data['concept']['collection'].add(
-            os.path.splitext(os.path.basename(self.filename))[0])
+        concept.data['concept']['collection'].add('Collection:{}'.format(
+            os.path.splitext(os.path.basename(self.filename))[0]))
 
         return concept
 

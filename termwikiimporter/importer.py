@@ -6,10 +6,10 @@ import os
 import re
 from collections import defaultdict
 
-import openpyxl
 import yaml
 from lxml import etree
 
+import openpyxl
 from termwikiimporter import read_termwiki
 
 

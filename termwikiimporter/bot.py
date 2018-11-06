@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """Bot to fix syntax blunders in termwiki articles."""
-
 import collections
+import json
 import os
 import sys
+import uuid
 from datetime import date
 
 import mwclient
@@ -18,6 +19,7 @@ XI = '{%s}' % XI_NAMESPACE
 XML = '{%s}' % XML_NAMESPACE
 NSMAP = {'xi': XI_NAMESPACE, 'xml': XML_NAMESPACE}
 NAMESPACES = [
+    'Beaivvalaš giella',
     'Boazodoallu',
     'Dihtorteknologiija ja diehtoteknihkka',
     'Dáidda ja girjjálašvuohta',
@@ -311,6 +313,131 @@ class DumpHandler(object):
                     print('{}\t{}'.format(', '.join(langs[lang1]),
                                           ', '.join(langs[lang2])))
 
+    @staticmethod
+    def get_site():
+        """Get a mwclient site object.
+
+        Returns:
+            mwclient.Site
+        """
+        config_file = os.path.join(
+            os.getenv('HOME'), '.config', 'term_config.yaml')
+        with open(config_file) as config_stream:
+            config = yaml.load(config_stream)
+            site = mwclient.Site('satni.uit.no', path='/termwiki/')
+            site.login(config['username'], config['password'])
+
+            print('Logging in to query …')
+
+            return site
+
+    @staticmethod
+    def uff_key(concept):
+        """Turn the expression references into a string"""
+        return ''.join(
+            sorted({
+                r.get('expression_ref')
+                for r in concept.iter('related_expression')
+            }))
+
+    def merger(self, merge_candidate):
+        site = self.get_site()
+
+        termwiki, uxpresssions = self.dump2xml()
+        old_id = collections.defaultdict(set)  #
+
+        for concept in termwiki.xpath(
+                './/collection[text()="Collection:SosDearv_sánit_SD"]/../..'):
+            old_id[self.uff_key(concept)].add(concept.get('id'))
+
+        expressions = termwiki.find('./expressions')
+
+        x = 0
+        z = 0
+
+        for page in etree.parse(merge_candidate).iter('page'):
+            z += 1
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(page.find('.//concept').text)
+            print(z)
+            xml_concept = etree.Element('concept')
+            self.concept2xml(concept, xml_concept, uxpresssions, expressions)
+
+            a = self.uff_key(xml_concept)
+            if a in old_id.keys():
+                x += 1
+                site_page = site.Pages[old_id[a]]
+                site_page.save(
+                    page.find('.//concept').text,
+                    summary='Update SosDearv sánit SD collection')
+                print(f'boaris {old_id[a]}')
+            else:
+                new_title = f"Servodatdieđa:{concept.data['related_expressions'][0]['expression']}"
+                my_title = new_title
+                site_page = site.Pages[my_title]
+                y = 0
+                while site_page.exists:
+                    my_title = '{} {}'.format(new_title, y)
+                    site_page = site.pages[my_title]
+                    y += 1
+                print(f'ođđa {my_title}')
+                site_page.save(
+                    page.find('.//concept').text,
+                    summary='Update SosDearv sánit SD collection')
+
+        print(x)
+        #with open('termwiki.xml', 'wb') as term_stream:
+        #term_stream.write(etree.tostring(termwiki, encoding='utf-8', pretty_print=True))
+
+    @staticmethod
+    def concept2xml(concept, xml_concept, expression_dict, expressions):
+        """Append the different parts of a concept into an xml_concept."""
+        for con_xml in concept.concept_xml():
+            xml_concept.append(con_xml)
+
+        for rel_con in concept.related_concepts_xml():
+            xml_concept.append(rel_con)
+
+        for con_inf in concept.concept_info_xml():
+            xml_concept.append(con_inf)
+
+        for related_expression, exp in concept.related_expressions_xml():
+            expression_key = json.dumps(sorted(exp.items()))
+
+            if expression_key not in expression_dict:
+                expression_ref = str(uuid.uuid4())
+                expression_dict[expression_key] = expression_ref
+                expression = etree.Element('expression')
+                expression.set(f'{XML}lang', exp['language'])
+                expression.set('pos', exp['pos'])
+                expression.set('string', exp['expression'])
+                expression.set('id', str(expression_ref))
+                expressions.append(expression)
+
+            related_expression.set('expression_ref',
+                                   expression_dict[expression_key])
+            xml_concept.append(related_expression)
+
+    def dump2xml(self):
+        """Turn semantic wiki concepts from dump into xml."""
+        termwiki = etree.Element('termwiki', nsmap=NSMAP)
+        expression_dict = {}
+
+        expressions = etree.SubElement(termwiki, 'expressions')
+        concepts = etree.SubElement(termwiki, 'concepts')
+
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(content_elt.text)
+
+            xml_concept = etree.SubElement(concepts, 'concept')
+            xml_concept.set('id', title)
+
+            self.concept2xml(concept, xml_concept, expression_dict,
+                             expressions)
+
+        return termwiki, expression_dict
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -555,6 +682,8 @@ def handle_dump(arguments):
         dumphandler.to_termcenter()
     elif arguments[0] == 'sort':
         dumphandler.sort_dump()
+    elif arguments[0] == 'new_xml':
+        dumphandler.merger(merge_candidate=arguments[1])
     else:
         print(' '.join(arguments), 'is not supported')
 

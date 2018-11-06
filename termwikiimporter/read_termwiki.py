@@ -142,10 +142,10 @@ class Concept(object):
         Returns:
             dict: contains the content of the termwiki page.
         """
-        text_iterator = iter(text.splitlines())
+        text_iterator = iter(text.replace('\xa0', ' ').splitlines())
 
         for line in text_iterator:
-            line = line.replace('\xa0', ' ').strip()  # replace nbsp
+            line = line.strip()
             if self.is_empty_template(line):
                 continue
 

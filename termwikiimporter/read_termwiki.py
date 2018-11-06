@@ -270,6 +270,18 @@ class Concept(object):
                         key, concept_info[key]))
             term_strings.append('}}')
 
+    def concept_info_xml(self):
+        """Turn concept_info into xml."""
+        for concept_info in self.data['concept_infos']:
+            concept_info_xml = etree.Element('concept_info', nsmap=NSMAP)
+            for key in concept_info:
+                if key == 'language':
+                    concept_info_xml.set(f'{XML}lang', concept_info[key])
+                else:
+                    new_element = etree.SubElement(concept_info_xml, key, nsmap=NSMAP)
+                    new_element.text = concept_info[key]
+            yield concept_info_xml
+
     def related_expressions_str(self, term_strings):
         """Append related_expressions to a list of strings."""
         for expression in self.related_expressions:
@@ -277,6 +289,25 @@ class Concept(object):
             for key, value in expression.items():
                 term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')
+
+    def related_expressions_xml(self):
+        """Turn related expressions into two parts.
+
+        One meant for use inside a concept element, the other for use in
+        an expressions list.
+        """
+        for expression in self.related_expressions:
+            rel_exp = etree.Element('related_expression', nsmap=NSMAP)
+            exp = {}
+
+            for key, value in expression.items():
+                if key in ['expression', 'pos', 'language']:
+                    exp[key] = value
+                else:
+                    child = etree.SubElement(rel_exp, key, nsmap=NSMAP)
+                    child.text = value
+
+            yield rel_exp, exp
 
     def related_concepts_str(self, term_strings):
         """Append related_concepts to a list of strings."""
@@ -286,6 +317,15 @@ class Concept(object):
                 for key, value in related_concept.items():
                     term_strings.append('|{}={}'.format(key, value))
                 term_strings.append('}}')
+
+    def related_concepts_xml(self):
+        """Make xml out related_concepts."""
+        if self.data.get('related_concepts'):
+            for related_concept in self.data['related_concepts']:
+                rel_con = etree.Element('related_concept', nsmap=NSMAP)
+                for key, value in related_concept.items():
+                    rel_con.set(key, value)
+                yield rel_con
 
     def concept_str(self, term_strings):
         """Append concept to a list of strings."""
@@ -301,6 +341,23 @@ class Concept(object):
             term_strings.append('}}')
         else:
             term_strings.append('{{Concept}}')
+
+    def concept_xml(self):
+        """Turn the language independent parts of a concept into xml."""
+        if self.data['concept']:
+            for key, value in self.data['concept'].items():
+                if key == 'collection':
+                    if value:
+                        collections = etree.Element('collections', nsmap=NSMAP)
+                        for collection_string in value:
+                            collection = etree.SubElement(collections, 'collection', nsmap=NSMAP)
+                            collection.text = collection_string
+                        yield collections
+                else:
+                    child = etree.Element(key, nsmap=NSMAP)
+                    child.text = value
+
+                    yield child
 
     def __str__(self):
         """Turn a term dict into a semantic wiki page.

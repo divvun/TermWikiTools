@@ -293,8 +293,9 @@ class Concept(object):
             term_strings.append('{{Concept')
             for key, value in self.data['concept'].items():
                 if key == 'collection':
-                    term_strings.append('|{}={}'.format(
-                        key, '@@ '.join(value)))
+                    if value:
+                        term_strings.append('|{}={}'.format(
+                            key, '@@ '.join(value)))
                 else:
                     term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')

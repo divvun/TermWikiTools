@@ -30,35 +30,6 @@ class Importer(object):
         """Initialise the Importer class."""
         self.filename = filename
 
-    def write(self, ):
-        """Write the result of the conversion.
-
-        Write the concepts found to an xml file.
-        """
-        pages = etree.Element('pages')
-        for concept in self.concepts:
-            content = etree.Element('content')
-            content.text = str(concept)
-
-            page = etree.Element('page')
-            try:
-                page.set(
-                    'title', ':'.join([
-                        concept.category,
-                        concept.data['related_expressions'][0]['expression']
-                    ]))
-            except TypeError:
-                self.pagecounter += 1
-                page.set(
-                    'title', ':'.join(
-                        [concept.category, 'page_' + str(self.pagecounter)]))
-            page.append(content)
-            pages.append(page)
-
-        with open(self.resultname, 'w') as to_file:
-            to_file.write(
-                etree.tostring(pages, pretty_print=True, encoding='unicode'))
-
     @property
     def resultname(self):
         """Name of the xml output file."""
@@ -119,55 +90,28 @@ class ExcelImporter(Importer):
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
+    def parse_sheet(self, sheet, pages, info):
+        rowparsers = [
+            RowParser(SheetRow(sheet, index), info)
+            for index in range(2, sheet.max_row + 1)
+        ]
+        for rowparser in rowparsers:
+            rowparser.parse_row()
+            page = etree.SubElement(pages, 'page')
+            page.set('title', rowparser.concept.title)
+            concept = etree.SubElement(page, 'concept')
+            concept.text = str(rowparser.concept)
+
     def get_concepts(self):
-        """Extract concepts from excel files."""
         workbook = openpyxl.load_workbook(self.filename)
+        pages = etree.Element('pages')
+        for sheet_name in self.fileinfo:
+            self.parse_sheet(workbook[sheet_name], pages,
+                             self.fileinfo[sheet_name])
 
-        for ws_title, ws_info in list(self.fileinfo.items()):
-            sheet = workbook[ws_title]
-
-            for row in range(2, sheet.max_row + 1):
-                self.counter['concepts'] += 1
-
-                concept = self.fresh_concept()
-                concept.data['concept']['main_category'] = ws_info[
-                    'main_category']
-
-                pos = ''
-                if (ws_info['wordclass'] != 0 and
-                        sheet.cell(row=row, column=ws_info['wordclass']).value
-                        is not None):
-                    pos = sheet.cell(
-                        row=row, column=ws_info['wordclass']).value.strip()
-
-                for language, col in list(ws_info['terms'].items()):
-                    if sheet.cell(row=row, column=col).value is not None:
-                        expression_line = sheet.cell(
-                            row=row, column=col).value.strip()
-                        for expression in self.collect_expressions(
-                                expression_line):
-                            concept.data['related_expressions'].append({
-                                'expression':
-                                expression,
-                                'pos':
-                                pos,
-                                'language':
-                                language,
-                            })
-
-                for info, col in list(ws_info['other_info'].items()):
-                    if sheet.cell(row=row, column=col).value is not None:
-                        concept.data['concept'][info] = str(
-                            sheet.cell(row=row, column=col).value).strip()
-
-                self.add_concept(concept)
-
-        for key, count in list(self.counter.items()):
-            print(
-                '\t',
-                key,
-                count,
-            )
+        with open(self.resultname, 'w') as to_file:
+            to_file.write(
+                etree.tostring(pages, pretty_print=True, encoding='unicode'))
 
 
 class ArbeidImporter(Importer):
@@ -293,6 +237,83 @@ class ArbeidImporter(Importer):
         return expressions
 
 
+class SheetRow(object):
+    def __init__(self, sheet, index):
+        self.sheet = sheet
+        self.index = index
+
+    def __getitem__(self, key):
+        return self.sheet.cell(row=self.index, column=key)
+
+
+class RowParser(object):
+    def __init__(self, row, info):
+        self.handler = {
+            'related_expressions': self.handle_related_expressions,
+            'concept_infos': self.handle_concept_infos,
+            'source': self.handle_source,
+            'main_category': self.handle_maincategory,
+            'collection': self.handle_collection
+        }
+        self.row = row
+        self.concept = read_termwiki.Concept()
+        self.info = info
+
+    @property
+    def related_expressions(self):
+        return self.concept.related_expressions
+
+    def parse_row(self):
+        for key in self.info:
+            self.handler[key]()
+
+    def make_expression_dict(self, lang, expression):
+        expression_dict = {
+            'expression': expression,
+            'sanctioned': self.info['related_expressions'][lang]['sanctioned'],
+            'language': lang
+        }
+
+        for key in self.info['related_expressions'][lang]:
+            if key not in ['expression', 'sanctioned']:
+                try:
+                    print(key, self.info['related_expressions'][lang][key])
+                    position = int(self.info['related_expressions'][lang][key])
+                    if self.row[position].value is not None:
+                        expression_dict[key] = self.row[position].value.strip()
+                except ValueError:
+                    expression_dict[key] = self.info['related_expressions'][
+                        lang][key]
+
+        return expression_dict
+
+    def handle_related_expressions(self):
+        for lang in self.info['related_expressions']:
+            ex_index = self.info['related_expressions'][lang]['expression']
+            expressions = self.row[ex_index].value
+            if expressions is not None:
+                for expression in self.extract_expression(expressions):
+                    self.related_expressions.append(
+                        self.make_expression_dict(lang, expression))
+
+    def extract_expression(self, expression):
+        return expression.split(',')
+
+    def handle_concept_infos(self):
+        for lang in self.info['concept_infos']:
+            for key in self.info['concept_infos'][lang]:
+                self.concept.data['concept_infos']
+
+    def handle_source(self):
+        self.concept.data['source'] = self.row[self.info['source']]
+
+    def handle_maincategory(self):
+        self.concept.title = f'{self.info["main_category"]}:{self.info["collection"]} {self.row.index}'
+
+    def handle_collection(self):
+        self.concept.data['concept']['collection'].add(self.info['collection'])
+
+
 def parse_options():
     """Parse options given to the script."""
     parser = argparse.ArgumentParser(
@@ -325,4 +346,3 @@ def main():
     for termfile in args.termfiles:
         importer = init_file(termfile)
         importer.get_concepts()
-        importer.write()

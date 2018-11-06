@@ -298,7 +298,7 @@ class Concept(object):
         """
         for expression in self.related_expressions:
             rel_exp = etree.Element('related_expression', nsmap=NSMAP)
-            exp = {}
+            exp = {'pos': 'N/A'}
 
             for key, value in expression.items():
                 if key in ['expression', 'pos', 'language']:

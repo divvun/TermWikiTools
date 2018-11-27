@@ -78,9 +78,7 @@ class Concept(object):
         """Initialise the Concept class."""
         self.title = ''
         self.data = {
-            'concept': {
-                'collection': set()
-            },
+            'concept': {},
             'concept_infos': [],
             'related_expressions': [],
             'related_concepts': []
@@ -278,7 +276,8 @@ class Concept(object):
                 if key == 'language':
                     concept_info_xml.set(f'{XML}lang', concept_info[key])
                 else:
-                    new_element = etree.SubElement(concept_info_xml, key, nsmap=NSMAP)
+                    new_element = etree.SubElement(
+                        concept_info_xml, key, nsmap=NSMAP)
                     new_element.text = concept_info[key]
             yield concept_info_xml
 
@@ -332,10 +331,10 @@ class Concept(object):
         if self.data['concept']:
             term_strings.append('{{Concept')
             for key, value in self.data['concept'].items():
-                if key == 'collection':
-                    if value:
-                        term_strings.append('|{}={}'.format(
-                            key, '@@ '.join(value)))
+                if key == 'collection' and value:
+                    term_strings.append('|{}={}'.format(
+                        key, '@@ '.join(
+                            [coll_string.strip() for coll_string in value])))
                 else:
                     term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')
@@ -350,7 +349,8 @@ class Concept(object):
                     if value:
                         collections = etree.Element('collections', nsmap=NSMAP)
                         for collection_string in value:
-                            collection = etree.SubElement(collections, 'collection', nsmap=NSMAP)
+                            collection = etree.SubElement(
+                                collections, 'collection', nsmap=NSMAP)
                             collection.text = collection_string
                         yield collections
                 else:

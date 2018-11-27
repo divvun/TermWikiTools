@@ -208,7 +208,6 @@ class DumpHandler(object):
         def make_termcenter():
             termcenter = etree.Element('r', nsmap=NSMAP)
             termcenter.attrib['id'] = 'termwiki'
-            termcenter.attrib['timestamp'] = str(date.today())
 
             for title, content_elt in self.content_elements:
                 concept = read_termwiki.Concept()
@@ -242,7 +241,6 @@ class DumpHandler(object):
                 if not turms.get(lang):
                     turms[lang] = etree.Element('r', nsmap=NSMAP)
                     turms[lang].attrib['id'] = 'termwiki'
-                    turms[lang].attrib['timestamp'] = str(date.today())
 
                 for id in terms[lang]:
                     entry = etree.Element('e')

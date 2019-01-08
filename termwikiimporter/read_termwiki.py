@@ -100,8 +100,8 @@ class Concept(object):
             del self.data['concept']['language']
         if self.data['concept'].get('collection'):
             self.data['concept']['collection'] = set([
-                self.fix_collection_line(concept)
-                for concept in self.data['concept']['collection'].split('@@')
+                self.fix_collection_line(collection.strip())
+                for collection in self.data['concept']['collection'].split('@@')
             ])
 
     def clean_up_expression(self, expression):
@@ -334,7 +334,7 @@ class Concept(object):
                 if key == 'collection' and value:
                     term_strings.append('|{}={}'.format(
                         key, '@@ '.join(sorted([
-                            coll_string.strip()
+                            coll_string
                             for coll_string in value
                         ]))))
                 else:

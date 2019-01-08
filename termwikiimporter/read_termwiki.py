@@ -333,10 +333,7 @@ class Concept(object):
             for key, value in self.data['concept'].items():
                 if key == 'collection' and value:
                     term_strings.append('|{}={}'.format(
-                        key, '@@ '.join(sorted([
-                            coll_string
-                            for coll_string in value
-                        ]))))
+                        key, '@@ '.join(sorted(value))))
                 else:
                     term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')

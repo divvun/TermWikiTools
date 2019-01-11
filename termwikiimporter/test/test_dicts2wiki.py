@@ -69,9 +69,9 @@ class TestDicts(unittest.TestCase):
         '''))  # nopep8
         self.translations = set()
         self.translations.add(
-            dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob'))
+            dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob'))
         self.translations.add(
-            dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob'))
+            dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob'))
 
         self.examples = set()
         self.examples.add(
@@ -101,12 +101,12 @@ class TestDicts(unittest.TestCase):
 
     def test_l2stem(self):
         got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//l'))
-        want = dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')
+        want = dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')
         self.assertEqual(got, want)
 
     def test_t2stem(self):
         got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//t'))
-        want = dicts2wiki.Stem(lemma='ansikt', lang='nob', pos='N')
+        want = dicts2wiki.Expression(lemma='ansikt', lang='nob', pos='N')
         self.assertEqual(got, want)
 
     def test_xg2example(self):
@@ -173,7 +173,7 @@ class TestDicts(unittest.TestCase):
 
     def test_e2tuple(self):
         self.maxDiff = None
-        want = (dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N'), [
+        want = (dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N'), [
             dicts2wiki.Translation(
                 restriction='i negative sammenhenger',
                 translations=self.translations,
@@ -185,9 +185,9 @@ class TestDicts(unittest.TestCase):
 
     def test_registerstems(self):
         want = defaultdict(list)
-        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')]
-        want[dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob')]
-        want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')]
+        want[dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob')]
 
         got = defaultdict(list)
         self.xmldictextractor.register_stems(got)
@@ -197,11 +197,11 @@ class TestDicts(unittest.TestCase):
     def test_r2dict(self):
         self.maxDiff = None
         want = defaultdict(list)
-        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')]
-        want[dicts2wiki.Stem(lemma='ansikt', pos='N', lang='nob')]
-        want[dicts2wiki.Stem(lemma='tryne', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')]
+        want[dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob')]
 
-        want[dicts2wiki.Stem(lemma='njeazzi', lang='sme', pos='N')] = \
+        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')] = \
             [dicts2wiki.Translation(
                 restriction='i negative sammenhenger',
                 translations=self.translations,

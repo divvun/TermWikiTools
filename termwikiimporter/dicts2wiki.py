@@ -28,7 +28,7 @@ from lxml import etree
 
 
 @attr.s(frozen=True)
-class Stem(object):
+class Expression(object):
     """Representation of giella l and t dictionary elements."""
 
     lemma = attr.ib(validator=attr.validators.instance_of(str))
@@ -48,17 +48,17 @@ class Stem(object):
 
     @property
     def pagename(self):
-        """Construct a page name from the content of class."""
+        """Construct a page name from the content of the class."""
         return '{} {} {}'.format(self.lemma, self.langs[self.lang], self.pos)
 
     @property
     def stempagename(self):
-        """Construct a page name from the content of class."""
+        """Construct a page name from the content of the class."""
         return '{}:{}'.format(type(self).__name__, self.pagename)
 
     @property
     def content(self):
-        """Construct a termwiki page from the content of the class."""
+        """Construct a termwiki page from the content of the the class."""
         return '{}{}\n|Lemma={}\n|Lang={}\n|Pos={}\n{}\n'.format(
             '{{',
             type(self).__name__, self.lemma, self.langs[self.lang], self.pos,
@@ -122,9 +122,9 @@ class XmlDictExtractor(object):
 
         return lemma
 
-    def l_or_t2stem(self, element: etree.Element) -> Stem:
+    def l_or_t2stem(self, element: etree.Element) -> Expression:
         """Turn the given giella dictionary element into a Stem object."""
-        return Stem(
+        return Expression(
             lemma=self.normalise_lemma(element.text),
             lang=self.tolang if element.tag == 't' else self.fromlang,
             pos=element.get('pos'))

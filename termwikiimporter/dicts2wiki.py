@@ -22,6 +22,7 @@ import collections
 import glob
 import os
 import sys
+import uuid
 
 import attr
 from lxml import etree
@@ -160,22 +161,42 @@ class XmlDictExtractor(object):
             if t_element.text is not None:
                 yield self.l_or_t2stem(t_element)
 
-    def tg2translation(self, tg_element: etree.Element) -> Translation:
-        """Turn a tg giella dictionary element into a Translation object."""
+    @staticmethod
+    def get_twid(lemma: str, tg_element: etree.Element) -> str:
+        """Set a termwiki id if it does not exist."""
+        if not tg_element.get('tw_id'):
+            write_xml = True
+            tw_id = '{} {}'.format(lemma, str(uuid.uuid4()))
+            tg_element.set('tw_id', tw_id)
+
+        return tg_element.get('tw_id')
+
+    @staticmethod
+    def get_restriction(tg_element: etree.Element) -> str:
         re_element = tg_element.find('./re')
-        restriction = re_element.text \
+
+        return re_element.text \
             if re_element is not None and re_element.text is not None else ''
-        translations = {stem for stem in self.translations(tg_element)}
-        examples = {
+
+    @staticmethod
+    def get_translations(tg_element: etree.Element) -> set:
+        return {stem for stem in self.translations(tg_element)}
+
+    def get_examples(self, tg_element: etree.Element) -> set:
+        return {
             self.xg2example(example_group)
             for example_group in tg_element.iter('xg')
             if self.is_valid_example(example_group)
         }
 
+    def tg2translation(self, lemma: str,
+                       tg_element: etree.Element) -> Translation:
+        """Turn a tg giella dictionary element into a Translation object."""
         return Translation(
-            restriction=restriction,
-            translations=translations,
-            examples=examples)
+            tw_id=self.get_twid(lemma, tg_element),
+            restriction=self.get_restriction(tg_element),
+            translations=self.get_translations(tg_element),
+            examples=self.get_examples(tg_element))
 
     @staticmethod
     def get_lang(element: etree.Element) -> str:
@@ -183,9 +204,10 @@ class XmlDictExtractor(object):
         return element.get('{http://www.w3.org/XML/1998/namespace}lang')
 
     def e2tuple(self, entry: etree.Element) -> tuple:
-        """Turn an e giella dictionary element in to a tuple."""
-        return (self.l_or_t2stem(entry.find('.//l')), [
-            self.tg2translation(translation_group)
+        """Turn an e giella dictionary element into a tuple."""
+        expression = self.l_or_t2stem(entry.find('.//l'))
+        return (expression, [
+            self.tg2translation(expression.lemma, translation_group)
             for translation_group in self.translation_groups(entry)
         ])
 

@@ -266,7 +266,7 @@ def valid_xmldict():
                             'the one given in the filename {}'.format(
                                 xml_file, dict_id, pair))
 
-                    yield dictxml
+                    yield dictxml, xml_file
                 except etree.XMLSyntaxError as error:
                     print(
                         'Syntax error in {} '
@@ -294,10 +294,18 @@ def parse_dicts() -> collections.defaultdict:
     """Extract xml dictionaries to a dict."""
     stemdict = collections.defaultdict(list)  # type: collections.defaultdict
 
-    for dictxml in valid_xmldict():
+    for dictxml, xml_file in valid_xmldict():
         xmldictextractor = XmlDictExtractor(dictxml=dictxml)
         xmldictextractor.register_stems(stemdict)
         xmldictextractor.r2dict(stemdict)
+
+        with open(xml_file, 'wb') as xml_stream:
+            xml_stream.write(
+                etree.tostring(
+                    dictxml,
+                    encoding='UTF-8',
+                    pretty_print=True,
+                    xml_declaration=True))
 
     return stemdict
 

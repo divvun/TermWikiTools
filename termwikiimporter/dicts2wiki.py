@@ -68,7 +68,7 @@ class Expression(object):
 @attr.s(frozen=True)
 class Translation(object):
     """Representation of a giella tg dictionary element."""
-
+    tw_id = attr.ib(validator=attr.validators.instance_of(str))
     restriction = attr.ib(validator=attr.validators.instance_of(str))
     translations = attr.ib(validator=attr.validators.instance_of(set))
     examples = attr.ib(validator=attr.validators.instance_of(set))

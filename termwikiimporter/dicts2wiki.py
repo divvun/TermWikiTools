@@ -178,8 +178,7 @@ class XmlDictExtractor(object):
         return re_element.text \
             if re_element is not None and re_element.text is not None else ''
 
-    @staticmethod
-    def get_translations(tg_element: etree.Element) -> set:
+    def get_translations(self, tg_element: etree.Element) -> set:
         return {stem for stem in self.translations(tg_element)}
 
     def get_examples(self, tg_element: etree.Element) -> set:
@@ -203,13 +202,15 @@ class XmlDictExtractor(object):
         """Get the xml:lang attribute of an etree Element."""
         return element.get('{http://www.w3.org/XML/1998/namespace}lang')
 
-    def entry2tuple(self, entry: etree.Element) -> tuple:
+    def entry2tuple(self, entry: etree.Element,
+                    stemdict: collections.defaultdict) -> tuple:
         """Turn an e giella dictionary element into a tuple."""
         expression = self.l_or_t2stem(entry.find('.//l'))
-        return (expression, [
-            self.tg2translation(expression.lemma, translation_group)
-            for translation_group in self.translation_groups(entry)
-        ])
+        for translation in [
+                self.tg2translation(expression.lemma, translation_group)
+                for translation_group in self.translation_groups(entry)
+        ]:
+            stemdict[translation.tw_id] = (expression, translation)
 
     def translation_groups(self, element):
         """Find tg elements only of the official translation language."""
@@ -217,21 +218,10 @@ class XmlDictExtractor(object):
             if self.get_lang(translation_group) == self.tolang:
                 yield translation_group
 
-    def register_stems(self, stemdict: collections.defaultdict) -> None:
-        """Register all stems found in a giella dictionary file."""
-        for stem in self.dictxml.xpath('.//l[@pos]'):
-            stemdict[self.l_or_t2stem(stem)]
-
-        for translation_group in self.translation_groups(self.dictxml):
-            for stem in self.translations(translation_group):
-                stemdict[stem]
-
     def r2dict(self, stemdict: collections.defaultdict) -> None:
         """Copy a giella dictionary file into a dict."""
-        self.register_stems(stemdict)
         for entry_element in self.dictxml.iter('e'):
-            stem, translations = self.entry2tuple(entry_element)
-            stemdict[stem].extend(translations)
+            self.entry2tuple(entry_element, stemdict)
 
 
 def valid_xmldict():
@@ -292,11 +282,10 @@ def stemdict2stempages(stemdict: collections.defaultdict):
 
 def parse_dicts() -> collections.defaultdict:
     """Extract xml dictionaries to a dict."""
-    stemdict = collections.defaultdict(list)  # type: collections.defaultdict
+    stemdict = collections.defaultdict(tuple)  # type: collections.defaultdict
 
     for dictxml, xml_file in valid_xmldict():
         xmldictextractor = XmlDictExtractor(dictxml=dictxml)
-        xmldictextractor.register_stems(stemdict)
         xmldictextractor.r2dict(stemdict)
 
         with open(xml_file, 'wb') as xml_stream:

@@ -179,7 +179,7 @@ class TestDicts(unittest.TestCase):
                 translations=self.translations,
                 examples=self.examples)
         ])
-        got = self.xmldictextractor.e2tuple(self.dictxml.find('.//e'))
+        got = self.xmldictextractor.entry2tuple(self.dictxml.find('.//e'))
 
         self.assertTupleEqual(want, got)
 

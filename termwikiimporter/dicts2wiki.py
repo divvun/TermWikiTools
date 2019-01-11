@@ -203,7 +203,7 @@ class XmlDictExtractor(object):
         """Get the xml:lang attribute of an etree Element."""
         return element.get('{http://www.w3.org/XML/1998/namespace}lang')
 
-    def e2tuple(self, entry: etree.Element) -> tuple:
+    def entry2tuple(self, entry: etree.Element) -> tuple:
         """Turn an e giella dictionary element into a tuple."""
         expression = self.l_or_t2stem(entry.find('.//l'))
         return (expression, [
@@ -230,7 +230,7 @@ class XmlDictExtractor(object):
         """Copy a giella dictionary file into a dict."""
         self.register_stems(stemdict)
         for entry_element in self.dictxml.iter('e'):
-            stem, translations = self.e2tuple(entry_element)
+            stem, translations = self.entry2tuple(entry_element)
             stemdict[stem].extend(translations)
 
 

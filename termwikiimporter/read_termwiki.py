@@ -453,18 +453,19 @@ class Concept(object):
         """
         for expression in self.related_expressions:
             if expression['language'] == language:
-                if analyser.is_known(language, expression['expression']):
-                    wanted = []
-                    wanted.append('{0}:{0} TermWiki ; !'.format(
-                        expression['expression']))
+                for real_expression in expression['expression'].split():
+                    if not analyser.is_known(language, real_expression):
+                        wanted = []
+                        wanted.append('{0}:{0} TODO ; !'.format(
+                            real_expression))
 
-                    if self.collections:
-                        for collection in self.collections:
-                            wanted.append('«{}»'.format(collection))
+                        if self.collections:
+                            for collection in self.collections:
+                                wanted.append('«{}»'.format(collection))
 
-                    wanted.append('«{}»'.format(self.title))
+                        wanted.append('«{}»'.format(self.title))
 
-                    print(' '.join(wanted))
+                        print(' '.join(wanted))
 
     def find_invalid(self, language):
         """Find expressions with invalid characters.

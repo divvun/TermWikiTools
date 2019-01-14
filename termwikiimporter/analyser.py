@@ -33,8 +33,7 @@ RUNNER = util.ExternalCommandRunner()
 
 
 COMMAND_TEMPLATE = 'hfst-lookup --quiet {}'.format(
-    os.path.join(
-        os.getenv('GTHOME'), 'langs/{}/src/analyser-gt-norm.hfstol'))
+    '/usr/share/giella/{}/analyser-gt-norm.hfstol')
 
 
 def is_known(language, lemma):
@@ -43,6 +42,7 @@ def is_known(language, lemma):
         language = WIKI_TO_FST[language]
     command = COMMAND_TEMPLATE.format(language).split()
     RUNNER.run(command, to_stdin=bytes(lemma, encoding='utf8'))
+
     return b'?' not in RUNNER.stdout
 
 

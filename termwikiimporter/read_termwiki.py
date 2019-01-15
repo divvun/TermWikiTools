@@ -100,8 +100,8 @@ class Concept(object):
             del self.data['concept']['language']
         if self.data['concept'].get('collection'):
             self.data['concept']['collection'] = set([
-                self.fix_collection_line(collection.strip())
-                for collection in self.data['concept']['collection'].split('@@')
+                self.fix_collection_line(collection.strip()) for collection in
+                self.data['concept']['collection'].split('@@')
             ])
 
     def clean_up_expression(self, expression):
@@ -445,7 +445,7 @@ class Concept(object):
                         and expression['sanctioned'] == 'False'):
                     expression['sanctioned'] = 'True'
 
-    def print_missing(self, language=None):
+    def print_missing(self, not_found, language=None):
         """Print lemmas not found in the languages lexicon.
 
         Args:
@@ -455,17 +455,7 @@ class Concept(object):
             if expression['language'] == language:
                 for real_expression in expression['expression'].split():
                     if not analyser.is_known(language, real_expression):
-                        wanted = []
-                        wanted.append('{0}:{0} TODO ; !'.format(
-                            real_expression))
-
-                        if self.collections:
-                            for collection in self.collections:
-                                wanted.append('«{}»'.format(collection))
-
-                        wanted.append('«{}»'.format(self.title))
-
-                        print(' '.join(wanted))
+                        not_found[real_expression].add(self.title)
 
     def find_invalid(self, language):
         """Find expressions with invalid characters.

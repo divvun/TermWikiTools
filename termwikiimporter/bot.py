@@ -98,11 +98,21 @@ class DumpHandler(object):
             tuple: an expression, the collections and the title of a
                 given concept.
         """
+        not_found = collections.defaultdict(set)
+
         for title, content_elt in self.content_elements:
             concept = read_termwiki.Concept()
             concept.title = title
             concept.from_termwiki(content_elt.text)
-            concept.print_missing(language)
+            concept.print_missing(not_found, language)
+
+        for real_expression in sorted(not_found):
+            wanted = [f'{real_expression}:{real_expression} TODO ! ']
+            for title in not_found[real_expression]:
+                wanted.append(
+                    f'https://satni.uit.no/termwiki/index.php?title={title.replace(" ", "_")}'
+                )
+            print(''.join(wanted))
 
     def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.

@@ -783,6 +783,16 @@ class SiteHandler(object):
         page = self.site.Pages[main_title]
         self.save_page(page, str(concept),
                        summary='Merging content from SD-terms')
+    @staticmethod
+    def write_termfiles(termfiles):
+        for termfilename in termfiles:
+            with open(termfilename, 'wb') as turm:
+                turm.write(
+                    etree.tostring(
+                        termfiles[termfilename],
+                        pretty_print=True,
+                        encoding='utf8',
+                        xml_declaration=True))
 
     def merge_sdterms(self):
         """Find all expressions of the given language.
@@ -797,7 +807,9 @@ class SiteHandler(object):
         tw_expression_index = collections.defaultdict(set)
         tw_index = {}
 
-        for title, content_elt in self.content_elements:
+        dumphandler = DumpHandler()
+
+        for title, content_elt in dumphandler.content_elements:
             title = title.replace(' ', '_')
             concept = read_termwiki.Concept()
             concept.title = title
@@ -815,28 +827,30 @@ class SiteHandler(object):
             if expression in tw_expression_index:
                 print(f'Expression: {expression}\n')
                 for sd_title in sd_expression_index[expression]:
-                    self.print_entry(sd_title, sd_index)
-                    for tw_title in tw_expression_index[expression]:
-                        self.print_entry(tw_title, tw_index)
-                    main_title = input('merge to: ')
+                    try:
+                        self.print_entry(sd_title, sd_index)
+                        for tw_title in tw_expression_index[expression]:
+                            self.print_entry(tw_title, tw_index)
+                        main_title = input('merge to: ')
 
-                    if main_title == 'q':
-                        for termfilename in termfiles:
-                            with open(termfilename, 'wb') as turm:
-                                turm.write(
-                                    etree.tostring(
-                                        termfiles[termfilename],
-                                        pretty_print=True,
-                                        encoding='utf8',
-                                        xml_declaration=True))
-                        self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
-                        raise SystemExit('quitting')
-                    elif main_title:
-                        delete_sdterm(sd_title, termfiles)
-                        self.merge_concept(sd_index[sd_title],
-                                           main_title.replace('_', ' '))
-                    else:
-                        print(f'Not merging {sd_title}')
+                        if main_title == 'q':
+                            self.write_termfiles(termfiles)
+                            raise SystemExit('quitting')
+                        elif main_title == 'd':
+                            try:
+                                delete_sdterm(sd_title, termfiles)
+                            except Exception as error:
+                                print(str(error))
+                        elif main_title:
+                            self.merge_concept(sd_index[sd_title],
+                                               main_title.replace('_', ' '))
+                            delete_sdterm(sd_title, termfiles)
+                            self.write_termfiles(termfiles)
+                        else:
+                            print(f'Not merging {sd_title}')
+                    except Exception as error:
+                        self.write_termfiles(termfiles)
+                        raise SystemExit('quitting', str(error))
 
 
 def handle_dump(arguments):

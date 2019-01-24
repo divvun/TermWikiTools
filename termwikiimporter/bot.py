@@ -221,6 +221,43 @@ def read_dump():
     return tw_index, tw_expression_index
 
 
+def merge_concept(concept: read_termwiki.Concept,
+                  tw_concept: read_termwiki.Concept) -> None:
+    """Merge concept into tw_concept."""
+    if not tw_concept.collections:
+        tw_concept.data['concept']['collection'] = set()
+    tw_concept.collections.add('Collection:SD-terms')
+
+    # merge concept_info
+    for concept_info in concept.data['concept_infos']:
+        for tw_concept_info in tw_concept.data['concept_infos']:
+            if concept_info['language'] == tw_concept_info['language']:
+                for key, value in concept_info.items():
+                    if not tw_concept_info.get(key):
+                        tw_concept_info[key] = value
+
+    # update related expressions in tw_concept from concept
+    for expression1 in concept.related_expressions:
+        for expression2 in tw_concept.related_expressions:
+            if expression1['expression'] == expression2[
+                    'expression'] and expression1['language'] == expression2[
+                        'language']:
+                expression2['sanctioned'] = 'True'
+                expression2['pos'] = expression1['pos']
+
+    concept_set = {(expression['expression'], expression['language'])
+                   for expression in concept.related_expressions}
+    tw_concept_set = {(expression['expression'], expression['language'])
+                      for expression in tw_concept.related_expressions}
+    for expression, language in concept_set.difference(tw_concept_set):
+        for expression1 in concept.related_expressions:
+            if expression == expression1[
+                    'expression'] and language == expression1['language']:
+                uxpression = copy.deepcopy(expression1)
+                uxpression['sanctioned'] = 'True'
+                tw_concept.related_expressions.append(uxpression)
+
+
 class DumpHandler(object):
     """Class that involves using the TermWiki dump.
 
@@ -237,42 +274,8 @@ class DumpHandler(object):
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
-    def merge_concept(self, concept: read_termwiki.Concept,
-                      tw_concept: read_termwiki.Concept,
-                      main_title: str) -> None:
-        """Save the concept in the page."""
-        if not tw_concept.collections:
-            tw_concept.data['concept']['collection'] = set()
-        tw_concept.collections.add('Collection:SD-terms')
-
-        # merge concept_info
-        for concept_info in concept.data['concept_infos']:
-            for tw_concept_info in tw_concept.data['concept_infos']:
-                if concept_info['language'] == tw_concept_info['language']:
-                    for key, value in concept_info.items():
-                        if not tw_concept_info.get(key):
-                            tw_concept_info[key] = value
-
-        # update related expressions in tw_concept from concept
-        for expression1 in concept.related_expressions:
-            for expression2 in tw_concept.related_expressions:
-                if expression1['expression'] == expression2[
-                        'expression'] and expression1[
-                            'language'] == expression2['language']:
-                    expression2['sanctioned'] = 'True'
-                    expression2['pos'] = expression1['pos']
-
-        concept_set = {(expression['expression'], expression['language'])
-                       for expression in concept.related_expressions}
-        tw_concept_set = {(expression['expression'], expression['language'])
-                          for expression in tw_concept.related_expressions}
-        for expression, language in concept_set.difference(tw_concept_set):
-            for expression1 in concept.related_expressions:
-                if expression == expression1['expression'] and language == expression1['language']:
-                    uxpression = copy.deepcopy(expression1)
-                    uxpression['sanctioned'] = 'True'
-                    tw_concept.related_expressions.append(uxpression)
-
+    def save_concept(self, main_title: str,
+                     tw_concept: read_termwiki.Concept) -> None:
         # save
         root = self.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
@@ -280,8 +283,6 @@ class DumpHandler(object):
             f'.//mw:title[text()="{main_title}"]', namespaces=namespace)[0]
         if title is not None:
             page = title.getparent()
-            #print(etree.tostring(page, encoding='unicode'))
-
             tuxt = page.xpath(f'.//mw:text', namespaces=namespace)[0]
             tuxt.text = str(tw_concept)
         else:
@@ -643,25 +644,26 @@ class DumpHandler(object):
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
         counter = 0
+        sd_titles = set()
         for expression in sd_expression_index:
             if expression in tw_expression_index:
                 for sd_title in sd_expression_index[expression]:
                     for tw_title in tw_expression_index[expression]:
                         if have_same_expressions(sd_index[sd_title],
                                                  tw_index[tw_title]):
-                            self.merge_concept(sd_index[sd_title],
-                                               tw_index[tw_title],
-                                               tw_title.replace('_', ' '))
+                            merge_concept(sd_index[sd_title],
+                                          tw_index[tw_title])
+                            self.save_concept(tw_index[tw_title],
+                                              tw_title.replace('_', ' '))
                             delete_sdterm(sd_title, termfiles)
+                            sd_titles.add(sd_title)
                             counter += 1
                             print(
                                 f'Merging {sd_title} into {tw_title} {counter}'
                             )
         write_termfiles(termfiles)
-        self.tree.write(
-            self.dump,
-            pretty_print=True,
-            encoding='utf-8')
+        self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
+        print(f'{len(sd_titles)} have been deleted')
         print(f'Merged {counter} concepts into TermWiki')
 
 

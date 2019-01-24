@@ -48,6 +48,7 @@ NAMESPACES = [
 
 def delete_sdterm(sd_title, termfiles):
     """Delete a term entry in SD-terms."""
+    print(sd_title)
     for filename in termfiles:
         if filename.endswith('termcenter.xml'):
             entry = termfiles[filename].find(f'.//entry[@id="{sd_title}"]')
@@ -71,12 +72,16 @@ def write_termfiles(termfiles):
                     xml_declaration=True))
 
 
-def have_same_expressions(concept1, concept2):
+def have_same_expressions(concept1: read_termwiki.Concept, concept2: read_termwiki.Concept) -> bool:
     """Check if the expressions of the concepts are the same."""
+    collections = concept2.collections
+    if collections and 'Collection:SD-terms' in collections:
+        return False
+
     if len(concept1.related_expressions) == len(concept2.related_expressions):
-        set1 = {(expression.expression, expression.language)
+        set1 = {(expression['expression'], expression['language'])
                 for expression in concept1.related_expressions}
-        set2 = {(expression.expression, expression.language)
+        set2 = {(expression['expression'], expression['language'])
                 for expression in concept2.related_expressions}
         return set1 == set2
 
@@ -234,14 +239,27 @@ class DumpHandler(object):
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
-    def merge_concept(self, concept, main_title):
+    def merge_concept(self, concept: read_termwiki.Concept,
+                      tw_concept: read_termwiki.Concept, main_title: str) -> None:
         """Save the concept in the page."""
-        concept.data['concept']['collection'] = set()
+        if tw_concept.collections:
+            concept.data['concept']['collection'] = tw_concept.collections
+        else:
+            concept.data['concept']['collection'] = set()
         concept.data['concept']['collection'].add('Collection:SD-terms')
 
-        page = self.site.Pages[main_title]
-        self.save_page(
-            page, str(concept), summary='Merging content from SD-terms')
+        root = self.tree.getroot()
+        namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
+        title = root.xpath(
+            f'.//mw:title[text()="{main_title}"]', namespaces=namespace)[0]
+        if title is not None:
+            page = title.getparent()
+            #print(etree.tostring(page, encoding='unicode'))
+
+            tuxt = page.xpath(f'.//mw:text', namespaces=namespace)[0]
+            tuxt.text = str(concept)
+        else:
+            raise SystemExit(f'did not file {main_title}')
 
     @property
     def pages(self):
@@ -583,6 +601,39 @@ class DumpHandler(object):
 
         return termwiki, expression_dict
 
+    def merge_sdterms(self):
+        """Find all expressions of the given language.
+
+        Args:
+            language (src): language of the terms.
+
+        Yields:
+            tuple: an expression, the collections and the title of a
+                given concept.
+        """
+        tw_index, tw_expression_index = read_dump()
+        sd_index, sd_expression_index, termfiles = read_sdterm()
+
+        counter = 0
+        for expression in sd_expression_index:
+            if expression in tw_expression_index:
+                for sd_title in sd_expression_index[expression]:
+                    for tw_title in tw_expression_index[expression]:
+                        if have_same_expressions(sd_index[sd_title],
+                                                 tw_index[tw_title]):
+                            self.merge_concept(sd_index[sd_title],
+                                               tw_index[tw_title],
+                                               tw_title.replace('_', ' '))
+                            delete_sdterm(sd_title, termfiles)
+                            print(tw_title)
+                            counter += 1
+                            if counter > 20:
+                                write_termfiles(termfiles)
+                                self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
+                                raise SystemExit(f'quit after {counter} merges')
+        write_termfiles(termfiles)
+        print(f'Merged {counter} concepts into TermWiki')
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -799,8 +850,13 @@ class SiteHandler(object):
             if page.name != my_title:
                 self.move_page(page.name, my_title)
 
-    def merge_concept(self, concept, main_title):
-        concept.data['concept']['collection'] = set()
+    def merge_concept(self, concept: read_termwiki.Concept,
+                      tw_concept: read_termwiki.Concept, main_title: str) -> None:
+        """Save the concept in the page."""
+        if tw_concept.collections:
+            concept.data['concept']['collection'] = tw_concept.collections
+        else:
+            concept.data['concept']['collection'] = set()
         concept.data['concept']['collection'].add('Collection:SD-terms')
 
         page = self.site.Pages[main_title]
@@ -820,16 +876,22 @@ class SiteHandler(object):
         tw_index, tw_expression_index = read_dump()
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
+        counter = 0
         for expression in sd_expression_index:
             if expression in tw_expression_index:
                 for sd_title in sd_expression_index[expression]:
                     for tw_title in tw_expression_index[expression]:
                         if have_same_expressions(sd_index[sd_title],
                                                  tw_index[tw_title]):
+                            counter += 1
+                            print(f'Merging {sd_title} into {tw_title} {counter}')
                             self.merge_concept(sd_index[sd_title],
+                                               tw_index[tw_title],
                                                tw_title.replace('_', ' '))
                             delete_sdterm(sd_title, termfiles)
-        write_termfiles(termfiles)
+                            write_termfiles(termfiles)
+
+        print(f'Merged {counter} concepts into TermWiki')
 
     def manually_merge_sdterms(self):
         """Find all expressions of the given language.
@@ -900,6 +962,8 @@ def handle_dump(arguments):
         dumphandler.sort_dump()
     elif arguments[0] == 'new_xml':
         dumphandler.merger(merge_candidate=arguments[1])
+    elif arguments[0] == 'merge_sdterms':
+        dumphandler.merge_sdterms()
     else:
         print(' '.join(arguments), 'is not supported')
 

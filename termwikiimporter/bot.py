@@ -276,8 +276,8 @@ class DumpHandler(object):
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
-    def save_concept(self, main_title: str,
-                     tw_concept: read_termwiki.Concept) -> None:
+    def save_concept(self, tw_concept: read_termwiki.Concept,
+                     main_title: str) -> None:
         # save
         root = self.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
@@ -646,23 +646,24 @@ class DumpHandler(object):
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
         counter = 0
-        sd_titles = set()
+        sd_titles = collections.defaultdict(set)
         for expression in sd_expression_index:
             if expression in tw_expression_index:
                 for sd_title in sd_expression_index[expression]:
                     for tw_title in tw_expression_index[expression]:
                         if have_same_expressions(sd_index[sd_title],
                                                  tw_index[tw_title]):
-                            merge_concept(sd_index[sd_title],
-                                          tw_index[tw_title])
-                            self.save_concept(tw_index[tw_title],
-                                              tw_title.replace('_', ' '))
-                            delete_sdterm(sd_title, termfiles)
-                            sd_titles.add(sd_title)
-                            counter += 1
-                            print(
-                                f'Merging {sd_title} into {tw_title} {counter}'
-                            )
+                            if tw_title not in sd_titles[sd_title]:
+                                merge_concept(sd_index[sd_title],
+                                              tw_index[tw_title])
+                                self.save_concept(tw_index[tw_title],
+                                                  tw_title.replace('_', ' '))
+                                delete_sdterm(sd_title, termfiles)
+                                sd_titles[sd_title].add(tw_title)
+                                counter += 1
+                                print(
+                                    f'Merging {sd_title} into {tw_title} {counter} {len(sd_titles)}'
+                                )
         write_termfiles(termfiles)
         self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
         print(f'{len(sd_titles)} have been deleted')

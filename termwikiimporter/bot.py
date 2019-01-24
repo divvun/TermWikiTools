@@ -65,6 +65,11 @@ def write_termfiles(termfiles):
     """Write all SD-terms files."""
     for termfilename in termfiles:
         with open(termfilename, 'wb') as turm:
+            if 'terms-' in termfilename:
+                for senses in termfiles[termfilename].iter('senses'):
+                    if not len(senses):
+                        entry = senses.getparent()
+                        entry.getparent().remove(entry)
             turm.write(
                 etree.tostring(
                     termfiles[termfilename],

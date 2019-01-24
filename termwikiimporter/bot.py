@@ -51,7 +51,8 @@ def delete_sdterm(sd_title, termfiles):
     for filename in termfiles:
         if filename.endswith('termcenter.xml'):
             entry = termfiles[filename].find(f'.//entry[@id="{sd_title}"]')
-            entry.getparent().remove(entry)
+            if entry is not None:
+                entry.getparent().remove(entry)
         else:
             sense = termfiles[filename].find(f'.//sense[@idref="{sd_title}"]')
             if sense is not None:
@@ -759,21 +760,19 @@ class SiteHandler(object):
 
     @staticmethod
     def print_entry(title, index):
-        print(title)
+        if ':' not in title:
+            print(f'\n==={title}===')
+        else:
+            print(title)
         print('\t'.join([
-            ' '.join([
-                concept_info['definition'],
-                concept_info['language']
-            ]) for concept_info in index[title].
-            data['concept_infos']
+            ' '.join([concept_info['definition'], concept_info['language']])
+            for concept_info in index[title].data['concept_infos']
         ]))
         print('\t'.join([
             ' '.join([
                 related_expression['expression'],
-                related_expression['language'],
-                related_expression['pos']
-            ]) for related_expression in index[title].
-            related_expressions
+                related_expression['language'], related_expression['pos']
+            ]) for related_expression in index[title].related_expressions
         ]))
 
     def merge_concept(self, concept, main_title):
@@ -781,8 +780,9 @@ class SiteHandler(object):
         concept.data['concept']['collection'].add('Collection:SD-terms')
 
         page = self.site.Pages[main_title]
-        self.save_page(page, str(concept),
-                       summary='Merging content from SD-terms')
+        self.save_page(
+            page, str(concept), summary='Merging content from SD-terms')
+
     @staticmethod
     def write_termfiles(termfiles):
         for termfilename in termfiles:

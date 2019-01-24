@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Bot to fix syntax blunders in termwiki articles."""
 import collections
+import copy
 import json
 import os
 import sys
@@ -48,7 +49,6 @@ NAMESPACES = [
 
 def delete_sdterm(sd_title, termfiles):
     """Delete a term entry in SD-terms."""
-    print(sd_title)
     for filename in termfiles:
         if filename.endswith('termcenter.xml'):
             entry = termfiles[filename].find(f'.//entry[@id="{sd_title}"]')
@@ -72,25 +72,23 @@ def write_termfiles(termfiles):
                     xml_declaration=True))
 
 
-def have_same_expressions(concept1: read_termwiki.Concept, concept2: read_termwiki.Concept) -> bool:
+def have_same_expressions(concept1: read_termwiki.Concept,
+                          concept2: read_termwiki.Concept) -> bool:
     """Check if the expressions of the concepts are the same."""
     collections = concept2.collections
     if collections and 'Collection:SD-terms' in collections:
         return False
 
-    if len(concept1.related_expressions) == len(concept2.related_expressions):
-        set1 = {(expression['expression'], expression['language'])
-                for expression in concept1.related_expressions}
-        set2 = {(expression['expression'], expression['language'])
-                for expression in concept2.related_expressions}
-        return set1 == set2
-
-    return False
+    set1 = {(expression['expression'], expression['language'])
+            for expression in concept1.related_expressions}
+    set2 = {(expression['expression'], expression['language'])
+            for expression in concept2.related_expressions}
+    return len(set1.intersection(set2)) > 2
 
 
 def make_blacklist(termfile):
     """Make a list of empty entries."""
-    return  [
+    return [
         entry.get('id') for entry in termfile.iter('entry')
         if len(entry.xpath('.//entryref')) < 2
     ]
@@ -141,8 +139,7 @@ def read_terms(termfile, title_index, expression_index, language):
             'expression': head.text,
             'sanctioned': 'True'
         }
-        key = '_'.join(
-            [expression['expression'], expression['language']])
+        key = '_'.join([expression['expression'], expression['language']])
         expression_index[key].add(identifier)
         concept.clean_up_expression(expression)
 
@@ -178,7 +175,8 @@ def read_sdterm():
     for lang in langs:
         filename = f'{srcdir}/terms-{lang}.xml'
         termfiles[filename] = etree.parse(filename)
-        read_terms(termfiles[filename], title_index, expression_index, langs[lang])
+        read_terms(termfiles[filename], title_index, expression_index,
+                   langs[lang])
 
     return title_index, expression_index, termfiles
 
@@ -240,14 +238,42 @@ class DumpHandler(object):
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
 
     def merge_concept(self, concept: read_termwiki.Concept,
-                      tw_concept: read_termwiki.Concept, main_title: str) -> None:
+                      tw_concept: read_termwiki.Concept,
+                      main_title: str) -> None:
         """Save the concept in the page."""
-        if tw_concept.collections:
-            concept.data['concept']['collection'] = tw_concept.collections
-        else:
-            concept.data['concept']['collection'] = set()
-        concept.data['concept']['collection'].add('Collection:SD-terms')
+        if not tw_concept.collections:
+            tw_concept.data['concept']['collection'] = set()
+        tw_concept.collections.add('Collection:SD-terms')
 
+        # merge concept_info
+        for concept_info in concept.data['concept_infos']:
+            for tw_concept_info in tw_concept.data['concept_infos']:
+                if concept_info['language'] == tw_concept_info['language']:
+                    for key, value in concept_info.items():
+                        if not tw_concept_info.get(key):
+                            tw_concept_info[key] = value
+
+        # update related expressions in tw_concept from concept
+        for expression1 in concept.related_expressions:
+            for expression2 in tw_concept.related_expressions:
+                if expression1['expression'] == expression2[
+                        'expression'] and expression1[
+                            'language'] == expression2['language']:
+                    expression2['sanctioned'] = 'True'
+                    expression2['pos'] = expression1['pos']
+
+        concept_set = {(expression['expression'], expression['language'])
+                       for expression in concept.related_expressions}
+        tw_concept_set = {(expression['expression'], expression['language'])
+                          for expression in tw_concept.related_expressions}
+        for expression, language in concept_set.difference(tw_concept_set):
+            for expression1 in concept.related_expressions:
+                if expression == expression1['expression'] and language == expression1['language']:
+                    uxpression = copy.deepcopy(expression1)
+                    uxpression['sanctioned'] = 'True'
+                    tw_concept.related_expressions.append(uxpression)
+
+        # save
         root = self.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
         title = root.xpath(
@@ -257,9 +283,9 @@ class DumpHandler(object):
             #print(etree.tostring(page, encoding='unicode'))
 
             tuxt = page.xpath(f'.//mw:text', namespaces=namespace)[0]
-            tuxt.text = str(concept)
+            tuxt.text = str(tw_concept)
         else:
-            raise SystemExit(f'did not file {main_title}')
+            raise SystemExit(f'did not find {main_title}')
 
     @property
     def pages(self):
@@ -399,6 +425,7 @@ class DumpHandler(object):
 
     def to_termcenter(self):
         """Make termcenter files, useful for sátni.org."""
+
         def sort_by_id(termroot):
             """Sort entries by id."""
             return sorted(termroot, key=lambda child: child.get('id'))
@@ -470,7 +497,8 @@ class DumpHandler(object):
                         meaning_group = etree.SubElement(entry, 'mg')
                         meaning_group.attrib['idref'] = title
 
-                        xinc = etree.SubElement(meaning_group, XI + 'include', nsmap=NSMAP)
+                        xinc = etree.SubElement(
+                            meaning_group, XI + 'include', nsmap=NSMAP)
                         xinc.attrib[
                             'xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
                                 title)
@@ -625,13 +653,15 @@ class DumpHandler(object):
                                                tw_index[tw_title],
                                                tw_title.replace('_', ' '))
                             delete_sdterm(sd_title, termfiles)
-                            print(tw_title)
                             counter += 1
-                            if counter > 20:
-                                write_termfiles(termfiles)
-                                self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
-                                raise SystemExit(f'quit after {counter} merges')
+                            print(
+                                f'Merging {sd_title} into {tw_title} {counter}'
+                            )
         write_termfiles(termfiles)
+        self.tree.write(
+            self.dump,
+            pretty_print=True,
+            encoding='utf-8')
         print(f'Merged {counter} concepts into TermWiki')
 
 
@@ -851,7 +881,8 @@ class SiteHandler(object):
                 self.move_page(page.name, my_title)
 
     def merge_concept(self, concept: read_termwiki.Concept,
-                      tw_concept: read_termwiki.Concept, main_title: str) -> None:
+                      tw_concept: read_termwiki.Concept,
+                      main_title: str) -> None:
         """Save the concept in the page."""
         if tw_concept.collections:
             concept.data['concept']['collection'] = tw_concept.collections
@@ -884,7 +915,9 @@ class SiteHandler(object):
                         if have_same_expressions(sd_index[sd_title],
                                                  tw_index[tw_title]):
                             counter += 1
-                            print(f'Merging {sd_title} into {tw_title} {counter}')
+                            print(
+                                f'Merging {sd_title} into {tw_title} {counter}'
+                            )
                             self.merge_concept(sd_index[sd_title],
                                                tw_index[tw_title],
                                                tw_title.replace('_', ' '))

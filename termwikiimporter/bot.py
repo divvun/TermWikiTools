@@ -81,15 +81,11 @@ def write_termfiles(termfiles):
 def have_same_expressions(concept1: read_termwiki.Concept,
                           concept2: read_termwiki.Concept) -> bool:
     """Check if the expressions of the concepts are the same."""
-    collections = concept2.collections
-    if collections and 'Collection:SD-terms' in collections:
-        return False
-
     set1 = {(expression['expression'], expression['language'])
             for expression in concept1.related_expressions}
     set2 = {(expression['expression'], expression['language'])
             for expression in concept2.related_expressions}
-    return len(set1.intersection(set2)) > 2
+    return set1 == set2
 
 
 def make_blacklist(termfile):

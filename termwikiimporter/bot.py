@@ -5,7 +5,6 @@ import json
 import os
 import sys
 import uuid
-from datetime import date
 
 import mwclient
 import yaml
@@ -48,6 +47,7 @@ NAMESPACES = [
 
 
 def delete_sdterm(sd_title, termfiles):
+    """Delete a term entry in SD-terms."""
     for filename in termfiles:
         if filename.endswith('termcenter.xml'):
             entry = termfiles[filename].find(f'.//entry[@id="{sd_title}"]')
@@ -57,6 +57,165 @@ def delete_sdterm(sd_title, termfiles):
             sense = termfiles[filename].find(f'.//sense[@idref="{sd_title}"]')
             if sense is not None:
                 sense.getparent().remove(sense)
+
+
+def write_termfiles(termfiles):
+    """Write all SD-terms files."""
+    for termfilename in termfiles:
+        with open(termfilename, 'wb') as turm:
+            turm.write(
+                etree.tostring(
+                    termfiles[termfilename],
+                    pretty_print=True,
+                    encoding='utf8',
+                    xml_declaration=True))
+
+
+def have_same_expressions(concept1, concept2):
+    """Check if the expressions of the concepts are the same."""
+    if len(concept1.related_expressions) == len(concept2.related_expressions):
+        set1 = {(expression.expression, expression.language)
+                for expression in concept1.related_expressions}
+        set2 = {(expression.expression, expression.language)
+                for expression in concept2.related_expressions}
+        return set1 == set2
+
+    return False
+
+
+def make_blacklist(termfile):
+    """Make a list of empty entries."""
+    return  [
+        entry.get('id') for entry in termfile.iter('entry')
+        if len(entry.xpath('.//entryref')) < 2
+    ]
+
+
+def remove_blacklisted(termfiles, blacklist):
+    """Remove blacklisted entries."""
+    for entry_id in blacklist:
+        delete_sdterm(entry_id, termfiles)
+
+
+def read_terms(termfile, title_index, expression_index, language):
+    """Read a terms-xxx.xml file."""
+    # Change the pos element to the ones found in $GTHOME/gt/sme/src
+    pos = {
+        'A': 'A',
+        'Adjektiv': 'A',
+        'a': 'A',
+        'ABBR': 'ABBR',
+        'Adv': 'Adv',
+        'adv': 'Adv',
+        'PP': 'N',
+        'Pron': 'Pron',
+        'S': 'N',
+        's': 'N',
+        'd': 'N',
+        'V': 'V',
+        'v': 'V',
+    }
+
+    for sense in termfile.iter('sense'):
+        identifier = sense.get('idref')
+        concept = title_index.get(identifier, read_termwiki.Concept())
+
+        definition = sense.find('.//def')
+        if definition is not None and definition.text is not None:
+            concept.data['concept_infos'].append({
+                'language':
+                language,
+                'definition':
+                ' '.join(definition.text.split())
+            })
+
+        head = sense.getparent().getparent().find('.//head')
+        expression = {
+            'pos': pos[head.get('pos')],
+            'language': language,
+            'expression': head.text,
+            'sanctioned': 'True'
+        }
+        key = '_'.join(
+            [expression['expression'], expression['language']])
+        expression_index[key].add(identifier)
+        concept.clean_up_expression(expression)
+
+        title_index[identifier] = concept
+
+
+def read_sdterm():
+    """Read term entries from SD-terms files."""
+    termfiles = {}
+    title_index = {}
+    expression_index = collections.defaultdict(set)
+    # Change the given languages to something wikimedia digests
+    langs = {
+        'eng': 'en',
+        'fin': 'fi',
+        'lat': 'lat',
+        'nor': 'nb',
+        'sma': 'sma',
+        'sme': 'se',
+        'smj': 'smj',
+        'smn': 'smn',
+        'sms': 'sms',
+        'swe': 'sv',
+    }
+
+    srcdir = os.path.join(os.getenv('GTHOME'), 'words/terms/SD-terms/newsrc')
+
+    filename = f'{srcdir}/termcenter.xml'
+    termfiles[filename] = etree.parse(filename)
+    blacklist = make_blacklist(termfiles[filename])
+    remove_blacklisted(termfiles, blacklist)
+
+    for lang in langs:
+        filename = f'{srcdir}/terms-{lang}.xml'
+        termfiles[filename] = etree.parse(filename)
+        read_terms(termfiles[filename], title_index, expression_index, langs[lang])
+
+    return title_index, expression_index, termfiles
+
+
+@staticmethod
+def print_entry(title, index):
+    """Print a concept."""
+    if ':' not in title:
+        print(f'\n==={title}===')
+    else:
+        print(title)
+    print('\t'.join([
+        ' '.join([concept_info['definition'], concept_info['language']])
+        for concept_info in index[title].data['concept_infos']
+    ]))
+    print('\t'.join([
+        ' '.join([
+            related_expression['expression'], related_expression['language'],
+            related_expression['pos']
+        ]) for related_expression in index[title].related_expressions
+    ]))
+
+
+def read_dump():
+    """Read the dump in to and expression and term entry index."""
+    tw_expression_index = collections.defaultdict(set)
+    tw_index = {}
+
+    dumphandler = DumpHandler()
+
+    for title, content_elt in dumphandler.content_elements:
+        title = title.replace(' ', '_')
+        concept = read_termwiki.Concept()
+        concept.title = title
+        concept.from_termwiki(content_elt.text)
+        tw_index[title] = concept
+
+        for expression in concept.related_expressions:
+            key = '_'.join([expression['expression'], expression['language']])
+            tw_expression_index[key].add(title)
+
+    return tw_index, tw_expression_index
 
 
 class DumpHandler(object):
@@ -74,6 +233,15 @@ class DumpHandler(object):
     dump = os.path.join(termwiki_xml_root, 'dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
+
+    def merge_concept(self, concept, main_title):
+        """Save the concept in the page."""
+        concept.data['concept']['collection'] = set()
+        concept.data['concept']['collection'].add('Collection:SD-terms')
+
+        page = self.site.Pages[main_title]
+        self.save_page(
+            page, str(concept), summary='Merging content from SD-terms')
 
     @property
     def pages(self):
@@ -181,8 +349,8 @@ class DumpHandler(object):
                 print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
                     expression, title))
 
-        for language, number in invalids.items():
-            print(language, number)
+        for lang, number in invalids.items():
+            print(lang, number)
 
     def fix(self):
         """Check to see if everything works as expected."""
@@ -212,10 +380,13 @@ class DumpHandler(object):
                         content_elt, encoding='unicode'))
 
     def to_termcenter(self):
+        """Make termcenter files, useful for sátni.org."""
         def sort_by_id(termroot):
+            """Sort entries by id."""
             return sorted(termroot, key=lambda child: child.get('id'))
 
         def write_termfile(filename, root_element):
+            """Write a termfile."""
             path = os.path.join(self.termwiki_xml_root,
                                 'terms/{}.xml'.format(filename))
             with open(path, 'wb') as termstream:
@@ -228,6 +399,7 @@ class DumpHandler(object):
                         xml_declaration=True))
 
         def make_termcenter():
+            """Make the termcenter file."""
             termcenter = etree.Element('r', nsmap=NSMAP)
             termcenter.attrib['id'] = 'termwiki'
 
@@ -242,6 +414,7 @@ class DumpHandler(object):
             write_termfile('termcenter', termcenter)
 
         def make_termfiles():
+            """Make all the term files."""
             terms = {}
             for title, content_elt in self.content_elements:
                 concept = read_termwiki.Concept()
@@ -264,27 +437,26 @@ class DumpHandler(object):
                     turms[lang] = etree.Element('r', nsmap=NSMAP)
                     turms[lang].attrib['id'] = 'termwiki'
 
-                for id in terms[lang]:
+                for identity in terms[lang]:
                     entry = etree.Element('e')
-                    entry.attrib['id'] = id
+                    entry.attrib['id'] = identity
 
-                    lg = etree.SubElement(entry, 'lg')
-                    l = etree.SubElement(lg, 'l')
-                    l.text, l.attrib['pos'] = id.split('\\')
+                    lemma_group = etree.SubElement(entry, 'lg')
+                    lemma = etree.SubElement(lemma_group, 'l')
+                    lemma.text, lemma.attrib['pos'] = identity.split('\\')
 
-                    status = etree.SubElement(entry, 'status')
                     sanctioned = etree.SubElement(entry, 'sanctioned')
                     sanctioned.text = 'True'
 
-                    for title in sorted(terms[lang][id]):
-                        mg = etree.SubElement(entry, 'mg')
-                        mg.attrib['idref'] = title
+                    for title in sorted(terms[lang][identity]):
+                        meaning_group = etree.SubElement(entry, 'mg')
+                        meaning_group.attrib['idref'] = title
 
-                        xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
-                        xi.attrib[
+                        xinc = etree.SubElement(meaning_group, XI + 'include', nsmap=NSMAP)
+                        xinc.attrib[
                             'xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
                                 title)
-                        xi.attrib['href'] = 'termcenter.xml'
+                        xinc.attrib['href'] = 'termcenter.xml'
 
                     turms[lang].append(entry)
 
@@ -296,6 +468,7 @@ class DumpHandler(object):
         make_termfiles()
 
     def sort_dump(self):
+        """Sort the dump file by page title."""
         root = self.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
 
@@ -314,6 +487,7 @@ class DumpHandler(object):
         self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
 
     def print_expression_pairs(self, lang1, lang2):
+        """Print pairs of expressions, for use in making bidix files."""
         for title, content_elt in self.content_elements:
             concept = read_termwiki.Concept()
             concept.title = title
@@ -359,55 +533,6 @@ class DumpHandler(object):
                 r.get('expression_ref')
                 for r in concept.iter('related_expression')
             }))
-
-    def merger(self, merge_candidate):
-        site = self.get_site()
-
-        termwiki, uxpresssions = self.dump2xml()
-        old_id = collections.defaultdict(set)  #
-
-        for concept in termwiki.xpath(
-                './/collection[text()="Collection:SosDearv_sánit_SD"]/../..'):
-            old_id[self.uff_key(concept)].add(concept.get('id'))
-
-        expressions = termwiki.find('./expressions')
-
-        x = 0
-        z = 0
-
-        for page in etree.parse(merge_candidate).iter('page'):
-            z += 1
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(page.find('.//concept').text)
-            print(z)
-            xml_concept = etree.Element('concept')
-            self.concept2xml(concept, xml_concept, uxpresssions, expressions)
-
-            a = self.uff_key(xml_concept)
-            if a in old_id.keys():
-                x += 1
-                site_page = site.Pages[old_id[a]]
-                site_page.save(
-                    page.find('.//concept').text,
-                    summary='Update SosDearv sánit SD collection')
-                print(f'boaris {old_id[a]}')
-            else:
-                new_title = f"Servodatdieđa:{concept.data['related_expressions'][0]['expression']}"
-                my_title = new_title
-                site_page = site.Pages[my_title]
-                y = 0
-                while site_page.exists:
-                    my_title = '{} {}'.format(new_title, y)
-                    site_page = site.pages[my_title]
-                    y += 1
-                print(f'ođđa {my_title}')
-                site_page.save(
-                    page.find('.//concept').text,
-                    summary='Update SosDearv sánit SD collection')
-
-        print(x)
-        #with open('termwiki.xml', 'wb') as term_stream:
-        #term_stream.write(etree.tostring(termwiki, encoding='utf-8', pretty_print=True))
 
     @staticmethod
     def concept2xml(concept, xml_concept, expression_dict, expressions):
@@ -504,6 +629,7 @@ class SiteHandler(object):
                 print()
 
     def del_expression(self):
+        """Delete all expression pages."""
         for page in self.site.Categories['Expressions']:
             try:
                 print('Deleting: {}'.format(page.name))
@@ -550,7 +676,7 @@ class SiteHandler(object):
         for key in sorted(counter):
             print(key, counter[key])
 
-    def query_replace_text(self):
+    def query_replace_text(self, language):
         u"""Do a semantic media query and fix pages.
 
         Change the query and the actions when needed …
@@ -592,7 +718,7 @@ class SiteHandler(object):
                  '[[Language::{}]]'
                  '[[Sanctioned::False]]'.format(language))
 
-        for number, answer in enumerate(self.site.ask(query), start=1):
+        for _, answer in enumerate(self.site.ask(query), start=1):
             for title, _ in answer.items():
                 print('.', end='')
                 sys.stdout.flush()
@@ -609,7 +735,7 @@ class SiteHandler(object):
                         'collections that the normative {} fst '
                         'recognises.'.format(language))
 
-    def revert(self, page):
+    def revert(self):
         """Automatically sanction expressions that have no collection.
 
         The theory is that concept pages with no collections mostly are from
@@ -643,12 +769,12 @@ class SiteHandler(object):
         """
         new_title = old_title[:old_title.find('(')].strip()
         my_title = new_title
-        x = 1
+        instance = 1
         page = self.site.pages[my_title]
         while page.exists:
-            my_title = '{} {}'.format(new_title, x)
+            my_title = '{} {}'.format(new_title, instance)
             page = self.site.pages[my_title]
-            x += 1
+            instance += 1
 
         return my_title
 
@@ -656,8 +782,7 @@ class SiteHandler(object):
         """Move a termwiki page from old to new name."""
         orig_page = self.site.pages[old_name]
         try:
-            print('Moving from {orig_page.name} to {new_name}'.format(
-                orig_page.name, new_name))
+            print(f'Moving from {orig_page.name} to {new_name}')
             orig_page.move(
                 new_name,
                 reason='Remove parenthesis from page names',
@@ -674,107 +799,6 @@ class SiteHandler(object):
             if page.name != my_title:
                 self.move_page(page.name, my_title)
 
-    def read_sdterm(self):
-        termfiles = {}
-        title_index = {}
-        expression_index = collections.defaultdict(set)
-        # Change the given languages to something wikimedia digests
-        langs = {
-            'eng': 'en',
-            'fin': 'fi',
-            'lat': 'lat',
-            'nor': 'nb',
-            'sma': 'sma',
-            'sme': 'se',
-            'smj': 'smj',
-            'smn': 'smn',
-            'sms': 'sms',
-            'swe': 'sv',
-        }
-
-        # Change the pos element to the ones found in $GTHOME/gt/sme/src
-        pos = {
-            'A': 'A',
-            'Adjektiv': 'A',
-            'a': 'A',
-            'ABBR': 'ABBR',
-            'Adv': 'Adv',
-            'adv': 'Adv',
-            'PP': 'N',
-            'Pron': 'Pron',
-            'S': 'N',
-            's': 'N',
-            'd': 'N',
-            'V': 'V',
-            'v': 'V',
-        }
-
-        srcdir = os.path.join(
-            os.getenv('GTHOME'), 'words/terms/SD-terms/newsrc')
-
-        filename = f'{srcdir}/termcenter.xml'
-        termfiles[filename] = etree.parse(filename)
-        blacklist = [
-            entry.get('id') for entry in termfiles[filename].iter('entry')
-            if len(entry.xpath('.//entryref')) < 2
-        ]
-        for entry_id in blacklist:
-            entry = termfiles[filename].find(f'.//entry[@id="{entry_id}"]')
-            entry.getparent().remove(entry)
-
-        for lang in langs:
-            filename = f'{srcdir}/terms-{lang}.xml'
-            termfiles[filename] = etree.parse(filename)
-            for sense in termfiles[filename].iter('sense'):
-                identifier = sense.get('idref')
-                if identifier in blacklist:
-                    sense.getparent().remove(sense)
-                else:
-                    concept = title_index.get(identifier,
-                                              read_termwiki.Concept())
-
-                    definition = sense.find('.//def')
-                    if definition is not None and definition.text is not None:
-                        concept.data['concept_infos'].append({
-                            'language':
-                            langs[lang],
-                            'definition':
-                            ' '.join(definition.text.split())
-                        })
-
-                    head = sense.getparent().getparent().find('.//head')
-                    expression = {
-                        'pos': pos[head.get('pos')],
-                        'language': langs[lang],
-                        'expression': head.text,
-                        'sanctioned': 'True'
-                    }
-                    key = '_'.join(
-                        [expression['expression'], expression['language']])
-                    expression_index[key].add(identifier)
-                    concept.clean_up_expression(expression)
-
-                    title_index[identifier] = concept
-
-        return title_index, expression_index, termfiles
-
-    @staticmethod
-    def print_entry(title, index):
-        if ':' not in title:
-            print(f'\n==={title}===')
-        else:
-            print(title)
-        print('\t'.join([
-            ' '.join([concept_info['definition'], concept_info['language']])
-            for concept_info in index[title].data['concept_infos']
-        ]))
-        print('\t'.join([
-            ' '.join([
-                related_expression['expression'],
-                related_expression['language'], related_expression['pos']
-            ]) for related_expression in index[title].related_expressions
-        ]))
-
     def merge_concept(self, concept, main_title):
         concept.data['concept']['collection'] = set()
         concept.data['concept']['collection'].add('Collection:SD-terms')
@@ -782,17 +806,6 @@ class SiteHandler(object):
         page = self.site.Pages[main_title]
         self.save_page(
             page, str(concept), summary='Merging content from SD-terms')
-
-    @staticmethod
-    def write_termfiles(termfiles):
-        for termfilename in termfiles:
-            with open(termfilename, 'wb') as turm:
-                turm.write(
-                    etree.tostring(
-                        termfiles[termfilename],
-                        pretty_print=True,
-                        encoding='utf8',
-                        xml_declaration=True))
 
     def merge_sdterms(self):
         """Find all expressions of the given language.
@@ -804,37 +817,45 @@ class SiteHandler(object):
             tuple: an expression, the collections and the title of a
                 given concept.
         """
-        tw_expression_index = collections.defaultdict(set)
-        tw_index = {}
-
-        dumphandler = DumpHandler()
-
-        for title, content_elt in dumphandler.content_elements:
-            title = title.replace(' ', '_')
-            concept = read_termwiki.Concept()
-            concept.title = title
-            concept.from_termwiki(content_elt.text)
-            tw_index[title] = concept
-
-            for expression in concept.related_expressions:
-                key = '_'.join(
-                    [expression['expression'], expression['language']])
-                tw_expression_index[key].add(title)
-
-        sd_index, sd_expression_index, termfiles = self.read_sdterm()
+        tw_index, tw_expression_index = read_dump()
+        sd_index, sd_expression_index, termfiles = read_sdterm()
 
         for expression in sd_expression_index:
             if expression in tw_expression_index:
-                print(f'Expression: {expression}\n')
+                for sd_title in sd_expression_index[expression]:
+                    for tw_title in tw_expression_index[expression]:
+                        if have_same_expressions(sd_index[sd_title],
+                                                 tw_index[tw_title]):
+                            self.merge_concept(sd_index[sd_title],
+                                               tw_title.replace('_', ' '))
+                            delete_sdterm(sd_title, termfiles)
+        write_termfiles(termfiles)
+
+    def manually_merge_sdterms(self):
+        """Find all expressions of the given language.
+
+        Args:
+            language (src): language of the terms.
+
+        Yields:
+            tuple: an expression, the collections and the title of a
+                given concept.
+        """
+        tw_index, tw_expression_index = read_dump()
+        sd_index, sd_expression_index, termfiles = read_sdterm()
+
+        for expression in sd_expression_index:
+            if expression in tw_expression_index:
+                print(f'Expression: {expression}')
                 for sd_title in sd_expression_index[expression]:
                     try:
-                        self.print_entry(sd_title, sd_index)
+                        print_entry(sd_title, sd_index)
                         for tw_title in tw_expression_index[expression]:
-                            self.print_entry(tw_title, tw_index)
+                            print_entry(tw_title, tw_index)
                         main_title = input('merge to: ')
 
                         if main_title == 'q':
-                            self.write_termfiles(termfiles)
+                            write_termfiles(termfiles)
                             raise SystemExit('quitting')
                         elif main_title == 'd':
                             try:
@@ -845,11 +866,11 @@ class SiteHandler(object):
                             self.merge_concept(sd_index[sd_title],
                                                main_title.replace('_', ' '))
                             delete_sdterm(sd_title, termfiles)
-                            self.write_termfiles(termfiles)
+                            write_termfiles(termfiles)
                         else:
                             print(f'Not merging {sd_title}')
                     except Exception as error:
-                        self.write_termfiles(termfiles)
+                        write_termfiles(termfiles)
                         raise SystemExit('quitting', str(error))
 
 

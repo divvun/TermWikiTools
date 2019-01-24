@@ -633,15 +633,7 @@ class DumpHandler(object):
         return termwiki, expression_dict
 
     def merge_sdterms(self):
-        """Find all expressions of the given language.
-
-        Args:
-            language (src): language of the terms.
-
-        Yields:
-            tuple: an expression, the collections and the title of a
-                given concept.
-        """
+        """Merge SD-terms into TermWiki."""
         tw_index, tw_expression_index = read_dump()
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
@@ -885,50 +877,39 @@ class SiteHandler(object):
             if page.name != my_title:
                 self.move_page(page.name, my_title)
 
-    def merge_concept(self, concept: read_termwiki.Concept,
-                      tw_concept: read_termwiki.Concept,
-                      main_title: str) -> None:
-        """Save the concept in the page."""
-        if tw_concept.collections:
-            concept.data['concept']['collection'] = tw_concept.collections
-        else:
-            concept.data['concept']['collection'] = set()
-        concept.data['concept']['collection'].add('Collection:SD-terms')
-
-        page = self.site.Pages[main_title]
-        self.save_page(
-            page, str(concept), summary='Merging content from SD-terms')
-
     def merge_sdterms(self):
-        """Find all expressions of the given language.
-
-        Args:
-            language (src): language of the terms.
-
-        Yields:
-            tuple: an expression, the collections and the title of a
-                given concept.
-        """
+        """Merge SD-terms into TermWiki."""
         tw_index, tw_expression_index = read_dump()
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
         counter = 0
+        sd_titles = collections.defaultdict(set)
         for expression in sd_expression_index:
             if expression in tw_expression_index:
                 for sd_title in sd_expression_index[expression]:
                     for tw_title in tw_expression_index[expression]:
                         if have_same_expressions(sd_index[sd_title],
                                                  tw_index[tw_title]):
-                            counter += 1
-                            print(
-                                f'Merging {sd_title} into {tw_title} {counter}'
-                            )
-                            self.merge_concept(sd_index[sd_title],
-                                               tw_index[tw_title],
-                                               tw_title.replace('_', ' '))
-                            delete_sdterm(sd_title, termfiles)
-                            write_termfiles(termfiles)
-
+                            if tw_title not in sd_titles[sd_title]:
+                                merge_concept(sd_index[sd_title],
+                                              tw_index[tw_title])
+                                page = self.site.Pages[tw_title.replace(
+                                    '_', ' ')]
+                                self.save_page(
+                                    page,
+                                    str(tw_index[tw_title]),
+                                    summary=
+                                    'Merging SD-terms where expression are equal'
+                                )
+                                delete_sdterm(sd_title, termfiles)
+                                write_termfiles(termfiles)
+                                sd_titles[sd_title].add(tw_title)
+                                counter += 1
+                                print(
+                                    f'Merging {sd_title} into {tw_title} {counter} {len(sd_titles)}'
+                                )
+        write_termfiles(termfiles)
+        print(f'{len(sd_titles)} have been deleted')
         print(f'Merged {counter} concepts into TermWiki')
 
     def manually_merge_sdterms(self):

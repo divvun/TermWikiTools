@@ -81,11 +81,15 @@ def write_termfiles(termfiles):
 def have_same_expressions(concept1: read_termwiki.Concept,
                           concept2: read_termwiki.Concept) -> bool:
     """Check if the expressions of the concepts are the same."""
+    collections = concept2.collections
+    if collections and 'Collection:SD-terms' in collections:
+        return False
+
     set1 = {(expression['expression'], expression['language'])
             for expression in concept1.related_expressions}
     set2 = {(expression['expression'], expression['language'])
             for expression in concept2.related_expressions}
-    return set1 == set2
+    return len(set1.intersection(set2)) > 2
 
 
 def make_blacklist(termfile):
@@ -183,7 +187,6 @@ def read_sdterm():
     return title_index, expression_index, termfiles
 
 
-@staticmethod
 def print_entry(title, index):
     """Print a concept."""
     if ':' not in title:
@@ -200,6 +203,7 @@ def print_entry(title, index):
             related_expression['pos']
         ]) for related_expression in index[title].related_expressions
     ]))
+    print()
 
 
 def read_dump():
@@ -912,47 +916,70 @@ class SiteHandler(object):
         print(f'{len(sd_titles)} have been deleted')
         print(f'Merged {counter} concepts into TermWiki')
 
+    def write_last_sdterm(self):
+        sd_index, sd_expression_index, termfiles = read_sdterm()
+
+        counter = 0
+        sd_titles = collections.defaultdict(set)
+        for sd_title, concept in sd_index.items():
+            page = self.site.Pages[sd_title]
+            self.save_page(
+                page,
+                str(concept),
+                summary=
+                'Merging SD-terms where expression are equal'
+            )
+            delete_sdterm(sd_title, termfiles)
+            write_termfiles(termfiles)
+            counter += 1
+            print(
+                f'Wrote {sd_title} #{counter}'
+            )
+        write_termfiles(termfiles)
+        print(f'Merged {counter} concepts into TermWiki')
+
     def manually_merge_sdterms(self):
-        """Find all expressions of the given language.
-
-        Args:
-            language (src): language of the terms.
-
-        Yields:
-            tuple: an expression, the collections and the title of a
-                given concept.
-        """
+        """Merge SD-terms into TermWiki."""
         tw_index, tw_expression_index = read_dump()
         sd_index, sd_expression_index, termfiles = read_sdterm()
 
+        counter = 0
+        sd_titles = collections.defaultdict(set)
         for expression in sd_expression_index:
             if expression in tw_expression_index:
                 print(f'Expression: {expression}')
                 for sd_title in sd_expression_index[expression]:
-                    try:
-                        print_entry(sd_title, sd_index)
-                        for tw_title in tw_expression_index[expression]:
-                            print_entry(tw_title, tw_index)
-                        main_title = input('merge to: ')
+                    print_entry(sd_title, sd_index)
+                    for tw_title in tw_expression_index[expression]:
+                        print_entry(tw_title, tw_index)
+                    main_title = input('merge to: ')
 
-                        if main_title == 'q':
-                            write_termfiles(termfiles)
-                            raise SystemExit('quitting')
-                        elif main_title == 'd':
-                            try:
-                                delete_sdterm(sd_title, termfiles)
-                            except Exception as error:
-                                print(str(error))
-                        elif main_title:
-                            self.merge_concept(sd_index[sd_title],
-                                               main_title.replace('_', ' '))
+                    if main_title == 'q':
+                        write_termfiles(termfiles)
+                        raise SystemExit('quitting')
+                    elif main_title == 'd':
+                        delete_sdterm(sd_title, termfiles)
+                    elif main_title:
+                        if main_title not in sd_titles[sd_title]:
+                            merge_concept(sd_index[sd_title],
+                                          tw_index[main_title])
+                            page = self.site.Pages[main_title.replace(
+                                '_', ' ')]
+                            self.save_page(
+                                page,
+                                str(tw_index[main_title]),
+                                summary=
+                                'Merging SD-terms where expression are equal'
+                            )
                             delete_sdterm(sd_title, termfiles)
                             write_termfiles(termfiles)
-                        else:
-                            print(f'Not merging {sd_title}')
-                    except Exception as error:
-                        write_termfiles(termfiles)
-                        raise SystemExit('quitting', str(error))
+                            sd_titles[sd_title].add(main_title)
+                            counter += 1
+                            print(
+                                f'Merging {sd_title} into {main_title} {counter} {len(sd_titles)}'
+                            )
+                    else:
+                        print(f'Not merging {sd_title}')
 
 
 def handle_dump(arguments):
@@ -1007,7 +1034,8 @@ def handle_site(arguments):
     elif arguments[0] == 'improve_pagenames':
         site.improve_pagenames()
     elif arguments[0] == 'merge_sdterms':
-        site.merge_sdterms()
+        #site.merge_sdterms()
+        site.write_last_sdterm()
     else:
         print(' '.join(arguments), 'is not supported')
 

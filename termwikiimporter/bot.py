@@ -55,8 +55,9 @@ def delete_sdterm(sd_title, termfiles):
             if entry is not None:
                 entry.getparent().remove(entry)
         else:
-            sense = termfiles[filename].find(f'.//sense[@idref="{sd_title}"]')
-            if sense is not None:
+            senses = termfiles[filename].xpath(
+                f'.//sense[@idref="{sd_title}"]')
+            for sense in senses:
                 sense.getparent().remove(sense)
 
 

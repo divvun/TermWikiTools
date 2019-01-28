@@ -58,7 +58,7 @@ def write_to_termwiki():
                             pages.remove(page)
             else:
                 print('\t adding content', new_page_title)
-                site_page.save(pages.pop().find('./content').text,
+                site_page.save(pages.pop().find('./concept').text,
                                summary='New import')
             new_page_title = page_title + '_' + str(counter)
             counter += 1

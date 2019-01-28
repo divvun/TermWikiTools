@@ -277,7 +277,7 @@ class RowParser(object):
         for key in self.info['related_expressions'][lang]:
             if key not in ['expression', 'sanctioned']:
                 try:
-                    print(key, self.info['related_expressions'][lang][key])
+                    #print(key, self.info['related_expressions'][lang][key])
                     position = int(self.info['related_expressions'][lang][key])
                     if self.row[position].value is not None:
                         expression_dict[key] = self.row[position].value.strip()
@@ -311,7 +311,10 @@ class RowParser(object):
         self.concept.title = f'{self.info["main_category"]}:{self.info["collection"]} {self.row.index}'
 
     def handle_collection(self):
-        self.concept.data['concept']['collection'].add(self.info['collection'])
+        if not self.concept.data['concept'].get('collection'):
+            self.concept.data['concept']['collection'] = set()
+        collection = self.info['collection'] if 'Collection:' in self.info['collection'] else f'Collection:{self.info["collection"]}'
+        self.concept.data['concept']['collection'].add(collection)
 
 
 def parse_options():

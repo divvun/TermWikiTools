@@ -19,7 +19,7 @@ XI = '{%s}' % XI_NAMESPACE
 XML = '{%s}' % XML_NAMESPACE
 NSMAP = {'xi': XI_NAMESPACE, 'xml': XML_NAMESPACE}
 NAMESPACES = [
-    'Beaivvalaš giella',
+    'Beaivválaš giella',
     'Boazodoallu',
     'Dihtorteknologiija ja diehtoteknihkka',
     'Dáidda ja girjjálašvuohta',

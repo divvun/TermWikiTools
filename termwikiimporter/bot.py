@@ -563,19 +563,19 @@ class DumpHandler(object):
                     for sd_expression in sd_expressions
                     for title in tw_expression_index[language][sd_expression]
                 }
-            total = potential_pages['nb'] & potential_pages['se']
+            total = potential_pages['nb'] & potential_pages['sma'] & potential_pages['sv']
             sd_concept.title = sd_title
 
             if not total:
                 print(
-                    f'no hits, saving to Luonddudieđa_ja_matematihkka:{sd_title}\n'
+                    f'no hits, saving to {sd_title}\n'
                 )
             elif len(total) == 1:
                 print(list(total)[0])
                 yield sd_concept, tw_index[list(total)[0]]
             else:
-                print_entry(sd_concept)
                 for title in total:
+                    print_entry(sd_concept)
                     print_entry(tw_index[title])
                     answer = input('enter merges, any other skips: ')
                     if answer == '':
@@ -832,8 +832,8 @@ class SiteHandler(object):
                     for sd_expression in sd_expressions
                     for title in tw_expression_index[language][sd_expression]
                 }
-            total = potential_pages['nb'] & potential_pages['se']
-            sd_concept.title = f'into Luonddudieđa_ja_matematihkka:{sd_title}'
+            total = potential_pages['nb'] & potential_pages['sma'] & potential_pages['sv']
+            sd_concept.title = sd_title
 
             if not total:
                 print('zero')
@@ -841,8 +841,8 @@ class SiteHandler(object):
             elif len(total) == 1:
                 yield sd_concept, tw_index[list(total)[0]]
             else:
-                print_entry(sd_concept)
                 for title in total:
+                    print_entry(sd_concept)
                     print_entry(tw_index[title])
                     answer = input('enter merges, any other skips: ')
                     if answer == '':
@@ -889,7 +889,7 @@ def handle_dump(arguments):
         dumphandler.merge_pages(
             pages_filename=arguments[1],
             summary=arguments[2],
-            languages=['nb', 'se'])
+            languages=['nb', 'sv', 'sma'])
     else:
         print(' '.join(arguments), 'is not supported')
 
@@ -917,7 +917,7 @@ def handle_site(arguments):
         site.merge_pages(
             pages_filename=arguments[1],
             summary=arguments[2],
-            languages=['nb', 'se'])
+            languages=['nb', 'sv', 'sma'])
     else:
         print(' '.join(arguments), 'is not supported')
 

@@ -686,7 +686,10 @@ class SiteHandler(object):
         for page in self.content_elements:
             concept = read_termwiki.Concept()
             concept.from_termwiki(page.text())
-            self.save_page(page, str(concept), summary='Fixing content')
+            if concept.related_expressions
+                self.save_page(page, str(concept), summary='Fixing content')
+            else:
+                page.delete(reason='Have no expressions')
 
         for key in sorted(counter):
             print(key, counter[key])

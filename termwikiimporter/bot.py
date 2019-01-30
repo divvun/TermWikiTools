@@ -138,7 +138,8 @@ def merge_concept(concept: read_termwiki.Concept,
     """Merge concept into tw_concept."""
     if not tw_concept.collections:
         tw_concept.data['concept']['collection'] = set()
-    tw_concept.collections.add('Collection:SD-terms')
+    for coll in concept.collections:
+        tw_concept.data['concept']['collection'].add(coll)
 
     # merge concept_info
     for concept_info in concept.data['concept_infos']:

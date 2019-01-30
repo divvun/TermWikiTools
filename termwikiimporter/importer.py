@@ -147,20 +147,17 @@ class RowParser(object):
     def make_expression_dict(self, lang, expression):
         expression_dict = {
             'expression': expression,
-            'sanctioned': self.info['related_expressions'][lang]['sanctioned'],
             'language': lang
         }
 
         for key in self.info['related_expressions'][lang]:
-            if key not in ['expression', 'sanctioned']:
-                try:
-                    #print(key, self.info['related_expressions'][lang][key])
-                    position = int(self.info['related_expressions'][lang][key])
+            if key not in ['expression']:
+                position = int(self.info['related_expressions'][lang][key])
+                if position:
                     if self.row[position].value is not None:
-                        expression_dict[key] = self.row[position].value.strip()
-                except ValueError:
-                    expression_dict[key] = self.info['related_expressions'][
-                        lang][key]
+                        expression_dict[key] = str(self.row[position].value).strip()
+                else:
+                    expression_dict[key] = self.info['related_expressions'][lang][key]
 
         return expression_dict
 
@@ -174,7 +171,7 @@ class RowParser(object):
                         self.make_expression_dict(lang, expression))
 
     def extract_expression(self, expression):
-        return expression.split(',')
+        return [exp.strip() for exp in expression.split(',')]
 
     def handle_concept_infos(self):
         for lang in self.info['concept_infos']:
@@ -185,7 +182,10 @@ class RowParser(object):
         self.concept.data['source'] = self.row[self.info['source']]
 
     def handle_maincategory(self):
-        self.concept.title = f'{self.info["main_category"]}:{self.info["collection"]} {self.row.index}'
+        position = int(self.info['main_category'])
+        main_category = str(self.row[position].value).strip() if position else self.info['main_category']
+
+        self.concept.title = f'{main_category}:{self.info["collection"]} {self.row.index}'
 
     def handle_collection(self):
         if not self.concept.data['concept'].get('collection'):

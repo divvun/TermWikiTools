@@ -228,21 +228,28 @@ class DumpHandler(object):
             if content_elt.text and '{{Concept' in content_elt.text:
                 yield title, content_elt
 
+    @property
+    def concepts(self):
+        """Get concepts found in dump.xml.
+
+        Yields:
+            read_termwiki.Concept: the content element found in a page element.
+        """
+        for title, content_elt in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+            yield title, concept
+
     def invalid(self):
         """Print urls to pages with invalid expressions."""
-
-        def has_invalid(content_elt):
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(content_elt.text)
-            return concept.has_invalid()
-
-        base = 'https://satni.uit.no/termwiki/'
+        base = 'https://satni.uit.no/termwiki'
         for title in {
             title.replace(" ", "_")
-            for title, content_elt in self.content_elements
-            if has_invalid(content_elt)
+            for title, concept in self.concepts
+            if concept.has_invalid()
         }:
-            print(f'{base}index.php?title={title}&action=formedit')
+            print(f'{base}/index.php?title={title}&action=formedit')
 
     def print_missing(self, language=None):
         """Find all expressions of the given language.
@@ -254,20 +261,18 @@ class DumpHandler(object):
             tuple: an expression, the collections and the title of a
                 given concept.
         """
+        base = 'https://satni.uit.no/termwiki'
         not_found = collections.defaultdict(set)
 
-        for title, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.title = title
-            concept.from_termwiki(content_elt.text)
+        for title, concept in self.concepts:
             concept.print_missing(not_found, language)
 
         for real_expression in sorted(not_found):
             wanted = [f'{real_expression}:{real_expression} TODO ! ']
             for title in not_found[real_expression]:
                 wanted.append(
-                    f'https://satni.uit.no/termwiki/index.php?title={title.replace(" ", "_")}'
-                )
+                    f'{base}/index.php?title={title.replace(" ", "_")}'
+            )
             print(''.join(wanted))
 
     def auto_sanction(self, language):
@@ -300,10 +305,7 @@ class DumpHandler(object):
             language (str): the language to report on.
         """
         counter = collections.defaultdict(int)
-        for _, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(content_elt.text)
-
+        for _, concept in self.concepts:
             for expression in concept.related_expressions:
                 if expression['language'] == language:
                     counter[expression['sanctioned']] += 1
@@ -316,10 +318,7 @@ class DumpHandler(object):
         """Find terms with invalid characters, print the errors to stdout."""
         invalids = collections.defaultdict(int)
 
-        for title, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(content_elt.text)
-
+        for title, concept in self.concepts:
             for expression in concept.find_invalid(language):
                 invalids[language] += 1
                 print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
@@ -380,12 +379,8 @@ class DumpHandler(object):
             termcenter = etree.Element('r', nsmap=NSMAP)
             termcenter.attrib['id'] = 'termwiki'
 
-            for title, content_elt in self.content_elements:
-                concept = read_termwiki.Concept()
-                concept.title = title
-                concept.from_termwiki(content_elt.text)
-
-                if concept.has_sanctioned_sami():
+            for title, concept in self.concepts:
+                if not concept.has_invalid() and concept.has_sanctioned_sami():
                     termcenter.append(concept.termcenter_entry)
 
             write_termfile('termcenter', termcenter)
@@ -393,11 +388,8 @@ class DumpHandler(object):
         def make_termfiles():
             """Make all the term files."""
             terms = {}
-            for title, content_elt in self.content_elements:
-                concept = read_termwiki.Concept()
-                concept.title = title
-                concept.from_termwiki(content_elt.text)
-                if concept.has_sanctioned_sami():
+            for title, concept in self.concepts:
+                if not concept.has_invalid() and concept.has_sanctioned_sami():
                     for e_entry in concept.related_expressions:
                         lang = e_entry.get('language')
                         if lang and e_entry.get('sanctioned') == 'True':
@@ -466,10 +458,7 @@ class DumpHandler(object):
 
     def print_expression_pairs(self, lang1, lang2):
         """Print pairs of expressions, for use in making bidix files."""
-        for title, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.title = title
-            concept.from_termwiki(content_elt.text)
+        for title, concept in self.concepts:
             term = concept.data
 
             if concept.has_sanctioned_sami():
@@ -549,10 +538,7 @@ class DumpHandler(object):
         expressions = etree.SubElement(termwiki, 'expressions')
         concepts = etree.SubElement(termwiki, 'concepts')
 
-        for title, content_elt in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(content_elt.text)
-
+        for title, concept in self.concepts:
             xml_concept = etree.SubElement(concepts, 'concept')
             xml_concept.set('id', title)
 

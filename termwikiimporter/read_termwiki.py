@@ -92,6 +92,8 @@ class Concept(object):
     @property
     def collections(self):
         """Get collections."""
+        if not self.data['concept'].get('collection'):
+            self.data['concept']['collection'] = set()
         return self.data['concept'].get('collection')
 
     def clean_up_concept(self):

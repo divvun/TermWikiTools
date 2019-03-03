@@ -808,6 +808,34 @@ class SiteHandler(object):
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
 
+    def fix_revisions(self) -> None:
+        """Example on how to restore pages only touched by bots."""
+        import time
+        token = self.site.api('query', meta='tokens')
+        start_time = time.strptime('15 Feb 19', '%d %b %y')
+
+        dumphandler = DumpHandler()
+        for title, content_elt in dumphandler.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+
+            if 'Collection:JustermTana' in concept.collections:
+                page = self.site.Pages[concept.title]
+                users = {revision['user']
+                         for revision in page.revisions()
+                         if
+                         revision['timestamp'] > start_time and 'mporter' not in
+                         revision['user']}
+                if users:
+                    print(title, users)
+                else:
+                    print(f'Saving {title}')
+                    self.save_page(
+                        page,
+                        str(concept),
+                        summary='Saved from backup')
+
     def improve_pagenames(self) -> None:
         """Remove characters that break eXist search from page names."""
         for page in self.content_elements:
@@ -906,6 +934,8 @@ def handle_site(arguments):
     site = SiteHandler()
     if arguments[0] == 'fix':
         site.fix()
+    elif arguments[0] == 'rev':
+        site.fix_revisions()
     elif arguments[0] == 'query':
         site.query_replace_text()
     elif arguments[0] == 'auto':

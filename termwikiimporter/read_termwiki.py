@@ -447,6 +447,14 @@ class Concept(object):
                         and expression['sanctioned'] == 'False'):
                     expression['sanctioned'] = 'True'
 
+    def has_invalid(self):
+        """Print lemmas with invalid characters."""
+        for expression in self.related_expressions:
+            if expression['sanctioned'] == 'True' and '(' in expression['expression']:
+                return True
+        else:
+            return False
+
     def print_missing(self, not_found, language=None):
         """Print lemmas not found in the languages lexicon.
 

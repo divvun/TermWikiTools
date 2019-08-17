@@ -130,6 +130,15 @@ class Concept(object):
             if expression['language'] == 'sms':
                 expression['expression'] = fix_sms(expression['expression'])
 
+            if expression.get('pos') in ['A/N', 'N/A', 'xxx']:
+                del expression['pos']
+
+            if expression.get('pos') in ['mwe', 'a', 'n', 'v']:
+                expression['pos'] = expression['pos'].upper()
+
+            if expression.get('pos') == 'Adv':
+                expression['pos'] = 'A'
+
             self.data['related_expressions'].append(expression)
 
     def from_termwiki(self, text):

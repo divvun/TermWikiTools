@@ -19,6 +19,7 @@ setup(
             'termbot = termwikiimporter.bot:main',
             'termmover = termwikiimporter.mover:main',
             'dictexport = termwikiimporter.dicts2wiki:main',
+            'termdupechecker = termwikiimporter.dupechecker:main',
         ]
     },
     install_requires=[

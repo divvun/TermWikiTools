@@ -126,6 +126,10 @@ class ExcelImporter(Importer):
             self.parse_sheet(workbook[sheet_name], pages,
                              self.fileinfo[sheet_name])
 
+        return pages
+
+    def write_concepts(self):
+        pages = self.get_concepts()
         with open(self.resultname, 'w') as to_file:
             to_file.write(
                 etree.tostring(pages, pretty_print=True, encoding='unicode'))
@@ -199,8 +203,11 @@ class RowParser(object):
         self.concept.data['source'] = self.row[self.info['source']]
 
     def handle_maincategory(self):
-        position = int(self.info['main_category'])
-        main_category = str(self.row[position].value).strip() if position else self.info['main_category']
+        try:
+            position = int(self.info['main_category'])
+            main_category = str(self.row[position].value).strip()
+        except ValueError:
+            main_category = self.info['main_category']
 
         self.concept.title = f'{main_category}:{self.info["collection"]} {self.row.index}'
 
@@ -242,4 +249,4 @@ def main():
 
     for termfile in args.termfiles:
         importer = init_file(termfile)
-        importer.get_concepts()
+        importer.write_concepts()

@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this file. If not, see <http://www.gnu.org/licenses/>.
 #
-#   Copyright © 2016-2018 The University of Tromsø
+#   Copyright © 2016-2019 The University of Tromsø
 #   http://giellatekno.uit.no & http://divvun.no
 #
 """Read termwiki pages."""
@@ -24,7 +24,7 @@ from operator import itemgetter
 
 from lxml import etree
 
-from termwikiimporter import analyser
+from termwikiimporter import analyser, check_tw_expressions
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
@@ -136,8 +136,13 @@ class Concept(object):
             if expression.get('pos') in ['mwe', 'a', 'n', 'v']:
                 expression['pos'] = expression['pos'].upper()
 
-            if expression.get('pos') == 'Adv':
+            if expression.get('pos') == 'Adj':
                 expression['pos'] = 'A'
+
+            if expression.get('pos') is None:
+                possible_pos = check_tw_expressions.set_pos(expression)
+                if possible_pos is not None:
+                    expression['pos'] = possible_pos
 
             self.data['related_expressions'].append(expression)
 

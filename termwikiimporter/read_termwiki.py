@@ -24,7 +24,7 @@ from operator import itemgetter
 
 from lxml import etree
 
-from termwikiimporter import analyser, check_tw_expressions
+from termwikiimporter import check_tw_expressions
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'

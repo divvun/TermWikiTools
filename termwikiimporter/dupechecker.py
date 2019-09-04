@@ -42,8 +42,9 @@ def concept_hits(concept):
 
 def hitlist(wikitree, report_file):
     d = dict(enumerate(string.ascii_uppercase, 1))
-    dunks = [(concept, concept_hits(concept))
+    concept_titles = [(concept, concept_hits(concept))
              for concept in concepts(wikitree)]
+    possible_dupes = [concept_title[1] for concept_title in concept_titles if concept_title[1]]
 
     l = languages(wikitree)
     lf = language_positions(l)
@@ -55,22 +56,22 @@ def hitlist(wikitree, report_file):
         row=1,
         column=1,
         value=
-        f'Possible duplicate concepts: {len([dunk[1] for dunk in dunks if dunk[1]])} of totally {len(dunks)}'
+        f'Possible duplicate concepts: {len(possible_dupes)} of totally {len(concept_titles)}'
     )
 
     for language in l:
         ws.cell(row=2, column=lf[language], value=language)
 
-    for row, dunk in enumerate(dunks, start=3):
+    for row, concept_title in enumerate(concept_titles, start=3):
         for language in l:
-            v = ', '.join([
+            value = ', '.join([
                 related_expression['expression']
-                for related_expression in dunk[0].related_expressions
+                for related_expression in concept_title[0].related_expressions
                 if related_expression['language'] == language
             ])
-            ws.cell(row=row, column=lf[language], value=v)
+            ws.cell(row=row, column=lf[language], value=value)
             ws.column_dimensions[d[lf[language]]].width = 30
-        for x, hit in enumerate(dunk[1], start=len(lf) + 1):
+        for x, hit in enumerate(concept_title[1], start=len(lf) + 1):
             ws.cell(row=2, column=x, value='Possible dupe')
             ws.cell(
                 row=row,

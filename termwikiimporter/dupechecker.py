@@ -40,18 +40,6 @@ def concept_hits(concept):
     return abba
 
 
-def csv_strings(dunk):
-    for related_expression in dunk[0].related_expressions:
-        yield related_expression['expression']
-    if dunk[1]:
-        yield ' '.join([
-            f'https://https://satni.uit.no/termwiki/index.php?title={hit.replace(" ", "_")}'
-            for hit in dunk[1]
-        ])
-
-
-#def make_workbook():
-
 
 def hitlist(wikitree, report_file):
     d = dict(enumerate(string.ascii_uppercase, 1))

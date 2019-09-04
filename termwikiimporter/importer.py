@@ -78,28 +78,6 @@ class ExcelImporter(Importer):
     splitters = re.compile(r'[,;\n\/]')
     counter = defaultdict(int)
 
-    def collect_expressions(self, startline):
-        """Find expressions found in startline.
-
-        Args:
-            startline (str): the content of an expression line
-
-        Returns:
-            list of str: the expression found in startline
-        """
-        expressions = []
-
-        if ('~' in startline or '?' in startline
-                or re.search('[()-]', startline) is not None):
-            expressions.append(startline.replace('\n', ' '))
-        else:
-            for token in self.splitters.split(startline):
-                finaltoken = token.strip().lower()
-                if finaltoken:
-                    expressions.append(finaltoken)
-
-        return expressions
-
     @property
     def fileinfo(self):
         """Parse information about excel files from a yaml file."""

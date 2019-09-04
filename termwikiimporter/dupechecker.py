@@ -77,7 +77,7 @@ def hitlist(wikitree, report_file):
                 row=row,
                 column=x,
                 value=
-                f'=HYPERLINK("https://satni.uit.no/termwiki/index.php?title={hit}", "{hit}"'
+                f'=HYPERLINK("https://satni.uit.no/termwiki/index.php?title={hit}", "{hit}")'
             )
             ws.column_dimensions[d[x]].width = 30
 

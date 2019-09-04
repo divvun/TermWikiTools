@@ -75,9 +75,6 @@ class Importer(object):
 class ExcelImporter(Importer):
     """Convert excel files to xml."""
 
-    splitters = re.compile(r'[,;\n\/]')
-    counter = defaultdict(int)
-
     @property
     def fileinfo(self):
         """Parse information about excel files from a yaml file."""
@@ -218,13 +215,11 @@ def init_file(filename):
     if filename.endswith('.xlsx'):
         return ExcelImporter(filename)
 
-    return ArbeidImporter(filename)
-
 
 def main():
     """Convert files to termwiki format."""
     args = parse_options()
 
     for termfile in args.termfiles:
-        importer = init_file(termfile)
+        importer = ExcelImporter(termfile)
         importer.write_concepts()

@@ -103,6 +103,6 @@ def parse_options():
 def main():
     args = parse_options()
     print(f'Checking for dupes in {args.termfile}')
-    excel_importer = importer.init_file(args.termfile)
+    excel_importer = importer.ExcelImporter(args.termfile)
     p = Path(args.termfile)
     hitlist(excel_importer.get_concepts(), p.stem + '.report.xlsx')

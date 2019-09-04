@@ -31,13 +31,12 @@ def concepts(wikitree):
 
 
 def concept_hits(concept):
-    abba = {
+    return {
         hit.replace(' ', '_')
         for related_expression in concept.related_expressions
         for hit in lookup.lookup(related_expression['expression'],
                                  related_expression['language'])
     }
-    return abba
 
 
 

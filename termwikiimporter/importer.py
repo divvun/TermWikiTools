@@ -45,6 +45,7 @@ class ExcelImporter(object):
         """Initialise the Importer class."""
         self.filename = filename
         self.workbook = openpyxl.load_workbook(self.filename)
+        self.dupes = []
 
     @property
     def resultname(self):
@@ -58,8 +59,7 @@ class ExcelImporter(object):
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
-    @staticmethod
-    def parse_sheet(sheet, pages, info):
+    def parse_sheet(self, sheet, pages, info):
         """Parse a sheet in a openpyxl workbook.
 
         Add concepts to the pages element.
@@ -68,12 +68,18 @@ class ExcelImporter(object):
             RowParser(SheetRow(sheet, index), info)
             for index in range(2, sheet.max_row + 1)
         ]
-        for rowparser in rowparsers:
+        for (index, rowparser) in enumerate(rowparsers, start=2):
             rowparser.parse_row()
             page = etree.SubElement(pages, 'page')
             page.set('title', rowparser.concept.title)
             concept = etree.SubElement(page, 'concept')
             concept.text = str(rowparser.concept)
+            if rowparser.dupes:
+                self.dupes.append('<tr>')
+                self.dupes.append(f'<td>{index}</td>')
+                self.dupes.append('<td>')
+                self.dupes.append('<br/>\n'.join(rowparser.dupes))
+                self.dupes.append('<br/></td></tr>')
 
     def get_concepts(self):
         """Fetch concepts from all sheets in the workbook."""
@@ -90,6 +96,23 @@ class ExcelImporter(object):
         with open(self.resultname, 'w') as to_file:
             to_file.write(
                 etree.tostring(pages, pretty_print=True, encoding='unicode'))
+
+        if self.dupes:
+            with open(self.resultname + '.dupes.html', 'w') as dupe_file:
+                dupe_file.write('''
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+tr { vertical-align: top; }
+</style>
+</head>
+<body>
+<p><a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possiblie_duplicates">Possible dupes</a></p>
+<table>
+''')
+                dupe_file.write('\n'.join(self.dupes))
+                dupe_file.write('\n</table></body></html>\n')
 
 
 class SheetRow(object):
@@ -118,6 +141,7 @@ class RowParser(object):
         self.row = row
         self.concept = read_termwiki.Concept()
         self.info = info
+        self.dupes = set()
 
     @property
     def related_expressions(self):
@@ -166,8 +190,7 @@ class RowParser(object):
 
         return expression_comment
 
-    @staticmethod
-    def make_error_strings(error_dict):
+    def make_error_strings(self, error_dict):
         """Turn the error dict into a human readable text."""
         error_strings = []
         if error_dict['invalid']:
@@ -185,17 +208,19 @@ class RowParser(object):
                     'Excel_files_and_termwiki#Possible_typo'
                 )
             if error_dict['possible_dupes']:
-                error_strings.append(
-                    '\tPossible dupes: '
-                    'https://satni.uit.no/termwiki/index.php?title='
-                    'Excel_files_and_termwiki#Possiblie_duplicates'
-                )
                 for hit in error_dict['possible_dupes']:
-                    error_strings.append(
-                        f'\t\thttps://satni.uit.no/termwiki/index.php?title={hit}'
+                    self.dupes.add(
+                        f'<a href="https://satni.uit.no/termwiki/index.php?title={hit}">{hit}</a>'
                     )
 
         return '\n'.join(error_strings)
+
+    def print_errors(self, ex_index, error_dict):
+        if error_dict['invalid']:
+            print(f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Invalid_expression>Invalid expression></a>')
+        else:
+            if error_dict['possible_typo']:
+                print(f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possible_typo">Possible typo</a>')
 
     def handle_related_expressions(self):
         """Read expressions from a cell.
@@ -203,7 +228,6 @@ class RowParser(object):
         Also gather info about errors found in this cell.
         """
         for lang in self.info['related_expressions']:
-            comment_strings = []
             ex_index = self.info['related_expressions'][lang]['expression']
             expressions = self.row[ex_index].value
             if expressions is not None:
@@ -212,13 +236,9 @@ class RowParser(object):
                     comment_dict = self.make_error_dict(expression, lang)
                     errors = self.make_error_strings(comment_dict)
                     if errors:
-                        comment_strings.append(f'{expression}\n{errors}')
+                        self.print_errors(ex_index, comment_dict)
                     self.related_expressions.append(
                         self.make_expression_dict(lang, expression))
-
-            if comment_strings:
-                comment = Comment('\n'.join(comment_strings), 'Termwiki bot')
-                self.row[ex_index].comment = comment
 
     @staticmethod
     def extract_expression(expression):
@@ -281,5 +301,3 @@ def main():
     for termfile in args.termfiles:
         importer = ExcelImporter(termfile)
         importer.write_concepts()
-        excel_path = Path(termfile)
-        importer.workbook.save(excel_path.stem + '.report.xlsx')

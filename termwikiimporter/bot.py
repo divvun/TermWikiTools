@@ -259,16 +259,6 @@ class DumpHandler(object):
             concept.from_termwiki(content_elt.text)
             yield title, concept
 
-    def invalid(self):
-        """Print urls to pages with invalid expressions."""
-        base = 'https://satni.uit.no/termwiki'
-        for title in {
-            title.replace(" ", "_")
-            for title, concept in self.concepts
-            if concept.has_invalid()
-        }:
-            print(f'{base}/index.php?title={title}&action=formedit')
-
     def print_missing(self, language=None):
         """Find all expressions of the given language.
 
@@ -343,7 +333,7 @@ class DumpHandler(object):
                 invalids[language] += 1
                 print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
                     expression, title))
-
+                    # print(f'{base}/index.php?title={title}&action=formedit')
         for lang, number in invalids.items():
             print(lang, number)
 
@@ -926,8 +916,6 @@ def handle_dump(arguments):
         dumphandler.fix()
     elif arguments[0] == 'missing':
         dumphandler.print_missing(language=arguments[1])
-    elif arguments[0] == 'invalid':
-        dumphandler.invalid()
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':

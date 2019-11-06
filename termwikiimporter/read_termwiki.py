@@ -469,7 +469,7 @@ class Concept(object):
         else:
             return False
 
-    def print_missing(self, not_found, language=None):
+    def print_missing(self, not_found, language, analyser):
         """Print lemmas not found in the languages lexicon.
 
         Args:
@@ -478,7 +478,7 @@ class Concept(object):
         for expression in self.related_expressions:
             if expression['language'] == language:
                 for real_expression in expression['expression'].split():
-                    if not analyser.is_known(language, real_expression):
+                    if not analyser.lookup(real_expression):
                         not_found[real_expression].add(self.title)
 
     def find_invalid(self, language):
@@ -495,6 +495,7 @@ class Concept(object):
         for expression in self.related_expressions:
             if expression['language'] == language:
                 if invalid_chars_re.search(expression['expression']):
+                    print(f"about to yield {expression['expression']}")
                     yield expression['expression']
 
     def has_sanctioned_sami(self):

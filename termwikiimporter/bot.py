@@ -24,6 +24,7 @@ import os
 import sys
 import uuid
 
+import hfst
 import mwclient
 import yaml
 from lxml import etree
@@ -278,19 +279,21 @@ class DumpHandler(object):
             tuple: an expression, the collections and the title of a
                 given concept.
         """
+        analyser_lang = 'sme' if language == 'se' else language
+        analyser = hfst.HfstInputStream(
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol').read()
         base = 'https://satni.uit.no/termwiki'
         not_found = collections.defaultdict(set)
 
         for title, concept in self.concepts:
-            concept.print_missing(not_found, language)
+            concept.print_missing(not_found, language, analyser)
 
         for real_expression in sorted(not_found):
-            wanted = [f'{real_expression}:{real_expression} TODO ! ']
+            wanted = [f'{real_expression}:{real_expression} TODO ; !']
             for title in not_found[real_expression]:
                 wanted.append(
-                    f'{base}/index.php?title={title.replace(" ", "_")}'
-            )
-            print(''.join(wanted))
+                    f'{base}/index.php?title={title.replace(" ", "_")}')
+            print(' '.join(wanted))
 
     def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.

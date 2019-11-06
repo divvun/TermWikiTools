@@ -248,8 +248,13 @@ class RowParser(object):
     def handle_concept_infos(self):
         """Handle concept info found in an Excel cell."""
         for lang in self.info['concept_infos']:
-            for key in self.info['concept_infos'][lang]:
-                self.concept.data['concept_infos']
+            values = {
+                key: self.row[self.info['concept_infos'][lang][key]].value
+                for key in self.info['concept_infos'][lang]}
+            if any([values[key] for key in values]):
+                values['language'] = lang
+                self.concept.data['concept_infos'].append(
+                    {key: values[key].strip() for key in values})
 
     def handle_source(self):
         """Handle a source cell."""

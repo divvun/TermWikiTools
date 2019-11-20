@@ -610,6 +610,24 @@ class DumpHandler(object):
         self.tree.write(self.dump, pretty_print=True, encoding='utf-8')
         print(f'Merged {counter} concepts into TermWiki')
 
+    def statistics(self, languages):
+        for language in languages:
+            counter = collections.defaultdict(int)
+            for title, concept in self.concepts:
+                if any([expression['language'] == language for expression in concept.related_expressions]):
+                    counter['articles'] += 1
+                    expression_with_lang = [expression for expression in concept.related_expressions
+                                            if expression['language'] == language]
+                    counter['expressions'] += len(expression_with_lang)
+                    counter['true_expressions'] += len([expression for expression in expression_with_lang if expression['sanctioned'] == 'True'])
+                    counter['false_expressions'] += len([expression for expression in expression_with_lang if expression['sanctioned'] == 'False'])
+                    counter['invalid'] += len([expression for expression in expression_with_lang if concept.invalid_chars_re.search(expression['expression'])])
+
+            print(language)
+            for item in counter.items():
+                print(f'{item[0]}\t{item[1]}')
+            print()
+
 
 class SiteHandler(object):
     """Class that involves using the TermWiki dump.
@@ -924,6 +942,8 @@ def handle_dump(arguments):
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':
         dumphandler.auto_sanction(language=arguments[1])
+    elif arguments[0] == 'statistics':
+        dumphandler.statistics(languages=arguments[1:])
     elif arguments[0] == 'terms':
         dumphandler.to_termcenter()
     elif arguments[0] == 'sort':

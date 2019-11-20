@@ -73,6 +73,7 @@ def fix_sms(expression: str) -> str:
 
 class Concept(object):
     """Class that represents a TermWiki concept."""
+    invalid_chars_re = re.compile(r'[,\(\)]')
 
     def __init__(self):
         """Initialise the Concept class."""
@@ -490,11 +491,9 @@ class Concept(object):
         Yields:
             str: an offending expression
         """
-        invalid_chars_re = re.compile(r'[,\(\)]')
-
         for expression in self.related_expressions:
             if expression['language'] == language:
-                if invalid_chars_re.search(expression['expression']):
+                if self.invalid_chars_re.search(expression['expression']):
                     yield expression['expression']
 
     def has_sanctioned_sami(self):

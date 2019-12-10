@@ -724,6 +724,28 @@ class SiteHandler(object):
         for key in sorted(counter):
             print(key, counter[key])
 
+    def make_expression_pages(self):
+        counter = 0
+        for page in self.content_elements:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(page.text())
+            for expression in concept.related_expressions:
+                title = f"Expression:{expression['expression']}"
+                try:
+                    expression_page = self.site.Pages[title]
+                    if not expression_page.exists:
+                        counter += 1
+                        strings = [f'|{key}={expression[key]}'
+                                for key in ['language', 'pos']
+                                if expression[key]]
+                        strings.insert(0, '{{Expression')
+                        strings.append('}}')
+                        expression_page.save('\n'.join(strings),
+                                             summary='Created by termbot')
+                except mwclient.errors.InvalidPageTitle:
+                    pass
+        print(f'Created {counter} expression pages')
+
     def query_replace_text(self, language):
         u"""Do a semantic media query and fix pages.
 
@@ -978,6 +1000,8 @@ def handle_site(arguments):
         site.del_expression()
     elif arguments[0] == 'improve_pagenames':
         site.improve_pagenames()
+    elif arguments[0] == 'make_expression_pages':
+        site.make_expression_pages()
     elif arguments[0] == 'merge_sdterms':
         site.merge_pages(
             pages_filename=arguments[1],

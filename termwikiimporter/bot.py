@@ -709,6 +709,32 @@ class SiteHandler(object):
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
 
+    def delete_invalid_expression_pages(self):
+        dump = DumpHandler()
+        root = dump.tree.getroot()
+        namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
+        expressions = {
+            expression_xml.text
+            for expression_xml in root.xpath(
+                f'.//mw:title[starts-with(text(), "Expression:")]',
+                namespaces=namespace)
+            }
+        print('Expression pages', len(expressions))
+        real_expressions = {
+            f'Expression:{expression["expression"]}'
+            for title, concept in dump.concepts
+            for expression in concept.related_expressions
+            }
+        print('Real expressions', len(real_expressions))
+        to_deletes = expressions - real_expressions
+        print('To deletes', len(to_deletes))
+        count = 0
+        for to_delete in to_deletes:
+            page = self.site.Pages[to_delete]
+            if page.exists:
+                print(f'Removing {to_delete}')
+                page.delete(reason="Is not found among related expressions")
+
     def fix(self):
         """Make the bot fix all pages."""
         counter = collections.defaultdict(int)
@@ -1002,6 +1028,8 @@ def handle_site(arguments):
         site.improve_pagenames()
     elif arguments[0] == 'make_expression_pages':
         site.make_expression_pages()
+    elif arguments[0] == 'delete_invalid_expression_pages':
+        site.delete_invalid_expression_pages()
     elif arguments[0] == 'merge_sdterms':
         site.merge_pages(
             pages_filename=arguments[1],

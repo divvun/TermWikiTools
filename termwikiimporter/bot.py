@@ -402,7 +402,7 @@ class DumpHandler(object):
                 if not concept.has_invalid() and concept.has_sanctioned_sami():
                     for e_entry in concept.related_expressions:
                         lang = e_entry.get('language')
-                        if lang and e_entry.get('sanctioned') == 'True':
+                        if lang and e_entry.get('sanctioned') == 'True' and e_entry.get('status') != 'avoid':
                             if terms.get(lang) is None:
                                 terms[lang] = collections.defaultdict(set)
 

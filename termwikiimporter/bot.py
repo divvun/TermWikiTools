@@ -735,6 +735,23 @@ class SiteHandler(object):
                 print(f'Removing {to_delete}')
                 page.delete(reason="Is not found among related expressions")
 
+    def delete_pages(self, part_of_title):
+        dump = DumpHandler()
+        root = dump.tree.getroot()
+        namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
+        to_deletes = {
+            expression_xml.text
+            for expression_xml in root.xpath(
+                f'.//mw:title[starts-with(text(), "{part_of_title}")]',
+                namespaces=namespace)
+            }
+        print(f'{len(to_deletes)} pages to delete')
+        for to_delete in to_deletes:
+            page = self.site.Pages[to_delete]
+            if page.exists:
+                print(f'Removing {to_delete}')
+                page.delete(reason="Pages is not needed anymore")
+
     def fix(self):
         """Make the bot fix all pages."""
         counter = collections.defaultdict(int)
@@ -1030,6 +1047,8 @@ def handle_site(arguments):
         site.make_expression_pages()
     elif arguments[0] == 'delete_invalid_expression_pages':
         site.delete_invalid_expression_pages()
+    elif arguments[0] == 'delete_pages':
+        site.delete_pages(arguments[1])
     elif arguments[0] == 'merge_sdterms':
         site.merge_pages(
             pages_filename=arguments[1],

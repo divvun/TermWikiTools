@@ -481,8 +481,9 @@ class DumpHandler(object):
                                 expression['expression'])
 
                 if langs[lang1] and langs[lang2]:
-                    print('{}\t{}'.format(', '.join(langs[lang1]),
-                                          ', '.join(langs[lang2])))
+                    for expression in langs[lang1]:
+                        print('{}\t{}'.format(expression,
+                                              ', '.join(langs[lang2])))
 
     @staticmethod
     def get_site():

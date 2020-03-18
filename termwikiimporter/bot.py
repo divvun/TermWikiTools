@@ -710,6 +710,25 @@ class SiteHandler(object):
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
 
+    def delete_redirects(self):
+        dump = DumpHandler()
+        root = dump.tree.getroot()
+        namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
+        redirects = {
+            redirect_xml.getparent().getparent()
+            for redirect_xml in root.xpath(
+                f'.//mw:text[starts-with(text(), "#STIVREN")]',
+                namespaces=namespace)
+            }
+        print('Redirects pages', len(redirects))
+        for redirect in redirects:
+            title1 = redirect.find('.//mw:title', namespace)
+            page = self.site.pages[title1.text]
+            if page.redirect:
+                page.delete(reason="Redirect page is not needed")
+            else:
+                print(f'\tis not redirect {title1.text}')
+
     def delete_invalid_expression_pages(self):
         dump = DumpHandler()
         root = dump.tree.getroot()
@@ -1048,6 +1067,8 @@ def handle_site(arguments):
         site.make_expression_pages()
     elif arguments[0] == 'delete_invalid_expression_pages':
         site.delete_invalid_expression_pages()
+    elif arguments[0] == 'delete_redirects':
+        site.delete_redirects()
     elif arguments[0] == 'delete_pages':
         site.delete_pages(arguments[1])
     elif arguments[0] == 'merge_sdterms':

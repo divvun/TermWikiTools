@@ -24,7 +24,7 @@ from operator import itemgetter
 
 from lxml import etree
 
-from termwikiimporter import check_tw_expressions
+#from termwikiimporter import check_tw_expressions
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
@@ -140,10 +140,10 @@ class Concept(object):
             if expression.get('pos') == 'Adj':
                 expression['pos'] = 'A'
 
-            if expression.get('pos') is None:
-                possible_pos = check_tw_expressions.set_pos(expression)
-                if possible_pos is not None:
-                    expression['pos'] = possible_pos
+            #if expression.get('pos') is None:
+                #possible_pos = check_tw_expressions.set_pos(expression)
+                #if possible_pos is not None:
+                    #expression['pos'] = possible_pos
 
             self.data['related_expressions'].append(expression)
 

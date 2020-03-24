@@ -516,29 +516,29 @@ class DumpHandler(object):
         """Append the different parts of a concept into an xml_concept."""
         for con_xml in concept.concept_xml():
             xml_concept.append(con_xml)
-
         for rel_con in concept.related_concepts_xml():
             xml_concept.append(rel_con)
 
-        for con_inf in concept.concept_info_xml():
+        for language in concept.languages():
+            con_inf = concept.concept_info_xml(language)
             xml_concept.append(con_inf)
 
-        for related_expression, exp in concept.related_expressions_xml():
-            expression_key = json.dumps(sorted(exp.items()))
+            for related_expression, exp in concept.related_expressions_xml(language):
+                expression_key = json.dumps(sorted(exp.items()))
 
-            if expression_key not in expression_dict:
-                expression_ref = str(uuid.uuid4())
-                expression_dict[expression_key] = expression_ref
-                expression = etree.Element('expression')
-                expression.set(f'{XML}lang', exp['language'])
-                expression.set('pos', exp['pos'])
-                expression.set('string', exp['expression'])
-                expression.set('id', str(expression_ref))
-                expressions.append(expression)
+                if expression_key not in expression_dict:
+                    expression_ref = str(uuid.uuid4())
+                    expression_dict[expression_key] = expression_ref
+                    expression = etree.Element('expression')
+                    expression.set(f'{XML}lang', exp['language'])
+                    expression.set('pos', exp['pos'])
+                    expression.set('string', exp['expression'])
+                    expression.set('id', str(expression_ref))
+                    expressions.append(expression)
 
-            related_expression.set('expression_ref',
-                                   expression_dict[expression_key])
-            xml_concept.append(related_expression)
+                related_expression.set('expression_ref',
+                                       expression_dict[expression_key])
+                con_inf.append(related_expression)
 
     def dump2xml(self):
         """Turn semantic wiki concepts from dump into xml."""
@@ -555,6 +555,7 @@ class DumpHandler(object):
             self.concept2xml(concept, xml_concept, expression_dict,
                              expressions)
 
+        print(etree.tostring(termwiki, encoding='unicode', pretty_print=True))
         return termwiki, expression_dict
 
     def mergeable_pages(self, pages_filename: str, languages: list):
@@ -1016,6 +1017,8 @@ def handle_dump(arguments):
 
     if arguments[0] == 'fix':
         dumphandler.fix()
+    elif arguments[0] == 'xml':
+        dumphandler.dump2xml()
     elif arguments[0] == 'missing':
         dumphandler.print_missing(language=arguments[1])
     elif arguments[0] == 'collection':

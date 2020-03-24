@@ -285,18 +285,36 @@ class Concept(object):
                         key, concept_info[key]))
             term_strings.append('}}')
 
-    def concept_info_xml(self):
-        """Turn concept_info into xml."""
+    def languages(self):
+        return {
+            key
+            for concept_info in self.data['concept_infos']
+            for key in concept_info
+            if key == 'language'
+        } | {
+            expression['language']
+            for expression in self.related_expressions
+        }
+
+    def concept_info_of_langauge(self, language):
         for concept_info in self.data['concept_infos']:
-            concept_info_xml = etree.Element('concept_info', nsmap=NSMAP)
             for key in concept_info:
-                if key == 'language':
-                    concept_info_xml.set(f'{XML}lang', concept_info[key])
-                else:
+                if key == 'language' and concept_info[key] == language:
+                    return concept_info
+
+    def concept_info_xml(self, language):
+        """Turn concept_info into xml."""
+        concept_info_xml = etree.Element('concept_info', nsmap=NSMAP)
+        concept_info_xml.set(f'{XML}lang', language)
+        this_concept_info = self.concept_info_of_langauge(language)
+        if this_concept_info is not None:
+            for key in this_concept_info:
+                if key != 'language':
                     new_element = etree.SubElement(
-                        concept_info_xml, key, nsmap=NSMAP)
-                    new_element.text = concept_info[key]
-            yield concept_info_xml
+                            concept_info_xml, key, nsmap=NSMAP)
+                    new_element.text = this_concept_info[key]
+
+        return concept_info_xml
 
     def related_expressions_str(self, term_strings):
         """Append related_expressions to a list of strings."""
@@ -306,24 +324,25 @@ class Concept(object):
                 term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')
 
-    def related_expressions_xml(self):
+    def related_expressions_xml(self, language):
         """Turn related expressions into two parts.
 
         One meant for use inside a concept element, the other for use in
         an expressions list.
         """
         for expression in self.related_expressions:
-            rel_exp = etree.Element('related_expression', nsmap=NSMAP)
-            exp = {'pos': 'N/A'}
+            if expression['language'] == language:
+                rel_exp = etree.Element('related_expression', nsmap=NSMAP)
+                exp = {'pos': 'N/A'}
 
-            for key, value in expression.items():
-                if key in ['expression', 'pos', 'language']:
-                    exp[key] = value
-                else:
-                    child = etree.SubElement(rel_exp, key, nsmap=NSMAP)
-                    child.text = value
+                for key, value in expression.items():
+                    if key in ['expression', 'pos', 'language']:
+                        exp[key] = value
+                    else:
+                        child = etree.SubElement(rel_exp, key, nsmap=NSMAP)
+                        child.text = value
 
-            yield rel_exp, exp
+                yield rel_exp, exp
 
     def related_concepts_str(self, term_strings):
         """Append related_concepts to a list of strings."""

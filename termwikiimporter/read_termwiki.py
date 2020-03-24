@@ -482,7 +482,7 @@ class Concept(object):
                     for real_expression in real_expression1.split('/'):
                         for invalid in ['(', ')', ',', '?', '+', '*', '[', ']', '=', ';', ':']:
                             real_expression = real_expression.replace(invalid, '')
-                        if real_expression and not real_expression.startswith('-') and not analyser.lookup(real_expression):
+                        if real_expression and not real_expression.startswith(('‑', '-')) and not analyser.lookup(real_expression):
                             not_found[real_expression].add(self.title)
 
     def find_invalid(self, language):

@@ -380,15 +380,7 @@ class Concept(object):
         """Turn the language independent parts of a concept into xml."""
         if self.data['concept']:
             for key, value in self.data['concept'].items():
-                if key == 'collection':
-                    if value:
-                        collections = etree.Element('collections', nsmap=NSMAP)
-                        for collection_string in value:
-                            collection = etree.SubElement(
-                                collections, 'collection', nsmap=NSMAP)
-                            collection.text = collection_string
-                        yield collections
-                else:
+                if key != 'collection':
                     child = etree.Element(key, nsmap=NSMAP)
                     child.text = value
 

@@ -279,10 +279,9 @@ class DumpHandler(object):
             concept.print_missing(not_found, language, analyser)
 
         for real_expression in sorted(not_found):
-            wanted = [f'{real_expression}:{real_expression} TODO ; !']
-            for title in not_found[real_expression]:
-                wanted.append(
-                    f'{base}/index.php?title={title.replace(" ", "_")}')
+            wanted = [f'{real_expression}:{real_expression} TODO ; ! ']
+            wanted.extend([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]])
+
             print(' '.join(wanted))
 
     def auto_sanction(self, language):

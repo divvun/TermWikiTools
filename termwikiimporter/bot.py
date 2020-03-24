@@ -512,8 +512,20 @@ class DumpHandler(object):
             }))
 
     @staticmethod
-    def concept2xml(concept, xml_concept, expression_dict, expressions):
+    def concept2xml(concept, xml_concept, expression_dict, expressions, collections_xml, collections_dict):
         """Append the different parts of a concept into an xml_concept."""
+        if concept.collections:
+            collections = etree.SubElement(xml_concept, 'collections', nsmap=NSMAP)
+            for collection in concept.collections:
+                if collection not in collections_dict:
+                    collections_dict[collection] = str(uuid.uuid4())
+                    collection_xml = etree.SubElement(collections_xml, 'collection')
+                    collection_xml.set('id', collections_dict[collection])
+                    collection_xml.text = collection
+
+                collection_uff = etree.SubElement(collections, 'collection', nsmap=NSMAP)
+                collection_uff.text = collections_dict[collection]
+
         for con_xml in concept.concept_xml():
             xml_concept.append(con_xml)
         for rel_con in concept.related_concepts_xml():
@@ -544,16 +556,18 @@ class DumpHandler(object):
         """Turn semantic wiki concepts from dump into xml."""
         termwiki = etree.Element('termwiki', nsmap=NSMAP)
         expression_dict = {}
+        collections_dict = {}
 
         expressions = etree.SubElement(termwiki, 'expressions')
         concepts = etree.SubElement(termwiki, 'concepts')
+        collections_xml = etree.SubElement(termwiki, 'collections')
 
         for title, concept in self.concepts:
             xml_concept = etree.SubElement(concepts, 'concept')
             xml_concept.set('id', title)
 
             self.concept2xml(concept, xml_concept, expression_dict,
-                             expressions)
+                             expressions, collections_xml, collections_dict)
 
         print(etree.tostring(termwiki, encoding='unicode', pretty_print=True))
         return termwiki, expression_dict

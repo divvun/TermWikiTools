@@ -271,7 +271,7 @@ class DumpHandler(object):
         """
         analyser_lang = 'sme' if language == 'se' else language
         analyser = hfst.HfstInputStream(
-            f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol').read()
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol').read()
         base = 'https://satni.uit.no/termwiki'
         not_found = collections.defaultdict(set)
 

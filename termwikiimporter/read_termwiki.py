@@ -287,10 +287,10 @@ class Concept(object):
 
     def languages(self):
         return {
-            key
+            concept_info['language']
             for concept_info in self.data['concept_infos']
             for key in concept_info
-            if key == 'language'
+            if key == 'language' and concept_info['language']
         } | {
             expression['language']
             for expression in self.related_expressions

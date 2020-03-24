@@ -478,9 +478,10 @@ class Concept(object):
         """
         for expression in self.related_expressions:
             if expression['language'] == language:
-                for real_expression in expression['expression'].split():
                     if not analyser.lookup(real_expression):
                         not_found[real_expression].add(self.title)
+                for real_expression1 in expression['expression'].split():
+                    for real_expression in real_expression1.split('/'):
 
     def find_invalid(self, language):
         """Find expressions with invalid characters.

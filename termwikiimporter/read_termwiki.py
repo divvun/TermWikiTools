@@ -294,6 +294,7 @@ class Concept(object):
         } | {
             expression['language']
             for expression in self.related_expressions
+            if expression['language']
         }
 
     def concept_info_of_langauge(self, language):

@@ -270,13 +270,36 @@ class DumpHandler(object):
                 given concept.
         """
         analyser_lang = 'sme' if language == 'se' else language
-        analyser = hfst.HfstInputStream(
-            f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol').read()
+        norm_analyser = hfst.HfstInputStream(
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol').read()
+        desc_analyser = hfst.HfstInputStream(
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol').read()
         base = 'https://satni.uit.no/termwiki'
         not_found = collections.defaultdict(set)
 
         for title, concept in self.concepts:
-            concept.print_missing(not_found, language, analyser)
+            concept.print_missing(not_found, language, norm_analyser)
+
+        for real_expression in sorted(not_found):
+            analysis = desc_analyser.lookup(real_expression)
+            if analysis:
+                print(f'\n{real_expression}')
+                puffs = [''.join(
+                    [
+                        part
+                        for part in a[0].split('@')
+                        if '+' in part
+                    ]) for a in analysis]
+                for x, puff in enumerate(puffs):
+                    print(f'{real_expression}\t{puff}')
+
+                print('\n'.join([
+                    f'\t{url}'
+                    for url in [f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]]
+                ]))
+
+                print()
+                del not_found[real_expression]
 
         for real_expression in sorted(not_found):
             wanted = [f'{real_expression}:{real_expression} TODO ; ! ']

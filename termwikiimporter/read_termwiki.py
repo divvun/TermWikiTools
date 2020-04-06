@@ -238,7 +238,10 @@ class Concept(object):
                 if line[equality + 1:]:
                     wiki_form[key] = line[equality + 1:].strip()
             else:
-                wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
+                try:
+                    wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
+                except UnboundLocalError:
+                    pass
 
     @staticmethod
     def is_empty_template(line):

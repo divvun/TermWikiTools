@@ -295,7 +295,7 @@ class DumpHandler(object):
 
                 print('\n'.join([
                     f'\t{url}'
-                    for url in [f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]]
+                    for url in sorted([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]])
                 ]))
 
                 print()
@@ -303,7 +303,7 @@ class DumpHandler(object):
 
         for real_expression in sorted(not_found):
             wanted = [f'{real_expression}:{real_expression} TODO ; ! ']
-            wanted.extend([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]])
+            wanted.extend(sorted([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]]))
 
             print(' '.join(wanted))
 

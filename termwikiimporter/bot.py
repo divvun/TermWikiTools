@@ -697,7 +697,7 @@ class SiteHandler(object):
             return site
 
     @property
-    def content_elements(self):
+    def content_elements(self, verbose=False):
         """Get the concept pages in the TermWiki.
 
         Yields:
@@ -705,11 +705,11 @@ class SiteHandler(object):
         """
         for category in self.site.allcategories():
             if category.name.replace('Kategoriija:', '') in NAMESPACES:
-                print(category.name)
+                if verbose:
+                    print(category.name)
                 for page in category:
                     if self.is_concept_tag(page.text()):
                         yield page
-                print()
 
     def del_expression(self):
         """Delete all expression pages."""

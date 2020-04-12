@@ -688,7 +688,7 @@ class SiteHandler(object):
         config_file = os.path.join(
             os.getenv('HOME'), '.config', 'term_config.yaml')
         with open(config_file) as config_stream:
-            config = yaml.load(config_stream)
+            config = yaml.load(config_stream, Loader=yaml.FullLoader)
             site = mwclient.Site('satni.uit.no', path='/termwiki/')
             site.login(config['username'], config['password'])
 

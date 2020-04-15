@@ -339,7 +339,7 @@ class DumpHandler(object):
                     [not_found[::-1] for not_found in not_founds])
             ]
 
-        terms = self.not_found_in_normfst(language)
+        terms = self.not_found_in_normfst(language if language != 'sme' else 'se')
         dicts = missing_dicts(language)
 
         not_in_norms = collections.defaultdict(set)

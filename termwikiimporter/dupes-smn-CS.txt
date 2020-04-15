@@ -1,7 +1,0 @@
-ko
-	ko Cs "kun" ;
-	ko+CS+Foc/han:kohân # "kunhan" ;
-jis
-	jis Cs "ellen" ;
-	jis+CS+Foc/ba:jispa # ;
-	jis+CS+Foc/sun:jissun # ;

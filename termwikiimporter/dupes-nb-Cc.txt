@@ -1,3 +1,0 @@
-og
-	og conj ;
-	og adv ;

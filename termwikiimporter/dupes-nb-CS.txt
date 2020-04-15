@@ -1,9 +1,0 @@
-om
-	om  subj ;
-	om p ;
-som
-	som subj ;
-	som p ;
-dersom
-	dersom subj ;
-	dersom subj ;

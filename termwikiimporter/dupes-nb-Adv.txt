@@ -1,6 +1,0 @@
-allehånde
-	allehånde a3 ;
-	allehånde nX ;
-dit
-	dit adv ;
-	dit adv ;

@@ -492,6 +492,7 @@ class Concept(object):
         Args:
             language (src): language of the terms.
         """
+        base_url = 'https://satni.uit.no/termwiki'
         for expression in self.related_expressions:
             if expression['language'] == language:
                 for real_expression1 in expression['expression'].split():
@@ -505,7 +506,7 @@ class Concept(object):
                         if real_expression and not real_expression.startswith(
                             ('‑',
                              '-')) and not analyser.lookup(real_expression):
-                            not_found[real_expression].add(self.title)
+                            not_found[real_expression].add(f'{base_url}/index.php?title={self.title.replace(" ", "_")}')
 
     def find_invalid(self, language):
         """Find expressions with invalid characters.

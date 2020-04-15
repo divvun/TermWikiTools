@@ -82,11 +82,12 @@ def missing_dicts(language):
                             '{http://www.w3.org/XML/1998/namespace}lang'
                     ) == language:
                         for lemma_element in tg_element.iter(tag):
-                            for lemma in lemma_element.text.split():
-                                if not analyser.lookup(lemma.strip()):
-                                    not_founds[lemma.strip()].add(
-                                        xml_dict.replace(
-                                            os.getenv('GTHOME'), '$GTHOME'))
+                            if lemma_element.text is not None:
+                                for lemma in lemma_element.text.split():
+                                    if not analyser.lookup(lemma.strip()):
+                                        not_founds[lemma.strip()].add(
+                                            xml_dict.replace(
+                                                os.getenv('GTHOME'), '$GTHOME'))
             else:
                 for lemma_element in dictxml.iter(tag):
                     for lemma in lemma_element.text.split():

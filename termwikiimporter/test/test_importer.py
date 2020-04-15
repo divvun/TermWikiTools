@@ -2,8 +2,8 @@
 
 import collections
 import os
-import unittest
 import sys
+import unittest
 
 from termwikiimporter import importer
 
@@ -11,8 +11,8 @@ from termwikiimporter import importer
 class TestExcelImporter(unittest.TestCase):
     def test_get_concepts(self):
         self.maxDiff = None
-        filename = os.path.join(os.path.dirname(__file__), 'excel',
-                                'simple.xlsx')
+        filename = os.path.join(
+            os.path.dirname(__file__), 'excel', 'simple.xlsx')
         ei = importer.ExcelImporter(filename)
 
         concept = {
@@ -63,7 +63,7 @@ class TestExcelImporter(unittest.TestCase):
         for startline in ['a, b', 'a; b', 'a\nb', 'a/b']:
             got = ei.collect_expressions(startline)
 
-            self.assertEqual(['a','b'], got)
+            self.assertEqual(['a', 'b'], got)
 
     def test_collect_expressions_illegal_chars(self):
         """Check that illegal chars in startline is handled correctly."""

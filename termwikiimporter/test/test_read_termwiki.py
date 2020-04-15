@@ -16,23 +16,18 @@ class TrueMockAnalyser(object):
     def is_known(self, language, lemma):
         return True
 
+
 class TestConcept(unittest.TestCase):
     def test_bot1(self):
         """Check that continued lines in Concept is kept as is."""
         self.maxDiff = None
         content = '\n'.join([
-            '{{Concept',
-            '|explanation_se=omd',
+            '{{Concept', '|explanation_se=omd',
             ' 1. it don gal dainna bargguin ađaiduva',
             '|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe',
-            ' 1. du blir nok ikke fet av det arbeidet',
-            '}}',
-            '{{Related expression',
-            '|language=se',
-            '|expression=ađaiduvvat',
-            '|sanctioned=No',
-            '|pos=V',
-            '}}'
+            ' 1. du blir nok ikke fet av det arbeidet', '}}',
+            '{{Related expression', '|language=se', '|expression=ađaiduvvat',
+            '|sanctioned=No', '|pos=V', '}}'
         ])
 
         want = '\n'.join([
@@ -63,14 +58,9 @@ class TestConcept(unittest.TestCase):
         """Check that sanctioned=No is set default."""
         self.maxDiff = None
         content = '\n'.join([
-            '{{Concept',
-            '|definition_se=njiŋŋálas',
-            '}}',
-            '{{Related expression',
-            '|language=se',
-            '|expression=rotnu',
-            '|pos=N',
-            '}}'
+            '{{Concept', '|definition_se=njiŋŋálas', '}}',
+            '{{Related expression', '|language=se', '|expression=rotnu',
+            '|pos=N', '}}'
         ])
         want = '\n'.join([
             '{{Concept info',
@@ -118,13 +108,8 @@ class TestConcept(unittest.TestCase):
         self.maxDiff = None
 
         content = '\n'.join([
-            '{{Concept',
-            '|definition_se=definition1',
-            '}}',
-            '{{Related expression',
-            '|language=se',
-            '|sanctioned=No',
-            '}}'
+            '{{Concept', '|definition_se=definition1', '}}',
+            '{{Related expression', '|language=se', '|sanctioned=No', '}}'
         ])
 
         want = '\n'.join([
@@ -186,14 +171,8 @@ class TestConcept(unittest.TestCase):
         content = '\n'.join([
             '{{Concept',
             '|definition_se=njiŋŋálas boazu dahje ealga (sarvva) mas ii leat miessi',
-            '|reviewed=No',
-            '}}',
-            '{{Related expression',
-            '|language=se',
-            '|expression=rotnu',
-            '|sanctioned=Yes',
-            '|pos=N',
-            '}}'
+            '|reviewed=No', '}}', '{{Related expression', '|language=se',
+            '|expression=rotnu', '|sanctioned=Yes', '|pos=N', '}}'
         ])
         want = '\n'.join([
             '{{Concept info',

@@ -141,9 +141,9 @@ class Concept(object):
                 expression['pos'] = 'A'
 
             #if expression.get('pos') is None:
-                #possible_pos = check_tw_expressions.set_pos(expression)
-                #if possible_pos is not None:
-                    #expression['pos'] = possible_pos
+            #possible_pos = check_tw_expressions.set_pos(expression)
+            #if possible_pos is not None:
+            #expression['pos'] = possible_pos
 
             self.data['related_expressions'].append(expression)
 
@@ -315,7 +315,7 @@ class Concept(object):
             for key in this_concept_info:
                 if key != 'language':
                     new_element = etree.SubElement(
-                            concept_info_xml, key, nsmap=NSMAP)
+                        concept_info_xml, key, nsmap=NSMAP)
                     new_element.text = this_concept_info[key]
 
         return concept_info_xml
@@ -480,7 +480,8 @@ class Concept(object):
     def has_invalid(self):
         """Print lemmas with invalid characters."""
         for expression in self.related_expressions:
-            if expression['sanctioned'] == 'True' and '(' in expression['expression']:
+            if expression['sanctioned'] == 'True' and '(' in expression[
+                    'expression']:
                 return True
         else:
             return False
@@ -495,9 +496,15 @@ class Concept(object):
             if expression['language'] == language:
                 for real_expression1 in expression['expression'].split():
                     for real_expression in real_expression1.split('/'):
-                        for invalid in ['(', ')', ',', '?', '+', '*', '[', ']', '=', ';', ':']:
-                            real_expression = real_expression.replace(invalid, '')
-                        if real_expression and not real_expression.startswith(('‑', '-')) and not analyser.lookup(real_expression):
+                        for invalid in [
+                                '(', ')', ',', '?', '+', '*', '[', ']', '=',
+                                ';', ':'
+                        ]:
+                            real_expression = real_expression.replace(
+                                invalid, '')
+                        if real_expression and not real_expression.startswith(
+                            ('‑',
+                             '-')) and not analyser.lookup(real_expression):
                             not_found[real_expression].add(self.title)
 
     def find_invalid(self, language):

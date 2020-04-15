@@ -271,9 +271,11 @@ class DumpHandler(object):
         """
         analyser_lang = 'sme' if language == 'se' else language
         norm_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol').read()
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol'
+        ).read()
         desc_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol').read()
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol'
+        ).read()
         base = 'https://satni.uit.no/termwiki'
         not_found = collections.defaultdict(set)
 
@@ -284,18 +286,18 @@ class DumpHandler(object):
             analysis = desc_analyser.lookup(real_expression)
             if analysis:
                 print(f'\n{real_expression}')
-                puffs = [''.join(
-                    [
-                        part
-                        for part in a[0].split('@')
-                        if '+' in part
-                    ]) for a in analysis]
+                puffs = [
+                    ''.join([part for part in a[0].split('@') if '+' in part])
+                    for a in analysis
+                ]
                 for x, puff in enumerate(puffs):
                     print(f'{real_expression}\t{puff}')
 
                 print('\n'.join([
-                    f'\t{url}'
-                    for url in sorted([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]])
+                    f'\t{url}' for url in sorted([
+                        f'{base}/index.php?title={title.replace(" ", "_")}'
+                        for title in not_found[real_expression]
+                    ])
                 ]))
 
                 print()
@@ -303,7 +305,11 @@ class DumpHandler(object):
 
         for real_expression in sorted(not_found):
             wanted = [f'{real_expression}:{real_expression} TODO ; ! ']
-            wanted.extend(sorted([f'{base}/index.php?title={title.replace(" ", "_")}' for title in not_found[real_expression]]))
+            wanted.extend(
+                sorted([
+                    f'{base}/index.php?title={title.replace(" ", "_")}'
+                    for title in not_found[real_expression]
+                ]))
 
             print(' '.join(wanted))
 
@@ -355,7 +361,7 @@ class DumpHandler(object):
                 invalids[language] += 1
                 print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
                     expression, title))
-                    # print(f'{base}/index.php?title={title}&action=formedit')
+                # print(f'{base}/index.php?title={title}&action=formedit')
         for lang, number in invalids.items():
             print(lang, number)
 
@@ -424,7 +430,9 @@ class DumpHandler(object):
                 if not concept.has_invalid() and concept.has_sanctioned_sami():
                     for e_entry in concept.related_expressions:
                         lang = e_entry.get('language')
-                        if lang and e_entry.get('sanctioned') == 'True' and e_entry.get('status') != 'avoid':
+                        if lang and e_entry.get(
+                                'sanctioned'
+                        ) == 'True' and e_entry.get('status') != 'avoid':
                             if terms.get(lang) is None:
                                 terms[lang] = collections.defaultdict(set)
 
@@ -535,18 +543,22 @@ class DumpHandler(object):
             }))
 
     @staticmethod
-    def concept2xml(concept, xml_concept, expression_dict, expressions, collections_xml, collections_dict):
+    def concept2xml(concept, xml_concept, expression_dict, expressions,
+                    collections_xml, collections_dict):
         """Append the different parts of a concept into an xml_concept."""
         if concept.collections:
-            collections = etree.SubElement(xml_concept, 'collections', nsmap=NSMAP)
+            collections = etree.SubElement(
+                xml_concept, 'collections', nsmap=NSMAP)
             for collection in concept.collections:
                 if collection not in collections_dict:
                     collections_dict[collection] = str(uuid.uuid4())
-                    collection_xml = etree.SubElement(collections_xml, 'collection')
+                    collection_xml = etree.SubElement(collections_xml,
+                                                      'collection')
                     collection_xml.set('id', collections_dict[collection])
                     collection_xml.text = collection
 
-                collection_uff = etree.SubElement(collections, 'collection', nsmap=NSMAP)
+                collection_uff = etree.SubElement(
+                    collections, 'collection', nsmap=NSMAP)
                 collection_uff.text = collections_dict[collection]
 
         for con_xml in concept.concept_xml():
@@ -558,7 +570,8 @@ class DumpHandler(object):
             con_inf = concept.concept_info_xml(language)
             xml_concept.append(con_inf)
 
-            for related_expression, exp in concept.related_expressions_xml(language):
+            for related_expression, exp in concept.related_expressions_xml(
+                    language):
                 expression_key = json.dumps(sorted(exp.items()))
 
                 if expression_key not in expression_dict:
@@ -613,13 +626,12 @@ class DumpHandler(object):
                     for sd_expression in sd_expressions
                     for title in tw_expression_index[language][sd_expression]
                 }
-            total = potential_pages['nb'] & potential_pages['sma'] & potential_pages['sv']
+            total = potential_pages['nb'] & potential_pages[
+                'sma'] & potential_pages['sv']
             sd_concept.title = sd_title
 
             if not total:
-                print(
-                    f'no hits, saving to {sd_title}\n'
-                )
+                print(f'no hits, saving to {sd_title}\n')
             elif len(total) == 1:
                 print(list(total)[0])
                 yield sd_concept, tw_index[list(total)[0]]
@@ -652,14 +664,30 @@ class DumpHandler(object):
         for language in languages:
             counter = collections.defaultdict(int)
             for title, concept in self.concepts:
-                if any([expression['language'] == language for expression in concept.related_expressions]):
+                if any([
+                        expression['language'] == language
+                        for expression in concept.related_expressions
+                ]):
                     counter['articles'] += 1
-                    expression_with_lang = [expression for expression in concept.related_expressions
-                                            if expression['language'] == language]
+                    expression_with_lang = [
+                        expression
+                        for expression in concept.related_expressions
+                        if expression['language'] == language
+                    ]
                     counter['expressions'] += len(expression_with_lang)
-                    counter['true_expressions'] += len([expression for expression in expression_with_lang if expression['sanctioned'] == 'True'])
-                    counter['false_expressions'] += len([expression for expression in expression_with_lang if expression['sanctioned'] == 'False'])
-                    counter['invalid'] += len([expression for expression in expression_with_lang if concept.invalid_chars_re.search(expression['expression'])])
+                    counter['true_expressions'] += len([
+                        expression for expression in expression_with_lang
+                        if expression['sanctioned'] == 'True'
+                    ])
+                    counter['false_expressions'] += len([
+                        expression for expression in expression_with_lang
+                        if expression['sanctioned'] == 'False'
+                    ])
+                    counter['invalid'] += len([
+                        expression for expression in expression_with_lang
+                        if concept.invalid_chars_re.search(
+                            expression['expression'])
+                    ])
 
             print(language)
             for item in counter.items():
@@ -756,7 +784,7 @@ class SiteHandler(object):
             for redirect_xml in root.xpath(
                 f'.//mw:text[starts-with(text(), "#STIVREN")]',
                 namespaces=namespace)
-            }
+        }
         print('Redirects pages', len(redirects))
         for redirect in redirects:
             title1 = redirect.find('.//mw:title', namespace)
@@ -775,13 +803,13 @@ class SiteHandler(object):
             for expression_xml in root.xpath(
                 f'.//mw:title[starts-with(text(), "Expression:")]',
                 namespaces=namespace)
-            }
+        }
         print('Expression pages', len(expressions))
         real_expressions = {
             f'Expression:{expression["expression"]}'
             for title, concept in dump.concepts
             for expression in concept.related_expressions
-            }
+        }
         print('Real expressions', len(real_expressions))
         to_deletes = expressions - real_expressions
         print('To deletes', len(to_deletes))
@@ -801,7 +829,7 @@ class SiteHandler(object):
             for expression_xml in root.xpath(
                 f'.//mw:title[starts-with(text(), "{part_of_title}")]',
                 namespaces=namespace)
-            }
+        }
         print(f'{len(to_deletes)} pages to delete')
         for to_delete in to_deletes:
             page = self.site.Pages[to_delete]
@@ -835,13 +863,14 @@ class SiteHandler(object):
                     expression_page = self.site.Pages[title]
                     if not expression_page.exists:
                         counter += 1
-                        strings = [f'|{key}={expression[key]}'
-                                for key in ['language', 'pos']
-                                if expression[key]]
+                        strings = [
+                            f'|{key}={expression[key]}'
+                            for key in ['language', 'pos'] if expression[key]
+                        ]
                         strings.insert(0, '{{Expression')
                         strings.append('}}')
-                        expression_page.save('\n'.join(strings),
-                                             summary='Created by termbot')
+                        expression_page.save(
+                            '\n'.join(strings), summary='Created by termbot')
                 except mwclient.errors.InvalidPageTitle:
                     pass
         print(f'Created {counter} expression pages')
@@ -974,19 +1003,18 @@ class SiteHandler(object):
 
             if 'Collection:JustermTana' in concept.collections:
                 page = self.site.Pages[concept.title]
-                users = {revision['user']
-                         for revision in page.revisions()
-                         if
-                         revision['timestamp'] > start_time and 'mporter' not in
-                         revision['user']}
+                users = {
+                    revision['user']
+                    for revision in page.revisions()
+                    if revision['timestamp'] > start_time
+                    and 'mporter' not in revision['user']
+                }
                 if users:
                     print(title, users)
                 else:
                     print(f'Saving {title}')
                     self.save_page(
-                        page,
-                        str(concept),
-                        summary='Saved from backup')
+                        page, str(concept), summary='Saved from backup')
 
     def improve_pagenames(self) -> None:
         """Remove characters that break eXist search from page names."""
@@ -1015,7 +1043,8 @@ class SiteHandler(object):
                     for sd_expression in sd_expressions
                     for title in tw_expression_index[language][sd_expression]
                 }
-            total = potential_pages['nb'] & potential_pages['sma'] & potential_pages['sv']
+            total = potential_pages['nb'] & potential_pages[
+                'sma'] & potential_pages['sv']
             sd_concept.title = sd_title
 
             if not total:

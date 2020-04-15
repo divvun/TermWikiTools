@@ -54,9 +54,10 @@ from termwikiimporter import analyser
 WANTED_LEXICONS = {
     'sme': {
         'adjectives': {
-            'pos': 'A',
-            'lexicons': ['ALIT', 'Eahpe_Adjective', 'AdjectivePx',
-                         'AdjectiveNoPx'],
+            'pos':
+            'A',
+            'lexicons':
+            ['ALIT', 'Eahpe_Adjective', 'AdjectivePx', 'AdjectiveNoPx'],
         },
         'adpositions': {
             'pos': 'Adp',
@@ -75,9 +76,10 @@ WANTED_LEXICONS = {
             'lexicons': ['Interjection'],
         },
         'nouns': {
-            'pos': 'N',
-            'lexicons': ['HyphNouns', 'Eahpe_Noun', 'NounNoPx', 'NounPxKin',
-                         'NounPx'],
+            'pos':
+            'N',
+            'lexicons':
+            ['HyphNouns', 'Eahpe_Noun', 'NounNoPx', 'NounPxKin', 'NounPx'],
         },
         'particles': {
             'pos': 'Pcle',
@@ -281,7 +283,8 @@ WANTED_LEXICONS = {
 }
 """dict: Govern which files and lexicons to extract for the given languages."""
 
-LEXC_LINE_RE = re.compile(r'''
+LEXC_LINE_RE = re.compile(
+    r'''
     (?P<contlex>\S+)            #  any nonspace
     (?P<translation>\s+".*")?   #  optional translation, might be empty
     \s*;\s*                     #  skip space and semicolon
@@ -290,7 +293,8 @@ LEXC_LINE_RE = re.compile(r'''
 ''', re.VERBOSE | re.UNICODE)
 """regex: This is used to recognise a lexc line from other content."""
 
-LEXC_CONTENT_RE = re.compile(r'''
+LEXC_CONTENT_RE = re.compile(
+    r'''
     (?P<exclam>^\s*!\s*)?          #  optional comment
     (?P<content>(<.+>)|(.+))?      #  optional content
 ''', re.VERBOSE | re.UNICODE)
@@ -487,8 +491,9 @@ class FileHandler(object):
                     dupe_list.append('\t{}'.format(line.rstrip()))
 
         if dupe_list:
-            with io.open('dupes-{}-{}.txt'.format(
-                    self.termwikilang, self.termwikipos), 'w') as dupefile:
+            with io.open(
+                    'dupes-{}-{}.txt'.format(
+                        self.termwikilang, self.termwikipos), 'w') as dupefile:
                 print('\n'.join(dupe_list), file=dupefile)
 
     def parse_file(self) -> None:

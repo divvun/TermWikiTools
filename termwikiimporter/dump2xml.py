@@ -3,11 +3,11 @@
 
 import os
 import sys
-from lxml import etree
 from collections import defaultdict
 
-from termwikiimporter import read_termwiki
+from lxml import etree
 
+from termwikiimporter import read_termwiki
 
 counter = defaultdict(int)
 
@@ -30,8 +30,8 @@ def keys2key_xml(concept_info, element_name, concept_xml):
         element_name (str): name of the TermWiki template
         concept2xml (etree.Element): the Concept element
     """
-    if not (concept_info.get('sanctioned') and
-            concept_info['sanctioned'] == 'False'):
+    if not (concept_info.get('sanctioned')
+            and concept_info['sanctioned'] == 'False'):
         info = etree.SubElement(concept_xml, element_name)
         for key, value in concept_info.items():
             etree.SubElement(info, key).text = value
@@ -39,9 +39,10 @@ def keys2key_xml(concept_info, element_name, concept_xml):
 
 def contains_sami(concept_xml):
     uff = set.intersection(
-        set(['se', 'sma', 'smj', 'smn', 'sms']),
-        {lang.text
-         for lang in concept_xml.xpath('./related_expression/language')})
+        set(['se', 'sma', 'smj', 'smn', 'sms']), {
+            lang.text
+            for lang in concept_xml.xpath('./related_expression/language')
+        })
 
     return len(uff)
 
@@ -77,8 +78,8 @@ def dump2contents():
 
     for page in tree.getroot().xpath('.//m:page', namespaces=namespaces):
         text = page.find('.//m:text', namespaces=namespaces)
-        if (text is not None and
-                text.text is not None and '{{Concept' in text.text):
+        if (text is not None and text.text is not None
+                and '{{Concept' in text.text):
             concept = read_termwiki.parse_termwiki_concept(text.text)
             concept['concept']['title'] = page.find(
                 './/m:title', namespaces=namespaces).text

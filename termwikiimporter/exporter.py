@@ -12,11 +12,13 @@ from termwikiimporter import bot
 def parse_options():
     """Parse commandline options."""
     parser = argparse.ArgumentParser(
-        description='Convert files containing terms to TermWiki mediawiki format')
+        description=
+        'Convert files containing terms to TermWiki mediawiki format')
 
-    parser.add_argument('wikifiles',
-                        nargs='+',
-                        help='One or more files containing output from the termimport.')
+    parser.add_argument(
+        'wikifiles',
+        nargs='+',
+        help='One or more files containing output from the termimport.')
 
     args = parser.parse_args()
 
@@ -58,8 +60,8 @@ def write_to_termwiki():
                             pages.remove(page)
             else:
                 print('\t adding content', new_page_title)
-                site_page.save(pages.pop().find('./concept').text,
-                               summary='New import')
+                site_page.save(
+                    pages.pop().find('./concept').text, summary='New import')
             new_page_title = page_title + '_' + str(counter)
             counter += 1
         print('pages len', len(pages))

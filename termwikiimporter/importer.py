@@ -117,6 +117,7 @@ tr { vertical-align: top; }
 
 class SheetRow(object):
     """Abstract a row in a openpyxl sheet slightly."""
+
     def __init__(self, sheet, index):
         self.sheet = sheet
         self.index = index
@@ -198,15 +199,13 @@ class RowParser(object):
             error_strings.append(
                 '\tInvalid expression: '
                 'https://satni.uit.no/termwiki/index.php?title='
-                'Excel_files_and_termwiki#Invalid_expression'
-            )
+                'Excel_files_and_termwiki#Invalid_expression')
         else:
             if error_dict['possible_typo']:
                 error_strings.append(
                     '\tPossible typo: '
                     'https://satni.uit.no/termwiki/index.php?title='
-                    'Excel_files_and_termwiki#Possible_typo'
-                )
+                    'Excel_files_and_termwiki#Possible_typo')
             if error_dict['possible_dupes']:
                 for hit in error_dict['possible_dupes']:
                     self.dupes.add(
@@ -217,10 +216,14 @@ class RowParser(object):
 
     def print_errors(self, ex_index, error_dict):
         if error_dict['invalid']:
-            print(f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Invalid_expression>Invalid expression></a>')
+            print(
+                f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Invalid_expression>Invalid expression></a>'
+            )
         else:
             if error_dict['possible_typo']:
-                print(f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possible_typo">Possible typo</a>')
+                print(
+                    f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possible_typo">Possible typo</a>'
+                )
 
     def handle_related_expressions(self):
         """Read expressions from a cell.
@@ -250,11 +253,13 @@ class RowParser(object):
         for lang in self.info['concept_infos']:
             values = {
                 key: self.row[self.info['concept_infos'][lang][key]].value
-                for key in self.info['concept_infos'][lang]}
+                for key in self.info['concept_infos'][lang]
+            }
             if any([values[key] for key in values]):
                 values['language'] = lang
                 self.concept.data['concept_infos'].append(
-                    {key: values[key].strip() for key in values})
+                    {key: values[key].strip()
+                     for key in values})
 
     def handle_source(self):
         """Handle a source cell."""

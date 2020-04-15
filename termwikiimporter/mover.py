@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
 """Move pages in the termwiki."""
-
 
 import argparse
 import collections
@@ -13,38 +11,27 @@ from lxml import etree
 from termwikiimporter import bot, importer
 
 CATEGORIES = [
-    'Boazodoallu‎',
-    'Dihtorteknologiija ja diehtoteknihkka',
-    'Dáidda ja girjjálašvuohta‎',
-    'Eanandoallu‎',
-    'Ekologiija ja biras‎',
-    'Ekonomiija ja gávppašeapmi',
-    'Geografiija‎',
-    'Gielladieđa‎',
-    'Gulahallanteknihkka‎',
-    'Guolástus‎',
-    'Huksenteknihkka‎',
-    'Juridihkka',
-    'Luonddudieđa ja matematihkka‎',
-    'Medisiidna‎',
-    'Mášenteknihkka‎',
-    'Ođđa sánit‎',
-    'Servodatdieđa‎',
-    'Stáda, almmolaš hálddašeapmi‎',
-    'Teknihkka, industriija, duodji‎',
-    'Álšateknihkka‎',
-    'Ásttoáigi ja faláštallan‎',
-    'Ávnnasindustriija‎']
+    'Boazodoallu‎', 'Dihtorteknologiija ja diehtoteknihkka',
+    'Dáidda ja girjjálašvuohta‎', 'Eanandoallu‎', 'Ekologiija ja biras‎',
+    'Ekonomiija ja gávppašeapmi', 'Geografiija‎', 'Gielladieđa‎',
+    'Gulahallanteknihkka‎', 'Guolástus‎', 'Huksenteknihkka‎', 'Juridihkka',
+    'Luonddudieđa ja matematihkka‎', 'Medisiidna‎', 'Mášenteknihkka‎',
+    'Ođđa sánit‎', 'Servodatdieđa‎', 'Stáda, almmolaš hálddašeapmi‎',
+    'Teknihkka, industriija, duodji‎', 'Álšateknihkka‎',
+    'Ásttoáigi ja faláštallan‎', 'Ávnnasindustriija‎'
+]
 
 
 def parse_options():
     """Parse the options given to the program."""
     parser = argparse.ArgumentParser(
-        description='Convert files containing terms to TermWiki mediawiki format')
+        description=
+        'Convert files containing terms to TermWiki mediawiki format')
 
-    parser.add_argument('wikifiles',
-                        nargs='+',
-                        help='One or more files containing output from the termimport.')
+    parser.add_argument(
+        'wikifiles',
+        nargs='+',
+        help='One or more files containing output from the termimport.')
 
     args = parser.parse_args()
 
@@ -59,9 +46,9 @@ def rename_category(oldname, newname):
     print('Changing the category in pages')
     for page in site.Categories[oldname]:
         print(page.name)
-        page.save(page.text().replace(oldname, newname),
-                  summary='Rename category {} -> {}'.format(
-                      oldname, newname))
+        page.save(
+            page.text().replace(oldname, newname),
+            summary='Rename category {} -> {}'.format(oldname, newname))
 
 
 def get_new_page_title(site, new_page_title):
@@ -135,8 +122,9 @@ def move_termwiki_old():
                                 pages.remove(page)
                 else:
                     print('\t adding content', new_page_title)
-                    site_page.save(pages.pop().find('./content').text,
-                                   summary='New import')
+                    site_page.save(
+                        pages.pop().find('./content').text,
+                        summary='New import')
                 new_page_title = page_title + '_' + str(counter)
                 counter += 1
             print('pages len', len(pages))
@@ -165,8 +153,8 @@ def get_expressions():
 
 def parse_expression():
     """Parse expressions found in a file."""
-    expressions_element = etree.parse(os.path.join('termwikiimporter', 'test',
-                                                   'expressions.txt'))
+    expressions_element = etree.parse(
+        os.path.join('termwikiimporter', 'test', 'expressions.txt'))
     counter = collections.defaultdict(int)
     for expression in expressions_element.xpath('page'):
         try:

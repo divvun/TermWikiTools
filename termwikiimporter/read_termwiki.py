@@ -494,7 +494,7 @@ class Concept(object):
         """
         base_url = 'https://satni.uit.no/termwiki'
         for expression in self.related_expressions:
-            if expression['language'] == language:
+            if expression['language'] == language and expression['sanctioned'] == 'True':
                 for real_expression1 in expression['expression'].split():
                     for real_expression in real_expression1.split('/'):
                         for invalid in [

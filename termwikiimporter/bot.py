@@ -29,7 +29,7 @@ import mwclient
 import yaml
 from lxml import etree
 
-from termwikiimporter import read_termwiki
+from termwikiimporter import dicts2wiki, read_termwiki
 
 XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
 XML_NAMESPACE = 'https://www.w3.org/XML/1998/namespace'
@@ -63,6 +63,39 @@ NAMESPACES = [
     'Ásttoáigi ja faláštallan',
     'Ávnnasindustriija',
 ]
+
+
+def missing_dicts(language):
+    """Parse dicts to look for part of speech."""
+    not_founds = collections.defaultdict(set)
+    analyser = hfst.HfstInputStream(
+        f'{os.getenv("GTHOME")}/langs/{language}/src/analyser-gt-norm.hfstol'
+    ).read()
+
+    for dictxml, xml_dict in dicts2wiki.valid_xmldict():
+        language_pairs = dictxml.getroot().get('id')
+        if language in language_pairs:
+            tag = 'l' if language_pairs[:3] == language else 't'
+            if tag == 't':
+                for tg_element in dictxml.xpath('.//tg'):
+                    if tg_element.get(
+                            '{http://www.w3.org/XML/1998/namespace}lang'
+                    ) == language:
+                        for lemma_element in tg_element.iter(tag):
+                            for lemma in lemma_element.text.split():
+                                if not analyser.lookup(lemma.strip()):
+                                    not_founds[lemma.strip()].add(
+                                        xml_dict.replace(
+                                            os.getenv('GTHOME'), '$GTHOME'))
+            else:
+                for lemma_element in dictxml.iter(tag):
+                    for lemma in lemma_element.text.split():
+                        if not analyser.lookup(lemma.strip()):
+                            not_founds[lemma.strip()].add(
+                                xml_dict.replace(
+                                    os.getenv('GTHOME'), '$GTHOME'))
+
+    return not_founds
 
 
 def have_same_expressions(concept1: read_termwiki.Concept,
@@ -259,59 +292,82 @@ class DumpHandler(object):
             concept.from_termwiki(content_elt.text)
             yield title, concept
 
+    def not_found_in_normfst(self, language):
+        analyser_lang = 'sme' if language == 'se' else language
+        not_founds = collections.defaultdict(set)
+        norm_analyser = hfst.HfstInputStream(
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol'
+        ).read()
+
+        for _, concept in self.concepts:
+            concept.print_missing(not_founds, language, norm_analyser)
+
+        return not_founds
+
+    @staticmethod
+    def known_to_descfst(language, not_in_norms):
+        analyser_lang = 'sme' if language == 'se' else language
+        desc_analyser = hfst.HfstInputStream(
+            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol'
+        ).read()
+        base = 'https://satni.uit.no/termwiki'
+        founds = collections.defaultdict(dict)
+
+        for real_expression in not_in_norms:
+            analyses = desc_analyser.lookup(real_expression)
+            if analyses:
+                founds[real_expression]['analyses'] = [
+                    ''.join([part for part in a[0].split('@') if '+' in part])
+                    for a in analyses
+                ]
+                founds[real_expression]['sources'] = [
+                    source for source in sorted(not_in_norms[real_expression])
+                ]
+
+        return founds
+
     def print_missing(self, language=None):
         """Find all expressions of the given language.
 
         Args:
             language (src): language of the terms.
-
-        Yields:
-            tuple: an expression, the collections and the title of a
-                given concept.
         """
-        analyser_lang = 'sme' if language == 'se' else language
-        norm_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol'
-        ).read()
-        desc_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol'
-        ).read()
-        base = 'https://satni.uit.no/termwiki'
-        not_found = collections.defaultdict(set)
 
-        for title, concept in self.concepts:
-            concept.print_missing(not_found, language, norm_analyser)
+        def revsorted_expressions(not_founds):
+            return [
+                reverted[::-1] for reverted in sorted(
+                    [not_found[::-1] for not_found in not_founds])
+            ]
 
-        for real_expression in sorted(not_found):
-            analysis = desc_analyser.lookup(real_expression)
-            if analysis:
-                print(f'\n{real_expression}')
-                puffs = [
-                    ''.join([part for part in a[0].split('@') if '+' in part])
-                    for a in analysis
-                ]
-                for x, puff in enumerate(puffs):
-                    print(f'{real_expression}\t{puff}')
+        terms = self.not_found_in_normfst(language)
+        dicts = missing_dicts(language)
 
-                print('\n'.join([
-                    f'\t{url}' for url in sorted([
-                        f'{base}/index.php?title={title.replace(" ", "_")}'
-                        for title in not_found[real_expression]
-                    ])
-                ]))
+        not_in_norms = collections.defaultdict(set)
 
-                print()
-                del not_found[real_expression]
+        for key in set(list(terms) + list(dicts)):
+            not_in_norms[key] = set().union(dicts[key]).union(terms[key])
 
-        for real_expression in sorted(not_found):
-            wanted = [f'{real_expression}:{real_expression} TODO ; ! ']
-            wanted.extend(
-                sorted([
-                    f'{base}/index.php?title={title.replace(" ", "_")}'
-                    for title in not_found[real_expression]
-                ]))
+        descriptives = self.known_to_descfst(language, not_in_norms)
+        norms = {
+            expression: not_in_norms[expression]
+            for expression in not_in_norms if expression not in descriptives
+        }
 
-            print(' '.join(wanted))
+        for descriptive in revsorted_expressions(descriptives):
+            print(descriptive)
+            print('\n'.join([
+                f'{descriptive}\t{analysis}'
+                for analysis in descriptives[descriptive]['analyses']
+            ]))
+            print('\n'.join([
+                f'\t{source}'
+                for source in descriptives[descriptive]['sources']
+            ]))
+            print()
+
+        for norm in revsorted_expressions(norms):
+            print(f'{norm}:{norm} TODO ; !', end='  ')
+            print(' '.join([url for url in sorted(norms[norm])]))
 
     def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.

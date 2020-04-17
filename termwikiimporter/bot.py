@@ -851,7 +851,7 @@ class SiteHandler(object):
             else:
                 print(f'\tis not redirect {title1.text}')
 
-    def delete_invalid_expression_pages(self):
+    def fix_expression_pages(self):
         dump = DumpHandler()
         root = dump.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
@@ -861,17 +861,18 @@ class SiteHandler(object):
                 f'.//mw:title[starts-with(text(), "Expression:")]',
                 namespaces=namespace)
         }
+        real_expressions = set()
+        for title, concept in dump.concepts:
+            for expression in concept.related_expressions:
+                expression_title = f'Expression:{expression["expression"]}'
+                real_expressions.add(expression_title)
+                if expression_title not in expressions:
+                    self.make_expression_page(expression)
+
         print('Expression pages', len(expressions))
-        real_expressions = {
-            f'Expression:{expression["expression"]}'
-            for title, concept in dump.concepts
-            for expression in concept.related_expressions
-        }
         print('Real expressions', len(real_expressions))
-        to_deletes = expressions - real_expressions
-        print('To deletes', len(to_deletes))
-        count = 0
-        for to_delete in to_deletes:
+
+        for to_delete in expressions - real_expressions:
             page = self.site.Pages[to_delete]
             if page.exists:
                 print(f'Removing {to_delete}')
@@ -909,28 +910,25 @@ class SiteHandler(object):
         for key in sorted(counter):
             print(key, counter[key])
 
-    def make_expression_pages(self):
-        counter = 0
-        for page in self.content_elements:
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(page.text())
-            for expression in concept.related_expressions:
-                title = f"Expression:{expression['expression']}"
-                try:
-                    expression_page = self.site.Pages[title]
-                    if not expression_page.exists:
-                        counter += 1
-                        strings = [
-                            f'|{key}={expression[key]}'
-                            for key in ['language', 'pos'] if expression[key]
-                        ]
-                        strings.insert(0, '{{Expression')
-                        strings.append('}}')
-                        expression_page.save(
-                            '\n'.join(strings), summary='Created by termbot')
-                except mwclient.errors.InvalidPageTitle:
-                    print(f'Invalid title {title} from {concept.title}')
-        print(f'Created {counter} expression pages')
+    def make_expression_page(self, expression):
+        title = f'Expression:{expression["expression"]}'
+        try:
+            expression_page = self.site.Pages[title]
+            print(f'Trying to make {title}', end=' ')
+            if not expression_page.exists:
+                strings = [
+                    f'|{key}={expression[key]}'
+                    for key in ['language', 'pos'] if expression[key]
+                ]
+                strings.insert(0, '{{Expression')
+                strings.append('}}')
+                expression_page.save(
+                    '\n'.join(strings), summary='Created by termbot')
+                print('succeeded')
+            else:
+                print('already exists')
+        except mwclient.errors.InvalidPageTitle:
+            print(f'Invalid title {title}')
 
     def query_replace_text(self, language):
         u"""Do a semantic media query and fix pages.
@@ -1188,10 +1186,8 @@ def handle_site(arguments):
         site.del_expression()
     elif arguments[0] == 'improve_pagenames':
         site.improve_pagenames()
-    elif arguments[0] == 'make_expression_pages':
-        site.make_expression_pages()
-    elif arguments[0] == 'delete_invalid_expression_pages':
-        site.delete_invalid_expression_pages()
+    elif arguments[0] == 'fix_expression_pages':
+        site.fix_expression_pages()
     elif arguments[0] == 'delete_redirects':
         site.delete_redirects()
     elif arguments[0] == 'delete_pages':

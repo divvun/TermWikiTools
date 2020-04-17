@@ -110,6 +110,8 @@ class Concept(object):
     def clean_up_expression(self, expression):
         """Clean up expression."""
         if 'expression' in expression:
+            expression['expression'] = ' '.join(expression['expression'].split())
+
             if (('sanctioned' in expression
                  and expression['sanctioned'] == 'No')
                     or 'sanctioned' not in expression):

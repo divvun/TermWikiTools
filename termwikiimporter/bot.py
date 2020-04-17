@@ -929,7 +929,7 @@ class SiteHandler(object):
                         expression_page.save(
                             '\n'.join(strings), summary='Created by termbot')
                 except mwclient.errors.InvalidPageTitle:
-                    pass
+                    print(f'Invalid title {title} from {concept.title}')
         print(f'Created {counter} expression pages')
 
     def query_replace_text(self, language):

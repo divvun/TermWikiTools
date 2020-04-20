@@ -864,7 +864,7 @@ class SiteHandler(object):
         real_expressions = set()
         for title, concept in dump.concepts:
             for expression in concept.related_expressions:
-                expression_title = f'Expression:{expression["expression"]}'
+                expression_title = f'Expression:{expression["expression"].replace("&amp;", "&")}'
                 real_expressions.add(expression_title)
                 if expression_title not in expressions:
                     self.make_expression_page(expression)

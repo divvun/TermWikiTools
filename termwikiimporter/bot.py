@@ -719,35 +719,48 @@ class DumpHandler(object):
 
     def statistics(self, languages):
         for language in languages:
-            counter = collections.defaultdict(int)
+            counter = {}
             for title, concept in self.concepts:
                 if any([
                         expression['language'] == language
                         for expression in concept.related_expressions
                 ]):
-                    counter['articles'] += 1
+                    category = title[:title.find(':')]
+                    if not counter.get(category):
+                        counter[category] = collections.defaultdict(int)
+                    counter[category]['concepts'] += 1
                     expression_with_lang = [
                         expression
                         for expression in concept.related_expressions
                         if expression['language'] == language
                     ]
-                    counter['expressions'] += len(expression_with_lang)
-                    counter['true_expressions'] += len([
+                    counter[category]['expressions'] += len(expression_with_lang)
+                    counter[category]['true_expressions'] += len([
                         expression for expression in expression_with_lang
                         if expression['sanctioned'] == 'True'
                     ])
-                    counter['false_expressions'] += len([
+                    counter[category]['false_expressions'] += len([
                         expression for expression in expression_with_lang
                         if expression['sanctioned'] == 'False'
                     ])
-                    counter['invalid'] += len([
+                    counter[category]['invalid'] += len([
                         expression for expression in expression_with_lang
                         if concept.invalid_chars_re.search(
                             expression['expression'])
                     ])
 
+            total = collections.defaultdict(int)
             print(language)
-            for item in counter.items():
+            for category in counter:
+                print(category)
+                for item in counter[category].items():
+                    total[item[0]] += item[1]
+                    print(f'{item[0]}\t{item[1]}')
+                print()
+
+            print(f'Totally for {language}')
+            for item in total.items():
+                total[item[0]] += item[1]
                 print(f'{item[0]}\t{item[1]}')
             print()
 

@@ -23,11 +23,11 @@ import os
 import re
 from pathlib import Path
 
+import openpyxl
 import yaml
 from lxml import etree
-
-import openpyxl
 from openpyxl.comments import Comment
+
 from termwikiimporter import check_tw_expressions, lookup, read_termwiki
 
 

@@ -38,11 +38,10 @@ def keys2key_xml(concept_info, element_name, concept_xml):
 
 
 def contains_sami(concept_xml):
-    uff = set.intersection(
-        set(['se', 'sma', 'smj', 'smn', 'sms']), {
-            lang.text
-            for lang in concept_xml.xpath('./related_expression/language')
-        })
+    uff = set.intersection(set(['se', 'sma', 'smj', 'smn', 'sms']), {
+        lang.text
+        for lang in concept_xml.xpath('./related_expression/language')
+    })
 
     return len(uff)
 
@@ -81,8 +80,8 @@ def dump2contents():
         if (text is not None and text.text is not None
                 and '{{Concept' in text.text):
             concept = read_termwiki.parse_termwiki_concept(text.text)
-            concept['concept']['title'] = page.find(
-                './/m:title', namespaces=namespaces).text
+            concept['concept']['title'] = page.find('.//m:title',
+                                                    namespaces=namespaces).text
             counter['concepts'] += 1
             yield concept
 

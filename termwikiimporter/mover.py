@@ -46,9 +46,8 @@ def rename_category(oldname, newname):
     print('Changing the category in pages')
     for page in site.Categories[oldname]:
         print(page.name)
-        page.save(
-            page.text().replace(oldname, newname),
-            summary='Rename category {} -> {}'.format(oldname, newname))
+        page.save(page.text().replace(oldname, newname),
+                  summary='Rename category {} -> {}'.format(oldname, newname))
 
 
 def get_new_page_title(site, new_page_title):
@@ -122,9 +121,8 @@ def move_termwiki_old():
                                 pages.remove(page)
                 else:
                     print('\t adding content', new_page_title)
-                    site_page.save(
-                        pages.pop().find('./content').text,
-                        summary='New import')
+                    site_page.save(pages.pop().find('./content').text,
+                                   summary='New import')
                 new_page_title = page_title + '_' + str(counter)
                 counter += 1
             print('pages len', len(pages))

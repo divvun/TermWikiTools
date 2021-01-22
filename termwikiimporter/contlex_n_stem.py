@@ -385,8 +385,8 @@ class FileHandler(object):
         'smn': 'smn',
     }
 
-    filetemplate = os.path.join(
-        os.getenv('GTHOME'), 'langs/{}/src/morphology/stems/{}.lexc')
+    filetemplate = os.path.join(os.getenv('GTHOME'),
+                                'langs/{}/src/morphology/stems/{}.lexc')
 
     def __init__(self, lang: str, stemfile: str, outdir: str) -> None:
         """Initialise the FileHandler class.
@@ -492,8 +492,9 @@ class FileHandler(object):
 
         if dupe_list:
             with io.open(
-                    'dupes-{}-{}.txt'.format(
-                        self.termwikilang, self.termwikipos), 'w') as dupefile:
+                    'dupes-{}-{}.txt'.format(self.termwikilang,
+                                             self.termwikipos),
+                    'w') as dupefile:
                 print('\n'.join(dupe_list), file=dupefile)
 
     def parse_file(self) -> None:

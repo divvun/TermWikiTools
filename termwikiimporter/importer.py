@@ -40,7 +40,6 @@ class ExcelImporter(object):
         concepts (list of concepts): all the concepts that have been
             found in filename
     """
-
     def __init__(self, filename):
         """Initialise the Importer class."""
         self.filename = filename
@@ -117,7 +116,6 @@ tr { vertical-align: top; }
 
 class SheetRow(object):
     """Abstract a row in a openpyxl sheet slightly."""
-
     def __init__(self, sheet, index):
         self.sheet = sheet
         self.index = index

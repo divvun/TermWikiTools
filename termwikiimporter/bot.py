@@ -87,14 +87,15 @@ def missing_dicts(language):
                                     if not analyser.lookup(lemma.strip()):
                                         not_founds[lemma.strip()].add(
                                             xml_dict.replace(
-                                                os.getenv('GTHOME'), '$GTHOME'))
+                                                os.getenv('GTHOME'),
+                                                '$GTHOME'))
             else:
                 for lemma_element in dictxml.iter(tag):
                     for lemma in lemma_element.text.split():
                         if not analyser.lookup(lemma.strip()):
                             not_founds[lemma.strip()].add(
-                                xml_dict.replace(
-                                    os.getenv('GTHOME'), '$GTHOME'))
+                                xml_dict.replace(os.getenv('GTHOME'),
+                                                 '$GTHOME'))
 
     return not_founds
 
@@ -235,8 +236,8 @@ class DumpHandler(object):
         mediawiki_ns (str): the mediawiki name space found in the dump file.
     """
 
-    termwiki_xml_root = os.path.join(
-        os.getenv('GTHOME'), 'words/terms/termwiki')
+    termwiki_xml_root = os.path.join(os.getenv('GTHOME'),
+                                     'words/terms/termwiki')
     dump = os.path.join(termwiki_xml_root, 'dump.xml')
     tree = etree.parse(dump)
     mediawiki_ns = '{http://www.mediawiki.org/xml/export-0.10/}'
@@ -246,8 +247,8 @@ class DumpHandler(object):
         """Save a concept to the dump file."""
         root = self.tree.getroot()
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
-        title = root.xpath(
-            f'.//mw:title[text()="{main_title}"]', namespaces=namespace)[0]
+        title = root.xpath(f'.//mw:title[text()="{main_title}"]',
+                           namespaces=namespace)[0]
         if title is not None:
             page = title.getparent()
             tuxt = page.xpath(f'.//mw:text', namespaces=namespace)[0]
@@ -333,14 +334,14 @@ class DumpHandler(object):
         Args:
             language (src): language of the terms.
         """
-
         def revsorted_expressions(not_founds):
             return [
                 reverted[::-1] for reverted in sorted(
                     [not_found[::-1] for not_found in not_founds])
             ]
 
-        terms = self.not_found_in_normfst(language if language != 'sme' else 'se')
+        terms = self.not_found_in_normfst(
+            language if language != 'sme' else 'se')
         dicts = missing_dicts(language)
 
         not_in_norms = collections.defaultdict(set)
@@ -446,12 +447,11 @@ class DumpHandler(object):
                         print('|collection={}\n{}'.format(title, text))
                         print()
                 else:
-                    print(title, etree.tostring(
-                        content_elt, encoding='unicode'))
+                    print(title, etree.tostring(content_elt,
+                                                encoding='unicode'))
 
     def to_termcenter(self):
         """Make termcenter files, useful for sátni.org."""
-
         def sort_by_id(termroot):
             """Sort entries by id."""
             return sorted(termroot, key=lambda child: child.get('id'))
@@ -463,11 +463,10 @@ class DumpHandler(object):
             with open(path, 'wb') as termstream:
                 root_element[:] = sort_by_id(root_element)
                 termstream.write(
-                    etree.tostring(
-                        root_element,
-                        encoding='utf-8',
-                        pretty_print=True,
-                        xml_declaration=True))
+                    etree.tostring(root_element,
+                                   encoding='utf-8',
+                                   pretty_print=True,
+                                   xml_declaration=True))
 
         def make_termcenter():
             """Make the termcenter file."""
@@ -518,8 +517,9 @@ class DumpHandler(object):
                         meaning_group = etree.SubElement(entry, 'mg')
                         meaning_group.attrib['idref'] = title
 
-                        xinc = etree.SubElement(
-                            meaning_group, XI + 'include', nsmap=NSMAP)
+                        xinc = etree.SubElement(meaning_group,
+                                                XI + 'include',
+                                                nsmap=NSMAP)
                         xinc.attrib[
                             'xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
                                 title)
@@ -540,10 +540,9 @@ class DumpHandler(object):
         namespace = {'mw': 'http://www.mediawiki.org/xml/export-0.10/'}
 
         pages = root.xpath('.//mw:page', namespaces=namespace)
-        pages[:] = sorted(
-            pages,
-            key=lambda page: page.find('./mw:title', namespaces=namespace).text
-        )
+        pages[:] = sorted(pages,
+                          key=lambda page: page.find(
+                              './mw:title', namespaces=namespace).text)
 
         for page in root.xpath('.//mw:page', namespaces=namespace):
             page.getparent().remove(page)
@@ -579,8 +578,8 @@ class DumpHandler(object):
         Returns:
             mwclient.Site
         """
-        config_file = os.path.join(
-            os.getenv('HOME'), '.config', 'term_config.yaml')
+        config_file = os.path.join(os.getenv('HOME'), '.config',
+                                   'term_config.yaml')
         with open(config_file) as config_stream:
             config = yaml.load(config_stream)
             site = mwclient.Site('satni.uit.no', path='/termwiki/')
@@ -604,8 +603,9 @@ class DumpHandler(object):
                     collections_xml, collections_dict):
         """Append the different parts of a concept into an xml_concept."""
         if concept.collections:
-            collections = etree.SubElement(
-                xml_concept, 'collections', nsmap=NSMAP)
+            collections = etree.SubElement(xml_concept,
+                                           'collections',
+                                           nsmap=NSMAP)
             for collection in concept.collections:
                 if collection not in collections_dict:
                     collections_dict[collection] = str(uuid.uuid4())
@@ -614,8 +614,9 @@ class DumpHandler(object):
                     collection_xml.set('id', collections_dict[collection])
                     collection_xml.text = collection
 
-                collection_uff = etree.SubElement(
-                    collections, 'collection', nsmap=NSMAP)
+                collection_uff = etree.SubElement(collections,
+                                                  'collection',
+                                                  nsmap=NSMAP)
                 collection_uff.text = collections_dict[collection]
 
         for con_xml in concept.concept_xml():
@@ -734,7 +735,8 @@ class DumpHandler(object):
                         for expression in concept.related_expressions
                         if expression['language'] == language
                     ]
-                    counter[category]['expressions'] += len(expression_with_lang)
+                    counter[category]['expressions'] += len(
+                        expression_with_lang)
                     counter[category]['true_expressions'] += len([
                         expression for expression in expression_with_lang
                         if expression['sanctioned'] == 'True'
@@ -771,7 +773,6 @@ class SiteHandler(object):
     Attributes:
         site (mwclient.Site): the TermWiki site
     """
-
     def __init__(self):
         """Initialise the SiteHandler class."""
         self.site = self.get_site()
@@ -783,8 +784,8 @@ class SiteHandler(object):
         Returns:
             mwclient.Site
         """
-        config_file = os.path.join(
-            os.getenv('HOME'), '.config', 'term_config.yaml')
+        config_file = os.path.join(os.getenv('HOME'), '.config',
+                                   'term_config.yaml')
         with open(config_file) as config_stream:
             config = yaml.load(config_stream, Loader=yaml.FullLoader)
             site = mwclient.Site('satni.uit.no', path='/termwiki/')
@@ -930,18 +931,47 @@ class SiteHandler(object):
             print(f'Trying to make {title}', end=' ')
             if not expression_page.exists:
                 strings = [
-                    f'|{key}={expression[key]}'
-                    for key in ['language', 'pos'] if expression[key]
+                    f'|{key}={expression[key]}' for key in ['language', 'pos']
+                    if expression[key]
                 ]
                 strings.insert(0, '{{Expression')
                 strings.append('}}')
-                expression_page.save(
-                    '\n'.join(strings), summary='Created by termbot')
+                expression_page.save('\n'.join(strings),
+                                     summary='Created by termbot')
                 print('succeeded')
             else:
                 print('already exists')
         except mwclient.errors.InvalidPageTitle:
             print(f'Invalid title {title}')
+
+    def semantic_ask_results(self, query):
+        for number, answer in enumerate(self.site.ask(query), start=1):
+            print(answer)
+            yield number, answer['fulltext']
+
+    def add_extra_collection(self):
+        visited_pages = set()
+        dumphandler = DumpHandler()
+        for title, content_elt in dumphandler.content_elements:
+            concept1 = read_termwiki.Concept()
+            concept1.from_termwiki(content_elt.text)
+            if 'Collection:SD-terms' in concept1.collections:
+                if title not in visited_pages:
+                    visited_pages.add(title)
+                    page = self.site.Pages[title]
+                    concept = read_termwiki.Concept()
+                    concept.from_termwiki(page.text())
+                    name = title.split(':')[1]
+                    extra_collection = f'Collection:SD-terms-{name[0].lower()}'
+                    if extra_collection not in concept.collections:
+                        concept.collections.add(extra_collection)
+                        print(f'\n\t{title} {extra_collection}\n')
+                        self.save_page(
+                            page,
+                            str(concept),
+                            summary=f'Add collection: {extra_collection}')
+
+        print(len(visited_pages))
 
     def query_replace_text(self, language):
         u"""Do a semantic media query and fix pages.
@@ -955,20 +985,16 @@ class SiteHandler(object):
                  '[[Language::{}]]'
                  '[[Sanctioned::False]]'.format(language))
 
-        for number, answer in enumerate(self.site.ask(query), start=1):
-            for title, _ in answer.items():
-                page = self.site.Pages[title]
-                concept = read_termwiki.Concept()
-                concept.from_termwiki(page.text())
-                if concept.collections is None:
-                    print('Hit no: {}, title: {}'.format(number, title))
-                    concept.auto_sanction(language)
-                    self.save_page(
-                        page,
-                        str(concept),
-                        summary='Sanctioned expressions not associated with any '
-                        'collections that the normative {} fst '
-                        'recognises.'.format(language))
+        for number, concept in self.semantic_ask_results(query):
+            if concept.collections is None:
+                print('Hit no: {}, title: {}'.format(number, concept.title))
+                concept.auto_sanction(language)
+                self.save_page(
+                    page,
+                    str(concept),
+                    summary='Sanctioned expressions not associated with any '
+                    'collections that the normative {} fst '
+                    'recognises.'.format(language))
 
     def auto_sanction(self, language):
         """Automatically sanction expressions that have no collection.
@@ -1015,13 +1041,12 @@ class SiteHandler(object):
         rollback_token = self.site.get_token('rollback')
         for page in self.content_elements:
             try:
-                self.site.api(
-                    'rollback',
-                    title=page.name,
-                    user='SDTermImporter',
-                    summary='Use Stempage in Related expression',
-                    markbot='1',
-                    token=rollback_token)
+                self.site.api('rollback',
+                              title=page.name,
+                              user='SDTermImporter',
+                              summary='Use Stempage in Related expression',
+                              markbot='1',
+                              token=rollback_token)
             except mwclient.errors.APIError as error:
                 print(page.name, error)
 
@@ -1050,10 +1075,9 @@ class SiteHandler(object):
         orig_page = self.site.pages[old_name]
         try:
             print(f'Moving from {orig_page.name} to {new_name}')
-            orig_page.move(
-                new_name,
-                reason='Remove parenthesis from page names',
-                no_redirect=True)
+            orig_page.move(new_name,
+                           reason='Remove parenthesis from page names',
+                           no_redirect=True)
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
 
@@ -1081,15 +1105,16 @@ class SiteHandler(object):
                     print(title, users)
                 else:
                     print(f'Saving {title}')
-                    self.save_page(
-                        page, str(concept), summary='Saved from backup')
+                    self.save_page(page,
+                                   str(concept),
+                                   summary='Saved from backup')
 
     def improve_pagenames(self) -> None:
         """Remove characters that break eXist search from page names."""
         for page in self.content_elements:
             my_title = read_termwiki.fix_sms(
-                self.remove_paren(page.name) if '(' in page.name else page.
-                name)
+                self.remove_paren(page.name) if '(' in
+                page.name else page.name)
             if page.name != my_title:
                 self.move_page(page.name, my_title)
 
@@ -1170,10 +1195,9 @@ def handle_dump(arguments):
     elif arguments[0] == 'sort':
         dumphandler.sort_dump()
     elif arguments[0] == 'merge_sdterms':
-        dumphandler.merge_pages(
-            pages_filename=arguments[1],
-            summary=arguments[2],
-            languages=['nb', 'sv', 'sma'])
+        dumphandler.merge_pages(pages_filename=arguments[1],
+                                summary=arguments[2],
+                                languages=['nb', 'sv', 'sma'])
     else:
         print(' '.join(arguments), 'is not supported')
 
@@ -1190,7 +1214,7 @@ def handle_site(arguments):
     elif arguments[0] == 'rev':
         site.fix_revisions()
     elif arguments[0] == 'query':
-        site.query_replace_text()
+        site.add_extra_collection()
     elif arguments[0] == 'auto':
         site.auto_sanction(language=arguments[1])
     elif arguments[0] == 'revert':
@@ -1206,10 +1230,9 @@ def handle_site(arguments):
     elif arguments[0] == 'delete_pages':
         site.delete_pages(arguments[1])
     elif arguments[0] == 'merge_sdterms':
-        site.merge_pages(
-            pages_filename=arguments[1],
-            summary=arguments[2],
-            languages=['nb', 'sv', 'sma'])
+        site.merge_pages(pages_filename=arguments[1],
+                         summary=arguments[2],
+                         languages=['nb', 'sv', 'sma'])
     else:
         print(' '.join(arguments), 'is not supported')
 

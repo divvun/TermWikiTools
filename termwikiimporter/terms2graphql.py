@@ -53,22 +53,23 @@ categories = [
                 'pigghå‎', 'rognkjeks‎', 'sil‎', 'sild‎', 'skate‎',
                 'steinbit‎', 'stingsild‎', 'tangsprell‎', 'torsk‎', 'uer‎',
                 'ulke‎', 'ål'
-            ], 'Haredyr‎', 'Hvaler‎', 'Klovdyr',
-            'Lađasjuolggat‎' ['Divrrit‎', [
-                'Biller‎', 'Lopper‎', 'Lus', 'Nebbmunner‎', 'Nettvinger‎',
-                'Rettvinger‎', 'Sommerfugler‎', 'Spretthaler‎', 'Steinfluer‎',
-                'Tovinger‎', 'Vepser‎', 'Vårfluer‎', 'Øyenstikkere‎'
-            ], 'Echinodermata‎', 'Heavnnit', [
-                'Edderkopper',
-                'Flått‎',
-                'Kakerlakker‎',
-                'Tusenbein‎',
-                'Vevkjerringer‎',
-            ], 'Hoppekreps‎', 'Jorbamáđut‎', 'Koralldyr', 'Lađasmáđut‎',
-                              'Reabbaeallit‎', [
-                                  'Bladfotkreps‎', 'Calanioida‎', 'Isopoder‎',
-                                  'Rur‎', 'Tanglopper‎'
-                              ], ], 'Loddešlájat‎',
+            ], 'Haredyr‎', 'Hvaler‎', 'Klovdyr', 'Lađasjuolggat‎'[
+                'Divrrit‎', [
+                    'Biller‎', 'Lopper‎', 'Lus', 'Nebbmunner‎', 'Nettvinger‎',
+                    'Rettvinger‎', 'Sommerfugler‎', 'Spretthaler‎',
+                    'Steinfluer‎', 'Tovinger‎', 'Vepser‎', 'Vårfluer‎',
+                    'Øyenstikkere‎'
+                ], 'Echinodermata‎', 'Heavnnit', [
+                    'Edderkopper',
+                    'Flått‎',
+                    'Kakerlakker‎',
+                    'Tusenbein‎',
+                    'Vevkjerringer‎',
+                ], 'Hoppekreps‎', 'Jorbamáđut‎', 'Koralldyr', 'Lađasmáđut‎',
+                'Reabbaeallit‎', [
+                    'Bladfotkreps‎', 'Calanioida‎', 'Isopoder‎', 'Rur‎',
+                    'Tanglopper‎'
+                ], ], 'Loddešlájat‎',
             [
                 'albatross‎', 'alke‎', 'and‎', 'avosett‎', 'bieter‎',
                 'brakksvale‎', 'buskspurv‎', 'due‎', 'dykker‎', 'erle‎',

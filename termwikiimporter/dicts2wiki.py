@@ -78,8 +78,8 @@ class Translation(object):
         """Construct the translation part of a dict page."""
         return '|Translation stem={}\n|Restriction={}\n{}\n{}\n'.format(
             '@@'.join(sorted([stem.pagename for stem in self.translations])),
-            self.restriction, '}}', '\n'.join(
-                sorted([example.content for example in self.examples])))
+            self.restriction, '}}',
+            '\n'.join(sorted([example.content for example in self.examples])))
 
 
 @attr.s(frozen=True)
@@ -97,16 +97,16 @@ class Example(object):
         """Construct a termwiki template from the content of the class."""
         return ('{}{}\n|Original={}\n|Source of original={}\n'
                 '|Translation={}\n|Source of translation={}\n'
-                '|Restriction={}\n{}'.format(
-                    '{{',
-                    type(self).__name__, self.orig, self.orig_source,
-                    self.translation, self.translation_source,
-                    self.restriction, '}}'))
+                '|Restriction={}\n{}'.format('{{',
+                                             type(self).__name__, self.orig,
+                                             self.orig_source,
+                                             self.translation,
+                                             self.translation_source,
+                                             self.restriction, '}}'))
 
 
 class XmlDictExtractor(object):
     """Class to extract info from a giella xml dictionary."""
-
     def __init__(self, dictxml: etree.ElementTree) -> None:
         """Initialise the XmlDictExtractor class."""
         self.dictxml = dictxml
@@ -139,12 +139,11 @@ class XmlDictExtractor(object):
         translation_source = example_group.find('.//xt[@src]').get('src') \
             if example_group.find('.//xt[@src]') is not None else ''
 
-        return Example(
-            restriction=restriction,
-            orig=example_group.find('.//x').text,
-            translation=example_group.find('.//xt').text,
-            orig_source=orig_source,
-            translation_source=translation_source)
+        return Example(restriction=restriction,
+                       orig=example_group.find('.//x').text,
+                       translation=example_group.find('.//xt').text,
+                       orig_source=orig_source,
+                       translation_source=translation_source)
 
     @staticmethod
     def is_valid_example(example_group: etree.Element) -> bool:
@@ -190,11 +189,10 @@ class XmlDictExtractor(object):
     def tg2translation(self, lemma: str,
                        tg_element: etree.Element) -> Translation:
         """Turn a tg giella dictionary element into a Translation object."""
-        return Translation(
-            tw_id=self.get_twid(lemma, tg_element),
-            restriction=self.get_restriction(tg_element),
-            translations=self.get_translations(tg_element),
-            examples=self.get_examples(tg_element))
+        return Translation(tw_id=self.get_twid(lemma, tg_element),
+                           restriction=self.get_restriction(tg_element),
+                           translations=self.get_translations(tg_element),
+                           examples=self.get_examples(tg_element))
 
     @staticmethod
     def get_lang(element: etree.Element) -> str:
@@ -230,14 +228,14 @@ def valid_xmldict():
             'smafin', 'smanob', 'smasme', 'smefin', 'smenob', 'smesma',
             'smesmj', 'smesmn', 'smjnob', 'smjsme', 'smnsme', 'swesma'
     ]:
-        dict_root = os.path.join(
-            os.getenv('GTHOME'), 'words/dicts', pair, 'src')
+        dict_root = os.path.join(os.getenv('GTHOME'), 'words/dicts', pair,
+                                 'src')
         for xml_file in glob.glob(dict_root + '/*.xml'):
             if not xml_file.endswith('meta.xml') and 'Der_' not in xml_file:
                 # TODO: handle Der_ files
                 try:
-                    parser = etree.XMLParser(
-                        remove_comments=True, dtd_validation=True)
+                    parser = etree.XMLParser(remove_comments=True,
+                                             dtd_validation=True)
                     dictxml = etree.parse(xml_file, parser=parser)
 
                     origlang = dictxml.getroot().get(
@@ -257,20 +255,20 @@ def valid_xmldict():
 
                     yield dictxml, xml_file
                 except etree.XMLSyntaxError as error:
-                    print(
-                        'Syntax error in {} '
-                        'with the following error:\n{}\n'.format(
-                            xml_file, error),
-                        file=sys.stderr)
+                    print('Syntax error in {} '
+                          'with the following error:\n{}\n'.format(
+                              xml_file, error),
+                          file=sys.stderr)
 
 
 def stemdict2dictpages(stemdict: collections.defaultdict):
     """Yield a dict pagename and dict content for each translation."""
     for lemma in stemdict:
         for number, translation in enumerate(stemdict[lemma], start=1):
-            yield ('Dict:{} {:04d}'.format(lemma.pagename, number),
-                   '{}Dict\n|Stempage={}\n{}'.format('{{', lemma.pagename,
-                                                     translation.content))
+            yield (
+                'Dict:{} {:04d}'.format(lemma.pagename, number),
+                '{}Dict\n|Stempage={}\n{}'.format(
+                    '{{', lemma.pagename, translation.content))
 
 
 def stemdict2stempages(stemdict: collections.defaultdict):
@@ -289,11 +287,10 @@ def parse_dicts() -> collections.defaultdict:
 
         with open(xml_file, 'wb') as xml_stream:
             xml_stream.write(
-                etree.tostring(
-                    dictxml,
-                    encoding='UTF-8',
-                    pretty_print=True,
-                    xml_declaration=True))
+                etree.tostring(dictxml,
+                               encoding='UTF-8',
+                               pretty_print=True,
+                               xml_declaration=True))
 
     return stemdict
 

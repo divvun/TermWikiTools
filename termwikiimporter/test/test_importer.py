@@ -11,8 +11,8 @@ from termwikiimporter import importer
 class TestExcelImporter(unittest.TestCase):
     def test_get_concepts(self):
         self.maxDiff = None
-        filename = os.path.join(
-            os.path.dirname(__file__), 'excel', 'simple.xlsx')
+        filename = os.path.join(os.path.dirname(__file__), 'excel',
+                                'simple.xlsx')
         ei = importer.ExcelImporter(filename)
 
         concept = {

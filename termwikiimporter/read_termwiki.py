@@ -110,7 +110,8 @@ class Concept(object):
     def clean_up_expression(self, expression):
         """Clean up expression."""
         if 'expression' in expression:
-            expression['expression'] = ' '.join(expression['expression'].split())
+            expression['expression'] = ' '.join(
+                expression['expression'].split())
 
             if (('sanctioned' in expression
                  and expression['sanctioned'] == 'No')
@@ -281,8 +282,8 @@ class Concept(object):
 
     def concept_info_str(self, term_strings):
         """Append concept_info to a list of strings."""
-        for concept_info in sorted(
-                self.data['concept_infos'], key=itemgetter('language')):
+        for concept_info in sorted(self.data['concept_infos'],
+                                   key=itemgetter('language')):
             term_strings.append('{{Concept info')
             for key in ['language', 'definition', 'explanation', 'more_info']:
                 if concept_info.get(key):
@@ -316,8 +317,9 @@ class Concept(object):
         if this_concept_info is not None:
             for key in this_concept_info:
                 if key != 'language':
-                    new_element = etree.SubElement(
-                        concept_info_xml, key, nsmap=NSMAP)
+                    new_element = etree.SubElement(concept_info_xml,
+                                                   key,
+                                                   nsmap=NSMAP)
                     new_element.text = this_concept_info[key]
 
         return concept_info_xml
@@ -496,7 +498,8 @@ class Concept(object):
         """
         base_url = 'https://satni.uit.no/termwiki'
         for expression in self.related_expressions:
-            if expression['language'] == language and expression['sanctioned'] == 'True':
+            if expression['language'] == language and expression[
+                    'sanctioned'] == 'True':
                 for real_expression1 in expression['expression'].split():
                     for real_expression in real_expression1.split('/'):
                         for invalid in [
@@ -508,7 +511,9 @@ class Concept(object):
                         if real_expression and not real_expression.startswith(
                             ('‑',
                              '-')) and not analyser.lookup(real_expression):
-                            not_found[real_expression].add(f'{base_url}/index.php?title={self.title.replace(" ", "_")}')
+                            not_found[real_expression].add(
+                                f'{base_url}/index.php?title={self.title.replace(" ", "_")}'
+                            )
 
     def find_invalid(self, language):
         """Find expressions with invalid characters.

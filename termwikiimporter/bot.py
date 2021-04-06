@@ -1112,11 +1112,14 @@ class SiteHandler(object):
     def improve_pagenames(self) -> None:
         """Remove characters that break eXist search from page names."""
         for page in self.content_elements:
-            my_title = read_termwiki.fix_sms(
-                self.remove_paren(page.name) if '(' in
-                page.name else page.name)
-            if page.name != my_title:
-                self.move_page(page.name, my_title)
+            try:
+                my_title = read_termwiki.fix_sms(
+                    self.remove_paren(page.name) if '(' in
+                    page.name else page.name)
+                if page.name != my_title:
+                    self.move_page(page.name, my_title)
+            except mwclient.errors.InvalidPageTitle:
+                print(f'Failed on {page.name}')
 
     def mergeable_pages(self, pages_filename: str, languages: list):
         tw_index, tw_expression_index = read_dump()

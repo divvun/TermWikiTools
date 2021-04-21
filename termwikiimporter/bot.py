@@ -18,7 +18,6 @@
 #
 """Bot to fix syntax blunders in termwiki articles."""
 import collections
-import copy
 import json
 import os
 import sys
@@ -68,6 +67,7 @@ NAMESPACES = [
 def correct_sanctioned(sanctioned):
     if sanctioned not in ['False', 'True']:
         raise SystemExit(f'sanctioned must be True or False')
+
 
 def missing_dicts(language):
     """Parse dicts to look for part of speech."""

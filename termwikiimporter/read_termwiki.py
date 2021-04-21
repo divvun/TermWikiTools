@@ -73,8 +73,6 @@ def fix_sms(expression: str) -> str:
 
 class Concept(object):
     """Class that represents a TermWiki concept."""
-    invalid_chars_re = re.compile(r'[,\(\)]')
-
     def __init__(self):
         """Initialise the Concept class."""
         self.title = ''
@@ -489,31 +487,6 @@ class Concept(object):
                 return True
         else:
             return False
-
-    def print_missing(self, not_found, language, analyser):
-        """Print lemmas not found in the languages lexicon.
-
-        Args:
-            language (src): language of the terms.
-        """
-        base_url = 'https://satni.uit.no/termwiki'
-        for expression in self.related_expressions:
-            if expression['language'] == language and expression[
-                    'sanctioned'] == 'True':
-                for real_expression1 in expression['expression'].split():
-                    for real_expression in real_expression1.split('/'):
-                        for invalid in [
-                                '(', ')', ',', '?', '+', '*', '[', ']', '=',
-                                ';', ':'
-                        ]:
-                            real_expression = real_expression.replace(
-                                invalid, '')
-                        if real_expression and not real_expression.startswith(
-                            ('‑',
-                             '-')) and not analyser.lookup(real_expression):
-                            not_found[real_expression].add(
-                                f'{base_url}/index.php?title={self.title.replace(" ", "_")}'
-                            )
 
     def find_invalid(self, language, sanctioned):
         """Find expressions with invalid characters.

@@ -22,6 +22,7 @@ import json
 import os
 import sys
 import uuid
+import re
 
 import hfst
 import mwclient
@@ -72,8 +73,12 @@ def correct_sanctioned(sanctioned):
 def missing_dicts(language):
     """Parse dicts to look for part of speech."""
     not_founds = collections.defaultdict(set)
-    analyser = hfst.HfstInputStream(
-        f'/usr/share/giella/{language}/analyser-gt-norm.hfstol').read()
+    analyser_lang = 'sme' if language == 'se' else language
+    path = f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol'
+    if os.path.isfile(path):
+        analyser = hfst.HfstInputStream(path).read()
+    else:
+        raise SystemExit(f'{path} does not exist')
 
     for dictxml, xml_dict in dicts2wiki.valid_xmldict():
         language_pairs = dictxml.getroot().get('id')
@@ -299,24 +304,40 @@ class DumpHandler(object):
 
     def expressions(self):
         """All expressions found in dumphandler."""
-        return (expression for _, concept in self.concepts
+        return ((title, expression) for title, concept in self.concepts
                 for expression in concept.related_expressions)
 
     def expressions_by_language_status(self, language, sanctioned):
         """Filter by language."""
-        return (expression for expression in self.expressions()
+        return ((title, expression)
+                for title, expression in self.expressions()
                 if expression['language'] == language
                 and expression['sanctioned'] == sanctioned)
 
-    def not_found_in_normfst(self, language):
+    def not_found_in_normfst(self, language, status):
+        """Return expressions not found in normfst."""
         analyser_lang = 'sme' if language == 'se' else language
         not_founds = collections.defaultdict(set)
         norm_analyser = hfst.HfstInputStream(
             f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol').read(
             )
 
-        for _, concept in self.concepts:
-            concept.print_missing(not_founds, language, norm_analyser)
+        base_url = 'https://satni.uit.no/termwiki'
+        for title, expression in self.expressions_by_language_status(
+                language, status):
+            for real_expression1 in expression['expression'].split():
+                for real_expression in real_expression1.split('/'):
+                    for invalid in [
+                            '(', ')', ',', '?', '+', '*', '[', ']', '=', ';',
+                            ':', '!'
+                    ]:
+                        real_expression = real_expression.replace(invalid, '')
+                    if real_expression and not real_expression.startswith(
+                        ('‑',
+                         '-')) and not norm_analyser.lookup(real_expression):
+                        not_founds[real_expression].add(
+                            f'{base_url}/index.php?title={title.replace(" ", "_")}'
+                        )
 
         return not_founds
 
@@ -326,7 +347,6 @@ class DumpHandler(object):
         desc_analyser = hfst.HfstInputStream(
             f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol').read(
             )
-        base = 'https://satni.uit.no/termwiki'
         founds = collections.defaultdict(dict)
 
         for real_expression in not_in_norms:
@@ -342,7 +362,7 @@ class DumpHandler(object):
 
         return founds
 
-    def print_missing(self, language=None):
+    def print_missing(self, language, status):
         """Find all expressions of the given language.
 
         Args:
@@ -355,7 +375,7 @@ class DumpHandler(object):
             ]
 
         terms = self.not_found_in_normfst(
-            language if language != 'sme' else 'se')
+            language if language != 'sme' else 'se', status)
         dicts = missing_dicts(language)
 
         not_in_norms = collections.defaultdict(set)
@@ -424,15 +444,16 @@ class DumpHandler(object):
             language, counter['true'], counter['false'],
             counter['false'] + counter['true']))
 
-    def print_invalid_chars(self, language, sanctioned):
+    def print_invalid_chars(self, language, status):
         """Find terms with invalid characters, print the errors to stdout."""
-        invalids = collections.defaultdict(int)
-        for title, concept in self.concepts:
-            for expression in concept.find_invalid(language, sanctioned):
-                invalids[language] += 1
-                print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
-                    expression, title.replace(' ', '_')))
-                # print(f'{base}/index.php?title={title}&action=formedit')
+        invalid_chars_re = re.compile(r'[()[\]?:;+*=]')
+        base_url = 'https://satni.uit.no/termwiki'
+        for title, expression in self.expressions_by_language_status(
+                language, status):
+            if invalid_chars_re.search(expression['expression']):
+                print(
+                    f'{expression["expression"]} {base_url}/index.php?title={title.replace(" ", "_")}'
+                )
 
     def fix(self):
         """Check to see if everything works as expected."""
@@ -1193,13 +1214,14 @@ def handle_dump(arguments):
     elif arguments[0] == 'xml':
         dumphandler.dump2xml()
     elif arguments[0] == 'missing':
-        dumphandler.print_missing(language=arguments[1])
+        correct_sanctioned(arguments[2])
+        dumphandler.print_missing(language=arguments[1], status=arguments[2])
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
         correct_sanctioned(arguments[2])
         dumphandler.print_invalid_chars(language=arguments[1],
-                                        sanctioned=arguments[2])
+                                        status=arguments[2])
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':

@@ -17,8 +17,8 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 """Set part of speech if possible."""
-import re
 import os
+import re
 
 import hfst
 

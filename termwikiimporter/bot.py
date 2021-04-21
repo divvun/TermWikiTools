@@ -69,8 +69,7 @@ def missing_dicts(language):
     """Parse dicts to look for part of speech."""
     not_founds = collections.defaultdict(set)
     analyser = hfst.HfstInputStream(
-        f'/usr/share/giella/{language}/analyser-gt-norm.hfstol'
-    ).read()
+        f'/usr/share/giella/{language}/analyser-gt-norm.hfstol').read()
 
     for dictxml, xml_dict in dicts2wiki.valid_xmldict():
         language_pairs = dictxml.getroot().get('id')
@@ -298,8 +297,8 @@ class DumpHandler(object):
         analyser_lang = 'sme' if language == 'se' else language
         not_founds = collections.defaultdict(set)
         norm_analyser = hfst.HfstInputStream(
-            f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol'
-        ).read()
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol').read(
+            )
 
         for _, concept in self.concepts:
             concept.print_missing(not_founds, language, norm_analyser)
@@ -310,8 +309,8 @@ class DumpHandler(object):
     def known_to_descfst(language, not_in_norms):
         analyser_lang = 'sme' if language == 'se' else language
         desc_analyser = hfst.HfstInputStream(
-            f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol'
-        ).read()
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol').read(
+            )
         base = 'https://satni.uit.no/termwiki'
         founds = collections.defaultdict(dict)
 
@@ -1185,7 +1184,8 @@ def handle_dump(arguments):
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
-        dumphandler.print_invalid_chars(language=arguments[1], sanctioned=arguments[2])
+        dumphandler.print_invalid_chars(language=arguments[1],
+                                        sanctioned=arguments[2])
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':

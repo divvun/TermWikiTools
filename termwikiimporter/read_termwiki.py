@@ -525,7 +525,8 @@ class Concept(object):
             str: an offending expression
         """
         for expression in self.related_expressions:
-            if expression['language'] == language and expression['sanctioned'] == sanctioned:
+            if expression['language'] == language and expression[
+                    'sanctioned'] == sanctioned:
                 if self.invalid_chars_re.search(expression['expression']):
                     yield expression['expression']
 

@@ -265,10 +265,9 @@ def stemdict2dictpages(stemdict: collections.defaultdict):
     """Yield a dict pagename and dict content for each translation."""
     for lemma in stemdict:
         for number, translation in enumerate(stemdict[lemma], start=1):
-            yield (
-                'Dict:{} {:04d}'.format(lemma.pagename, number),
-                '{}Dict\n|Stempage={}\n{}'.format(
-                    '{{', lemma.pagename, translation.content))
+            yield ('Dict:{} {:04d}'.format(lemma.pagename, number),
+                   '{}Dict\n|Stempage={}\n{}'.format('{{', lemma.pagename,
+                                                     translation.content))
 
 
 def stemdict2stempages(stemdict: collections.defaultdict):

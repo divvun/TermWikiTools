@@ -298,10 +298,15 @@ class DumpHandler(object):
             yield title, concept
 
     def expressions(self):
-        return (
-            expression
-            for _, concept in self.concepts
-            for expression in concept.related_expressions)
+        """All expressions found in dumphandler."""
+        return (expression for _, concept in self.concepts
+                for expression in concept.related_expressions)
+
+    def expressions_by_language_status(self, language, sanctioned):
+        """Filter by language."""
+        return (expression for expression in self.expressions()
+                if expression['language'] == language
+                and expression['sanctioned'] == sanctioned)
 
     def not_found_in_normfst(self, language):
         analyser_lang = 'sme' if language == 'se' else language

@@ -297,6 +297,12 @@ class DumpHandler(object):
             concept.from_termwiki(content_elt.text)
             yield title, concept
 
+    def expressions(self):
+        return (
+            expression
+            for _, concept in self.concepts
+            for expression in concept.related_expressions)
+
     def not_found_in_normfst(self, language):
         analyser_lang = 'sme' if language == 'se' else language
         not_founds = collections.defaultdict(set)

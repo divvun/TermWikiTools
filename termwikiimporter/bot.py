@@ -65,6 +65,10 @@ NAMESPACES = [
 ]
 
 
+def correct_sanctioned(sanctioned):
+    if sanctioned not in ['False', 'True']:
+        raise SystemExit(f'sanctioned must be True or False')
+
 def missing_dicts(language):
     """Parse dicts to look for part of speech."""
     not_founds = collections.defaultdict(set)
@@ -412,8 +416,6 @@ class DumpHandler(object):
     def print_invalid_chars(self, language, sanctioned):
         """Find terms with invalid characters, print the errors to stdout."""
         invalids = collections.defaultdict(int)
-        if sanctioned not in ['False', 'True']:
-            raise SystemExit(f'sanctioned must be True or False')
         for title, concept in self.concepts:
             for expression in concept.find_invalid(language, sanctioned):
                 invalids[language] += 1
@@ -1184,6 +1186,7 @@ def handle_dump(arguments):
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
+        correct_sanctioned(arguments[2])
         dumphandler.print_invalid_chars(language=arguments[1],
                                         sanctioned=arguments[2])
     elif arguments[0] == 'sum':

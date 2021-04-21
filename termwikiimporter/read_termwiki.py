@@ -515,7 +515,7 @@ class Concept(object):
                                 f'{base_url}/index.php?title={self.title.replace(" ", "_")}'
                             )
 
-    def find_invalid(self, language):
+    def find_invalid(self, language, sanctioned):
         """Find expressions with invalid characters.
 
         Args:
@@ -525,7 +525,7 @@ class Concept(object):
             str: an offending expression
         """
         for expression in self.related_expressions:
-            if expression['language'] == language:
+            if expression['language'] == language and expression['sanctioned'] == sanctioned:
                 if self.invalid_chars_re.search(expression['expression']):
                     yield expression['expression']
 

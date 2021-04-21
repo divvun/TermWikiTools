@@ -410,18 +410,17 @@ class DumpHandler(object):
             language, counter['true'], counter['false'],
             counter['false'] + counter['true']))
 
-    def print_invalid_chars(self, language):
+    def print_invalid_chars(self, language, sanctioned):
         """Find terms with invalid characters, print the errors to stdout."""
         invalids = collections.defaultdict(int)
-
+        if sanctioned not in ['False', 'True']:
+            raise SystemExit(f'sanctioned must be True or False')
         for title, concept in self.concepts:
-            for expression in concept.find_invalid(language):
+            for expression in concept.find_invalid(language, sanctioned):
                 invalids[language] += 1
                 print('{} https://satni.uit.no/termwiki/index.php/{}'.format(
-                    expression, title))
+                    expression, title.replace(' ', '_')))
                 # print(f'{base}/index.php?title={title}&action=formedit')
-        for lang, number in invalids.items():
-            print(lang, number)
 
     def fix(self):
         """Check to see if everything works as expected."""
@@ -1186,7 +1185,7 @@ def handle_dump(arguments):
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
-        dumphandler.print_invalid_chars(language=arguments[1])
+        dumphandler.print_invalid_chars(language=arguments[1], sanctioned=arguments[2])
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':

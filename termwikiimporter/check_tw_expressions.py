@@ -18,6 +18,7 @@
 #
 """Set part of speech if possible."""
 import re
+import os
 
 import hfst
 
@@ -42,8 +43,11 @@ def parse_dicts():
 
 def get_analyser(lang):
     """Make a hfst analyser."""
-    return hfst.HfstInputStream(
-        f'/usr/share/giella/{lang}/analyser-gt-desc.hfstol').read()
+    path = f'/usr/share/giella/{lang}/analyser-gt-desc.hfstol'
+    if os.path.isfile(path):
+        return hfst.HfstInputStream(path).read()
+    else:
+        raise SystemExit(f'{path} does not exist')
 
 
 def has_good_analysis(analysis, language):

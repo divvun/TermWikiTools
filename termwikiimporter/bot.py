@@ -69,7 +69,7 @@ def missing_dicts(language):
     """Parse dicts to look for part of speech."""
     not_founds = collections.defaultdict(set)
     analyser = hfst.HfstInputStream(
-        f'{os.getenv("GTHOME")}/langs/{language}/src/analyser-gt-norm.hfstol'
+        f'/usr/share/giella/{language}/analyser-gt-norm.hfstol'
     ).read()
 
     for dictxml, xml_dict in dicts2wiki.valid_xmldict():
@@ -298,7 +298,7 @@ class DumpHandler(object):
         analyser_lang = 'sme' if language == 'se' else language
         not_founds = collections.defaultdict(set)
         norm_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-norm.hfstol'
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol'
         ).read()
 
         for _, concept in self.concepts:
@@ -310,7 +310,7 @@ class DumpHandler(object):
     def known_to_descfst(language, not_in_norms):
         analyser_lang = 'sme' if language == 'se' else language
         desc_analyser = hfst.HfstInputStream(
-            f'{os.getenv("GTHOME")}/langs/{analyser_lang}/src/analyser-gt-desc.hfstol'
+            f'/usr/share/giella/{analyser_lang}/analyser-gt-desc.hfstol'
         ).read()
         base = 'https://satni.uit.no/termwiki'
         founds = collections.defaultdict(dict)

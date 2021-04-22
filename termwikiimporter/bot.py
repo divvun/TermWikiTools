@@ -350,12 +350,17 @@ class DumpHandler(object):
         founds = collections.defaultdict(dict)
 
         for real_expression in not_in_norms:
-            analyses = desc_analyser.lookup(real_expression)
+            analyses = {
+                ''.join([part for part in a[0].split('@') if '+' in part])
+                for a in desc_analyser.lookup(real_expression)
+            }
+            without_cmp = {
+                analysis
+                for analysis in analyses if '+Cmp#' not in analysis
+            }
             if analyses:
-                founds[real_expression]['analyses'] = [
-                    ''.join([part for part in a[0].split('@') if '+' in part])
-                    for a in analyses
-                ]
+                founds[real_expression][
+                    'analyses'] = without_cmp if without_cmp else analyses
                 founds[real_expression]['sources'] = [
                     source for source in sorted(not_in_norms[real_expression])
                 ]

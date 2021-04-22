@@ -19,10 +19,7 @@
 """Read termwiki pages."""
 
 import inspect
-import re
 from operator import itemgetter
-
-from lxml import etree
 
 #from termwikiimporter import check_tw_expressions
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
@@ -307,21 +304,6 @@ class Concept(object):
                 if key == 'language' and concept_info[key] == language:
                     return concept_info
 
-    def concept_info_xml(self, language):
-        """Turn concept_info into xml."""
-        concept_info_xml = etree.Element('concept_info', nsmap=NSMAP)
-        concept_info_xml.set(f'{XML}lang', language)
-        this_concept_info = self.concept_info_of_langauge(language)
-        if this_concept_info is not None:
-            for key in this_concept_info:
-                if key != 'language':
-                    new_element = etree.SubElement(concept_info_xml,
-                                                   key,
-                                                   nsmap=NSMAP)
-                    new_element.text = this_concept_info[key]
-
-        return concept_info_xml
-
     def related_expressions_str(self, term_strings):
         """Append related_expressions to a list of strings."""
         for expression in self.related_expressions:
@@ -329,26 +311,6 @@ class Concept(object):
             for key, value in expression.items():
                 term_strings.append('|{}={}'.format(key, value))
             term_strings.append('}}')
-
-    def related_expressions_xml(self, language):
-        """Turn related expressions into two parts.
-
-        One meant for use inside a concept element, the other for use in
-        an expressions list.
-        """
-        for expression in self.related_expressions:
-            if expression['language'] == language:
-                rel_exp = etree.Element('related_expression', nsmap=NSMAP)
-                exp = {'pos': 'N/A'}
-
-                for key, value in expression.items():
-                    if key in ['expression', 'pos', 'language']:
-                        exp[key] = value
-                    else:
-                        child = etree.SubElement(rel_exp, key, nsmap=NSMAP)
-                        child.text = value
-
-                yield rel_exp, exp
 
     def related_concepts_str(self, term_strings):
         """Append related_concepts to a list of strings."""
@@ -358,15 +320,6 @@ class Concept(object):
                 for key, value in related_concept.items():
                     term_strings.append('|{}={}'.format(key, value))
                 term_strings.append('}}')
-
-    def related_concepts_xml(self):
-        """Make xml out related_concepts."""
-        if self.data.get('related_concepts'):
-            for related_concept in self.data['related_concepts']:
-                rel_con = etree.Element('related_concept', nsmap=NSMAP)
-                for key, value in related_concept.items():
-                    rel_con.set(key, value)
-                yield rel_con
 
     def concept_str(self, term_strings):
         """Append concept to a list of strings."""
@@ -381,16 +334,6 @@ class Concept(object):
             term_strings.append('}}')
         else:
             term_strings.append('{{Concept}}')
-
-    def concept_xml(self):
-        """Turn the language independent parts of a concept into xml."""
-        if self.data['concept']:
-            for key, value in self.data['concept'].items():
-                if key != 'collection':
-                    child = etree.Element(key, nsmap=NSMAP)
-                    child.text = value
-
-                    yield child
 
     def __str__(self):
         """Turn a term dict into a semantic wiki page.
@@ -413,59 +356,6 @@ class Concept(object):
     def category(self):
         colon = self.title.find(':')
         return self.title[:colon]
-
-    @property
-    def termcenter_entry(self):
-        """Turn a concept info a termcenter entry."""
-        entry = etree.Element('e')
-        entry.attrib['id'] = self.title
-        entry.attrib['category'] = self.category
-
-        for expression in self.related_expressions:
-            if expression['sanctioned'] == 'True':
-                translation_group = etree.SubElement(entry, 'tg')
-                translation_group.attrib[XML + 'lang'] = expression['language']
-
-                translation = etree.SubElement(translation_group, 't')
-                translation.attrib['pos'] = expression['pos']
-                translation.text = expression['expression']
-
-        return entry
-
-    @property
-    def terms_entries(self):
-        def make_entry(expression):
-            entry = etree.Element('e')
-            entry.attrib['id'] = '{}\\{}'.format(expression['expression'],
-                                                 expression['pos'])
-
-            lg = etree.SubElement(entry, 'lg')
-            l = etree.SubElement(lg, 'l')
-            l.attrib['pos'] = expression['pos']
-            l.text = expression['expression']
-
-            status = etree.SubElement(entry, 'status')
-            if expression.get('status'):
-                status.text = expression['status']
-
-            sanctioned = etree.SubElement(entry, 'sanctioned')
-            sanctioned.text = 'True'
-
-            mg = etree.SubElement(entry, 'mg')
-            mg.attrib['idref'] = self.title
-
-            xi = etree.SubElement(mg, XI + 'include', nsmap=NSMAP)
-            xi.attrib['xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
-                self.title)
-            xi.attrib['href'] = 'termcenter.xml'
-
-            return expression['language'], entry
-
-        return [
-            make_entry(expression) for expression in self.related_expressions
-            if expression['sanctioned']
-            and expression.get('language') is not None
-        ]
 
     def auto_sanction(self, language):
         """Automatically sanction expressions in the given language.

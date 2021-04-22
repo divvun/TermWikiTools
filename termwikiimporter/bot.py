@@ -482,90 +482,6 @@ class DumpHandler(object):
                     print(title, etree.tostring(content_elt,
                                                 encoding='unicode'))
 
-    def to_termcenter(self):
-        """Make termcenter files, useful for sátni.org."""
-        def sort_by_id(termroot):
-            """Sort entries by id."""
-            return sorted(termroot, key=lambda child: child.get('id'))
-
-        def write_termfile(filename, root_element):
-            """Write a termfile."""
-            path = os.path.join(self.termwiki_xml_root,
-                                'terms/{}.xml'.format(filename))
-            with open(path, 'wb') as termstream:
-                root_element[:] = sort_by_id(root_element)
-                termstream.write(
-                    etree.tostring(root_element,
-                                   encoding='utf-8',
-                                   pretty_print=True,
-                                   xml_declaration=True))
-
-        def make_termcenter():
-            """Make the termcenter file."""
-            termcenter = etree.Element('r', nsmap=NSMAP)
-            termcenter.attrib['id'] = 'termwiki'
-
-            for title, concept in self.concepts:
-                if not concept.has_invalid() and concept.has_sanctioned_sami():
-                    termcenter.append(concept.termcenter_entry)
-
-            write_termfile('termcenter', termcenter)
-
-        def make_termfiles():
-            """Make all the term files."""
-            terms = {}
-            for title, concept in self.concepts:
-                if not concept.has_invalid() and concept.has_sanctioned_sami():
-                    for e_entry in concept.related_expressions:
-                        lang = e_entry.get('language')
-                        if lang and e_entry.get(
-                                'sanctioned'
-                        ) == 'True' and e_entry.get('status') != 'avoid':
-                            if terms.get(lang) is None:
-                                terms[lang] = collections.defaultdict(set)
-
-                            terms[lang]['{}\\{}'.format(
-                                e_entry['expression'],
-                                e_entry['pos'])].add(title)
-
-            turms = {}
-            for lang in terms:
-                if not turms.get(lang):
-                    turms[lang] = etree.Element('r', nsmap=NSMAP)
-                    turms[lang].attrib['id'] = 'termwiki'
-
-                for identity in terms[lang]:
-                    entry = etree.Element('e')
-                    entry.attrib['id'] = identity
-
-                    lemma_group = etree.SubElement(entry, 'lg')
-                    lemma = etree.SubElement(lemma_group, 'l')
-                    lemma.text, lemma.attrib['pos'] = identity.split('\\')
-
-                    sanctioned = etree.SubElement(entry, 'sanctioned')
-                    sanctioned.text = 'True'
-
-                    for title in sorted(terms[lang][identity]):
-                        meaning_group = etree.SubElement(entry, 'mg')
-                        meaning_group.attrib['idref'] = title
-
-                        xinc = etree.SubElement(meaning_group,
-                                                XI + 'include',
-                                                nsmap=NSMAP)
-                        xinc.attrib[
-                            'xpointer'] = "xpointer(//e[@id='{}']/tg)".format(
-                                title)
-                        xinc.attrib['href'] = 'termcenter.xml'
-
-                    turms[lang].append(entry)
-
-            for lang in turms:
-                if lang:
-                    write_termfile('terms-{}'.format(lang), turms[lang])
-
-        make_termcenter()
-        make_termfiles()
-
     def sort_dump(self):
         """Sort the dump file by page title."""
         root = self.tree.getroot()
@@ -629,74 +545,6 @@ class DumpHandler(object):
                 r.get('expression_ref')
                 for r in concept.iter('related_expression')
             }))
-
-    @staticmethod
-    def concept2xml(concept, xml_concept, expression_dict, expressions,
-                    collections_xml, collections_dict):
-        """Append the different parts of a concept into an xml_concept."""
-        if concept.collections:
-            collections = etree.SubElement(xml_concept,
-                                           'collections',
-                                           nsmap=NSMAP)
-            for collection in concept.collections:
-                if collection not in collections_dict:
-                    collections_dict[collection] = str(uuid.uuid4())
-                    collection_xml = etree.SubElement(collections_xml,
-                                                      'collection')
-                    collection_xml.set('id', collections_dict[collection])
-                    collection_xml.text = collection
-
-                collection_uff = etree.SubElement(collections,
-                                                  'collection',
-                                                  nsmap=NSMAP)
-                collection_uff.text = collections_dict[collection]
-
-        for con_xml in concept.concept_xml():
-            xml_concept.append(con_xml)
-        for rel_con in concept.related_concepts_xml():
-            xml_concept.append(rel_con)
-
-        for language in concept.languages():
-            con_inf = concept.concept_info_xml(language)
-            xml_concept.append(con_inf)
-
-            for related_expression, exp in concept.related_expressions_xml(
-                    language):
-                expression_key = json.dumps(sorted(exp.items()))
-
-                if expression_key not in expression_dict:
-                    expression_ref = str(uuid.uuid4())
-                    expression_dict[expression_key] = expression_ref
-                    expression = etree.Element('expression')
-                    expression.set(f'{XML}lang', exp['language'])
-                    expression.set('pos', exp['pos'])
-                    expression.set('string', exp['expression'])
-                    expression.set('id', str(expression_ref))
-                    expressions.append(expression)
-
-                related_expression.set('expression_ref',
-                                       expression_dict[expression_key])
-                con_inf.append(related_expression)
-
-    def dump2xml(self):
-        """Turn semantic wiki concepts from dump into xml."""
-        termwiki = etree.Element('termwiki', nsmap=NSMAP)
-        expression_dict = {}
-        collections_dict = {}
-
-        expressions = etree.SubElement(termwiki, 'expressions')
-        concepts = etree.SubElement(termwiki, 'concepts')
-        collections_xml = etree.SubElement(termwiki, 'collections')
-
-        for title, concept in self.concepts:
-            xml_concept = etree.SubElement(concepts, 'concept')
-            xml_concept.set('id', title)
-
-            self.concept2xml(concept, xml_concept, expression_dict,
-                             expressions, collections_xml, collections_dict)
-
-        print(etree.tostring(termwiki, encoding='unicode', pretty_print=True))
-        return termwiki, expression_dict
 
     def mergeable_pages(self, pages_filename: str, languages: list):
         tw_index, tw_expression_index = read_dump()
@@ -1211,8 +1059,6 @@ def handle_dump(arguments):
 
     if arguments[0] == 'fix':
         dumphandler.fix()
-    elif arguments[0] == 'xml':
-        dumphandler.dump2xml()
     elif arguments[0] == 'missing':
         correct_sanctioned(arguments[2])
         dumphandler.print_missing(language=arguments[1], status=arguments[2])
@@ -1228,8 +1074,6 @@ def handle_dump(arguments):
         dumphandler.auto_sanction(language=arguments[1])
     elif arguments[0] == 'statistics':
         dumphandler.statistics(languages=arguments[1:])
-    elif arguments[0] == 'terms':
-        dumphandler.to_termcenter()
     elif arguments[0] == 'sort':
         dumphandler.sort_dump()
     elif arguments[0] == 'merge_sdterms':

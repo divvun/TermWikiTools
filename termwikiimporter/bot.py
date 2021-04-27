@@ -65,11 +65,6 @@ NAMESPACES = [
 ATTS = re.compile(r'@[^@]+@')
 
 
-def correct_sanctioned(sanctioned):
-    if sanctioned not in ['False', 'True']:
-        raise SystemExit(f'sanctioned must be True or False')
-
-
 def missing_dicts(language):
     """Parse dicts to look for part of speech."""
     not_founds = collections.defaultdict(set)
@@ -234,7 +229,7 @@ def merge_concept(concept: read_termwiki.Concept,
                 tw_concept.related_expressions.append(uxpression)
 
 
-class DumpHandler(object):
+class DumpHandler:
     """Class that involves using the TermWiki dump.
 
     Attributes:
@@ -302,29 +297,23 @@ class DumpHandler(object):
             concept.from_termwiki(content_elt.text)
             yield title, concept
 
-    def expressions(self):
+    def expressions(self, **kwargs):
         """All expressions found in dumphandler."""
         return ((title, expression) for title, concept in self.concepts
-                for expression in concept.related_expressions)
+                for expression in concept.related_expressions if all(
+                    expression[key] == value for key, value in kwargs.items()))
 
-    def expressions_by_language_status(self, language, sanctioned):
-        """Filter by language."""
-        return ((title, expression)
-                for title, expression in self.expressions()
-                if expression['language'] == language
-                and expression['sanctioned'] == sanctioned)
-
-    def not_found_in_normfst(self, language, status):
+    def not_found_in_normfst(self, **kwargs):
         """Return expressions not found in normfst."""
-        analyser_lang = 'sme' if language == 'se' else language
+        analyser_lang = 'sme' if kwargs['language'] == 'se' else kwargs[
+            'language']
         not_founds = collections.defaultdict(set)
         norm_analyser = hfst.HfstInputStream(
             f'/usr/share/giella/{analyser_lang}/analyser-gt-norm.hfstol').read(
             )
 
         base_url = 'https://satni.uit.no/termwiki'
-        for title, expression in self.expressions_by_language_status(
-                language, status):
+        for title, expression in self.expressions(**kwargs):
             for real_expression1 in expression['expression'].split():
                 for real_expression in real_expression1.split('/'):
                     for invalid in [
@@ -367,7 +356,7 @@ class DumpHandler(object):
 
         return founds
 
-    def print_missing(self, language, status):
+    def print_missing(self, nodicts, **kwargs):
         """Find all expressions of the given language.
 
         Args:
@@ -379,21 +368,14 @@ class DumpHandler(object):
                     [not_found[::-1] for not_found in not_founds])
             ]
 
-        terms = self.not_found_in_normfst(
-            language if language != 'sme' else 'se', status)
-        dicts = missing_dicts(language)
+        not_in_norms = self.not_found_in_normfst(**kwargs)
 
-        not_in_norms = collections.defaultdict(set)
+        if not nodicts:
+            dicts = missing_dicts(kwargs['language'])
+            for key in set(list(dicts)):
+                not_in_norms[key] = not_in_norms[key].union(dicts[key])
 
-        for key in set(list(terms) + list(dicts)):
-            not_in_norms[key] = set().union(dicts[key]).union(terms[key])
-
-        descriptives = self.known_to_descfst(language, not_in_norms)
-        norms = {
-            expression: not_in_norms[expression]
-            for expression in not_in_norms if expression not in descriptives
-        }
-
+        descriptives = self.known_to_descfst(kwargs['language'], not_in_norms)
         for descriptive in revsorted_expressions(descriptives):
             print(descriptive)
             print('\n'.join([
@@ -405,6 +387,11 @@ class DumpHandler(object):
                 for source in descriptives[descriptive]['sources']
             ]))
             print()
+
+        norms = {
+            expression: not_in_norms[expression]
+            for expression in not_in_norms if expression not in descriptives
+        }
 
         for norm in revsorted_expressions(norms):
             print(f'{norm}:{norm} TODO ; !', end='  ')
@@ -449,12 +436,11 @@ class DumpHandler(object):
             language, counter['true'], counter['false'],
             counter['false'] + counter['true']))
 
-    def print_invalid_chars(self, language, status):
+    def print_invalid_chars(self, **kwargs):
         """Find terms with invalid characters, print the errors to stdout."""
         invalid_chars_re = re.compile(r'[()[\]?:;+*=]')
         base_url = 'https://satni.uit.no/termwiki'
-        for title, expression in self.expressions_by_language_status(
-                language, status):
+        for title, expression in self.expressions(**kwargs):
             if invalid_chars_re.search(expression['expression']):
                 print(
                     f'{expression["expression"]} {base_url}/index.php?title={title.replace(" ", "_")}'
@@ -652,7 +638,7 @@ class DumpHandler(object):
             print()
 
 
-class SiteHandler(object):
+class SiteHandler:
     """Class that involves using the TermWiki dump.
 
     Attributes:
@@ -1065,14 +1051,19 @@ def handle_dump(arguments):
     if arguments[0] == 'fix':
         dumphandler.fix()
     elif arguments[0] == 'missing':
-        correct_sanctioned(arguments[2])
-        dumphandler.print_missing(language=arguments[1], status=arguments[2])
+        kwargs = {'language': arguments[1]}
+        # Use nodicts for GG
+        # true or false is used for GG
+        if 'true' in arguments:
+            kwargs['sanctioned'] = 'True'
+        if 'false' in arguments:
+            kwargs['sanctioned'] = 'False'
+        dumphandler.print_missing(nodicts='nodicts' in arguments, **kwargs)
     elif arguments[0] == 'collection':
         dumphandler.find_collections()
     elif arguments[0] == 'invalid':
-        correct_sanctioned(arguments[2])
         dumphandler.print_invalid_chars(language=arguments[1],
-                                        status=arguments[2])
+                                        sanctioned=arguments[2])
     elif arguments[0] == 'sum':
         dumphandler.sum_terms(language=arguments[1])
     elif arguments[0] == 'auto':

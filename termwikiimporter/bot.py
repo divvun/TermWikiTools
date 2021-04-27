@@ -64,6 +64,8 @@ NAMESPACES = [
     'Ávnnasindustriija',
 ]
 
+ATTS = re.compile(r'@[^@]+@')
+
 
 def correct_sanctioned(sanctioned):
     if sanctioned not in ['False', 'True']:
@@ -351,8 +353,8 @@ class DumpHandler(object):
 
         for real_expression in not_in_norms:
             analyses = {
-                ''.join([part for part in a[0].split('@') if '+' in part])
-                for a in desc_analyser.lookup(real_expression)
+                ATTS.sub('', analysis[0])
+                for analysis in desc_analyser.lookup(real_expression)
             }
             without_cmp = {
                 analysis

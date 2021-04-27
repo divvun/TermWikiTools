@@ -1105,7 +1105,7 @@ def handle_site(arguments):
     elif arguments[0] == 'auto':
         site.auto_sanction(language=arguments[1])
     elif arguments[0] == 'revert':
-        site.revert(page=arguments[1])
+        site.revert()
     elif arguments[0] == 'del_expression':
         site.del_expression()
     elif arguments[0] == 'improve_pagenames':

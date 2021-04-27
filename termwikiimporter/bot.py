@@ -18,10 +18,8 @@
 #
 """Bot to fix syntax blunders in termwiki articles."""
 import collections
-import json
 import os
 import sys
-import uuid
 import re
 
 import hfst

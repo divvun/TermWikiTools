@@ -40,6 +40,7 @@ class ExcelImporter(object):
         concepts (list of concepts): all the concepts that have been
             found in filename
     """
+
     def __init__(self, filename):
         """Initialise the Importer class."""
         self.filename = filename
@@ -49,12 +50,12 @@ class ExcelImporter(object):
     @property
     def resultname(self):
         """Name of the xml output file."""
-        return os.path.splitext(self.filename)[0] + '.xml'
+        return os.path.splitext(self.filename)[0] + ".xml"
 
     @property
     def fileinfo(self):
         """Parse information about excel files from a yaml file."""
-        yamlname = self.filename.replace('.xlsx', '.yaml')
+        yamlname = self.filename.replace(".xlsx", ".yaml")
         with open(yamlname) as yamlfile:
             return yaml.load(yamlfile)
 
@@ -69,36 +70,37 @@ class ExcelImporter(object):
         ]
         for (index, rowparser) in enumerate(rowparsers, start=2):
             rowparser.parse_row()
-            page = etree.SubElement(pages, 'page')
-            page.set('title', rowparser.concept.title)
-            concept = etree.SubElement(page, 'concept')
+            page = etree.SubElement(pages, "page")
+            page.set("title", rowparser.concept.title)
+            concept = etree.SubElement(page, "concept")
             concept.text = str(rowparser.concept)
             if rowparser.dupes:
-                self.dupes.append('<tr>')
-                self.dupes.append(f'<td>{index}</td>')
-                self.dupes.append('<td>')
-                self.dupes.append('<br/>\n'.join(rowparser.dupes))
-                self.dupes.append('<br/></td></tr>')
+                self.dupes.append("<tr>")
+                self.dupes.append(f"<td>{index}</td>")
+                self.dupes.append("<td>")
+                self.dupes.append("<br/>\n".join(rowparser.dupes))
+                self.dupes.append("<br/></td></tr>")
 
     def get_concepts(self):
         """Fetch concepts from all sheets in the workbook."""
-        pages = etree.Element('pages')
+        pages = etree.Element("pages")
         for sheet_name in self.fileinfo:
-            self.parse_sheet(self.workbook[sheet_name], pages,
-                             self.fileinfo[sheet_name])
+            self.parse_sheet(
+                self.workbook[sheet_name], pages, self.fileinfo[sheet_name]
+            )
 
         return pages
 
     def write_concepts(self):
         """Write concepts to an xml file."""
         pages = self.get_concepts()
-        with open(self.resultname, 'w') as to_file:
-            to_file.write(
-                etree.tostring(pages, pretty_print=True, encoding='unicode'))
+        with open(self.resultname, "w") as to_file:
+            to_file.write(etree.tostring(pages, pretty_print=True, encoding="unicode"))
 
         if self.dupes:
-            with open(self.resultname + '.dupes.html', 'w') as dupe_file:
-                dupe_file.write('''
+            with open(self.resultname + ".dupes.html", "w") as dupe_file:
+                dupe_file.write(
+                    """
 <html>
 <head>
 <meta charset="UTF-8"/>
@@ -109,13 +111,15 @@ tr { vertical-align: top; }
 <body>
 <p><a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possiblie_duplicates">Possible dupes</a></p>
 <table>
-''')
-                dupe_file.write('\n'.join(self.dupes))
-                dupe_file.write('\n</table></body></html>\n')
+"""
+                )
+                dupe_file.write("\n".join(self.dupes))
+                dupe_file.write("\n</table></body></html>\n")
 
 
 class SheetRow(object):
     """Abstract a row in a openpyxl sheet slightly."""
+
     def __init__(self, sheet, index):
         self.sheet = sheet
         self.index = index
@@ -127,15 +131,15 @@ class SheetRow(object):
 class RowParser(object):
     """Parse a row in a openpyxl sheet into a concept."""
 
-    invalid_expression = re.compile(r'[^\w -]+')
+    invalid_expression = re.compile(r"[^\w -]+")
 
     def __init__(self, row, info):
         self.handler = {
-            'related_expressions': self.handle_related_expressions,
-            'concept_infos': self.handle_concept_infos,
-            'source': self.handle_source,
-            'main_category': self.handle_maincategory,
-            'collection': self.handle_collection
+            "related_expressions": self.handle_related_expressions,
+            "concept_infos": self.handle_concept_infos,
+            "source": self.handle_source,
+            "main_category": self.handle_maincategory,
+            "collection": self.handle_collection,
         }
         self.row = row
         self.concept = read_termwiki.Concept()
@@ -154,71 +158,72 @@ class RowParser(object):
 
     def make_expression_dict(self, lang, expression):
         """Add more details to the expression, if available."""
-        expression_dict = {'expression': expression, 'language': lang}
+        expression_dict = {"expression": expression, "language": lang}
 
-        for key in self.info['related_expressions'][lang]:
-            if key not in ['expression']:
-                position = int(self.info['related_expressions'][lang][key])
+        for key in self.info["related_expressions"][lang]:
+            if key not in ["expression"]:
+                position = int(self.info["related_expressions"][lang][key])
                 if position:
                     if self.row[position].value is not None:
-                        expression_dict[key] = str(
-                            self.row[position].value).strip()
+                        expression_dict[key] = str(self.row[position].value).strip()
                 else:
-                    expression_dict[key] = self.info['related_expressions'][
-                        lang][key]
+                    expression_dict[key] = self.info["related_expressions"][lang][key]
 
         return expression_dict
 
     def make_error_dict(self, expression, language):
         """Turn the errors found in an expression cell into a comment."""
-        expression_comment = {'invalid': False}
+        expression_comment = {"invalid": False}
         if self.invalid_expression.search(expression):
-            expression_comment['invalid'] = True
+            expression_comment["invalid"] = True
 
-        expression_comment['possible_dupes'] = {
-            hit.replace(' ', '_')
-            for hit in lookup.lookup(expression, language)
+        expression_comment["possible_dupes"] = {
+            hit.replace(" ", "_") for hit in lookup.lookup(expression, language)
         }
 
         lung = check_tw_expressions.LANG2LANG[language]
-        expression_comment['possible_typo'] = any([
-            lung in check_tw_expressions.ANALYSERS
-            and not check_tw_expressions.ANALYSERS[lung].lookup(part)
-            for part in expression.split()
-        ])
+        expression_comment["possible_typo"] = any(
+            [
+                lung in check_tw_expressions.ANALYSERS
+                and not check_tw_expressions.ANALYSERS[lung].lookup(part)
+                for part in expression.split()
+            ]
+        )
 
         return expression_comment
 
     def make_error_strings(self, error_dict):
         """Turn the error dict into a human readable text."""
         error_strings = []
-        if error_dict['invalid']:
+        if error_dict["invalid"]:
             # print(': '.join(f'«{x}»: {hex(ord(x))}' for x in expression))
             error_strings.append(
-                '\tInvalid expression: '
-                'https://satni.uit.no/termwiki/index.php?title='
-                'Excel_files_and_termwiki#Invalid_expression')
+                "\tInvalid expression: "
+                "https://satni.uit.no/termwiki/index.php?title="
+                "Excel_files_and_termwiki#Invalid_expression"
+            )
         else:
-            if error_dict['possible_typo']:
+            if error_dict["possible_typo"]:
                 error_strings.append(
-                    '\tPossible typo: '
-                    'https://satni.uit.no/termwiki/index.php?title='
-                    'Excel_files_and_termwiki#Possible_typo')
-            if error_dict['possible_dupes']:
-                for hit in error_dict['possible_dupes']:
+                    "\tPossible typo: "
+                    "https://satni.uit.no/termwiki/index.php?title="
+                    "Excel_files_and_termwiki#Possible_typo"
+                )
+            if error_dict["possible_dupes"]:
+                for hit in error_dict["possible_dupes"]:
                     self.dupes.add(
                         f'<a href="https://satni.uit.no/termwiki/index.php?title={hit}">{hit}</a>'
                     )
 
-        return '\n'.join(error_strings)
+        return "\n".join(error_strings)
 
     def print_errors(self, ex_index, error_dict):
-        if error_dict['invalid']:
+        if error_dict["invalid"]:
             print(
                 f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Invalid_expression>Invalid expression></a>'
             )
         else:
-            if error_dict['possible_typo']:
+            if error_dict["possible_typo"]:
                 print(
                     f'{self.row[ex_index]} {self.row[ex_index].value.strip()} <a href="https://satni.uit.no/termwiki/index.php?title=Excel_files_and_termwiki#Possible_typo">Possible typo</a>'
                 )
@@ -228,40 +233,42 @@ class RowParser(object):
 
         Also gather info about errors found in this cell.
         """
-        for lang in self.info['related_expressions']:
-            ex_index = self.info['related_expressions'][lang]['expression']
+        for lang in self.info["related_expressions"]:
+            ex_index = self.info["related_expressions"][lang]["expression"]
             expressions = self.row[ex_index].value
             if expressions is not None:
                 for expression in self.extract_expression(
-                        expressions.replace('\n', ' ').replace('\u000a', ' ')):
+                    expressions.replace("\n", " ").replace("\u000a", " ")
+                ):
                     comment_dict = self.make_error_dict(expression, lang)
                     errors = self.make_error_strings(comment_dict)
                     if errors:
                         self.print_errors(ex_index, comment_dict)
                     self.related_expressions.append(
-                        self.make_expression_dict(lang, expression))
+                        self.make_expression_dict(lang, expression)
+                    )
 
     @staticmethod
     def extract_expression(expression):
         """Turn the content of an expression cell into individual expressions."""
-        return [exp.strip() for exp in expression.split(',')]
+        return [exp.strip() for exp in expression.split(",")]
 
     def handle_concept_infos(self):
         """Handle concept info found in an Excel cell."""
-        for lang in self.info['concept_infos']:
+        for lang in self.info["concept_infos"]:
             values = {
-                key: self.row[self.info['concept_infos'][lang][key]].value
-                for key in self.info['concept_infos'][lang]
+                key: self.row[self.info["concept_infos"][lang][key]].value
+                for key in self.info["concept_infos"][lang]
             }
             if any([values[key] for key in values]):
-                values['language'] = lang
-                self.concept.data['concept_infos'].append(
-                    {key: values[key].strip()
-                     for key in values})
+                values["language"] = lang
+                self.concept.data["concept_infos"].append(
+                    {key: values[key].strip() for key in values}
+                )
 
     def handle_source(self):
         """Handle a source cell."""
-        self.concept.data['source'] = self.row[self.info['source']]
+        self.concept.data["source"] = self.row[self.info["source"]]
 
     def handle_maincategory(self):
         """Handle the main category
@@ -269,33 +276,39 @@ class RowParser(object):
         Info fetched either from a cell or from the metadata.
         """
         try:
-            position = int(self.info['main_category'])
+            position = int(self.info["main_category"])
             main_category = str(self.row[position].value).strip()
         except ValueError:
-            main_category = self.info['main_category']
+            main_category = self.info["main_category"]
 
-        self.concept.title = f'{main_category}:{self.info["collection"]} {self.row.index}'
+        self.concept.title = (
+            f'{main_category}:{self.info["collection"]} {self.row.index}'
+        )
 
     def handle_collection(self):
         """Handle info about the collection."""
-        if not self.concept.data['concept'].get('collection'):
-            self.concept.data['concept']['collection'] = set()
-        collection = self.info['collection'] if 'Collection:' in self.info[
-            'collection'] else f'Collection:{self.info["collection"]}'
-        self.concept.data['concept']['collection'].add(collection)
+        if not self.concept.data["concept"].get("collection"):
+            self.concept.data["concept"]["collection"] = set()
+        collection = (
+            self.info["collection"]
+            if "Collection:" in self.info["collection"]
+            else f'Collection:{self.info["collection"]}'
+        )
+        self.concept.data["concept"]["collection"].add(collection)
 
 
 def parse_options():
     """Parse options given to the script."""
     parser = argparse.ArgumentParser(
-        description='Convert files containing terms to TermWiki mediawiki '
-        'format')
+        description="Convert files containing terms to TermWiki mediawiki " "format"
+    )
 
     parser.add_argument(
-        'termfiles',
-        nargs='+',
-        help='One or more files containing terms. Each file must have a '
-        'yaml file that inform how they should be treated.')
+        "termfiles",
+        nargs="+",
+        help="One or more files containing terms. Each file must have a "
+        "yaml file that inform how they should be treated.",
+    )
 
     args = parser.parse_args()
 

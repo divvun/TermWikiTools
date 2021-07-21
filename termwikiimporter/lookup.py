@@ -26,8 +26,7 @@ LOOKUP_DICT = defaultdict(set)
 
 for title, concept in DUMPHANDLER.concepts:
     for expression in concept.related_expressions:
-        LOOKUP_DICT[(expression['expression'],
-                     expression['language'])].add(title)
+        LOOKUP_DICT[(expression["expression"], expression["language"])].add(title)
 
 
 def lookup(expr, language):

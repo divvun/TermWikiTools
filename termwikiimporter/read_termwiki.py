@@ -21,14 +21,14 @@
 import inspect
 from operator import itemgetter
 
-#from termwikiimporter import check_tw_expressions
+# from termwikiimporter import check_tw_expressions
 from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
 
-XI_NAMESPACE = 'http://www.w3.org/2001/XInclude'
-XML_NAMESPACE = 'https://www.w3.org/XML/1998/namespace'
-XI = '{%s}' % XI_NAMESPACE
-XML = '{%s}' % XML_NAMESPACE
-NSMAP = {'xi': XI_NAMESPACE, 'xml': XML_NAMESPACE}
+XI_NAMESPACE = "http://www.w3.org/2001/XInclude"
+XML_NAMESPACE = "https://www.w3.org/XML/1998/namespace"
+XI = "{%s}" % XI_NAMESPACE
+XML = "{%s}" % XML_NAMESPACE
+NSMAP = {"xi": XI_NAMESPACE, "xml": XML_NAMESPACE}
 
 
 def lineno():
@@ -54,96 +54,97 @@ def fix_sms(expression: str) -> str:
         A string containing proper sms letters
     """
     replacement_pairs = [
-        (u'\u2019', u'\u02BC'),
-        (u'\u0027', u'\u02BC'),
-        (u'\u2032', u'\u02B9'),
-        (u'\u00B4', u'\u02B9'),
-        (u'\u0301', u'\u02B9'),
+        (u"\u2019", u"\u02BC"),
+        (u"\u0027", u"\u02BC"),
+        (u"\u2032", u"\u02B9"),
+        (u"\u00B4", u"\u02B9"),
+        (u"\u0301", u"\u02B9"),
     ]
 
     for replacement_pair in replacement_pairs:
-        expression = expression.replace(replacement_pair[0],
-                                        replacement_pair[1])
+        expression = expression.replace(replacement_pair[0], replacement_pair[1])
 
     return expression
 
 
 class Concept(object):
     """Class that represents a TermWiki concept."""
+
     def __init__(self):
         """Initialise the Concept class."""
-        self.title = ''
+        self.title = ""
         self.data = {
-            'concept': {},
-            'concept_infos': [],
-            'related_expressions': [],
-            'related_concepts': []
+            "concept": {},
+            "concept_infos": [],
+            "related_expressions": [],
+            "related_concepts": [],
         }
 
     @property
     def related_expressions(self):
         """Get related_expressions."""
-        return self.data['related_expressions']
+        return self.data["related_expressions"]
 
     @property
     def collections(self):
         """Get collections."""
-        if not self.data['concept'].get('collection'):
-            self.data['concept']['collection'] = set()
-        return self.data['concept'].get('collection')
+        if not self.data["concept"].get("collection"):
+            self.data["concept"]["collection"] = set()
+        return self.data["concept"].get("collection")
 
     def clean_up_concept(self):
         """Clean up concept data."""
-        if self.data['concept'].get('language'):
-            del self.data['concept']['language']
-        if self.data['concept'].get('collection'):
-            self.data['concept']['collection'] = set([
-                self.fix_collection_line(collection.strip()) for collection in
-                self.data['concept']['collection'].split('@@')
-            ])
+        if self.data["concept"].get("language"):
+            del self.data["concept"]["language"]
+        if self.data["concept"].get("collection"):
+            self.data["concept"]["collection"] = set(
+                [
+                    self.fix_collection_line(collection.strip())
+                    for collection in self.data["concept"]["collection"].split("@@")
+                ]
+            )
 
     def clean_up_expression(self, expression):
         """Clean up expression."""
-        if 'expression' in expression:
-            expression['expression'] = ' '.join(
-                expression['expression'].split())
+        if "expression" in expression:
+            expression["expression"] = " ".join(expression["expression"].split())
 
-            if (('sanctioned' in expression
-                 and expression['sanctioned'] == 'No')
-                    or 'sanctioned' not in expression):
-                expression['sanctioned'] = 'False'
-            if ('sanctioned' in expression
-                    and expression['sanctioned'] == 'Yes'):
-                expression['sanctioned'] = 'True'
+            if (
+                "sanctioned" in expression and expression["sanctioned"] == "No"
+            ) or "sanctioned" not in expression:
+                expression["sanctioned"] = "False"
+            if "sanctioned" in expression and expression["sanctioned"] == "Yes":
+                expression["sanctioned"] = "True"
 
-            if ' ' in expression['expression']:
-                expression['pos'] = 'MWE'
+            if " " in expression["expression"]:
+                expression["pos"] = "MWE"
 
-            if 'collection' in expression:
-                if not self.data.get('collection'):
-                    self.data['concept']['collection'] = set()
-                self.data['concept']['collection'].add(
-                    expression['collection'].replace('_', ' '))
-                del expression['collection']
+            if "collection" in expression:
+                if not self.data.get("collection"):
+                    self.data["concept"]["collection"] = set()
+                self.data["concept"]["collection"].add(
+                    expression["collection"].replace("_", " ")
+                )
+                del expression["collection"]
 
-            if expression['language'] == 'sms':
-                expression['expression'] = fix_sms(expression['expression'])
+            if expression["language"] == "sms":
+                expression["expression"] = fix_sms(expression["expression"])
 
-            if expression.get('pos') in ['A/N', 'N/A', 'xxx']:
-                del expression['pos']
+            if expression.get("pos") in ["A/N", "N/A", "xxx"]:
+                del expression["pos"]
 
-            if expression.get('pos') in ['mwe', 'a', 'n', 'v']:
-                expression['pos'] = expression['pos'].upper()
+            if expression.get("pos") in ["mwe", "a", "n", "v"]:
+                expression["pos"] = expression["pos"].upper()
 
-            if expression.get('pos') == 'Adj':
-                expression['pos'] = 'A'
+            if expression.get("pos") == "Adj":
+                expression["pos"] = "A"
 
-            #if expression.get('pos') is None:
-            #possible_pos = check_tw_expressions.set_pos(expression)
-            #if possible_pos is not None:
-            #expression['pos'] = possible_pos
+            # if expression.get('pos') is None:
+            # possible_pos = check_tw_expressions.set_pos(expression)
+            # if possible_pos is not None:
+            # expression['pos'] = possible_pos
 
-            self.data['related_expressions'].append(expression)
+            self.data["related_expressions"].append(expression)
 
     def from_termwiki(self, text):
         """Parse a termwiki page.
@@ -155,28 +156,30 @@ class Concept(object):
         Returns:
             dict: contains the content of the termwiki page.
         """
-        text_iterator = iter(text.replace('\xa0', ' ').splitlines())
+        text_iterator = iter(text.replace("\xa0", " ").splitlines())
 
         for line in text_iterator:
             line = line.strip()
             if self.is_empty_template(line):
                 continue
 
-            elif line.startswith('{{Concept info'):
-                self.data['concept_infos'].append(
-                    self.read_semantic_form(text_iterator))
+            elif line.startswith("{{Concept info"):
+                self.data["concept_infos"].append(
+                    self.read_semantic_form(text_iterator)
+                )
 
-            elif line.startswith('{{Concept'):
-                self.data['concept'] = self.read_semantic_form(text_iterator)
+            elif line.startswith("{{Concept"):
+                self.data["concept"] = self.read_semantic_form(text_iterator)
                 self.clean_up_concept()
 
             elif self.is_related_expression(line):
                 expression = self.read_semantic_form(text_iterator)
                 self.clean_up_expression(expression)
 
-            elif line.startswith('{{Related'):
-                self.data['related_concepts'].append(
-                    self.read_semantic_form(text_iterator))
+            elif line.startswith("{{Related"):
+                self.data["related_concepts"].append(
+                    self.read_semantic_form(text_iterator)
+                )
 
         self.to_concept_info()
 
@@ -188,27 +191,36 @@ class Concept(object):
         """
         langs = {}
         concept = {}
-        concept.update(self.data['concept'])
+        concept.update(self.data["concept"])
 
         if concept:
             for key in list(concept.keys()):
-                pos = key.rfind('_')
+                pos = key.rfind("_")
                 if pos > 0:
-                    lang = key[pos + 1:]
+                    lang = key[pos + 1 :]
                     if lang in [
-                            'se', 'sv', 'fi', 'en', 'nb', 'nn', 'sma', 'smj',
-                            'smn', 'sms', 'lat'
+                        "se",
+                        "sv",
+                        "fi",
+                        "en",
+                        "nb",
+                        "nn",
+                        "sma",
+                        "smj",
+                        "smn",
+                        "sms",
+                        "lat",
                     ]:
                         if not langs.get(lang):
                             langs[lang] = {}
-                            langs[lang]['language'] = lang
+                            langs[lang]["language"] = lang
                         new_key = key[:pos]
                         langs[lang][new_key] = concept[key]
                         del concept[key]
 
-        self.data['concept'] = concept
+        self.data["concept"] = concept
         for lang in langs:
-            self.data['concept_infos'].append(langs[lang])
+            self.data["concept_infos"].append(langs[lang])
 
     @staticmethod
     def read_semantic_form(text_iterator):
@@ -223,29 +235,35 @@ class Concept(object):
         wiki_form = OrderedDefaultDict()
         wiki_form.default_factory = str
         for line in text_iterator:
-            if line == '}}':
+            if line == "}}":
                 return wiki_form
-            elif line.startswith('|reviewed=') or line.startswith(
-                    '|is_typo') or line.startswith(
-                        '|has_illegal_char') or line.startswith(
-                            '|in_header') or line.startswith('|no picture'):
+            elif (
+                line.startswith("|reviewed=")
+                or line.startswith("|is_typo")
+                or line.startswith("|has_illegal_char")
+                or line.startswith("|in_header")
+                or line.startswith("|no picture")
+            ):
                 pass
-            elif line.startswith('|'):
-                equality = line.find('=')
+            elif line.startswith("|"):
+                equality = line.find("=")
                 key = line[1:equality]
-                if line[equality + 1:]:
-                    wiki_form[key] = line[equality + 1:].strip()
+                if line[equality + 1 :]:
+                    wiki_form[key] = line[equality + 1 :].strip()
             else:
                 try:
-                    wiki_form[key] = '\n'.join([wiki_form[key], line.strip()])
+                    wiki_form[key] = "\n".join([wiki_form[key], line.strip()])
                 except UnboundLocalError:
                     pass
 
     @staticmethod
     def is_empty_template(line):
         """Check if a line represents an empty template."""
-        return (line == '{{Related expression}}' or line == '{{Concept info}}'
-                or line == '{{Concept}}')
+        return (
+            line == "{{Related expression}}"
+            or line == "{{Concept info}}"
+            or line == "{{Concept}}"
+        )
 
     @staticmethod
     def fix_collection_line(line):
@@ -257,8 +275,8 @@ class Concept(object):
         Returns:
             str
         """
-        if 'Collection:' not in line:
-            return '{}:{}'.format('Collection', line)
+        if "Collection:" not in line:
+            return "{}:{}".format("Collection", line)
         else:
             return line
 
@@ -272,68 +290,68 @@ class Concept(object):
         Returns:
             bool
         """
-        return (line.startswith('{{Related expression')
-                or line.startswith('{{Related_expression'))
+        return line.startswith("{{Related expression") or line.startswith(
+            "{{Related_expression"
+        )
 
     def concept_info_str(self, term_strings):
         """Append concept_info to a list of strings."""
-        for concept_info in sorted(self.data['concept_infos'],
-                                   key=itemgetter('language')):
-            term_strings.append('{{Concept info')
-            for key in ['language', 'definition', 'explanation', 'more_info']:
+        for concept_info in sorted(
+            self.data["concept_infos"], key=itemgetter("language")
+        ):
+            term_strings.append("{{Concept info")
+            for key in ["language", "definition", "explanation", "more_info"]:
                 if concept_info.get(key):
-                    term_strings.append('|{}={}'.format(
-                        key, concept_info[key]))
-            term_strings.append('}}')
+                    term_strings.append("|{}={}".format(key, concept_info[key]))
+            term_strings.append("}}")
 
     def languages(self):
         return {
-            concept_info['language']
-            for concept_info in self.data['concept_infos']
+            concept_info["language"]
+            for concept_info in self.data["concept_infos"]
             for key in concept_info
-            if key == 'language' and concept_info['language']
+            if key == "language" and concept_info["language"]
         } | {
-            expression['language']
+            expression["language"]
             for expression in self.related_expressions
-            if expression['language']
+            if expression["language"]
         }
 
     def concept_info_of_langauge(self, language):
-        for concept_info in self.data['concept_infos']:
+        for concept_info in self.data["concept_infos"]:
             for key in concept_info:
-                if key == 'language' and concept_info[key] == language:
+                if key == "language" and concept_info[key] == language:
                     return concept_info
 
     def related_expressions_str(self, term_strings):
         """Append related_expressions to a list of strings."""
         for expression in self.related_expressions:
-            term_strings.append('{{Related expression')
+            term_strings.append("{{Related expression")
             for key, value in expression.items():
-                term_strings.append('|{}={}'.format(key, value))
-            term_strings.append('}}')
+                term_strings.append("|{}={}".format(key, value))
+            term_strings.append("}}")
 
     def related_concepts_str(self, term_strings):
         """Append related_concepts to a list of strings."""
-        if self.data.get('related_concepts'):
-            for related_concept in self.data['related_concepts']:
-                term_strings.append('{{Related concept')
+        if self.data.get("related_concepts"):
+            for related_concept in self.data["related_concepts"]:
+                term_strings.append("{{Related concept")
                 for key, value in related_concept.items():
-                    term_strings.append('|{}={}'.format(key, value))
-                term_strings.append('}}')
+                    term_strings.append("|{}={}".format(key, value))
+                term_strings.append("}}")
 
     def concept_str(self, term_strings):
         """Append concept to a list of strings."""
-        if self.data['concept']:
-            term_strings.append('{{Concept')
-            for key, value in self.data['concept'].items():
-                if key == 'collection' and value:
-                    term_strings.append('|{}={}'.format(
-                        key, '@@ '.join(sorted(value))))
+        if self.data["concept"]:
+            term_strings.append("{{Concept")
+            for key, value in self.data["concept"].items():
+                if key == "collection" and value:
+                    term_strings.append("|{}={}".format(key, "@@ ".join(sorted(value))))
                 else:
-                    term_strings.append('|{}={}'.format(key, value))
-            term_strings.append('}}')
+                    term_strings.append("|{}={}".format(key, value))
+            term_strings.append("}}")
         else:
-            term_strings.append('{{Concept}}')
+            term_strings.append("{{Concept}}")
 
     def __str__(self):
         """Turn a term dict into a semantic wiki page.
@@ -350,11 +368,11 @@ class Concept(object):
         self.related_concepts_str(term_strings)
         self.concept_str(term_strings)
 
-        return '\n'.join(term_strings)
+        return "\n".join(term_strings)
 
     @property
     def category(self):
-        colon = self.title.find(':')
+        colon = self.title.find(":")
         return self.title[:colon]
 
     def auto_sanction(self, language):
@@ -364,16 +382,17 @@ class Concept(object):
             language (str): the language to handle
         """
         for expression in self.related_expressions:
-            if expression['language'] == language:
-                if (analyser.is_known(language, expression['expression'])
-                        and expression['sanctioned'] == 'False'):
-                    expression['sanctioned'] = 'True'
+            if expression["language"] == language:
+                if (
+                    analyser.is_known(language, expression["expression"])
+                    and expression["sanctioned"] == "False"
+                ):
+                    expression["sanctioned"] = "True"
 
     def has_invalid(self):
         """Print lemmas with invalid characters."""
         for expression in self.related_expressions:
-            if expression['sanctioned'] == 'True' and '(' in expression[
-                    'expression']:
+            if expression["sanctioned"] == "True" and "(" in expression["expression"]:
                 return True
         else:
             return False
@@ -388,15 +407,19 @@ class Concept(object):
             str: an offending expression
         """
         for expression in self.related_expressions:
-            if expression['language'] == language and expression[
-                    'sanctioned'] == sanctioned:
-                if self.invalid_chars_re.search(expression['expression']):
-                    yield expression['expression']
+            if (
+                expression["language"] == language
+                and expression["sanctioned"] == sanctioned
+            ):
+                if self.invalid_chars_re.search(expression["expression"]):
+                    yield expression["expression"]
 
     def has_sanctioned_sami(self):
         for expression in self.related_expressions:
-            if (expression['language'] in ['se', 'sma', 'smj', 'smn', 'sms']
-                    and expression['sanctioned'] == 'True'):
+            if (
+                expression["language"] in ["se", "sma", "smj", "smn", "sms"]
+                and expression["sanctioned"] == "True"
+            ):
                 return True
 
         return False

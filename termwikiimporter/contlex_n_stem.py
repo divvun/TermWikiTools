@@ -52,252 +52,252 @@ from collections import defaultdict
 from termwikiimporter import analyser
 
 WANTED_LEXICONS = {
-    'sme': {
-        'adjectives': {
-            'pos':
-            'A',
-            'lexicons':
-            ['ALIT', 'Eahpe_Adjective', 'AdjectivePx', 'AdjectiveNoPx'],
+    "sme": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["ALIT", "Eahpe_Adjective", "AdjectivePx", "AdjectiveNoPx"],
         },
-        'adpositions': {
-            'pos': 'Adp',
-            'lexicons': ['Adposition'],
+        "adpositions": {
+            "pos": "Adp",
+            "lexicons": ["Adposition"],
         },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['Adverb'],
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["Adverb"],
         },
-        'conjunctions': {
-            'pos': 'Cc',
-            'lexicons': ['CleanConjunction'],
+        "conjunctions": {
+            "pos": "Cc",
+            "lexicons": ["CleanConjunction"],
         },
-        'interjections': {
-            'pos': 'Interj',
-            'lexicons': ['Interjection'],
+        "interjections": {
+            "pos": "Interj",
+            "lexicons": ["Interjection"],
         },
-        'nouns': {
-            'pos':
-            'N',
-            'lexicons':
-            ['HyphNouns', 'Eahpe_Noun', 'NounNoPx', 'NounPxKin', 'NounPx'],
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["HyphNouns", "Eahpe_Noun", "NounNoPx", "NounPxKin", "NounPx"],
         },
-        'particles': {
-            'pos': 'Pcle',
-            'lexicons': ['Particles'],
+        "particles": {
+            "pos": "Pcle",
+            "lexicons": ["Particles"],
         },
-        'subjunctions': {
-            'pos': 'CS',
-            'lexicons': ['ConfuseConjunction', 'CleanSubjunction'],
+        "subjunctions": {
+            "pos": "CS",
+            "lexicons": ["ConfuseConjunction", "CleanSubjunction"],
         },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['Eahpe_Verb', 'Verb'],
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["Eahpe_Verb", "Verb"],
         },
     },
-    'smj': {
-        'adjectives': {
-            'pos': 'A',
-            'lexicons': ['Adjective'],
+    "smj": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["Adjective"],
         },
-        'adpositions': {
-            'pos': 'Adp',
-            'lexicons': ['Adposition'],
+        "adpositions": {
+            "pos": "Adp",
+            "lexicons": ["Adposition"],
         },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['Adverb'],
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["Adverb"],
         },
-        'conjunctions': {
-            'pos': 'Cc',
-            'lexicons': ['Conjunction'],
+        "conjunctions": {
+            "pos": "Cc",
+            "lexicons": ["Conjunction"],
         },
-        'interjections': {
-            'pos': 'Interj',
-            'lexicons': ['Interjection'],
+        "interjections": {
+            "pos": "Interj",
+            "lexicons": ["Interjection"],
         },
-        'nouns': {
-            'pos': 'N',
-            'lexicons': ['HyphNouns', 'NounPxKin', 'NounNoPx', 'NounPx'],
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["HyphNouns", "NounPxKin", "NounNoPx", "NounPx"],
         },
-        'particles': {
-            'pos': 'Pcle',
-            'lexicons': ['Particle'],
+        "particles": {
+            "pos": "Pcle",
+            "lexicons": ["Particle"],
         },
-        'subjunctions': {
-            'pos': 'CS',
-            'lexicons': ['Subjunction'],
+        "subjunctions": {
+            "pos": "CS",
+            "lexicons": ["Subjunction"],
         },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['Verb'],
-        },
-    },
-    'sma': {
-        'adjectives': {
-            'pos': 'A',
-            'lexicons': ['Adjective'],
-        },
-        'adpositions': {
-            'pos': 'Adp',
-            'lexicons': ['Adposition'],
-        },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['Adverb'],
-        },
-        'conjunctions': {
-            'pos': 'Cc',
-            'lexicons': ['Conjunction'],
-        },
-        'interjections': {
-            'pos': 'Interj',
-            'lexicons': ['Interjection'],
-        },
-        'nouns': {
-            'pos': 'N',
-            'lexicons': ['HyphNouns', 'NounPxKin', 'NounNoPx'],
-        },
-        'particles': {
-            'pos': 'Pcle',
-            'lexicons': ['Particle'],
-        },
-        'subjunctions': {
-            'pos': 'CS',
-            'lexicons': ['Subjunction'],
-        },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['Aux', 'Verb'],
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["Verb"],
         },
     },
-    'smn': {
-        'adjectives': {
-            'pos': 'A',
-            'lexicons': ['AdjectiveRoot'],
+    "sma": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["Adjective"],
         },
-        'adpositions': {
-            'pos': 'Adp',
-            'lexicons': ['Pre', 'Post'],
+        "adpositions": {
+            "pos": "Adp",
+            "lexicons": ["Adposition"],
         },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['Adverb'],
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["Adverb"],
         },
-        'conjunctions': {
-            'pos': 'Cc',
-            'lexicons': ['Conjunction'],
+        "conjunctions": {
+            "pos": "Cc",
+            "lexicons": ["Conjunction"],
         },
-        'interjections': {
-            'pos': 'Interj',
-            'lexicons': ['Interjection'],
+        "interjections": {
+            "pos": "Interj",
+            "lexicons": ["Interjection"],
         },
-        'nouns': {
-            'pos': 'N',
-            'lexicons': ['Noun'],
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["HyphNouns", "NounPxKin", "NounNoPx"],
         },
-        'particles': {
-            'pos': 'Pcle',
-            'lexicons': ['Particle'],
+        "particles": {
+            "pos": "Pcle",
+            "lexicons": ["Particle"],
         },
-        'subjunctions': {
-            'pos': 'CS',
-            'lexicons': ['Subjunction'],
+        "subjunctions": {
+            "pos": "CS",
+            "lexicons": ["Subjunction"],
         },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['VGenVerbs', 'Verbs'],
-        },
-    },
-    'nob': {
-        'adjectives': {
-            'pos': 'A',
-            'lexicons': ['AdjectiveRoot'],
-        },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['Adverb'],
-        },
-        'conjunctions': {
-            'pos': 'Cc',
-            'lexicons': ['Conjunction'],
-        },
-        'interjections': {
-            'pos': 'Interj',
-            'lexicons': ['Interjection'],
-        },
-        'nouns': {
-            'pos': 'N',
-            'lexicons': ['2_letter', '3_letter', 'NounRoot'],
-        },
-        'prepositions': {
-            'pos': 'Pr',
-            'lexicons': ['Preposition'],
-        },
-        'subjunctions': {
-            'pos': 'CS',
-            'lexicons': ['Subjunction'],
-        },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['irregular-verb', 'regular-verb'],
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["Aux", "Verb"],
         },
     },
-    'fin': {
-        'adjectives': {
-            'pos': 'A',
-            'lexicons': ['ADJECTIVE'],
+    "smn": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["AdjectiveRoot"],
         },
-        'adverbs': {
-            'pos': 'Adv',
-            'lexicons': ['ADVERB'],
+        "adpositions": {
+            "pos": "Adp",
+            "lexicons": ["Pre", "Post"],
         },
-        'cc': {
-            'pos': 'Cc',
-            'lexicons': ['CC'],
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["Adverb"],
         },
-        'cs': {
-            'pos': 'CS',
-            'lexicons': ['CS'],
+        "conjunctions": {
+            "pos": "Cc",
+            "lexicons": ["Conjunction"],
         },
-        'interj': {
-            'pos': 'Interj',
-            'lexicons': ['INTERJECTION'],
+        "interjections": {
+            "pos": "Interj",
+            "lexicons": ["Interjection"],
         },
-        'nouns': {
-            'pos': 'N',
-            'lexicons': ['NOUN'],
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["Noun"],
         },
-        'particles': {
-            'pos': 'Pcle',
-            'lexicons': ['PARTICLE'],
+        "particles": {
+            "pos": "Pcle",
+            "lexicons": ["Particle"],
         },
-        'pp': {
-            'pos': 'Adp',
-            'lexicons': ['ADPOSITION'],
+        "subjunctions": {
+            "pos": "CS",
+            "lexicons": ["Subjunction"],
         },
-        'verbs': {
-            'pos': 'V',
-            'lexicons': ['VERB'],
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["VGenVerbs", "Verbs"],
+        },
+    },
+    "nob": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["AdjectiveRoot"],
+        },
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["Adverb"],
+        },
+        "conjunctions": {
+            "pos": "Cc",
+            "lexicons": ["Conjunction"],
+        },
+        "interjections": {
+            "pos": "Interj",
+            "lexicons": ["Interjection"],
+        },
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["2_letter", "3_letter", "NounRoot"],
+        },
+        "prepositions": {
+            "pos": "Pr",
+            "lexicons": ["Preposition"],
+        },
+        "subjunctions": {
+            "pos": "CS",
+            "lexicons": ["Subjunction"],
+        },
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["irregular-verb", "regular-verb"],
+        },
+    },
+    "fin": {
+        "adjectives": {
+            "pos": "A",
+            "lexicons": ["ADJECTIVE"],
+        },
+        "adverbs": {
+            "pos": "Adv",
+            "lexicons": ["ADVERB"],
+        },
+        "cc": {
+            "pos": "Cc",
+            "lexicons": ["CC"],
+        },
+        "cs": {
+            "pos": "CS",
+            "lexicons": ["CS"],
+        },
+        "interj": {
+            "pos": "Interj",
+            "lexicons": ["INTERJECTION"],
+        },
+        "nouns": {
+            "pos": "N",
+            "lexicons": ["NOUN"],
+        },
+        "particles": {
+            "pos": "Pcle",
+            "lexicons": ["PARTICLE"],
+        },
+        "pp": {
+            "pos": "Adp",
+            "lexicons": ["ADPOSITION"],
+        },
+        "verbs": {
+            "pos": "V",
+            "lexicons": ["VERB"],
         },
     },
 }
 """dict: Govern which files and lexicons to extract for the given languages."""
 
 LEXC_LINE_RE = re.compile(
-    r'''
+    r"""
     (?P<contlex>\S+)            #  any nonspace
     (?P<translation>\s+".*")?   #  optional translation, might be empty
     \s*;\s*                     #  skip space and semicolon
     (?P<comment>!.*)?           #  followed by an optional comment
     $
-''', re.VERBOSE | re.UNICODE)
+""",
+    re.VERBOSE | re.UNICODE,
+)
 """regex: This is used to recognise a lexc line from other content."""
 
 LEXC_CONTENT_RE = re.compile(
-    r'''
+    r"""
     (?P<exclam>^\s*!\s*)?          #  optional comment
     (?P<content>(<.+>)|(.+))?      #  optional content
-''', re.VERBOSE | re.UNICODE)
+""",
+    re.VERBOSE | re.UNICODE,
+)
 """regex: identify more specific parts of a lexc line."""
 
 
@@ -313,35 +313,35 @@ def parse_line(old_match: dict) -> defaultdict:
     """
     line_dict = defaultdict(str)
 
-    if old_match.get('exclam'):
-        line_dict[u'exclam'] = u'!'
+    if old_match.get("exclam"):
+        line_dict[u"exclam"] = u"!"
 
-    line_dict[u'contlex'] = old_match.get(u'contlex')
-    if old_match.get(u'translation'):
-        line_dict[u'translation'] = old_match.get(
-            u'translation').strip().replace(u'%¥', u'% ')
+    line_dict[u"contlex"] = old_match.get(u"contlex")
+    if old_match.get(u"translation"):
+        line_dict[u"translation"] = (
+            old_match.get(u"translation").strip().replace(u"%¥", u"% ")
+        )
 
-    if old_match.get(u'comment'):
-        line_dict[u'comment'] = old_match.get(u'comment').strip().replace(
-            u'%¥', u'% ')
+    if old_match.get(u"comment"):
+        line_dict[u"comment"] = old_match.get(u"comment").strip().replace(u"%¥", u"% ")
 
-    line = old_match.get('content')
+    line = old_match.get("content")
     if line:
-        line = line.replace(u'%¥', u'% ')
-        if line.startswith(u'<') and line.endswith(u'>'):
-            line_dict[u'upper'] = line
+        line = line.replace(u"%¥", u"% ")
+        if line.startswith(u"<") and line.endswith(u">"):
+            line_dict[u"upper"] = line
         else:
             lexc_line_match = line.find(u":")
 
             if lexc_line_match != -1:
-                line_dict[u'upper'] = line[:lexc_line_match].strip()
-                line_dict[u'divisor'] = u':'
-                line_dict[u'lower'] = line[lexc_line_match + 1:].strip()
-                if line_dict[u'lower'].endswith('%'):
-                    line_dict[u'lower'] = line_dict[u'lower'] + u' '
+                line_dict[u"upper"] = line[:lexc_line_match].strip()
+                line_dict[u"divisor"] = u":"
+                line_dict[u"lower"] = line[lexc_line_match + 1 :].strip()
+                if line_dict[u"lower"].endswith("%"):
+                    line_dict[u"lower"] = line_dict[u"lower"] + u" "
             else:
                 if line.strip():
-                    line_dict[u'upper'] = line.strip()
+                    line_dict[u"upper"] = line.strip()
 
     return line_dict
 
@@ -352,12 +352,11 @@ def line2dict(line: str) -> dict:
     Args:
         line: a lexc line
     """
-    line = line.replace(u'% ', u'%¥')
+    line = line.replace(u"% ", u"%¥")
     lexc_line_match = LEXC_LINE_RE.search(line)
     if lexc_line_match:
         content = lexc_line_match.groupdict()
-        content.update(
-            LEXC_CONTENT_RE.match(LEXC_LINE_RE.sub('', line)).groupdict())
+        content.update(LEXC_CONTENT_RE.match(LEXC_LINE_RE.sub("", line)).groupdict())
         return parse_line(content)
 
     return {}
@@ -376,17 +375,19 @@ class FileHandler(object):
             in the stemfile
         filename: the full path to the stem lexc file
     """
+
     giella2termwiki = {
-        'fin': 'fi',
-        'nob': 'nb',
-        'sma': 'sma',
-        'sme': 'se',
-        'smj': 'smj',
-        'smn': 'smn',
+        "fin": "fi",
+        "nob": "nb",
+        "sma": "sma",
+        "sme": "se",
+        "smj": "smj",
+        "smn": "smn",
     }
 
-    filetemplate = os.path.join(os.getenv('GTHOME'),
-                                'langs/{}/src/morphology/stems/{}.lexc')
+    filetemplate = os.path.join(
+        os.getenv("GTHOME"), "langs/{}/src/morphology/stems/{}.lexc"
+    )
 
     def __init__(self, lang: str, stemfile: str, outdir: str) -> None:
         """Initialise the FileHandler class.
@@ -409,12 +410,12 @@ class FileHandler(object):
     @property
     def termwikipos(self) -> str:
         """Return the part of speech code used in TermWiki."""
-        return WANTED_LEXICONS[self.lang][self.stemfile]['pos']
+        return WANTED_LEXICONS[self.lang][self.stemfile]["pos"]
 
     @property
     def wanted_lexicons(self) -> list:
         """Return the wanted lexicons for this file."""
-        return WANTED_LEXICONS[self.lang][self.stemfile]['lexicons']
+        return WANTED_LEXICONS[self.lang][self.stemfile]["lexicons"]
 
     def contlex_name(self, contlex: str) -> str:
         r"""Return the contlex name used in TermWiki.
@@ -425,8 +426,9 @@ class FileHandler(object):
         Args:
             contlex: name of a continuation lexicon.
         """
-        return '{} {} {}'.format(self.termwikilang, self.termwikipos,
-                                 contlex.replace('/', '\\'))
+        return "{} {} {}".format(
+            self.termwikilang, self.termwikipos, contlex.replace("/", "\\")
+        )
 
     @staticmethod
     def write_file(filename: str, stringlist: list) -> None:
@@ -435,8 +437,8 @@ class FileHandler(object):
             pass
             # print('{} already exists'.format(filename))
         else:
-            with open(filename, 'w') as file_:
-                print('\n'.join(stringlist), file=file_)
+            with open(filename, "w") as file_:
+                print("\n".join(stringlist), file=file_)
 
     def print_stem(self, lemma: str, line_dict: dict) -> None:
         """Produce the content and name of a TermWiki Stem page.
@@ -446,18 +448,19 @@ class FileHandler(object):
             line_dict: the lexc line mapped to a dict containing the different
                 parts of lexc line
         """
-        stem = ['{{Stem']
-        stem.append('|Lemma={}'.format(lemma))
-        stem.append('|Contlex={}'.format(
-            self.contlex_name(line_dict['contlex'])))
-        if line_dict['translation']:
-            stem.append('|Freetext={}'.format(line_dict['translation']))
-        if line_dict['comment']:
-            stem.append('|Comment={}'.format(line_dict['comment']))
-        stem.append('}}')
-        stemname = '{}/Stem:{} {}'.format(
-            self.outdir, lemma.replace('/', '\\'),
-            self.contlex_name(line_dict['contlex']))
+        stem = ["{{Stem"]
+        stem.append("|Lemma={}".format(lemma))
+        stem.append("|Contlex={}".format(self.contlex_name(line_dict["contlex"])))
+        if line_dict["translation"]:
+            stem.append("|Freetext={}".format(line_dict["translation"]))
+        if line_dict["comment"]:
+            stem.append("|Comment={}".format(line_dict["comment"]))
+        stem.append("}}")
+        stemname = "{}/Stem:{} {}".format(
+            self.outdir,
+            lemma.replace("/", "\\"),
+            self.contlex_name(line_dict["contlex"]),
+        )
         self.write_file(stemname, stem)
 
     def print_contlex(self, contlex: str) -> None:
@@ -468,13 +471,12 @@ class FileHandler(object):
         """
         if contlex not in self.contlexes:
             self.contlexes.add(contlex)
-            content = ['{{Continuation lexicon']
-            content.append('|Contlex name={}'.format(contlex))
-            content.append('|Language={}'.format(self.termwikilang))
-            content.append('|Pos={}'.format(self.termwikipos))
-            content.append('}}')
-            contname = '{}/Contlex:{}'.format(self.outdir,
-                                              self.contlex_name(contlex))
+            content = ["{{Continuation lexicon"]
+            content.append("|Contlex name={}".format(contlex))
+            content.append("|Language={}".format(self.termwikilang))
+            content.append("|Pos={}".format(self.termwikipos))
+            content.append("}}")
+            contname = "{}/Contlex:{}".format(self.outdir, self.contlex_name(contlex))
             self.write_file(contname, content)
 
     def print_dupes(self, dupe_dict: dict) -> None:
@@ -488,14 +490,13 @@ class FileHandler(object):
             if len(dupe_dict[lemma]) > 1:
                 dupe_list.append(lemma)
                 for line in dupe_dict[lemma]:
-                    dupe_list.append('\t{}'.format(line.rstrip()))
+                    dupe_list.append("\t{}".format(line.rstrip()))
 
         if dupe_list:
             with io.open(
-                    'dupes-{}-{}.txt'.format(self.termwikilang,
-                                             self.termwikipos),
-                    'w') as dupefile:
-                print('\n'.join(dupe_list), file=dupefile)
+                "dupes-{}-{}.txt".format(self.termwikilang, self.termwikipos), "w"
+            ) as dupefile:
+                print("\n".join(dupe_list), file=dupefile)
 
     def parse_file(self) -> None:
         """Parse the lexc stem file."""
@@ -506,21 +507,20 @@ class FileHandler(object):
             skip = True
 
             for lexc_line in lexc:
-                if lexc_line.startswith('LEXICON'):
+                if lexc_line.startswith("LEXICON"):
                     parts = lexc_line.split()
                     skip = parts[1] not in self.wanted_lexicons
                     continue
 
-                if not skip and '+Err' not in lexc_line:
+                if not skip and "+Err" not in lexc_line:
                     line_dict = line2dict(lexc_line.rstrip())
-                    if line_dict and not line_dict['exclam']:
-                        upper = line_dict['upper'].split('+')[0].replace(
-                            '%', '')
+                    if line_dict and not line_dict["exclam"]:
+                        upper = line_dict["upper"].split("+")[0].replace("%", "")
                         # if analyser.is_known(self.lang, upper):
                         if upper:
                             dupes[upper].append(lexc_line)
                             self.print_stem(upper, line_dict)
-                            self.print_contlex(line_dict['contlex'])
+                            self.print_contlex(line_dict["contlex"])
 
         self.print_dupes(dupes)
 
@@ -535,5 +535,5 @@ def main() -> None:
             filehandler.parse_file()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

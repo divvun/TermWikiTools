@@ -29,9 +29,11 @@ from termwikiimporter import dicts2wiki
 
 class TestDicts(unittest.TestCase):
     """Test dicts xml to wiki functions."""
+
     def setUp(self):
         self.dictxml = etree.parse(
-            StringIO('''<r id="smenob" xml:lang="sme">
+            StringIO(
+                """<r id="smenob" xml:lang="sme">
             <e>
                 <lg>
                     <l pos="N">njeazzi</l>
@@ -65,79 +67,91 @@ class TestDicts(unittest.TestCase):
                 </mg>
             </e>
         </r>
-        '''))  # nopep8
+        """
+            )
+        )  # nopep8
         self.translations = set()
         self.translations.add(
-            dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob'))
-        self.translations.add(
-            dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob'))
+            dicts2wiki.Expression(lemma="ansikt", pos="N", lang="nob")
+        )
+        self.translations.add(dicts2wiki.Expression(lemma="tryne", pos="N", lang="nob"))
 
         self.examples = set()
         self.examples.add(
-            dicts2wiki.Example(orig='Duohtavuohta časká njeacce vuostá.',
-                               translation='Sannheta slår mot ansiktet.',
-                               restriction='Kunne vært tryne',
-                               orig_source='a',
-                               translation_source='b'))
+            dicts2wiki.Example(
+                orig="Duohtavuohta časká njeacce vuostá.",
+                translation="Sannheta slår mot ansiktet.",
+                restriction="Kunne vært tryne",
+                orig_source="a",
+                translation_source="b",
+            )
+        )
         self.examples.add(
             dicts2wiki.Example(
-                orig=
-                'Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.',  # nopep8
-                translation=
-                'Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.',  # nopep8
-                restriction='',
-                orig_source='',
-                translation_source=''))  # nopep8
+                orig="Eanet ii ollen dadjat ovdal go nisu čuoččohii ja čorbmadii su njeazzái.",  # nopep8
+                translation="Han rakk ii å si mer før kvinnen reiste seg opp og slo med knyttneven i ansiktet hans.",  # nopep8
+                restriction="",
+                orig_source="",
+                translation_source="",
+            )
+        )  # nopep8
         self.examples.add(
-            dicts2wiki.Example(orig='No text in re element',
-                               translation='No text in re element',
-                               restriction='',
-                               orig_source='',
-                               translation_source=''))  # nopep8
+            dicts2wiki.Example(
+                orig="No text in re element",
+                translation="No text in re element",
+                restriction="",
+                orig_source="",
+                translation_source="",
+            )
+        )  # nopep8
         self.xmldictextractor = dicts2wiki.XmlDictExtractor(self.dictxml)
 
     def test_l2stem(self):
-        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//l'))
-        want = dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')
+        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find(".//l"))
+        want = dicts2wiki.Expression(lemma="njeazzi", lang="sme", pos="N")
         self.assertEqual(got, want)
 
     def test_t2stem(self):
-        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find('.//t'))
-        want = dicts2wiki.Expression(lemma='ansikt', lang='nob', pos='N')
+        got = self.xmldictextractor.l_or_t2stem(self.dictxml.find(".//t"))
+        want = dicts2wiki.Expression(lemma="ansikt", lang="nob", pos="N")
         self.assertEqual(got, want)
 
     def test_xg2example(self):
-        got = self.xmldictextractor.xg2example(self.dictxml.find('.//xg'))
-        want = dicts2wiki.Example(restriction='Kunne vært tryne',
-                                  orig='Duohtavuohta časká njeacce vuostá.',
-                                  translation='Sannheta slår mot ansiktet.',
-                                  orig_source='a',
-                                  translation_source='b')
+        got = self.xmldictextractor.xg2example(self.dictxml.find(".//xg"))
+        want = dicts2wiki.Example(
+            restriction="Kunne vært tryne",
+            orig="Duohtavuohta časká njeacce vuostá.",
+            translation="Sannheta slår mot ansiktet.",
+            orig_source="a",
+            translation_source="b",
+        )
         self.assertEqual(got, want)
 
     def test_xg2example_content(self):
-        got = self.xmldictextractor.xg2example(self.dictxml.find('.//xg'))
-        want = '''{{Example
+        got = self.xmldictextractor.xg2example(self.dictxml.find(".//xg"))
+        want = """{{Example
 |Original=Duohtavuohta časká njeacce vuostá.
 |Source of original=a
 |Translation=Sannheta slår mot ansiktet.
 |Source of translation=b
 |Restriction=Kunne vært tryne
-}}'''
+}}"""
 
         self.assertEqual(got.content, want)
 
     def test_tg2translation(self):
-        want = dicts2wiki.Translation(restriction='i negative sammenhenger',
-                                      translations=self.translations,
-                                      examples=self.examples)
-        got = self.xmldictextractor.tg2translation(self.dictxml.find('.//tg'))
+        want = dicts2wiki.Translation(
+            restriction="i negative sammenhenger",
+            translations=self.translations,
+            examples=self.examples,
+        )
+        got = self.xmldictextractor.tg2translation(self.dictxml.find(".//tg"))
 
         self.assertEqual(got, want)
 
     def test_tg2translation_content(self):
         self.maxDiff = None
-        want = '''|Translation stem=ansikt nb N@@tryne nb N
+        want = """|Translation stem=ansikt nb N@@tryne nb N
 |Restriction=i negative sammenhenger
 }}
 {{Example
@@ -161,27 +175,32 @@ class TestDicts(unittest.TestCase):
 |Source of translation=
 |Restriction=
 }}
-'''  # nopep8
-        got = self.xmldictextractor.tg2translation(self.dictxml.find('.//tg'))
+"""  # nopep8
+        got = self.xmldictextractor.tg2translation(self.dictxml.find(".//tg"))
 
         self.assertEqual(got.content, want)
 
     def test_e2tuple(self):
         self.maxDiff = None
-        want = (dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N'), [
-            dicts2wiki.Translation(restriction='i negative sammenhenger',
-                                   translations=self.translations,
-                                   examples=self.examples)
-        ])
-        got = self.xmldictextractor.entry2tuple(self.dictxml.find('.//e'))
+        want = (
+            dicts2wiki.Expression(lemma="njeazzi", lang="sme", pos="N"),
+            [
+                dicts2wiki.Translation(
+                    restriction="i negative sammenhenger",
+                    translations=self.translations,
+                    examples=self.examples,
+                )
+            ],
+        )
+        got = self.xmldictextractor.entry2tuple(self.dictxml.find(".//e"))
 
         self.assertTupleEqual(want, got)
 
     def test_registerstems(self):
         want = defaultdict(list)
-        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')]
-        want[dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob')]
-        want[dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma="njeazzi", lang="sme", pos="N")]
+        want[dicts2wiki.Expression(lemma="ansikt", pos="N", lang="nob")]
+        want[dicts2wiki.Expression(lemma="tryne", pos="N", lang="nob")]
 
         got = defaultdict(list)
         self.xmldictextractor.register_stems(got)
@@ -191,15 +210,17 @@ class TestDicts(unittest.TestCase):
     def test_r2dict(self):
         self.maxDiff = None
         want = defaultdict(list)
-        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')]
-        want[dicts2wiki.Expression(lemma='ansikt', pos='N', lang='nob')]
-        want[dicts2wiki.Expression(lemma='tryne', pos='N', lang='nob')]
+        want[dicts2wiki.Expression(lemma="njeazzi", lang="sme", pos="N")]
+        want[dicts2wiki.Expression(lemma="ansikt", pos="N", lang="nob")]
+        want[dicts2wiki.Expression(lemma="tryne", pos="N", lang="nob")]
 
-        want[dicts2wiki.Expression(lemma='njeazzi', lang='sme', pos='N')] = \
-            [dicts2wiki.Translation(
-                restriction='i negative sammenhenger',
+        want[dicts2wiki.Expression(lemma="njeazzi", lang="sme", pos="N")] = [
+            dicts2wiki.Translation(
+                restriction="i negative sammenhenger",
                 translations=self.translations,
-                examples=self.examples)]
+                examples=self.examples,
+            )
+        ]
 
         got = defaultdict(list)
         self.xmldictextractor.r2dict(got)
@@ -212,11 +233,8 @@ class TestDicts(unittest.TestCase):
         stemdict = defaultdict(list)
         self.xmldictextractor.r2dict(stemdict)
 
-        got = [
-            name_content
-            for name_content in dicts2wiki.stemdict2dictpages(stemdict)
-        ]
-        wantcontent = '''{{Dict
+        got = [name_content for name_content in dicts2wiki.stemdict2dictpages(stemdict)]
+        wantcontent = """{{Dict
 |Stempage=njeazzi se N
 |Translation stem=ansikt nb N@@tryne nb N
 |Restriction=i negative sammenhenger
@@ -242,20 +260,24 @@ class TestDicts(unittest.TestCase):
 |Source of translation=
 |Restriction=
 }}
-'''  # nopep8
+"""  # nopep8
 
         self.assertEqual(len(got), 1)
-        self.assertEqual(got[0][0], 'Dict:njeazzi se N 0001')
+        self.assertEqual(got[0][0], "Dict:njeazzi se N 0001")
         self.assertEqual(got[0][1], wantcontent)
 
     def test_stemdict2stempages(self):
-        pagenametemplate = 'Stem:{} {} {}'
-        contenttemplate = '|Lemma={}\n|Lang={}\n|Pos={}\n'
-        want = sorted([
-            (pagenametemplate.format(*info.split()),
-             '{{Stem\n' + contenttemplate.format(*info.split()) + '}}\n')
-            for info in ['njeazzi se N', 'ansikt nb N', 'tryne nb N']
-        ])
+        pagenametemplate = "Stem:{} {} {}"
+        contenttemplate = "|Lemma={}\n|Lang={}\n|Pos={}\n"
+        want = sorted(
+            [
+                (
+                    pagenametemplate.format(*info.split()),
+                    "{{Stem\n" + contenttemplate.format(*info.split()) + "}}\n",
+                )
+                for info in ["njeazzi se N", "ansikt nb N", "tryne nb N"]
+            ]
+        )
 
         stemdict = defaultdict(list)
         self.xmldictextractor.r2dict(stemdict)

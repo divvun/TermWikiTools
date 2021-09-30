@@ -643,6 +643,7 @@ class DumpHandler:
         print(f"Merged {counter} concepts into TermWiki")
 
     def statistics(self, languages):
+        invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
         for language in languages:
             counter = {}
             for title, concept in self.concepts:
@@ -680,7 +681,7 @@ class DumpHandler:
                         [
                             expression
                             for expression in expression_with_lang
-                            if concept.invalid_chars_re.search(expression["expression"])
+                            if invalid_chars_re.search(expression["expression"])
                         ]
                     )
 

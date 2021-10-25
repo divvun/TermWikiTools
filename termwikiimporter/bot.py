@@ -548,6 +548,10 @@ class DumpHandler:
 
     def print_expression_pairs(self, lang1, lang2):
         """Print pairs of expressions, for use in making bidix files."""
+        langs = ['en', 'fi', 'se', 'sma', 'smn', 'sms', 'sv', 'nb', 'nn', 'lat', 'smj']
+        for lang in [lang1, lang2]:
+            if lang not in langs:
+                raise SystemExit(f'Allowed values for languages are: {", ".join(sorted(langs))}')
         for title, concept in self.concepts:
             term = concept.data
 
@@ -1144,12 +1148,12 @@ def handle_dump(arguments):
         dumphandler.statistics(languages=arguments[1:])
     elif arguments[0] == "sort":
         dumphandler.sort_dump()
-    elif arguments[0] == "merge_sdterms":
-        dumphandler.merge_pages(
-            pages_filename=arguments[1],
-            summary=arguments[2],
-            languages=["nb", "sv", "sma"],
-        )
+    elif arguments[0] == 'merge_sdterms':
+        dumphandler.merge_pages(pages_filename=arguments[1],
+                                summary=arguments[2],
+                                languages=['nb', 'sv', 'sma'])
+    elif arguments[0] == 'pairs':
+        dumphandler.print_expression_pairs(lang1=arguments[1], lang2=arguments[2])
     else:
         print(" ".join(arguments), "is not supported")
 
@@ -1199,7 +1203,12 @@ def main():
         else:
             handle_site(sys.argv[2:])
     else:
+<<<<<<< HEAD
         print(
             "Usage:\ntermbot site to fix the TermWiki\n"
             "termbot test to run a test on dump.xml"
         )
+=======
+        print('Usage:\ntermbot site to fix the TermWiki\n'
+              'termbot dump to get something useful from the dump.')
+>>>>>>> Make pair printing available from the dump part

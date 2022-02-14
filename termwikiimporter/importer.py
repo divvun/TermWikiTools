@@ -57,7 +57,7 @@ class ExcelImporter(object):
         """Parse information about excel files from a yaml file."""
         yamlname = self.filename.replace(".xlsx", ".yaml")
         with open(yamlname) as yamlfile:
-            return yaml.load(yamlfile)
+            return yaml.safe_load(yamlfile)
 
     def parse_sheet(self, sheet, pages, info):
         """Parse a sheet in a openpyxl workbook.

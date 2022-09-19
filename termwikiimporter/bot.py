@@ -158,7 +158,7 @@ def read_dump():
 
     dumphandler = DumpHandler()
 
-    for title, content_elt in dumphandler.content_elements:
+    for title, content_elt, _ in dumphandler.content_elements:
         title = title.replace(" ", "_")
         concept = read_termwiki.Concept()
         concept.title = title
@@ -298,8 +298,9 @@ class DumpHandler:
         """
         for page in self.tree.getroot().iter("{}page".format(self.mediawiki_ns)):
             title = page.find(".//{}title".format(self.mediawiki_ns)).text
+            page_id = page.find(".//{}id".format(self.mediawiki_ns)).text
             if title[: title.find(":")] in NAMESPACES:
-                yield title, page
+                yield title, page, page_id
 
     @property
     def content_elements(self):
@@ -308,10 +309,10 @@ class DumpHandler:
         Yields:
             etree.Element: the content element found in a page element.
         """
-        for title, page in self.pages:
+        for title, page, page_id in self.pages:
             content_elt = page.find(".//{}text".format(self.mediawiki_ns))
             if content_elt.text and "{{Concept" in content_elt.text:
-                yield title, content_elt
+                yield title, content_elt, page_id
 
     @property
     def concepts(self):
@@ -320,7 +321,7 @@ class DumpHandler:
         Yields:
             read_termwiki.Concept: the content element found in a page element.
         """
-        for title, content_elt in self.content_elements:
+        for title, content_elt, _ in self.content_elements:
             concept = read_termwiki.Concept()
             concept.title = title
             concept.from_termwiki(content_elt.text)
@@ -456,7 +457,7 @@ class DumpHandler:
             language (str): the language to sanction
         """
         ex = 1
-        for _, content_elt in self.content_elements:
+        for _, content_elt, _ in self.content_elements:
             print(".", end="")
             sys.stdout.flush()
             ex += 1
@@ -501,7 +502,7 @@ class DumpHandler:
 
     def fix(self):
         """Check to see if everything works as expected."""
-        for title, content_elt in self.content_elements:
+        for title, content_elt, _ in self.content_elements:
             try:
                 concept = read_termwiki.Concept()
                 concept.from_termwiki(content_elt.text)
@@ -894,7 +895,7 @@ class SiteHandler:
     def add_extra_collection(self):
         visited_pages = set()
         dumphandler = DumpHandler()
-        for title, content_elt in dumphandler.content_elements:
+        for title, content_elt, _ in dumphandler.content_elements:
             concept1 = read_termwiki.Concept()
             concept1.from_termwiki(content_elt.text)
             if "Collection:SD-terms" in concept1.collections:
@@ -1040,7 +1041,7 @@ class SiteHandler:
         start_time = time.strptime("15 Feb 19", "%d %b %y")
 
         dumphandler = DumpHandler()
-        for title, content_elt in dumphandler.content_elements:
+        for title, content_elt, _ in dumphandler.content_elements:
             concept = read_termwiki.Concept()
             concept.title = title
             concept.from_termwiki(content_elt.text)

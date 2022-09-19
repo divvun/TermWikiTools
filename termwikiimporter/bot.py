@@ -805,6 +805,18 @@ class SiteHandler:
             else:
                 print(f"\tis not redirect {title1.text}")
 
+    def add_id(self):
+        dump = DumpHandler()
+        for title, content_elt, page_id in dump.content_elements:
+            concept = read_termwiki.Concept()
+            concept.title = title
+            concept.from_termwiki(content_elt.text)
+            if not concept.data["concept"].get("page_id"):
+                concept.data["concept"]["page_id"] = page_id
+                page = self.site.Pages[title]
+                print(f"Adding {page_id} to {title}")
+                page.save(str(concept), summary="Added id")
+
     def fix_expression_pages(self):
         dump = DumpHandler()
         root = dump.tree.getroot()
@@ -1190,6 +1202,8 @@ def handle_site(arguments):
         site.delete_redirects()
     elif arguments[0] == "delete_pages":
         site.delete_pages(arguments[1])
+    elif arguments[0] == "add_id":
+        site.add_id()
     elif arguments[0] == "merge_sdterms":
         site.merge_pages(
             pages_filename=arguments[1],

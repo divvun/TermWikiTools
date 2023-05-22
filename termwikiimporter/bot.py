@@ -547,7 +547,7 @@ class DumpHandler:
 
         self.tree.write(self.dump, pretty_print=True, encoding="utf-8")
 
-    def print_expression_pairs(self, lang1, lang2):
+    def print_expression_pairs(self, lang1, lang2, category=None):
         """Print pairs of expressions, for use in making bidix files."""
         langs = ["en", "fi", "se", "sma", "smn", "sms", "sv", "nb", "nn", "lat", "smj"]
         for lang in [lang1, lang2]:
@@ -556,21 +556,24 @@ class DumpHandler:
                     f'Allowed values for languages are: {", ".join(sorted(langs))}'
                 )
         for title, concept in self.concepts:
-            term = concept.data
+            if category is None or title.startswith(category):
+                term = concept.data
 
-            if concept.has_sanctioned_sami():
-                langs = {lang1: set(), lang2: set()}
-                for expression in term["related_expressions"]:
-                    if (
-                        expression["language"] == lang1
-                        or expression["language"] == lang2
-                    ):
-                        if expression["sanctioned"] == "True":
-                            langs[expression["language"]].add(expression["expression"])
+                if concept.has_sanctioned_sami():
+                    langs = {lang1: set(), lang2: set()}
+                    for expression in term["related_expressions"]:
+                        if (
+                            expression["language"] == lang1
+                            or expression["language"] == lang2
+                        ):
+                            if expression["sanctioned"] == "True":
+                                langs[expression["language"]].add(
+                                    expression["expression"]
+                                )
 
-                if langs[lang1] and langs[lang2]:
-                    for expression in langs[lang1]:
-                        print("{}\t{}".format(expression, ", ".join(langs[lang2])))
+                    if langs[lang1] and langs[lang2]:
+                        for expression in langs[lang1]:
+                            print("{}\t{}".format(expression, ", ".join(langs[lang2])))
 
     @staticmethod
     def get_site():

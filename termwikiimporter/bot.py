@@ -22,8 +22,9 @@ import os
 import sys
 import re
 
-import hfst
+# import hfst
 import mwclient
+import unidecode
 import yaml
 from lxml import etree
 
@@ -335,6 +336,85 @@ class DumpHandler:
             for expression in concept.related_expressions
             if all(expression[key] == value for key, value in kwargs.items())
         )
+
+    def dump2xml(self):
+        l2l = {
+            "en": "eng",
+            "fi": "fin",
+            "nb": "nob",
+            "nn": "nno",
+            "se": "sme",
+            "sv": "swe",
+        }
+        roots = {}
+        for title, concept in self.concepts:
+            category = title.split(":")[0]
+            if roots.get(category) is None:
+                print(f"registering category: {category}")
+                roots[category] = etree.Element("r")
+            r = roots.get(category)
+            data = concept.data
+            mlc = etree.SubElement(r, "mc", attrib={"name": title})
+            if data["concept"].get("page_id"):
+                mlc.set("pageid", data["concept"].get("page_id"))
+            for collection in data["concept"].get("collection", []):
+                col = etree.SubElement(mlc, "collection")
+                col.text = collection
+            for lang in concept.languages():
+                if lang in [
+                    related_expression.get("language")
+                    for related_expression in data["related_expressions"]
+                ]:
+                    c = etree.SubElement(mlc, "c", attrib={"lang": l2l.get(lang, lang)})
+                    for concept_info in data["concept_infos"]:
+                        if concept_info.get("language", "uff") == lang:
+                            if concept_info.get("definition"):
+                                d = etree.SubElement(c, "d")
+                                d.text = concept_info.get("definition")
+                            if concept_info.get("explanation"):
+                                e = etree.SubElement(c, "e")
+                                e.text = concept_info.get("explanation")
+                            if concept_info.get("more_info"):
+                                m = etree.SubElement(c, "m")
+                                m.text = concept_info.get("more_info")
+                    for related_expression in data["related_expressions"]:
+                        if related_expression.get("language") == lang:
+                            term = etree.SubElement(
+                                c,
+                                "term",
+                                attrib={
+                                    "sanctioned": "true"
+                                    if related_expression.get("sanctioned") == "True"
+                                    else "false"
+                                },
+                            )
+                            if related_expression.get("status"):
+                                term.set("status", related_expression.get("status"))
+
+                            # print(related_expression)
+                            lemma = etree.SubElement(term, "l")
+                            lemma.text = related_expression.get("expression")
+
+                            if related_expression.get("pos"):
+                                lemma.set("pos", related_expression.get("pos"))
+
+                            for tag in ["note", "source"]:
+                                if related_expression.get(tag):
+                                    a = etree.SubElement(term, tag)
+                                    a.text = related_expression.get(tag)
+            if not mlc.xpath("./c"):
+                print("no c")
+                print(etree.tostring(mlc, encoding="unicode"))
+                mlc.getparent().remove(mlc)
+
+        for category, root in roots.items():
+            asciiname = unidecode.unidecode(category).replace(" ", "_").lower()
+            print(f"{category}")
+            with open(f"{asciiname}.xml", "w") as term_:
+                print(
+                    etree.tostring(root, encoding="unicode", pretty_print=True),
+                    file=term_,
+                )
 
     def not_found_in_normfst(self, **kwargs):
         """Return expressions not found in normfst."""
@@ -1145,6 +1225,8 @@ def handle_dump(arguments):
 
     if arguments[0] == "fix":
         dumphandler.fix()
+    elif arguments[0] == "xml":
+        dumphandler.dump2xml()
     elif arguments[0] == "missing":
         kwargs = {"language": arguments[1]}
         # Use nodicts for GG

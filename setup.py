@@ -20,6 +20,6 @@ setup(
             "dictexport = termwikiimporter.dicts2wiki:main",
         ]
     },
-    install_requires=["attrs", "lxml", "mwclient", "openpyxl", "pyyaml"],
+    install_requires=["attrs", "lxml", "mwclient", "openpyxl", "pyyaml", "unidecode"],
     test_suite="nose.collector",
 )

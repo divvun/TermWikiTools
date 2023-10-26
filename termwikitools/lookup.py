@@ -19,7 +19,7 @@
 """Lookup which articles belongs to an expression."""
 from collections import defaultdict
 
-from termwikiimporter import bot
+from termwikitools import bot
 
 DUMPHANDLER = bot.DumpHandler()
 LOOKUP_DICT = defaultdict(set)

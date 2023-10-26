@@ -21,8 +21,8 @@
 import inspect
 from operator import itemgetter
 
-# from termwikiimporter import check_tw_expressions
-from termwikiimporter.ordereddefaultdict import OrderedDefaultDict
+# from termwikitools import check_tw_expressions
+from termwikitools.ordereddefaultdict import OrderedDefaultDict
 
 XI_NAMESPACE = "http://www.w3.org/2001/XInclude"
 XML_NAMESPACE = "https://www.w3.org/XML/1998/namespace"
@@ -54,11 +54,11 @@ def fix_sms(expression: str) -> str:
         A string containing proper sms letters
     """
     replacement_pairs = [
-        (u"\u2019", u"\u02BC"),
-        (u"\u0027", u"\u02BC"),
-        (u"\u2032", u"\u02B9"),
-        (u"\u00B4", u"\u02B9"),
-        (u"\u0301", u"\u02B9"),
+        ("\u2019", "\u02BC"),
+        ("\u0027", "\u02BC"),
+        ("\u2032", "\u02B9"),
+        ("\u00B4", "\u02B9"),
+        ("\u0301", "\u02B9"),
     ]
 
     for replacement_pair in replacement_pairs:

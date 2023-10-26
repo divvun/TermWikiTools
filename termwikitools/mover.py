@@ -8,7 +8,7 @@ import sys
 
 from lxml import etree
 
-from termwikiimporter import bot, importer
+from termwikitools import bot
 
 CATEGORIES = [
     "Boazodoallu‎",
@@ -170,7 +170,7 @@ def get_expressions():
 def parse_expression():
     """Parse expressions found in a file."""
     expressions_element = etree.parse(
-        os.path.join("termwikiimporter", "test", "expressions.txt")
+        os.path.join("termwikitools", "test", "expressions.txt")
     )
     counter = collections.defaultdict(int)
     for expression in expressions_element.xpath("page"):

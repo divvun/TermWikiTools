@@ -3,7 +3,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="TermwikiImporter",
+    name="TermWikiTools",
     version="0.0.1",
     author="Børre Gaup",
     author_email="borre.gaup@uit.no",
@@ -13,11 +13,11 @@ setup(
     long_description=open("README.md").read(),
     entry_points={
         "console_scripts": [
-            "termimport = termwikiimporter.importer:main",
-            "termexport = termwikiimporter.exporter:write_to_termwiki",
-            "termbot = termwikiimporter.bot:main",
-            "termmover = termwikiimporter.mover:main",
-            "dictexport = termwikiimporter.dicts2wiki:main",
+            "termimport = termwikitools.importer:main",
+            "termexport = termwikitools.exporter:write_to_termwiki",
+            "termbot = termwikitools.bot:main",
+            "termmover = termwikitools.mover:main",
+            "dictexport = termwikitools.dicts2wiki:main",
         ]
     },
     install_requires=["attrs", "lxml", "mwclient", "openpyxl", "pyyaml", "unidecode"],

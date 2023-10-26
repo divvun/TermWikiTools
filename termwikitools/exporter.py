@@ -6,7 +6,7 @@ import collections
 
 from lxml import etree
 
-from termwikiimporter import bot
+from termwikitools import bot
 
 
 def parse_options():

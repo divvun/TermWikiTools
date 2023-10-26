@@ -1,1 +1,1 @@
-TermwikiImporter
+TermWikiTools

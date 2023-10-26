@@ -22,7 +22,7 @@ import re
 
 import hfst
 
-from termwikiimporter import dicts2wiki
+from termwikitools import dicts2wiki
 
 
 def parse_dicts():

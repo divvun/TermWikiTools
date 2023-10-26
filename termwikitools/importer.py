@@ -21,14 +21,12 @@
 import argparse
 import os
 import re
-from pathlib import Path
 
 import openpyxl
 import yaml
 from lxml import etree
-from openpyxl.comments import Comment
 
-from termwikiimporter import check_tw_expressions, lookup, read_termwiki
+from termwikitools import check_tw_expressions, lookup, read_termwiki
 
 
 class ExcelImporter(object):
@@ -68,7 +66,7 @@ class ExcelImporter(object):
             RowParser(SheetRow(sheet, index), info)
             for index in range(2, sheet.max_row + 1)
         ]
-        for (index, rowparser) in enumerate(rowparsers, start=2):
+        for index, rowparser in enumerate(rowparsers, start=2):
             rowparser.parse_row()
             page = etree.SubElement(pages, "page")
             page.set("title", rowparser.concept.title)

@@ -18,7 +18,7 @@
 #
 """Convert term dump to graphql."""
 
-from termwikiimporter import bot, read_termwiki
+from termwikitools import bot
 
 # Read categories from dump
 # Save categories, take care of ids

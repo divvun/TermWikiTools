@@ -28,7 +28,7 @@ import unidecode
 import yaml
 from lxml import etree
 
-from termwikiimporter import dicts2wiki, read_termwiki
+from termwikitools import dicts2wiki, read_termwiki
 
 XI_NAMESPACE = "http://www.w3.org/2001/XInclude"
 XML_NAMESPACE = "https://www.w3.org/XML/1998/namespace"
@@ -255,7 +255,7 @@ def merge_concept(
             ):
                 try:
                     uxpression = expression1
-                except TypeError as error:
+                except TypeError:
                     raise SystemExit(expression1)
                 uxpression["sanctioned"] = "True"
                 tw_concept.related_expressions.append(uxpression)
@@ -285,7 +285,7 @@ class DumpHandler:
         ]
         if title is not None:
             page = title.getparent()
-            tuxt = page.xpath(f".//mw:text", namespaces=namespace)[0]
+            tuxt = page.xpath(".//mw:text", namespaces=namespace)[0]
             tuxt.text = str(tw_concept)
         else:
             raise SystemExit(f"did not find {main_title}")
@@ -876,7 +876,7 @@ class SiteHandler:
         redirects = {
             redirect_xml.getparent().getparent()
             for redirect_xml in root.xpath(
-                f'.//mw:text[starts-with(text(), "#STIVREN")]', namespaces=namespace
+                './/mw:text[starts-with(text(), "#STIVREN")]', namespaces=namespace
             )
         }
         print("Redirects pages", len(redirects))
@@ -907,7 +907,7 @@ class SiteHandler:
         expressions = {
             expression_xml.text
             for expression_xml in root.xpath(
-                f'.//mw:title[starts-with(text(), "Expression:")]', namespaces=namespace
+                './/mw:title[starts-with(text(), "Expression:")]', namespaces=namespace
             )
         }
         real_expressions = set()

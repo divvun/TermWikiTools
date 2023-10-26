@@ -49,7 +49,6 @@ import os
 import re
 from collections import defaultdict
 
-from termwikiimporter import analyser
 
 WANTED_LEXICONS = {
     "sme": {
@@ -314,34 +313,34 @@ def parse_line(old_match: dict) -> defaultdict:
     line_dict = defaultdict(str)
 
     if old_match.get("exclam"):
-        line_dict[u"exclam"] = u"!"
+        line_dict["exclam"] = "!"
 
-    line_dict[u"contlex"] = old_match.get(u"contlex")
-    if old_match.get(u"translation"):
-        line_dict[u"translation"] = (
-            old_match.get(u"translation").strip().replace(u"%¥", u"% ")
+    line_dict["contlex"] = old_match.get("contlex")
+    if old_match.get("translation"):
+        line_dict["translation"] = (
+            old_match.get("translation").strip().replace("%¥", "% ")
         )
 
-    if old_match.get(u"comment"):
-        line_dict[u"comment"] = old_match.get(u"comment").strip().replace(u"%¥", u"% ")
+    if old_match.get("comment"):
+        line_dict["comment"] = old_match.get("comment").strip().replace("%¥", "% ")
 
     line = old_match.get("content")
     if line:
-        line = line.replace(u"%¥", u"% ")
-        if line.startswith(u"<") and line.endswith(u">"):
-            line_dict[u"upper"] = line
+        line = line.replace("%¥", "% ")
+        if line.startswith("<") and line.endswith(">"):
+            line_dict["upper"] = line
         else:
-            lexc_line_match = line.find(u":")
+            lexc_line_match = line.find(":")
 
             if lexc_line_match != -1:
-                line_dict[u"upper"] = line[:lexc_line_match].strip()
-                line_dict[u"divisor"] = u":"
-                line_dict[u"lower"] = line[lexc_line_match + 1 :].strip()
-                if line_dict[u"lower"].endswith("%"):
-                    line_dict[u"lower"] = line_dict[u"lower"] + u" "
+                line_dict["upper"] = line[:lexc_line_match].strip()
+                line_dict["divisor"] = ":"
+                line_dict["lower"] = line[lexc_line_match + 1 :].strip()
+                if line_dict["lower"].endswith("%"):
+                    line_dict["lower"] = line_dict["lower"] + " "
             else:
                 if line.strip():
-                    line_dict[u"upper"] = line.strip()
+                    line_dict["upper"] = line.strip()
 
     return line_dict
 
@@ -352,7 +351,7 @@ def line2dict(line: str) -> dict:
     Args:
         line: a lexc line
     """
-    line = line.replace(u"% ", u"%¥")
+    line = line.replace("% ", "%¥")
     lexc_line_match = LEXC_LINE_RE.search(line)
     if lexc_line_match:
         content = lexc_line_match.groupdict()

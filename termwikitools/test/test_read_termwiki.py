@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """Test the functions and classes found in read_termwiki."""
 
-import collections
 import unittest
 
-from termwikiimporter import read_termwiki
+from termwikitools import read_termwiki
 
 
 class FalseMockAnalyser(object):

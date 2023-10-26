@@ -24,7 +24,7 @@ from io import StringIO
 
 from lxml import etree
 
-from termwikiimporter import dicts2wiki
+from termwikitools import dicts2wiki
 
 
 class TestDicts(unittest.TestCase):

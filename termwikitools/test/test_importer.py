@@ -2,10 +2,9 @@
 
 import collections
 import os
-import sys
 import unittest
 
-from termwikiimporter import importer
+from termwikitools import importer
 
 
 class TestExcelImporter(unittest.TestCase):

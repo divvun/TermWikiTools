@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from lxml import etree
 
-from termwikiimporter import read_termwiki
+from termwikitools import read_termwiki
 
 counter = defaultdict(int)
 

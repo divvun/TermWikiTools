@@ -968,12 +968,9 @@ class SiteHandler:
             expression_page = self.site.Pages[title]
             print(f"Trying to make {title}", end=" ")
             if not expression_page.exists:
-                strings = [
-                    f"|{key}={expression[key]}"
-                    for key in ["language", "pos"]
-                    if expression[key]
-                ]
-                strings.insert(0, "{{Expression")
+                strings = []
+                strings.append("{{Expression")
+                strings.append(f"|{'language'}={expression['language']}")
                 strings.append("}}")
                 expression_page.save("\n".join(strings), summary="Created by termbot")
                 print("succeeded")

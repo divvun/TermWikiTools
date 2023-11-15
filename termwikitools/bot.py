@@ -27,6 +27,7 @@ import mwclient
 import unidecode
 import yaml
 from lxml import etree
+import requests
 
 from termwikitools import dicts2wiki, read_termwiki
 
@@ -259,6 +260,65 @@ def merge_concept(
                     raise SystemExit(expression1)
                 uxpression["sanctioned"] = "True"
                 tw_concept.related_expressions.append(uxpression)
+
+
+def list_recent_changes():
+    namespaces = "|".join(
+        str(i)
+        for i in [
+            1102,
+            1202,
+            1210,
+            1218,
+            1226,
+            1234,
+            1242,
+            1250,
+            1258,
+            1266,
+            1274,
+            1282,
+            1290,
+            1298,
+            1306,
+            1314,
+            1322,
+            1330,
+            1338,
+            1346,
+            1354,
+            1362,
+            1364,
+            1366,
+            1368,
+            1370,
+            1373,
+            1382,
+            1384,
+            1386,
+        ]
+    )
+
+    session = requests.Session()
+
+    url = "https://satni.uit.no/termwiki/api.php"
+
+    params = {
+        "format": "json",
+        "rcprop": "title",
+        "list": "recentchanges",
+        "action": "query",
+        "rcnamespace": namespaces,
+        "rclimit": "300",
+        "rcexcludeuser": "SDTermImporter",
+    }
+
+    request = session.get(url=url, params=params)
+    data = request.json()
+
+    recentchanges = data["query"]["recentchanges"]
+
+    return sorted([title for title in {rc["title"] for rc in recentchanges}])
 
 
 class DumpHandler:
@@ -962,6 +1022,29 @@ class SiteHandler:
         for key in sorted(counter):
             print(key, counter[key])
 
+    def fix_name(self, name):
+        """Make the bot fix a named page."""
+        page = self.site.pages[name]
+
+        if page.exists:
+            concept = read_termwiki.Concept()
+            concept.from_termwiki(page.text())
+            if concept.related_expressions:
+                self.save_page(page, str(concept), summary="Fixing content")
+
+                for expression in concept.related_expressions:
+                    expression_title = (
+                        f'Expression:{expression["expression"].replace("&amp;", "&")}'
+                    )
+                    expression_page = self.site.pages[expression_title]
+                    if not expression_page.exists:
+                        self.make_expression_page(expression)
+
+            else:
+                page.delete(reason="Have no expressions")
+        else:
+            print(f"page {name} does not exist")
+
     def make_expression_page(self, expression):
         title = f'Expression:{expression["expression"]}'
         try:
@@ -1266,6 +1349,9 @@ def handle_site(arguments):
     site = SiteHandler()
     if arguments[0] == "fix":
         site.fix()
+    elif arguments[0] == "fixname":
+        for name in list_recent_changes():
+            site.fix_name(name)
     elif arguments[0] == "rev":
         site.fix_revisions()
     elif arguments[0] == "query":

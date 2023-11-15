@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="TermWikiTools",
-    version="0.0.1",
+    version="0.0.2",
     author="Børre Gaup",
     author_email="borre.gaup@uit.no",
     packages=find_packages(),
@@ -20,6 +20,14 @@ setup(
             "dictexport = termwikitools.dicts2wiki:main",
         ]
     },
-    install_requires=["attrs", "lxml", "mwclient", "openpyxl", "pyyaml", "unidecode"],
+    install_requires=[
+        "attrs",
+        "lxml",
+        "mwclient",
+        "openpyxl",
+        "pyyaml",
+        "unidecode",
+        "requests",
+    ],
     test_suite="nose.collector",
 )

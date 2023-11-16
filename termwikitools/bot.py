@@ -960,34 +960,72 @@ class SiteHandler:
                 print(f"Adding {page_id} to {title}")
                 page.save(str(concept), summary="Added id")
 
-    def fix_expression_pages(self):
-        dump = DumpHandler()
-        root = dump.tree.getroot()
+    def make_related_expression_dict(self, dump):
+        related_expression_dict = collections.defaultdict(set)
+        for _, concept in dump.concepts:
+            for expression_title in concept.related_expressions:
+                related_expression_dict[
+                    f'Expression:{expression_title["expression"].replace("&amp;", "&")}'
+                ].add(expression_title["language"])
+
+        return related_expression_dict
+
+    def make_dump_expression_dict(self, dump):
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
-        expressions = {
-            expression_xml.text
-            for expression_xml in root.xpath(
+        return {
+            expression_xml.text: expression_xml.getparent()
+            .xpath(".//mw:text", namespaces=namespace)[0]
+            .text
+            for expression_xml in dump.tree.getroot().xpath(
                 './/mw:title[starts-with(text(), "Expression:")]', namespaces=namespace
             )
         }
-        real_expressions = set()
-        for title, concept in dump.concepts:
-            for expression in concept.related_expressions:
-                expression_title = (
-                    f'Expression:{expression["expression"].replace("&amp;", "&")}'
-                )
-                real_expressions.add(expression_title)
-                if expression_title not in expressions:
-                    self.make_expression_page(expression)
 
-        print("Expression pages", len(expressions))
-        print("Real expressions", len(real_expressions))
+    def make_expression_pages(self, related_expression_dict, dump_expression_dict):
+        for expression_title, languages in related_expression_dict.items():
+            ideal_content = self.make_expression_content(languages)
+            if ideal_content != dump_expression_dict.get(expression_title):
+                print(f"fixing {expression_title}")
+                print("ideal", ideal_content)
+                print("from dump", dump_expression_dict.get(expression_title))
+                print()
+                self.fix_expression_page(expression_title, content=ideal_content)
 
-        for to_delete in expressions - real_expressions:
+    def delete_expression_pages(self, related_expression_dict, dump_expression_dict):
+        related_expressions = {title for title in related_expression_dict.keys()}
+        dump_expressions = {title for title in dump_expression_dict.keys()}
+
+        for to_delete in related_expressions - dump_expressions:
             page = self.site.Pages[to_delete]
             if page.exists:
                 print(f"Removing {to_delete}")
                 page.delete(reason="Is not found among related expressions")
+
+    def fix_expression_pages(self):
+        dump = DumpHandler()
+        related_expression_dict = self.make_related_expression_dict(dump=dump)
+        dump_expression_dict = self.make_dump_expression_dict(dump=dump)
+
+        self.make_expression_pages(related_expression_dict, dump_expression_dict)
+        self.delete_expression_pages(related_expression_dict, dump_expression_dict)
+
+    def fix_expression_page(self, expression_title, content):
+        page = self.site.Pages[expression_title]
+        if not page.exists:
+            self.save_page(page, content=content, summary="Making new expression page")
+        else:
+            if page.text != content:
+                print("\treally fixing", expression_title)
+                self.save_page(page, content=content, summary="Fixing expression page")
+
+    def make_expression_content(self, languages):
+        strings = []
+        for language in sorted(languages):
+            strings.append("{{Expression")
+            strings.append(f"|language={language}")
+            strings.append("}}")
+        content = "\n".join(strings)
+        return content
 
     def delete_pages(self, part_of_title):
         dump = DumpHandler()

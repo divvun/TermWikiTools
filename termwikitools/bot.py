@@ -538,29 +538,6 @@ class DumpHandler:
             print(f"{norm}:{norm} TODO ; !", end="  ")
             print(" ".join([url for url in sorted(norms[norm])]))
 
-    def auto_sanction(self, language):
-        """Automatically sanction expressions that have no collection.
-
-        The theory is that concept pages with no collections mostly are from
-        the risten.no import, and if there are no typos found in an expression
-        they should be sanctioned.
-
-        Args:
-            language (str): the language to sanction
-        """
-        ex = 1
-        for _, content_elt, _ in self.content_elements:
-            print(".", end="")
-            sys.stdout.flush()
-            ex += 1
-            concept = read_termwiki.Concept()
-            concept.from_termwiki(content_elt.text)
-            if concept.collections is None:
-                concept.auto_sanction(language)
-                content_elt.text = str(concept)
-
-        self.tree.write(self.dump, pretty_print=True, encoding="utf-8")
-
     def sum_terms(self, language=None):
         """Sum up sanctioned and none sanctioned terms.
 
@@ -1093,41 +1070,6 @@ class SiteHandler:
                     "recognises.".format(language),
                 )
 
-    def auto_sanction(self, language):
-        """Automatically sanction expressions that have no collection.
-
-        The theory is that concept pages with no collections mostly are from
-        the risten.no import, and if there are no typos found in an expression
-        they should be sanctioned.
-
-        Args:
-            language (str): the language to sanction
-        """
-        ex = 1
-        query = (
-            "[[Related expression::+]]"
-            "[[Language::{}]]"
-            "[[Sanctioned::False]]".format(language)
-        )
-
-        for _, answer in enumerate(self.site.ask(query), start=1):
-            for title, _ in answer.items():
-                print(".", end="")
-                sys.stdout.flush()
-                ex += 1
-                page = self.site.Pages[title]
-                concept = read_termwiki.Concept()
-                concept.from_termwiki(page.text())
-                if concept.collections is None:
-                    concept.auto_sanction(language)
-                    self.save_page(
-                        page,
-                        str(concept),
-                        summary="Sanctioned expressions not associated with any "
-                        "collections that the normative {} fst "
-                        "recognises.".format(language),
-                    )
-
     def revert(self):
         """Automatically sanction expressions that have no collection.
 
@@ -1286,8 +1228,6 @@ def handle_dump(arguments):
         dumphandler.print_invalid_chars(language=arguments[1], sanctioned=arguments[2])
     elif arguments[0] == "sum":
         dumphandler.sum_terms(language=arguments[1])
-    elif arguments[0] == "auto":
-        dumphandler.auto_sanction(language=arguments[1])
     elif arguments[0] == "statistics":
         dumphandler.statistics(languages=arguments[1:])
     elif arguments[0] == "sort":
@@ -1316,8 +1256,6 @@ def handle_site(arguments):
         site.fix_revisions()
     elif arguments[0] == "query":
         site.add_extra_collection()
-    elif arguments[0] == "auto":
-        site.auto_sanction(language=arguments[1])
     elif arguments[0] == "revert":
         site.revert()
     elif arguments[0] == "del_expression":

@@ -798,10 +798,12 @@ class SiteHandler:
             concept.title = title
             concept.from_termwiki(content_elt.text)
             if not concept.data["concept"].get("page_id"):
-                concept.data["concept"]["page_id"] = page_id
                 page = self.site.Pages[title]
+                real_concept = read_termwiki.Concept()
+                real_concept.from_termwiki(page.text)
+                real_concept.data["concept"]["page_id"] = page_id
                 print(f"Adding {page_id} to {title}")
-                page.save(str(concept), summary="Added id")
+                page.save(str(real_concept), summary="Added id")
 
     def make_related_expression_dict(self, dump):
         related_expression_dict = collections.defaultdict(set)

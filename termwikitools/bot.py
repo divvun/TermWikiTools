@@ -569,22 +569,6 @@ class DumpHandler:
                     f'{expression["expression"]} {base_url}/index.php?title={title.replace(" ", "_")}'
                 )
 
-    def fix(self):
-        """Check to see if everything works as expected."""
-        for title, content_elt, _ in self.content_elements:
-            try:
-                concept = read_termwiki.Concept()
-                concept.from_termwiki(content_elt.text)
-                content_elt.text = str(concept)
-            except TypeError:
-                print(
-                    "empty element:\n{}\n{}\n".format(
-                        title, etree.tostring(content_elt, encoding="unicode")
-                    )
-                )
-
-        self.tree.write(self.dump, pretty_print=True, encoding="utf8")
-
     def find_collections(self):
         """Check if collections are correctly defined."""
         for title, page in self.pages:
@@ -660,51 +644,6 @@ class DumpHandler:
             print("Logging in to query …")
 
             return site
-
-    @staticmethod
-    def uff_key(concept):
-        """Turn the expression references into a string"""
-        return "".join(
-            sorted(
-                {r.get("expression_ref") for r in concept.iter("related_expression")}
-            )
-        )
-
-    def mergeable_pages(self, pages_filename: str, languages: list):
-        tw_index, tw_expression_index = read_dump()
-        sd_index, sd_expression_index = read_pages(pages_filename)
-        sd_titles = collections.defaultdict(set)
-
-        for sd_title, sd_concept in sd_index.items():
-            potential_pages = {}
-            for language in languages:
-                sd_expressions = [
-                    expression["expression"]
-                    for expression in sd_concept.related_expressions
-                    if expression["language"] == language
-                ]
-                potential_pages[language] = {
-                    title
-                    for sd_expression in sd_expressions
-                    for title in tw_expression_index[language][sd_expression]
-                }
-            total = (
-                potential_pages["nb"] & potential_pages["sma"] & potential_pages["sv"]
-            )
-            sd_concept.title = sd_title
-
-            if not total:
-                print(f"no hits, saving to {sd_title}\n")
-            elif len(total) == 1:
-                print(list(total)[0])
-                yield sd_concept, tw_index[list(total)[0]]
-            else:
-                for title in total:
-                    print_entry(sd_concept)
-                    print_entry(tw_index[title])
-                    answer = input("enter merges, any other skips: ")
-                    if answer == "":
-                        yield sd_concept, tw_index[title]
 
     def statistics(self, languages):
         invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
@@ -1154,42 +1093,6 @@ class SiteHandler:
             except mwclient.errors.InvalidPageTitle:
                 print(f"Failed on {page.name}")
 
-    def mergeable_pages(self, pages_filename: str, languages: list):
-        tw_index, tw_expression_index = read_dump()
-        sd_index, sd_expression_index = read_pages(pages_filename)
-        sd_titles = collections.defaultdict(set)
-
-        for sd_title, sd_concept in sd_index.items():
-            potential_pages = {}
-            for language in languages:
-                sd_expressions = [
-                    expression["expression"]
-                    for expression in sd_concept.related_expressions
-                    if expression["language"] == language
-                ]
-                potential_pages[language] = {
-                    title
-                    for sd_expression in sd_expressions
-                    for title in tw_expression_index[language][sd_expression]
-                }
-            total = (
-                potential_pages["nb"] & potential_pages["sma"] & potential_pages["sv"]
-            )
-            sd_concept.title = sd_title
-
-            if not total:
-                print("zero")
-                yield sd_concept, sd_concept
-            elif len(total) == 1:
-                yield sd_concept, tw_index[list(total)[0]]
-            else:
-                for title in total:
-                    print_entry(sd_concept)
-                    print_entry(tw_index[title])
-                    answer = input("enter merges, any other skips: ")
-                    if answer == "":
-                        yield sd_concept, tw_index[title]
-
 
 def handle_dump(arguments):
     """Act on the TermWiki dump.
@@ -1199,9 +1102,7 @@ def handle_dump(arguments):
     """
     dumphandler = DumpHandler()
 
-    if arguments[0] == "fix":
-        dumphandler.fix()
-    elif arguments[0] == "xml":
+    if arguments[0] == "xml":
         dumphandler.dump2xml()
     elif arguments[0] == "missing":
         kwargs = {"language": arguments[1]}

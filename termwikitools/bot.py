@@ -214,7 +214,7 @@ def read_pages(pages_filename):
     return tw_index, tw_expression_index
 
 
-def list_recent_changes():
+def list_recent_changes(amount):
     namespaces = "|".join(
         str(i)
         for i in [
@@ -261,7 +261,7 @@ def list_recent_changes():
         "list": "recentchanges",
         "action": "query",
         "rcnamespace": namespaces,
-        "rclimit": "300",
+        "rclimit": amount,
         "rcexcludeuser": "SDTermImporter",
     }
 
@@ -1307,8 +1307,10 @@ def handle_site(arguments):
     site = SiteHandler()
     if arguments[0] == "fix":
         site.fix()
-    elif arguments[0] == "fixname":
-        for name in list_recent_changes():
+    elif arguments[0] == "fixrecent":
+        for name in list_recent_changes(
+            amount=arguments[-1] if len(arguments) == 2 else 20
+        ):
             site.fix_name(name)
     elif arguments[0] == "rev":
         site.fix_revisions()

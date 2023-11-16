@@ -214,54 +214,6 @@ def read_pages(pages_filename):
     return tw_index, tw_expression_index
 
 
-def merge_concept(
-    concept: read_termwiki.Concept, tw_concept: read_termwiki.Concept
-) -> None:
-    """Merge concept into tw_concept."""
-    if not tw_concept.collections:
-        tw_concept.data["concept"]["collection"] = set()
-    for coll in concept.collections:
-        tw_concept.data["concept"]["collection"].add(coll)
-
-    # merge concept_info
-    for concept_info in concept.data["concept_infos"]:
-        for tw_concept_info in tw_concept.data["concept_infos"]:
-            if concept_info["language"] == tw_concept_info["language"]:
-                for key, value in concept_info.items():
-                    if not tw_concept_info.get(key):
-                        tw_concept_info[key] = value
-
-    # update related expressions in tw_concept from concept
-    for expression1 in concept.related_expressions:
-        for expression2 in tw_concept.related_expressions:
-            if (
-                expression1["expression"] == expression2["expression"]
-                and expression1["language"] == expression2["language"]
-            ):
-                expression2["sanctioned"] = "True"
-
-    concept_set = {
-        (expression["expression"], expression["language"])
-        for expression in concept.related_expressions
-    }
-    tw_concept_set = {
-        (expression["expression"], expression["language"])
-        for expression in tw_concept.related_expressions
-    }
-    for expression, language in concept_set.difference(tw_concept_set):
-        for expression1 in concept.related_expressions:
-            if (
-                expression == expression1["expression"]
-                and language == expression1["language"]
-            ):
-                try:
-                    uxpression = expression1
-                except TypeError:
-                    raise SystemExit(expression1)
-                uxpression["sanctioned"] = "True"
-                tw_concept.related_expressions.append(uxpression)
-
-
 def list_recent_changes():
     namespaces = "|".join(
         str(i)
@@ -776,21 +728,6 @@ class DumpHandler:
                     answer = input("enter merges, any other skips: ")
                     if answer == "":
                         yield sd_concept, tw_index[title]
-
-    def merge_pages(self, pages_filename: str, summary: str, languages) -> None:
-        """Merge terms from the pages xml format into TermWiki."""
-        counter = 0
-
-        for concept1, concept2 in self.mergeable_pages(pages_filename, languages):
-            merge_concept(concept1, concept2)
-            self.save_concept(concept2, concept2.title.replace("_", " "))
-            counter += 1
-            print(f"Merging {concept1.title} into {concept2.title} {counter}")
-            if counter > 99:
-                break
-
-        self.tree.write(self.dump, pretty_print=True, encoding="utf-8")
-        print(f"Merged {counter} concepts into TermWiki")
 
     def statistics(self, languages):
         invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
@@ -1321,17 +1258,6 @@ class SiteHandler:
                     if answer == "":
                         yield sd_concept, tw_index[title]
 
-    def merge_pages(self, pages_filename: str, summary: str, languages: list):
-        """Merge terms from the pages xml format into TermWiki."""
-        counter = 0
-        for concept1, concept2 in self.mergeable_pages(pages_filename, languages):
-            merge_concept(concept1, concept2)
-            page = self.site.Pages[concept2.title]
-            self.save_page(page, str(concept2), summary=f"{summary}")
-            counter += 1
-            print(f"Merging {concept1.title} into {concept2.title} {counter}")
-        print(f"Merged {counter} concepts into TermWiki")
-
 
 def handle_dump(arguments):
     """Act on the TermWiki dump.
@@ -1366,12 +1292,6 @@ def handle_dump(arguments):
         dumphandler.statistics(languages=arguments[1:])
     elif arguments[0] == "sort":
         dumphandler.sort_dump()
-    elif arguments[0] == "merge_sdterms":
-        dumphandler.merge_pages(
-            pages_filename=arguments[1],
-            summary=arguments[2],
-            languages=["nb", "sv", "sma"],
-        )
     elif arguments[0] == "pairs":
         dumphandler.print_expression_pairs(lang1=arguments[1], lang2=arguments[2])
     else:
@@ -1410,12 +1330,6 @@ def handle_site(arguments):
         site.delete_pages(arguments[1])
     elif arguments[0] == "add_id":
         site.add_id()
-    elif arguments[0] == "merge_sdterms":
-        site.merge_pages(
-            pages_filename=arguments[1],
-            summary=arguments[2],
-            languages=["nb", "sv", "sma"],
-        )
     else:
         print(" ".join(arguments), "is not supported")
 

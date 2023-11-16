@@ -808,16 +808,6 @@ class SiteHandler:
                     if self.is_concept_tag(page.text()):
                         yield page
 
-    def del_expression(self):
-        """Delete all expression pages."""
-        for page in self.site.Categories["Expressions"]:
-            try:
-                print("Deleting: {}".format(page.name))
-                page.delete(reason="Will be replaced by Stem page")
-            except mwclient.APIError as error:
-                if error.code != "cantdelete":  # Okay if already deleted
-                    print("Can not delete {}.\nError {}".format(page.name, error))
-
     @staticmethod
     def is_concept_tag(content):
         """Check if content is a TermWiki Concept page.
@@ -1258,8 +1248,6 @@ def handle_site(arguments):
         site.add_extra_collection()
     elif arguments[0] == "revert":
         site.revert()
-    elif arguments[0] == "del_expression":
-        site.del_expression()
     elif arguments[0] == "improve_pagenames":
         site.improve_pagenames()
     elif arguments[0] == "fix_expression_pages":

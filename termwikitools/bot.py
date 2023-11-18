@@ -359,7 +359,7 @@ class DumpHandler:
 
         return founds
 
-    def print_missing(self, nodicts, **kwargs):
+    def print_missing(self, **kwargs):
         """Find all expressions of the given language.
 
         Args:
@@ -373,11 +373,6 @@ class DumpHandler:
             ]
 
         not_in_norms = self.not_found_in_normfst(**kwargs)
-
-        if not nodicts:
-            dicts = missing_dicts(kwargs["language"])
-            for key in set(list(dicts)):
-                not_in_norms[key] = not_in_norms[key].union(dicts[key])
 
         descriptives = self.known_to_descfst(kwargs["language"], not_in_norms)
         for descriptive in revsorted_expressions(descriptives):
@@ -986,16 +981,15 @@ def xml():
     "language",
     type=click.Choice(LANGS.keys()),
 )
-@click.option("--nodicts", is_flag=True, help="Use nodicts for GG.")
 @click.option(
     "--sanctioned",
     is_flag=True,
     help="Sanctioned status for GG.",
 )
-def missing(language, nodicts, sanctioned):
+def missing(language, sanctioned):
     """Print missing terms for a language."""
     dumphandler = DumpHandler()
-    dumphandler.print_missing(sanctioned=sanctioned, nodicts=nodicts, language=language)
+    dumphandler.print_missing(sanctioned=sanctioned, language=language)
 
 
 @dump.command()

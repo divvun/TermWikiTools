@@ -25,7 +25,6 @@ termimport = "termwikitools.importer:main"
 termexport = "termwikitools.exporter:write_to_termwiki"
 termbot = "termwikitools.bot:main"
 termmover = "termwikitools.mover:main"
-dictexport = "termwikitools.dicts2wiki:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

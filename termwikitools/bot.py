@@ -954,13 +954,13 @@ class SiteHandler:
 
 @click.group()
 def main():
-    """Either fix a TermWiki site or test fixing routines on dump.xml."""
+    """Fix site or extract data from local copy of TermWiki."""
     pass
 
 
 @main.group()
 def dump():
-    """Get something useful from the dump."""
+    """Extract data from local copy of TermWiki."""
     pass
 
 
@@ -1052,6 +1052,7 @@ def site():
 
 @site.command()
 def fix():
+    """Fix all Concept pages on the TermWiki."""
     site_handler = SiteHandler()
     site_handler.fix()
 
@@ -1076,24 +1077,28 @@ def query():
 
 @site.command()
 def fix_expression_pages():
+    """Fix expression pages."""
     site_handler = SiteHandler()
     site_handler.fix_expression_pages()
 
 
 @site.command()
 def delete_redirects():
+    """Delete redirects on the TermWiki, they are not needed."""
     site_handler = SiteHandler()
     site_handler.delete_redirects()
 
 
 @site.command()
 def add_id():
+    """Add permanent id to Concept pages on the TermWiki"""
     site_handler = SiteHandler()
     site_handler.add_id()
 
 
 @site.command()
 def improve_pagenames():
+    """Improve page names on the TermWiki"""
     site_handler = SiteHandler()
     site_handler.improve_pagenames()
 
@@ -1101,6 +1106,7 @@ def improve_pagenames():
 @site.command()
 @click.argument("substring")
 def delete_pages(substring):
+    """Delete pages containing the substring from the TermWiki."""
     site_handler = SiteHandler()
     site_handler.delete_pages(substring)
 
@@ -1108,6 +1114,7 @@ def delete_pages(substring):
 @site.command()
 @click.option("--amount", default=10, help="The number of recent changes to fix")
 def fixrecent(amount):
+    """Fix recently changed Concept pages on the TermWiki."""
     site_handler = SiteHandler()
     for title in list_recent_changes(amount):
         site_handler.fix_name(title)

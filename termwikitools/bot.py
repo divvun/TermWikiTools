@@ -466,12 +466,6 @@ class DumpHandler:
 
     def print_expression_pairs(self, lang1, lang2, category=None):
         """Print pairs of expressions, for use in making bidix files."""
-        langs = ["en", "fi", "se", "sma", "smn", "sms", "sv", "nb", "nn", "lat", "smj"]
-        for lang in [lang1, lang2]:
-            if lang not in langs:
-                raise SystemExit(
-                    f'Allowed values for languages are: {", ".join(sorted(langs))}'
-                )
         for title, concept in self.concepts:
             if category is None or title.startswith(category):
                 term = concept.data
@@ -1034,10 +1028,17 @@ def sort():
 @dump.command()
 @click.argument("source", type=click.Choice(LANGS.keys()))
 @click.argument("target", type=click.Choice(LANGS.keys()))
-def pairs(lang1, lang2):
+@click.option(
+    "--category",
+    type=click.Choice([namespace.replace(" ", "_") for namespace in NAMESPACES]),
+    help="Choose category",
+)
+def pairs(source, target, category):
     """Print expression pairs for two languages."""
     dumphandler = DumpHandler()
-    dumphandler.print_expression_pairs(lang1=lang1, lang2=lang2)
+    dumphandler.print_expression_pairs(
+        lang1=LANGS[source], lang2=LANGS[target], category=category.replace("_", " ")
+    )
 
 
 @main.group()

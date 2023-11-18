@@ -22,6 +22,8 @@ import os
 import re
 import sys
 
+import click
+
 # import hfst
 import mwclient
 import requests
@@ -63,6 +65,20 @@ NAMESPACES = [
     "Ásttoáigi ja faláštallan",
     "Ávnnasindustriija",
 ]
+
+LANGS = {
+    "eng": "en",
+    "fin": "fi",
+    "sme": "se",
+    "sma": "sma",
+    "smn": "smn",
+    "sms": "sms",
+    "swe": "sv",
+    "nob": "nb",
+    "nno": "nn",
+    "lat": "lat",
+    "smj": "smj",
+}
 
 ATTS = re.compile(r"@[^@]+@")
 
@@ -899,34 +915,31 @@ class SiteHandler:
             concept.from_termwiki(page.text())
             if concept.related_expressions:
                 self.save_page(page, str(concept), summary="Fixing content")
-            else:
-                page.delete(reason="Have no expressions")
 
         for key in sorted(counter):
             print(key, counter[key])
 
-    def fix_name(self, name):
+    def fix_name(self, title):
         """Make the bot fix a named page."""
-        page = self.site.pages[name]
+        page = self.site.pages[title]
 
         if page.exists:
             concept = read_termwiki.Concept()
             concept.from_termwiki(page.text())
             if concept.related_expressions:
+                print(f"Fixing: {title}")
                 self.save_page(page, str(concept), summary="Fixing content")
 
                 for expression in concept.related_expressions:
                     expression_title = (
                         f'Expression:{expression["expression"].replace("&amp;", "&")}'
                     )
+
                     expression_page = self.site.pages[expression_title]
                     if not expression_page.exists:
                         self.make_expression_page(expression)
-
-            else:
-                page.delete(reason="Have no expressions")
         else:
-            print(f"page {name} does not exist")
+            print(f"page {title} does not exist")
 
     def make_expression_page(self, expression):
         title = f'Expression:{expression["expression"]}'
@@ -1096,84 +1109,153 @@ class SiteHandler:
                 print(f"Failed on {page.name}")
 
 
-def handle_dump(arguments):
-    """Act on the TermWiki dump.
-
-    Args:
-        argument (str): command line argument
-    """
-    dumphandler = DumpHandler()
-
-    if arguments[0] == "xml":
-        dumphandler.dump2xml()
-    elif arguments[0] == "missing":
-        kwargs = {"language": arguments[1]}
-        # Use nodicts for GG
-        # true or false is used for GG
-        if "true" in arguments:
-            kwargs["sanctioned"] = "True"
-        if "false" in arguments:
-            kwargs["sanctioned"] = "False"
-        dumphandler.print_missing(nodicts="nodicts" in arguments, **kwargs)
-    elif arguments[0] == "collection":
-        dumphandler.find_collections()
-    elif arguments[0] == "invalid":
-        dumphandler.print_invalid_chars(language=arguments[1], sanctioned=arguments[2])
-    elif arguments[0] == "sum":
-        dumphandler.sum_terms(language=arguments[1])
-    elif arguments[0] == "statistics":
-        dumphandler.statistics(languages=arguments[1:])
-    elif arguments[0] == "sort":
-        dumphandler.sort_dump()
-    elif arguments[0] == "pairs":
-        dumphandler.print_expression_pairs(lang1=arguments[1], lang2=arguments[2])
-    else:
-        print(" ".join(arguments), "is not supported")
-
-
-def handle_site(arguments):
-    """Act on the termwiki.
-
-    Args:
-        argument (str): command line argument
-    """
-    site = SiteHandler()
-    if arguments[0] == "fix":
-        site.fix()
-    elif arguments[0] == "fixrecent":
-        for name in list_recent_changes(
-            amount=arguments[-1] if len(arguments) == 2 else 20
-        ):
-            site.fix_name(name)
-    elif arguments[0] == "rev":
-        site.fix_revisions()
-    elif arguments[0] == "query":
-        site.add_extra_collection()
-    elif arguments[0] == "revert":
-        site.revert()
-    elif arguments[0] == "improve_pagenames":
-        site.improve_pagenames()
-    elif arguments[0] == "fix_expression_pages":
-        site.fix_expression_pages()
-    elif arguments[0] == "delete_redirects":
-        site.delete_redirects()
-    elif arguments[0] == "delete_pages":
-        site.delete_pages(arguments[1])
-    elif arguments[0] == "add_id":
-        site.add_id()
-    else:
-        print(" ".join(arguments), "is not supported")
-
-
+@click.group()
 def main():
     """Either fix a TermWiki site or test fixing routines on dump.xml."""
-    if len(sys.argv) > 2:
-        if sys.argv[1] == "dump":
-            handle_dump(sys.argv[2:])
-        else:
-            handle_site(sys.argv[2:])
-    else:
-        print(
-            "Usage:\ntermbot site to fix the TermWiki\n"
-            "termbot dump to get something useful from the dump."
-        )
+    pass
+
+
+@main.group()
+def dump():
+    """Get something useful from the dump."""
+    pass
+
+
+@dump.command()
+def xml():
+    """Dump the TermWiki database to XML files."""
+    dumphandler = DumpHandler()
+    dumphandler.dump2xml()
+
+
+@dump.command()
+@click.argument(
+    "language",
+    type=click.Choice(LANGS.keys()),
+)
+@click.option("--nodicts", is_flag=True, help="Use nodicts for GG.")
+@click.option(
+    "--sanctioned",
+    is_flag=True,
+    help="Sanctioned status for GG.",
+)
+def missing(language, nodicts, sanctioned):
+    """Print missing terms for a language."""
+    dumphandler = DumpHandler()
+    dumphandler.print_missing(sanctioned=sanctioned, nodicts=nodicts, language=language)
+
+
+@dump.command()
+def collection():
+    """Find collections in the dump."""
+    dumphandler = DumpHandler()
+    dumphandler.find_collections()
+
+
+@dump.command()
+@click.argument("language", type=click.Choice(LANGS.keys()))
+@click.option("--sanctioned", is_flag=True, help="Sanctioned status for GG.")
+def invalid(language, sanctioned):
+    """Print invalid characters for a language."""
+    dumphandler = DumpHandler()
+    dumphandler.print_invalid_chars(language=language, sanctioned=sanctioned)
+
+
+@dump.command()
+@click.argument("language", type=click.Choice(LANGS.keys()))
+def sum(language):
+    """Sum the number of terms for a language."""
+    dumphandler = DumpHandler()
+    dumphandler.sum_terms(language=language)
+
+
+@dump.command()
+@click.argument("languages", nargs=-1, type=click.Choice(LANGS.keys()))
+def statistics(languages):
+    """Print statistics for one or more languages."""
+    dumphandler = DumpHandler()
+    dumphandler.statistics(languages=languages)
+
+
+@dump.command()
+def sort():
+    """Sort the dump."""
+    dumphandler = DumpHandler()
+    dumphandler.sort_dump()
+
+
+@dump.command()
+@click.argument("source", type=click.Choice(LANGS.keys()))
+@click.argument("target", type=click.Choice(LANGS.keys()))
+def pairs(lang1, lang2):
+    """Print expression pairs for two languages."""
+    dumphandler = DumpHandler()
+    dumphandler.print_expression_pairs(lang1=lang1, lang2=lang2)
+
+
+@main.group()
+def site():
+    pass
+
+
+@site.command()
+def fix():
+    site_handler = SiteHandler()
+    site_handler.fix()
+
+
+@site.command()
+def rev():
+    site_handler = SiteHandler()
+    site_handler.fix_revisions()
+
+
+@site.command()
+def revert():
+    site_handler = SiteHandler()
+    site_handler.revert()
+
+
+@site.command()
+def query():
+    site_handler = SiteHandler()
+    site_handler.add_extra_collection()
+
+
+@site.command()
+def fix_expression_pages():
+    site_handler = SiteHandler()
+    site_handler.fix_expression_pages()
+
+
+@site.command()
+def delete_redirects():
+    site_handler = SiteHandler()
+    site_handler.delete_redirects()
+
+
+@site.command()
+def add_id():
+    site_handler = SiteHandler()
+    site_handler.add_id()
+
+
+@site.command()
+def improve_pagenames():
+    site_handler = SiteHandler()
+    site_handler.improve_pagenames()
+
+
+@site.command()
+@click.argument("substring")
+def delete_pages(substring):
+    site_handler = SiteHandler()
+    site_handler.delete_pages(substring)
+
+
+@site.command()
+@click.option("--amount", default=10, help="The number of recent changes to fix")
+def fixrecent(amount):
+    site_handler = SiteHandler()
+    for title in list_recent_changes(amount):
+        site_handler.fix_name(title)

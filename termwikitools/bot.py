@@ -415,11 +415,11 @@ class DumpHandler:
                     counter[expression["sanctioned"]] += 1
 
         print(
-            "{}: {}: true, {}: false, {}: total".format(
+            "{}:\nSanctioned:\t{}\nNot-sanctioned:\t{}\nTotal:\t\t{}".format(
                 language,
-                counter["true"],
-                counter["false"],
-                counter["false"] + counter["true"],
+                counter["True"],
+                counter["False"],
+                counter["False"] + counter["True"],
             )
         )
 
@@ -1013,11 +1013,11 @@ def invalid(language, sanctioned):
 def sum(language):
     """Sum the number of terms for a language."""
     dumphandler = DumpHandler()
-    dumphandler.sum_terms(language=language)
+    dumphandler.sum_terms(language=LANGS[language])
 
 
 @dump.command()
-@click.argument("languages", nargs=-1, type=click.Choice(LANGS.keys()))
+@click.argument("languages", nargs="+", type=click.Choice(LANGS.keys()))
 def statistics(languages):
     """Print statistics for one or more languages."""
     dumphandler = DumpHandler()

@@ -19,15 +19,15 @@
 """Bot to fix syntax blunders in termwiki articles."""
 import collections
 import os
-import sys
 import re
+import sys
 
 # import hfst
 import mwclient
+import requests
 import unidecode
 import yaml
 from lxml import etree
-import requests
 
 from termwikitools import dicts2wiki, read_termwiki
 

@@ -423,11 +423,13 @@ class DumpHandler:
             )
         )
 
-    def print_invalid_chars(self, **kwargs):
+    def print_invalid_chars(self, language, sanctioned):
         """Find terms with invalid characters, print the errors to stdout."""
         invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
         base_url = "https://satni.uit.no/termwiki"
-        for title, expression in self.expressions(**kwargs):
+        for title, expression in self.expressions(
+            language=language, sanctioned=sanctioned
+        ):
             if invalid_chars_re.search(expression["expression"]):
                 print(
                     f'{expression["expression"]} {base_url}/index.php?title={title.replace(" ", "_")}'
@@ -998,7 +1000,9 @@ def collection():
 def invalid(language, sanctioned):
     """Print invalid characters for a language."""
     dumphandler = DumpHandler()
-    dumphandler.print_invalid_chars(language=language, sanctioned=sanctioned)
+    dumphandler.print_invalid_chars(
+        language=LANGS[language], sanctioned="True" if sanctioned else "False"
+    )
 
 
 @dump.command()

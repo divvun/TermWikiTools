@@ -435,7 +435,7 @@ class DumpHandler:
 
     def find_collections(self):
         """Check if collections are correctly defined."""
-        for title, page in self.pages:
+        for title, _, page in self.pages:
             if title.startswith("Collection:"):
                 content_elt = page.find(".//{}text".format(self.mediawiki_ns))
                 text = content_elt.text

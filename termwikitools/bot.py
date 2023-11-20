@@ -848,7 +848,6 @@ class SiteHandler:
         for number, concept in self.semantic_ask_results(query):
             if concept.collections is None:
                 print("Hit no: {}, title: {}".format(number, concept.title))
-                concept.auto_sanction(language)
                 self.save_page(
                     page,
                     str(concept),

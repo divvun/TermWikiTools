@@ -375,20 +375,6 @@ class Concept(object):
         colon = self.title.find(":")
         return self.title[:colon]
 
-    def auto_sanction(self, language):
-        """Automatically sanction expressions in the given language.
-
-        Args:
-            language (str): the language to handle
-        """
-        for expression in self.related_expressions:
-            if expression["language"] == language:
-                if (
-                    analyser.is_known(language, expression["expression"])
-                    and expression["sanctioned"] == "False"
-                ):
-                    expression["sanctioned"] = "True"
-
     def has_invalid(self):
         """Print lemmas with invalid characters."""
         for expression in self.related_expressions:

@@ -236,9 +236,9 @@ class DumpHandler:
             r = roots.get(category)
             data = concept.data
             mlc = etree.SubElement(r, "mc", attrib={"name": title})
-            if data["concept"].get("page_id"):
-                mlc.set("pageid", data["concept"].get("page_id"))
-            for collection in data["concept"].get("collection", []):
+            if concept.get("page_id"):
+                mlc.set("pageid", concept.get("page_id"))
+            for collection in concept.get("collection", []):
                 col = etree.SubElement(mlc, "collection")
                 col.text = collection
             for lang in concept.languages():
@@ -470,11 +470,9 @@ class DumpHandler:
         """Print pairs of expressions, for use in making bidix files."""
         for title, concept in self.concepts:
             if category is None or title.startswith(category):
-                term = concept.data
-
                 if concept.has_sanctioned_sami():
                     langs = {lang1: set(), lang2: set()}
-                    for expression in term["related_expressions"]:
+                    for expression in concept.related_expressions:
                         if (
                             expression["language"] == lang1
                             or expression["language"] == lang2
@@ -656,11 +654,11 @@ class SiteHandler:
             concept = read_termwiki.Concept()
             concept.title = title
             concept.from_termwiki(content_elt.text)
-            if not concept.data["concept"].get("page_id"):
+            if not concept.concept.get("page_id"):
                 page = self.site.Pages[title]
                 real_concept = read_termwiki.Concept()
                 real_concept.from_termwiki(page.text)
-                real_concept.data["concept"]["page_id"] = page_id
+                real_concept.concept["page_id"] = page_id
                 print(f"Adding {page_id} to {title}")
                 page.save(str(real_concept), summary="Added id")
 

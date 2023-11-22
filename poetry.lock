@@ -79,6 +79,53 @@ files = [
 ]
 
 [[package]]
+name = "hfst"
+version = "3.16.0.1"
+description = "Python SWIG-bound interface for HFST"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "hfst-3.16.0.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:dd2eb545aef3dba76f1057bce003ff3674282d4a256eabd3f96c772200538341"},
+    {file = "hfst-3.16.0.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:916b71857a41f9504ae0282036a4134d7cc7499f4e975b2e719fe7fe834425bd"},
+    {file = "hfst-3.16.0.1-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:bebc7c55857c230013455f113b2460bf0b586e5a38ab0f8bcf1365fefea38128"},
+    {file = "hfst-3.16.0.1-cp310-cp310-manylinux_2_28_x86_64.whl", hash = "sha256:7d5442fd332a33c437ae733942c3aceb0fbac8203a97577afde2ec1a488162a9"},
+    {file = "hfst-3.16.0.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:6bf88c17e1651a0ec61d67ff7b99d8243abfe634441055d416f6522e3e60f53e"},
+    {file = "hfst-3.16.0.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:364c1e7d5e7efbc56a829670adbbe853ebca04a99c9ddb2eeb851fc02aefedd0"},
+    {file = "hfst-3.16.0.1-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:a40fc49845d11bf255e38d0d3c1414aa2710e49ec66ddc18ebf0ad550e622c9b"},
+    {file = "hfst-3.16.0.1-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:f6053282e5fcc8e603650ddaf0e9bb2eab083d738a0413cfc8932f2457fdec36"},
+    {file = "hfst-3.16.0.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:0bc77167a41260ea2cd277be8b91920d969f1317bfef16555df6a3b4aeb886b7"},
+    {file = "hfst-3.16.0.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:26accb40715e62d3615178ea26c0565ecfbba11f8406ee38add0b97ee4f15721"},
+    {file = "hfst-3.16.0.1-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d52331496d68566ed823a1207834e81862ec3de90124ab36ef27b33db59cb6f5"},
+    {file = "hfst-3.16.0.1-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:ba46f9bef28a4b0c396cd753b5db76c2886102041f4287c286c37c06f3f6f525"},
+    {file = "hfst-3.16.0.1-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:c913ec9dbae0345080b3241d4ce51bc31d02f15cdac75dddeb7e2a403c41dcf7"},
+    {file = "hfst-3.16.0.1-cp36-cp36m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e1dacbd2bc64a940005e7eda47ba477fdac70db36d0716d6b41fe7fe8466d9fd"},
+    {file = "hfst-3.16.0.1-cp36-cp36m-manylinux_2_28_x86_64.whl", hash = "sha256:3a5033a563a39618472f12325e8406c9b86c068bf9e849509893d9f152250d9c"},
+    {file = "hfst-3.16.0.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:0e49952b6345d24900f933a75265f077495ed0dc46075c721073f12bd8367e68"},
+    {file = "hfst-3.16.0.1-cp37-cp37m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:6cbef27dc952df9b5903dcce08333edf330fe843b3ed4aeea9a009e105a30e8e"},
+    {file = "hfst-3.16.0.1-cp37-cp37m-manylinux_2_28_x86_64.whl", hash = "sha256:1a8381a13acc0f07a5d46a9196b8f8f458180727538b50318b8d12944389ad59"},
+    {file = "hfst-3.16.0.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:a992fe46a9e9f3b87832d166c0944f4810b061ad97350d2cc4aa5a17521f92c3"},
+    {file = "hfst-3.16.0.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:b479523a36565119d8c5af55bf66023238f133ed91955622534f928df9b59a29"},
+    {file = "hfst-3.16.0.1-cp38-cp38-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1d7c7db8af1d9ebac1921b1e70b517f647bec85006e7b2ee1d9326446561f3c1"},
+    {file = "hfst-3.16.0.1-cp38-cp38-manylinux_2_28_x86_64.whl", hash = "sha256:1977c0e5420d0b8557fa7aaaf67ab65125ffd7c60122f4afc8413efcf6228131"},
+    {file = "hfst-3.16.0.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:86cee5430d62292e91da2b471367c44d58c261c4080e6e65c9dd99579a0692e0"},
+    {file = "hfst-3.16.0.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:e30591f53a9c509a242f458561d893b9f4cdc0c1deb53283cbdd4dcf63e771fc"},
+    {file = "hfst-3.16.0.1-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:7eeca4b2a97238b360e755dcd9013eab293ff66c0c88eaf358b83e58bf0c86e5"},
+    {file = "hfst-3.16.0.1-cp39-cp39-manylinux_2_28_x86_64.whl", hash = "sha256:73569a10d381ba77da537a6d6613d6ac6269f2475199889e0991b44fec1df008"},
+    {file = "hfst-3.16.0.1-pp310-pypy310_pp73-macosx_10_9_x86_64.whl", hash = "sha256:a3cfd77b4365af3c9241a0738bb7c5248a267a77a0cb0959ace10565f3c8f94c"},
+    {file = "hfst-3.16.0.1-pp310-pypy310_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:b10a8898cdf60471b1cc7a5ee4fd07152706689afe2d453f7ffc81174ff5714f"},
+    {file = "hfst-3.16.0.1-pp310-pypy310_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:6e1fd7230176888d122b642e4bc202f3668561f09241d9bd727be0e27f3cb613"},
+    {file = "hfst-3.16.0.1-pp37-pypy37_pp73-macosx_10_9_x86_64.whl", hash = "sha256:bbbf8804ce74dd3956567944230849655e3192d6ffc51dfc116c232387e503cb"},
+    {file = "hfst-3.16.0.1-pp37-pypy37_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d162e467ee816555e76acb9b8a3b73dea19ea925be94d74cfc06f7a5f302c25f"},
+    {file = "hfst-3.16.0.1-pp37-pypy37_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:0c590ceba25e248f21bae428d49a5965e99460007370ab7198546b3daa2500a3"},
+    {file = "hfst-3.16.0.1-pp38-pypy38_pp73-macosx_10_9_x86_64.whl", hash = "sha256:8509f2b6e710ecaa26af9a10f8e52d1174c3d856b1ee7133cf5cb10c36998e55"},
+    {file = "hfst-3.16.0.1-pp38-pypy38_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:95252d852d124abffff734df32e52ffc75a3e7c9f2c6eb508e2f09c2602b41cc"},
+    {file = "hfst-3.16.0.1-pp38-pypy38_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:d2a8fca57b426ed052a9a69e78337a4889363a870e5c0ec8989ee33faab239a6"},
+    {file = "hfst-3.16.0.1-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:783977560f088d41bdf44afa390926782fc6078f50819882f191ea3aa8c1b617"},
+    {file = "hfst-3.16.0.1-pp39-pypy39_pp73-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:3dd686a0375cc6218de5cb930e45d634566917d2f31fbb37e2722a41d84db904"},
+    {file = "hfst-3.16.0.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:8979fb01c310060637d8cc854851333a12e2eb8a3d553bcf8b4f43022eed2833"},
+]
+
+[[package]]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"

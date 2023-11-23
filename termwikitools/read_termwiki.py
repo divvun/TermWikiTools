@@ -20,8 +20,9 @@
 
 from dataclasses import asdict, dataclass, field
 from typing import Generator, Iterable
-from marshmallow import ValidationError
+
 import marshmallow_dataclass
+from marshmallow import ValidationError
 
 from termwikitools.handler_common import LANGUAGES
 

@@ -18,7 +18,10 @@
 #
 
 import collections
+from dataclasses import asdict
+import json
 import os
+from pathlib import Path
 import re
 import sys
 from typing import Generator, Tuple
@@ -26,15 +29,15 @@ from typing import Generator, Tuple
 import hfst
 from lxml import etree
 from marshmallow import ValidationError
-import unidecode
 
+from termwikitools.handler_common import LANGUAGES, NAMESPACES
 from termwikitools.read_termwiki import (
     Concept,
     RelatedExpression,
     TermWikiPage,
     termwiki_page_to_dataclass,
 )
-from termwikitools.handler_common import NAMESPACES, LANGUAGES
+from termwikitools.satni import termwikipage_to_satniconcept
 
 ATTS = re.compile(r"@[^@]+@")
 
@@ -127,84 +130,16 @@ class DumpHandler:
             )
         )
 
-    def dump2xml(self):
-        l2l = {
-            "en": "eng",
-            "fi": "fin",
-            "nb": "nob",
-            "nn": "nno",
-            "se": "sme",
-            "sv": "swe",
-        }
-        roots = {}
-        for title, concept in self.concepts:
-            category = title.split(":")[0]
-            if roots.get(category) is None:
-                print(f"registering category: {category}")
-                roots[category] = etree.Element("r")
-            r = roots.get(category)
-            data = concept.data
-            mlc = etree.SubElement(r, "mc", attrib={"name": title})
-            if concept.get("page_id"):
-                mlc.set("pageid", concept.get("page_id"))
-            for collection in concept.get("collection", []):
-                col = etree.SubElement(mlc, "collection")
-                col.text = collection
-            for lang in concept.languages():
-                if lang in [
-                    related_expression.get("language")
-                    for related_expression in data["related_expressions"]
-                ]:
-                    c = etree.SubElement(mlc, "c", attrib={"lang": l2l.get(lang, lang)})
-                    for concept_info in data["concept_infos"]:
-                        if concept_info.get("language", "uff") == lang:
-                            if concept_info.get("definition"):
-                                d = etree.SubElement(c, "d")
-                                d.text = concept_info.get("definition")
-                            if concept_info.get("explanation"):
-                                e = etree.SubElement(c, "e")
-                                e.text = concept_info.get("explanation")
-                            if concept_info.get("more_info"):
-                                m = etree.SubElement(c, "m")
-                                m.text = concept_info.get("more_info")
-                    for related_expression in data["related_expressions"]:
-                        if related_expression.get("language") == lang:
-                            term = etree.SubElement(
-                                c,
-                                "term",
-                                attrib={
-                                    "sanctioned": "true"
-                                    if related_expression.get("sanctioned") == "True"
-                                    else "false"
-                                },
-                            )
-                            if related_expression.get("status"):
-                                term.set("status", related_expression.get("status"))
-
-                            # print(related_expression)
-                            lemma = etree.SubElement(term, "l")
-                            lemma.text = related_expression.get("expression")
-
-                            if related_expression.get("pos"):
-                                lemma.set("pos", related_expression.get("pos"))
-
-                            for tag in ["note", "source"]:
-                                if related_expression.get(tag):
-                                    a = etree.SubElement(term, tag)
-                                    a.text = related_expression.get(tag)
-            if not mlc.xpath("./c"):
-                print("no c")
-                print(etree.tostring(mlc, encoding="unicode"))
-                mlc.getparent().remove(mlc)
-
-        for category, root in roots.items():
-            asciiname = unidecode.unidecode(category).replace(" ", "_").lower()
-            print(f"{category}")
-            with open(f"{asciiname}.xml", "w") as term_:
-                print(
-                    etree.tostring(root, encoding="unicode", pretty_print=True),
-                    file=term_,
-                )
+    def dump2json(self):
+        json_file = Path("terms.json")
+        json_file.write_text(
+            json.dumps(
+                [
+                    asdict(termwikipage_to_satniconcept(termwikipage))
+                    for _, termwikipage in self.concepts
+                ]
+            )
+        )
 
     def not_found_in_normfst(
         self, language: str, only_sanctioned: str

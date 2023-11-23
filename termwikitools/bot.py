@@ -98,10 +98,10 @@ def dump():
 
 
 @dump.command()
-def xml():
-    """Dump the TermWiki database to XML files."""
+def json():
+    """Dump the TermWiki database to json."""
     dumphandler = DumpHandler()
-    dumphandler.dump2xml()
+    dumphandler.dump2json()
 
 
 @dump.command()

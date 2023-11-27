@@ -36,7 +36,7 @@ def validate_lang(language):
 
 
 def validate_pos(pos):
-    pos = [
+    pos_list = [
         "N",
         "A",
         "Adv",

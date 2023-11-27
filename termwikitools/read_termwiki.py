@@ -149,7 +149,7 @@ class RelatedConcept:
 
 @dataclass
 class Concept:
-    collection: set[str] | None
+    collection: list[str] | None
     category: str | None
     main_category: str | None
     sources: str | None
@@ -267,12 +267,14 @@ def termwiki_page_to_dataclass(
         if line == "{{Concept":
             concept = read_semantic_form(text_iterator)
 
-            # turn collection parts into a set
+            # turn collection parts into a sorted list of unique elements
             if concept.get("collection"):
-                concept["collection"] = {
-                    collection.strip()
-                    for collection in concept["collection"].split("@@")
-                }
+                concept["collection"] = sorted(
+                    {
+                        collection.strip()
+                        for collection in concept["collection"].split("@@")
+                    }
+                )
             concept_dict["concept"] = concept
 
         if line == "{{Related expression":
@@ -355,12 +357,14 @@ def cleanup_concept(concept: Concept) -> dict:
     concept_dict = asdict(concept)
 
     if concept.collection:
-        concept_dict["collection"] = {
-            f"Collection:{collection.strip()}"
-            if "Collection:" not in collection
-            else collection.strip()
-            for collection in concept_dict["collection"]
-        }
+        concept_dict["collection"] = sorted(
+            {
+                f"Collection:{collection.strip()}"
+                if "Collection:" not in collection
+                else collection.strip()
+                for collection in concept_dict["collection"]
+            }
+        )
 
     return concept_dict
 

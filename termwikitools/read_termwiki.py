@@ -378,3 +378,38 @@ def cleanup_termwiki_page(termwiki_page: TermWikiPage) -> TermWikiPage:
     ]
 
     return TERMWIKI_PAGE_SCHEMA.load(termwiki_page_dict)
+
+
+def validate_langs(languages: list[str]) -> None:
+    for language in languages:
+        if language not in LANGUAGES.values():
+            raise ValidationError(
+                f"{language} not among the valid languages: {LANGUAGES.values()}"
+            )
+
+
+def validate_collection_name(name: str) -> None:
+    if not (name.startswith("Collection:") and "/" not in name):
+        raise ValidationError(
+            f"Name must startwith 'Collection:' and contain no '/' {name}"
+        )
+
+
+@dataclass
+class Collection:
+    name: str = field(metadata={"validate": validate_collection_name})
+    info: list[str] | None
+    owner: str
+    languages: list[str] = field(metadata={"validate": validate_langs})
+
+    def to_termwiki(self) -> str:
+        strings = self.info if self.info else []
+        strings.append("\n{{Collection")
+        strings.append(f"|languages={', '.join(self.languages)}")
+        strings.append("}}")
+        strings.append(f"\n[[Kategoriija:{self.owner}]]")
+
+        return "\n".join(strings)
+
+
+COLLECTION_SCHEMA = marshmallow_dataclass.class_schema(Collection)()

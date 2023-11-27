@@ -28,11 +28,8 @@ from termwikitools.handler_common import LANGUAGES
 
 
 def validate_lang(language):
-    return (
-        ValidationError(f"language must be one of {LANGUAGES.values()}")
-        if language not in LANGUAGES.values()
-        else None
-    )
+    if language not in LANGUAGES.values():
+        raise ValidationError(f"{language} is not one of {LANGUAGES.values()}")
 
 
 def validate_pos(pos):
@@ -54,7 +51,8 @@ def validate_pos(pos):
         "MWE",
     ]
 
-    return ValidationError(f"pos must be one of {pos}") if pos not in pos else None
+    if pos not in pos_list:
+        raise ValidationError(f"{pos} must be one of {pos_list}")
 
 
 def validate_relation(relation):
@@ -69,21 +67,15 @@ def validate_relation(relation):
         "unspecified",
     ]
 
-    return (
-        ValidationError(f"relation must be one of {relations}")
-        if relation not in relations
-        else None
-    )
+    if relation not in relations:
+        raise ValidationError(f"{relation} is not one of {relations}")
 
 
 def validate_status(status):
     statuses = ["recommended", "out of date", "avoid", "rare"]
 
-    return (
-        ValidationError(f"status must be one of {statuses}")
-        if status not in statuses
-        else None
-    )
+    if status not in statuses:
+        raise ValidationError(f"status must be one of {statuses}")
 
 
 @dataclass

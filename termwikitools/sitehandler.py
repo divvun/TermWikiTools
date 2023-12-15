@@ -21,6 +21,7 @@ import os
 import sys
 from typing import Any, Generator
 
+import marshmallow
 import mwclient
 import yaml
 
@@ -244,14 +245,18 @@ class SiteHandler:
     def fix_termwiki_page(self, page: Any) -> None:
         """Make the bot fix a named page."""
         if page.exists:
-            tw_page = read_termwiki.termwiki_page_to_dataclass(
-                page.name, iter(page.text().replace("\xa0", " ").splitlines())
-            )
-            fixed_tw_page = read_termwiki.cleanup_termwiki_page(tw_page)
-            if fixed_tw_page != tw_page:
-                self.save_page(
-                    page, fixed_tw_page.to_termwiki(), summary="Fixing content"
+            try:
+                tw_page = read_termwiki.termwiki_page_to_dataclass(
+                    page.name, iter(page.text().replace("\xa0", " ").splitlines())
                 )
+                fixed_tw_page = read_termwiki.cleanup_termwiki_page(tw_page)
+                if fixed_tw_page != tw_page:
+                    self.save_page(
+                        page, fixed_tw_page.to_termwiki(), summary="Fixing content"
+                    )
+            except marshmallow.exceptions.ValidationError as error:
+                print(f"Error: {page.name}", file=sys.stderr)
+                print(page.text(), error, file=sys.stderr)
         else:
             print(f"page {page.name} does not exist")
 

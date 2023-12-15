@@ -101,15 +101,15 @@ class ConceptInfo:
 
 @dataclass
 class RelatedExpression:
-    language: str = field(metadata={"validate": validate_lang})
-    expression: str
-    pos: str | None
-    status: str | None = field(metadata={"validate": validate_status})
     note: str | None
+    pos: str | None
     source: str | None
     inflection: str | None
     country: str | None
     dialect: str | None
+    status: str | None = field(metadata={"validate": validate_status})
+    expression: str
+    language: str = field(metadata={"validate": validate_lang})
     sanctioned: str = "False"
 
     def to_termwiki(self) -> str:

@@ -317,16 +317,15 @@ def termwiki_page_to_dataclass(
 
     concept_dict = {"title": title}
     for line in text_iterator:
-        line = line.strip()
-        if line.startswith("{{") and line.endswith("}}"):
+        stripped = line.strip()
+        if stripped.startswith("{{") and stripped.endswith("}}"):
             continue
 
-        if line == "{{Concept info":
             if concept_dict.get("concept_infos") is None:
                 concept_dict["concept_infos"] = []
+        if stripped == "{{Concept info":
             concept_dict["concept_infos"].append(read_semantic_form(text_iterator))
 
-        if line == "{{Concept":
             concept = read_semantic_form(text_iterator)
 
             # turn collection parts into a sorted list of unique elements
@@ -339,16 +338,17 @@ def termwiki_page_to_dataclass(
                 )
             concept_dict["concept"] = concept
 
-        if line == "{{Related expression":
             if concept_dict.get("related_expressions") is None:
                 concept_dict["related_expressions"] = []
+        if stripped == "{{Concept":
+        if stripped == "{{Related expression":
             concept_dict["related_expressions"].append(
                 read_semantic_form(text_iterator)
             )
 
-        if line == "{{Related concept":
             if concept_dict.get("related_concepts") is None:
                 concept_dict["related_concepts"] = []
+        if stripped == "{{Related concept":
             concept_dict["related_concepts"].append(read_semantic_form(text_iterator))
 
     return TERMWIKI_PAGE_SCHEMA.load(concept_dict)

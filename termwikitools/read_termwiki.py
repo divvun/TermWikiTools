@@ -302,6 +302,18 @@ class TermWikiPage:
 TERMWIKI_PAGE_SCHEMA = marshmallow_dataclass.class_schema(TermWikiPage)()
 
 
+def process_content(text_iterator: Iterable[str]):
+    concept = read_semantic_form(text_iterator)
+
+    # turn collection parts into a sorted list of unique elements
+    if concept.get("collection"):
+        concept["collection"] = sorted(
+            {collection.strip() for collection in concept["collection"].split("@@")}
+        )
+
+    return concept
+
+
 def termwiki_page_to_dataclass(
     title: str, text_iterator: Iterable[str]
 ) -> TermWikiPage:
@@ -326,21 +338,9 @@ def termwiki_page_to_dataclass(
         if stripped == "{{Concept info":
             concept_dict["concept_infos"].append(read_semantic_form(text_iterator))
 
-            concept = read_semantic_form(text_iterator)
-
-            # turn collection parts into a sorted list of unique elements
-            if concept.get("collection"):
-                concept["collection"] = sorted(
-                    {
-                        collection.strip()
-                        for collection in concept["collection"].split("@@")
-                    }
-                )
-            concept_dict["concept"] = concept
-
-            if concept_dict.get("related_expressions") is None:
-                concept_dict["related_expressions"] = []
         if stripped == "{{Concept":
+            concept_dict["concept"] = process_content(text_iterator)
+
         if stripped == "{{Related expression":
             concept_dict["related_expressions"].append(
                 read_semantic_form(text_iterator)

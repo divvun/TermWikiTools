@@ -152,31 +152,19 @@ class DumpHandler:
 
         base_url = "https://satni.uit.no/termwiki"
         for title, expression in self.expressions(LANGUAGES[language], only_sanctioned):
-            for real_expression1 in expression.expression.split():
-                for real_expression in real_expression1.split("/"):
-                    for invalid in [
-                        "(",
-                        ")",
-                        ",",
-                        "?",
-                        "+",
-                        "*",
-                        "[",
-                        "]",
-                        "=",
-                        ";",
-                        ":",
-                        "!",
-                    ]:
-                        real_expression = real_expression.replace(invalid, "")
-                    if (
-                        real_expression
-                        and not real_expression.startswith(("‑", "-"))
-                        and not norm_analyser.lookup(real_expression)
-                    ):
-                        not_founds[real_expression].add(
-                            f'{base_url}/index.php?title={title.replace(" ", "_")}'
-                        )
+            for real_expression in [
+                re.sub(r"[\(\),?\+\*\[\]=;:!]", "", real_expression)
+                for real_expression1 in expression.expression.split()
+                for real_expression in real_expression1.split("/")
+            ]:
+                if (
+                    real_expression
+                    and not real_expression.startswith(("‑", "-"))
+                    and not norm_analyser.lookup(real_expression)
+                ):
+                    not_founds[real_expression].add(
+                        f'{base_url}/index.php?title={title.replace(" ", "_")}'
+                    )
 
         return not_founds
 

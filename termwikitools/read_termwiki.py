@@ -494,7 +494,7 @@ def validate_collection_name(name: str) -> None:
     """
     if not (name.startswith("Collection:") and "/" not in name):
         raise ValidationError(
-            f"Name must startwith 'Collection:' and contain no '/' {name}"
+            f"Name must start with 'Collection:' and contain no '/' {name}"
         )
 
 

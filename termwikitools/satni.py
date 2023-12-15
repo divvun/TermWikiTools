@@ -71,7 +71,8 @@ SATNI_CONCEPT_SCHEMA = marshmallow_dataclass.class_schema(SatniConcept)()
 def termwikipage_to_satniconcept(termwikipage: TermWikiPage) -> SatniConcept:
     satniconcept_dict: dict[str, Any] = {}
     satniconcept_dict["name"] = termwikipage.title
-    satniconcept_dict["collections"] = termwikipage.concept.collection
+    if termwikipage.concept:
+        satniconcept_dict["collections"] = termwikipage.concept.collection
 
     satniconcept_dict["concepts"] = make_satniconcepts(termwikipage)
 

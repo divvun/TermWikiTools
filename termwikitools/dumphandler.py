@@ -195,9 +195,9 @@ class DumpHandler:
                 }
             if analyses:
                 founds[real_expression]["analyses"] = analyses
-                founds[real_expression]["sources"] = [
-                    source for source in sorted(not_in_norms[real_expression])
-                ]
+                founds[real_expression]["sources"] = sorted(
+                    not_in_norms[real_expression]
+                )
 
         return founds
 
@@ -242,7 +242,7 @@ class DumpHandler:
 
         for norm in revsorted_expressions(norms):
             print(f"{norm}:{norm} TODO ; !", end="  ")
-            print(" ".join([url for url in sorted(norms[norm])]))
+            print(" ".join(sorted(norms[norm])))
 
     def sum_terms(self, language: str) -> None:
         """Sum up sanctioned and none sanctioned terms.
@@ -326,10 +326,8 @@ class DumpHandler:
         counter = {}
         for title, concept in self.concepts:
             if any(
-                [
-                    expression.language == language
-                    for expression in concept.related_expressions
-                ]
+                expression.language == language
+                for expression in concept.related_expressions
             ):
                 category = title[: title.find(":")]
                 if not counter.get(category):

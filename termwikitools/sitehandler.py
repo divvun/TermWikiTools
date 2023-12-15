@@ -176,8 +176,8 @@ class SiteHandler:
         related_expression_dict: collections.defaultdict,
         dump_expression_dict: dict,
     ) -> None:
-        related_expressions = {title for title in related_expression_dict.keys()}
-        dump_expressions = {title for title in dump_expression_dict.keys()}
+        related_expressions = set(related_expression_dict.keys())
+        dump_expressions = set(dump_expression_dict.keys())
 
         for to_delete in related_expressions - dump_expressions:
             page = self.site.Pages[to_delete]

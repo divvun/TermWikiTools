@@ -27,12 +27,34 @@ from marshmallow import ValidationError
 from termwikitools.handler_common import LANGUAGES
 
 
-def validate_lang(language):
+def validate_lang(language: str) -> None:
+    """Validates if the given language is supported.
+
+    Args:
+        language (str): The language to be validated.
+
+    Raises:
+        ValidationError: If the language is not supported.
+
+    Returns:
+        None
+    """
     if language not in LANGUAGES.values():
         raise ValidationError(f"{language} is not one of {LANGUAGES.values()}")
 
 
-def validate_pos(pos):
+def validate_pos(pos: str) -> None:
+    """Validate the given part-of-speech (POS) against a list of valid POS values.
+
+    Args:
+        pos (str): The part-of-speech to validate.
+
+    Raises:
+        ValidationError: If the given POS is not in the list of valid POS values.
+
+    Returns:
+        None
+    """
     pos_list = [
         "N",
         "A",
@@ -88,6 +110,11 @@ class ConceptInfo:
     more_info: str | None
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki format string.
+
+        Returns:
+            str: The TermWiki format string.
+        """
         strings = ["{{Concept info"]
         strings.extend(
             [
@@ -181,6 +208,11 @@ class Concept:
     page_id: str | None
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki formatted string.
+
+        Returns:
+            str: The TermWiki formatted string representation of the object.
+        """
         concept_dict = asdict(self)
         if all(value is None for value in concept_dict.values()):
             return "{{Concept}}"
@@ -211,6 +243,11 @@ class TermWikiPage:
     related_concepts: list[RelatedConcept] | None
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki formatted string.
+
+        Returns:
+            str: The TermWiki formatted string representation of the object.
+        """
         strings = []
         if self.concept_infos:
             strings.extend(
@@ -321,10 +358,11 @@ def read_semantic_form(text_iterator):
     """Turn a template into a dict.
 
     Args:
-        text_iterator (str_iterator): the contents of the termwiki article.
+        text_iterator (str_iterator): An iterator that provides the contents of the
+            termwiki article.
 
     Returns:
-        importer.OrderedDefaultDict
+        dict: A dictionary representing the semantic form of the template.
     """
     wiki_form = {}
     for line in text_iterator:
@@ -362,7 +400,14 @@ LANG_TRANS = {
 
 
 def cleanup_expression(expression: RelatedExpression) -> dict:
-    """Clean up expression."""
+    """Clean up expression.
+
+    Args:
+        expression (RelatedExpression): The expression to be cleaned up.
+
+    Returns:
+        dict: The cleaned up expression.
+    """
     expression = asdict(expression)
 
     # Fix pos
@@ -378,7 +423,14 @@ def cleanup_expression(expression: RelatedExpression) -> dict:
 
 
 def cleanup_concept(concept: Concept) -> dict:
-    """Clean up concept data."""
+    """Clean up concept data.
+
+    Args:
+        concept (Concept): The concept object to be cleaned up.
+
+    Returns:
+        dict: The cleaned up concept data as a dictionary.
+    """
     concept_dict = asdict(concept)
 
     if concept.collection:
@@ -395,6 +447,14 @@ def cleanup_concept(concept: Concept) -> dict:
 
 
 def cleanup_termwiki_page(termwiki_page: TermWikiPage) -> TermWikiPage:
+    """Cleans up a TermWikiPage object by applying cleanup functions to its attributes.
+
+    Args:
+        termwiki_page (TermWikiPage): The TermWikiPage object to be cleaned up.
+
+    Returns:
+        TermWikiPage: The cleaned up TermWikiPage object.
+    """
     termwiki_page_dict = asdict(termwiki_page)
     termwiki_page_dict["concept"] = cleanup_concept(termwiki_page.concept)
     termwiki_page_dict["related_expressions"] = [
@@ -406,6 +466,14 @@ def cleanup_termwiki_page(termwiki_page: TermWikiPage) -> TermWikiPage:
 
 
 def validate_langs(languages: list[str]) -> None:
+    """Validates a list of languages against the valid languages.
+
+    Args:
+        languages (list[str]): The list of languages to validate.
+
+    Raises:
+        ValidationError: If any language in the list is not among the valid languages.
+    """
     for language in languages:
         if language not in LANGUAGES.values():
             raise ValidationError(
@@ -414,6 +482,16 @@ def validate_langs(languages: list[str]) -> None:
 
 
 def validate_collection_name(name: str) -> None:
+    """Validates the collection name.
+
+    The collection name must start with 'Collection:' and should not contain any '/'.
+
+    Args:
+        name (str): The collection name to be validated.
+
+    Raises:
+        ValidationError: If the collection name does not meet the validation criteria.
+    """
     if not (name.startswith("Collection:") and "/" not in name):
         raise ValidationError(
             f"Name must startwith 'Collection:' and contain no '/' {name}"
@@ -428,6 +506,11 @@ class Collection:
     languages: list[str] = field(metadata={"validate": validate_langs})
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki formatted string.
+
+        Returns:
+            str: The TermWiki formatted string.
+        """
         strings = self.info if self.info else []
         strings.append("\n{{Collection")
         strings.append(f"|languages={', '.join(self.languages)}")

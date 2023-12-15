@@ -179,7 +179,7 @@ class SiteHandler:
         related_expressions = set(related_expression_dict.keys())
         dump_expressions = set(dump_expression_dict.keys())
 
-        for to_delete in related_expressions - dump_expressions:
+        for to_delete in dump_expressions - related_expressions:
             page = self.site.Pages[to_delete]
             if page.exists:
                 print(f"Removing {to_delete}")

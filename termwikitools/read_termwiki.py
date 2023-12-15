@@ -63,15 +63,17 @@ def validate_relation(relation):
         "comprehensive concept",
         "partitive concept",
         "pragmatic relation",
-        "cohyponym",  # spurious value found in termwiki
         "unspecified",
+        "synonym",  # value found in Mika Saijets 2005: Boazonamahusat
+        "cohyponym",  # value found in Mika Saijets 2005: Boazonamahusat
+        "hyperonym",  # value found in Mika Saijets 2005: Boazonamahusat
     ]
 
     if relation not in relations:
         raise ValidationError(f"{relation} is not one of {relations}")
 
 
-def validate_status(status):
+def validate_status(status: str) -> None:
     statuses = ["recommended", "out of date", "avoid", "rare"]
 
     if status not in statuses:

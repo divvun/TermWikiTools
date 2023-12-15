@@ -195,12 +195,15 @@ class SiteHandler:
 
     def fix_expression_page(self, expression_title: str, content: str) -> None:
         page = self.site.Pages[expression_title]
-        if not page.exists:
-            self.save_page(page, content=content, summary="Making new expression page")
-        else:
-            if page.text != content:
+        if page.exists:
+            if page.text() != content:
                 print("\treally fixing", expression_title)
                 self.save_page(page, content=content, summary="Fixing expression page")
+        else:
+            print("\tmaking", expression_title)
+            self.save_page(
+                page, content=content, summary="Making new expression page"
+            )
 
     def make_expression_content(self, languages: set) -> str:
         strings = []

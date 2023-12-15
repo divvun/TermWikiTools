@@ -18,10 +18,11 @@
 #
 
 from dataclasses import dataclass
+from typing import Any
 
 import marshmallow_dataclass
-from termwikitools.handler_common import LANGUAGES
 
+from termwikitools.handler_common import LANGUAGES
 from termwikitools.read_termwiki import TermWikiPage
 
 

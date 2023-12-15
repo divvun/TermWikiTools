@@ -113,12 +113,29 @@ class RelatedExpression:
     sanctioned: str = "False"
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki formatted string.
+
+        Returns:
+            str: The TermWiki formatted string.
+        """
+        expression_dict = asdict(self)
         strings = ["{{Related expression"]
         strings.extend(
             [
-                f"|{key}={value}"
-                for key, value in asdict(self).items()
-                if value is not None
+                f"|{key}={expression_dict[key]}"
+                for key in [
+                    "language",
+                    "expression",
+                    "pos",
+                    "status",
+                    "sanctioned",
+                    "note",
+                    "source",
+                    "inflection",
+                    "country",
+                    "dialect",
+                ]
+                if expression_dict[key] is not None
             ]
         )
         strings.append("}}")
@@ -134,12 +151,18 @@ class RelatedConcept:
     )
 
     def to_termwiki(self) -> str:
+        """Converts the object to a TermWiki format string.
+
+        Returns:
+            str: The TermWiki format string.
+        """
+        concept_dict = asdict(self)
         strings = ["{{Related concept"]
         strings.extend(
             [
-                f"|{key}={value}"
-                for key, value in asdict(self).items()
-                if value is not None
+                f"|{key}={concept_dict[key]}"
+                for key in ["language", "definition", "explanation", "more_info"]
+                if concept_dict[key] is not None
             ]
         )
         strings.append("}}")

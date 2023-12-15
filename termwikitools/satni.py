@@ -69,7 +69,7 @@ SATNI_CONCEPT_SCHEMA = marshmallow_dataclass.class_schema(SatniConcept)()
 
 
 def termwikipage_to_satniconcept(termwikipage: TermWikiPage) -> SatniConcept:
-    satniconcept_dict = {}
+    satniconcept_dict: dict[str, Any] = {}
     satniconcept_dict["name"] = termwikipage.title
     satniconcept_dict["collections"] = termwikipage.concept.collection
 
@@ -100,7 +100,7 @@ def make_satniconcepts(termwikipage: TermWikiPage) -> list[dict]:
 
 def make_terms_by_language(termwikipage: TermWikiPage) -> dict:
     reversed_lang = {value: key for key, value in LANGUAGES.items()}
-    terms_by_language = {}
+    terms_by_language: dict[str, Any] = {}
     for related_expression in termwikipage.related_expressions:
         if related_expression.sanctioned == "True":
             language = reversed_lang[

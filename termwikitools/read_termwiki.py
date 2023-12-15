@@ -333,22 +333,21 @@ def termwiki_page_to_dataclass(
         if stripped.startswith("{{") and stripped.endswith("}}"):
             continue
 
-            if concept_dict.get("concept_infos") is None:
-                concept_dict["concept_infos"] = []
         if stripped == "{{Concept info":
+            concept_dict.setdefault("concept_infos", [])
             concept_dict["concept_infos"].append(read_semantic_form(text_iterator))
 
         if stripped == "{{Concept":
             concept_dict["concept"] = process_content(text_iterator)
 
         if stripped == "{{Related expression":
+            concept_dict.setdefault("related_expressions", [])
             concept_dict["related_expressions"].append(
                 read_semantic_form(text_iterator)
             )
 
-            if concept_dict.get("related_concepts") is None:
-                concept_dict["related_concepts"] = []
         if stripped == "{{Related concept":
+            concept_dict.setdefault("related_concepts", [])
             concept_dict["related_concepts"].append(read_semantic_form(text_iterator))
 
     return TERMWIKI_PAGE_SCHEMA.load(concept_dict)

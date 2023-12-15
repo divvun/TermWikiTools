@@ -151,7 +151,7 @@ class SiteHandler:
     def make_dump_expression_dict(self, dump: DumpHandler) -> dict:
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
         return {
-            expression_xml.text: expression_xml.getparent()
+            expression_xml.text.replace("&amp;", "&"): expression_xml.getparent()
             .xpath(".//mw:text", namespaces=namespace)[0]
             .text
             for expression_xml in dump.tree.getroot().xpath(

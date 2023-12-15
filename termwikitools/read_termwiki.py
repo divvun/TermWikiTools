@@ -19,7 +19,7 @@
 """Read termwiki pages."""
 
 from dataclasses import asdict, dataclass, field
-from typing import Generator, Iterable
+from typing import Dict, Generator, Iterable
 
 import marshmallow_dataclass
 from marshmallow import ValidationError
@@ -77,7 +77,7 @@ def validate_pos(pos: str) -> None:
         raise ValidationError(f"{pos} must be one of {pos_list}")
 
 
-def validate_relation(relation):
+def validate_relation(relation: str) -> None:
     relations = [
         "broader concept",
         "narrower concept",
@@ -353,7 +353,7 @@ def termwiki_page_to_dataclass(
     return TERMWIKI_PAGE_SCHEMA.load(concept_dict)
 
 
-def read_semantic_form(text_iterator):
+def read_semantic_form(text_iterator: Iterable[str]) -> Dict[str, str]:
     """Turn a template into a dict.
 
     Args:

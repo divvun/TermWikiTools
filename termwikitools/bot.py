@@ -144,7 +144,7 @@ def invalid(language, only_sanctioned):
 
 @dump.command()
 @click.argument("language", type=click.Choice(LANGUAGES.keys()))
-def sum(language):
+def number_of_terms(language):
     """Sum the number of terms for a language."""
     dumphandler = DumpHandler()
     dumphandler.sum_terms(language=LANGUAGES[language])

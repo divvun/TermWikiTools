@@ -112,7 +112,8 @@ class DumpHandler:
                 print(
                     "Error",
                     error,
-                    f"https://satni.uit.no/termwiki/index.php?title={title.replace(' ', '_')}",
+                    "https://satni.uit.no/termwiki/index.php?title="
+                    f"{title.replace(' ', '_')}",
                     file=sys.stderr,
                 )
 
@@ -272,7 +273,8 @@ class DumpHandler:
         for title, expression in self.expressions(language, only_sanctioned):
             if invalid_chars_re.search(expression.expression):
                 print(
-                    f'{expression.expression} {base_url}/index.php?title={title.replace(" ", "_")}'
+                    f"{expression.expression} "
+                    f'{base_url}/index.php?title={title.replace(" ", "_")}'
                 )
 
     def find_collections(self):

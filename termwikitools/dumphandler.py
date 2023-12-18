@@ -315,7 +315,7 @@ class DumpHandler:
                 if concept.has_sanctioned_sami():
                     langs = {lang1: set(), lang2: set()}
                     for expression in concept.related_expressions:
-                        if expression.language == lang1 or expression.language == lang2:
+                        if expression.language in (lang1, lang2):
                             if expression.sanctioned:
                                 langs[expression.language].add(expression.expression)
 

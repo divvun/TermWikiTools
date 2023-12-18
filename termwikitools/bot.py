@@ -82,7 +82,7 @@ def list_recent_changes(amount):
 
     recentchanges = data["query"]["recentchanges"]
 
-    return sorted([title for title in {rc["title"] for rc in recentchanges}])
+    return sorted({rc["title"] for rc in recentchanges})
 
 
 @click.group()

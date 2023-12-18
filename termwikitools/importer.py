@@ -18,13 +18,13 @@
 #
 """Convert term files to termwiki parsable xml."""
 
-from dataclasses import asdict
 import json
+from dataclasses import asdict
 from pathlib import Path
-import click
-from marshmallow.exceptions import ValidationError
-import openpyxl
 
+import click
+import openpyxl
+from marshmallow.exceptions import ValidationError
 
 from termwikitools.read_termwiki import (
     COLLECTION_SCHEMA,

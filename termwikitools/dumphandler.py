@@ -18,12 +18,12 @@
 #
 
 import collections
-from dataclasses import asdict
 import json
 import os
-from pathlib import Path
 import re
 import sys
+from dataclasses import asdict
+from pathlib import Path
 from typing import Generator, Tuple
 
 import hfst

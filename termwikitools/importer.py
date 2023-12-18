@@ -30,6 +30,7 @@ from termwikitools.read_termwiki import (
     COLLECTION_SCHEMA,
     TERMWIKI_PAGE_SCHEMA,
     TermWikiPage,
+    cleanup_termwiki_page,
 )
 
 
@@ -107,7 +108,7 @@ def main(filename):
                     )
                 ),
                 "concepts": [
-                    asdict(concept)
+                    asdict(cleanup_termwiki_page(concept))
                     for concept in extract_collection(
                         sheet_importer=SheetImporter(
                             workbook[sheet_info.get("sheetname")]

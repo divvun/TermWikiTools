@@ -41,11 +41,16 @@ class SheetImporter:
     def row_to_concept(self, sheet_info: dict, row_number: int) -> TermWikiPage:
         return TERMWIKI_PAGE_SCHEMA.load(
             {
-                "title": f"{sheet_info['main_category']}:{sheet_info['collection']}_{row_number}",
+                "title": f"{sheet_info['main_category']}:"
+                f"{sheet_info['collection']}_{row_number}",
                 "concept": {"collection": [sheet_info["collection"]]},
-                "related_expressions": self.make_dict(
-                    sheet_info.get("related_expressions"), row_number
-                ),
+                "related_expressions": [
+                    related_expression
+                    for related_expression in self.make_dict(
+                        sheet_info.get("related_expressions"), row_number
+                    )
+                    if related_expression.get("expression")
+                ],
                 "concept_infos": self.make_dict(
                     sheet_info.get("concept_infos"), row_number
                 )
@@ -58,10 +63,7 @@ class SheetImporter:
         return [
             {
                 key: (
-                    self.sheet.cell(row=row_number, column=value).value.lower()
-                    if key == "expression"
-                    and self.sheet.cell(row=row_number, column=value).value
-                    else self.sheet.cell(row=row_number, column=value).value
+                    self.sheet.cell(row=row_number, column=value).value
                     if isinstance(value, int)
                     else value
                 )

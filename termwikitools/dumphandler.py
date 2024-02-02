@@ -272,10 +272,13 @@ class DumpHandler:
         Args:
             language (str): the language to report on.
         """
-        for _, concept in self.concepts:
+        for title, concept in self.concepts:
             for expression in concept.related_expressions:
                 if expression.language == language:
-                    print(expression.expression)
+                    print(
+                        expression.expression,
+                        f'https://satni.uit.no/termwiki/index.php?title={title.replace(" ", "_")}',  # noqa: E501
+                    )
 
     def print_invalid_chars(self, language, only_sanctioned) -> None:
         """Find terms with invalid characters, print the errors to stdout."""

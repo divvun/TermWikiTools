@@ -274,7 +274,7 @@ class DumpHandler:
         """
         for title, concept in self.concepts:
             for expression in concept.related_expressions:
-                if expression.language == language:
+                if expression.language == language and expression.sanctioned == "True":
                     print(
                         expression.expression,
                         f'https://satni.uit.no/termwiki/index.php?title={title.replace(" ", "_")}',  # noqa: E501

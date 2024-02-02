@@ -266,6 +266,17 @@ class DumpHandler:
             )
         )
 
+    def terms_of_lang(self, language: str) -> None:
+        """Sum up sanctioned and none sanctioned terms.
+
+        Args:
+            language (str): the language to report on.
+        """
+        for _, concept in self.concepts:
+            for expression in concept.related_expressions:
+                if expression.language == language:
+                    print(expression.expression)
+
     def print_invalid_chars(self, language, only_sanctioned) -> None:
         """Find terms with invalid characters, print the errors to stdout."""
         invalid_chars_re = re.compile(r"[()[\]?:;+*=]")

@@ -151,6 +151,14 @@ def number_of_terms(language):
 
 
 @dump.command()
+@click.argument("language", type=click.Choice(LANGUAGES.keys()))
+def terms_of_lang(language):
+    """Sum the number of terms for a language."""
+    dumphandler = DumpHandler()
+    dumphandler.terms_of_lang(language=LANGUAGES[language])
+
+
+@dump.command()
 @click.argument(
     "languages", nargs=-1, type=click.Choice(LANGUAGES.keys()), required=True
 )

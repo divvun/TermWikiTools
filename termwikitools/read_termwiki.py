@@ -18,13 +18,16 @@
 #
 """Read termwiki pages."""
 
+import re
 from dataclasses import asdict, dataclass, field
-from typing import Dict, Generator, Iterable
+from typing import Any, Dict, Generator, Iterable
 
 import marshmallow_dataclass
 from marshmallow import ValidationError
 
 from termwikitools.handler_common import LANGUAGES
+
+INVALID_CHARS_RE = re.compile(r"[()[\]?:;+*=]")
 
 
 def validate_lang(language: str) -> None:
@@ -218,8 +221,8 @@ class Concept:
             return "{{Concept}}"
 
         # turn collection parts into a string again
-        if concept_dict.get("collection"):
-            concept_dict["collection"] = "@@ ".join(concept_dict.get("collection"))
+        if self.collection:
+            concept_dict["collection"] = "@@ ".join(self.collection)
 
         strings = ["{{Concept"]
         strings.extend(
@@ -268,7 +271,7 @@ class TermWikiPage:
                     for related_concept in self.related_concepts
                 ]
             )
-        strings.append(self.concept.to_termwiki())
+        strings.append(self.concept.to_termwiki() if self.concept else "{{Concept}}")
 
         return "\n".join(strings)
 
@@ -288,7 +291,7 @@ class TermWikiPage:
                 related_expression.language == language
                 and related_expression.sanctioned == sanctioned
             ):
-                if self.invalid_chars_re.search(related_expression.expression):
+                if INVALID_CHARS_RE.search(related_expression.expression):
                     yield related_expression.expression
 
     def has_sanctioned_sami(self) -> bool:
@@ -305,13 +308,18 @@ TERMWIKI_PAGE_SCHEMA = marshmallow_dataclass.class_schema(TermWikiPage)()
 def process_content(text_iterator: Iterable[str]):
     concept = read_semantic_form(text_iterator)
 
-    # turn collection parts into a sorted list of unique elements
-    if concept.get("collection"):
-        concept["collection"] = sorted(
+    return {
+        # turn collection parts into a sorted list of unique elements
+        "collection": (
             {collection.strip() for collection in concept["collection"].split("@@")}
-        )
-
-    return concept
+            if concept.get("collection") is not None
+            else None
+        ),
+        "category": concept.get("category"),
+        "main_category": concept.get("main_category"),
+        "sources": concept.get("sources"),
+        "page_id": concept.get("page_id"),
+    }
 
 
 def termwiki_page_to_dataclass(
@@ -327,30 +335,37 @@ def termwiki_page_to_dataclass(
         dict: contains the content of the termwiki page.
     """
 
-    concept_dict = {"title": title}
+    related_expressions: list[dict[str, str]] = []
+    related_concepts: list[dict[str, str]] = []
+    concept_infos: list[dict[str, str]] = []
+    concept: dict[str, Any] = {}
+
     for line in text_iterator:
         stripped = line.strip()
         if stripped.startswith("{{") and stripped.endswith("}}"):
             continue
 
         if stripped == "{{Concept info":
-            concept_dict.setdefault("concept_infos", [])
-            concept_dict["concept_infos"].append(read_semantic_form(text_iterator))
+            concept_infos.append(read_semantic_form(text_iterator))
 
         if stripped == "{{Concept":
-            concept_dict["concept"] = process_content(text_iterator)
+            concept.update(process_content(text_iterator))
 
         if stripped == "{{Related expression":
-            concept_dict.setdefault("related_expressions", [])
-            concept_dict["related_expressions"].append(
-                read_semantic_form(text_iterator)
-            )
+            related_expressions.append(read_semantic_form(text_iterator))
 
         if stripped == "{{Related concept":
-            concept_dict.setdefault("related_concepts", [])
-            concept_dict["related_concepts"].append(read_semantic_form(text_iterator))
+            related_concepts.append(read_semantic_form(text_iterator))
 
-    return TERMWIKI_PAGE_SCHEMA.load(concept_dict)
+    return TERMWIKI_PAGE_SCHEMA.load(
+        {
+            "title": title,
+            "concept_infos": concept_infos,
+            "related_expressions": related_expressions,
+            "related_concepts": related_concepts,
+            "concept": concept,
+        }
+    )
 
 
 def read_semantic_form(text_iterator: Iterable[str]) -> Dict[str, str]:
@@ -398,7 +413,7 @@ LANG_TRANS = {
 }
 
 
-def cleanup_expression(expression: RelatedExpression) -> dict:
+def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """Clean up expression.
 
     Args:
@@ -407,18 +422,18 @@ def cleanup_expression(expression: RelatedExpression) -> dict:
     Returns:
         dict: The cleaned up expression.
     """
-    expression = asdict(expression)
+    expression_dict = asdict(related_expression)
 
     # Fix pos
-    if " " in expression["expression"]:
-        expression["pos"] = "MWE"
+    if " " in expression_dict["expression"]:
+        expression_dict["pos"] = "MWE"
 
-    if LANG_TRANS.get(expression["language"]):
-        expression["expression"] = expression["expression"].translate(
-            LANG_TRANS.get(expression["language"])
+    if LANG_TRANS.get(expression_dict["language"]):
+        expression_dict["expression"] = expression_dict["expression"].translate(
+            LANG_TRANS.get(expression_dict["language"])
         )
 
-    return expression
+    return expression_dict
 
 
 def cleanup_concept(concept: Concept) -> dict:
@@ -435,9 +450,11 @@ def cleanup_concept(concept: Concept) -> dict:
     if concept.collection:
         concept_dict["collection"] = sorted(
             {
-                f"Collection:{collection.strip()}"
-                if "Collection:" not in collection
-                else collection.strip()
+                (
+                    f"Collection:{collection.strip()}"
+                    if "Collection:" not in collection
+                    else collection.strip()
+                )
                 for collection in concept_dict["collection"]
             }
         )
@@ -455,7 +472,9 @@ def cleanup_termwiki_page(termwiki_page: TermWikiPage) -> TermWikiPage:
         TermWikiPage: The cleaned up TermWikiPage object.
     """
     termwiki_page_dict = asdict(termwiki_page)
-    termwiki_page_dict["concept"] = cleanup_concept(termwiki_page.concept)
+    termwiki_page_dict["concept"] = (
+        cleanup_concept(termwiki_page.concept) if termwiki_page.concept else None
+    )
     termwiki_page_dict["related_expressions"] = [
         cleanup_expression(expression)
         for expression in termwiki_page.related_expressions

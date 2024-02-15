@@ -26,12 +26,14 @@ from dataclasses import asdict
 from pathlib import Path
 from typing import Generator, Tuple
 
-import hfst
+import hfst  # type: ignore
 from lxml import etree
+from lxml.etree import _Element
 from marshmallow import ValidationError
 
 from termwikitools.handler_common import LANGUAGES, NAMESPACES
 from termwikitools.read_termwiki import (
+    INVALID_CHARS_RE,
     Concept,
     RelatedExpression,
     TermWikiPage,
@@ -52,7 +54,7 @@ class DumpHandler:
         mediawiki_ns (str): the mediawiki name space found in the dump file.
     """
 
-    termwiki_xml_root = os.path.join(os.getenv("GTHOME"), "words/terms/termwiki")
+    termwiki_xml_root = os.path.join(os.getenv("GTHOME") or "", "words/terms/termwiki")
     dump = os.path.join(termwiki_xml_root, "dump.xml")
     tree = etree.parse(dump)
     mediawiki_ns = "{http://www.mediawiki.org/xml/export-0.10/}"
@@ -61,9 +63,8 @@ class DumpHandler:
         """Save a concept to the dump file."""
         root = self.tree.getroot()
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
-        title = root.xpath(f'.//mw:title[text()="{main_title}"]', namespaces=namespace)[
-            0
-        ]
+        titles = root.xpath(f'.//mw:title[text()="{main_title}"]', namespaces=namespace)
+        title = titles[0]
         if title is not None:
             page = title.getparent()
             tuxt = page.xpath(".//mw:text", namespaces=namespace)[0]
@@ -72,20 +73,23 @@ class DumpHandler:
             raise SystemExit(f"did not find {main_title}")
 
     @property
-    def pages(self) -> Generator[Tuple[str, etree.Element, str], None, None]:
+    def pages(self) -> Generator[Tuple[str, _Element, str], None, None]:
         """Get the namespaced pages from dump.xml.
 
         Yields:
             tuple: The title and the content of a TermWiki page.
         """
         for page in self.tree.getroot().iter("{}page".format(self.mediawiki_ns)):
-            title = page.find(".//{}title".format(self.mediawiki_ns)).text
-            page_id = page.find(".//{}id".format(self.mediawiki_ns)).text
-            if title[: title.find(":")] in NAMESPACES:
-                yield title, page, page_id
+            title_element = page.find(".//{}title".format(self.mediawiki_ns))
+            if title_element is not None:
+                title = title_element.text
+                if title is not None and title[: title.find(":")] in NAMESPACES:
+                    page_id_element = page.find(".//{}id".format(self.mediawiki_ns))
+                    if page_id_element is not None and page_id_element.text is not None:
+                        yield title, page, page_id_element.text
 
     @property
-    def content_elements(self) -> Generator[Tuple[str, str, str], None, None]:
+    def content_elements(self) -> Generator[Tuple[str, _Element, str], None, None]:
         """Get concept elements found in dump.xml.
 
         Yields:
@@ -93,7 +97,11 @@ class DumpHandler:
         """
         for title, page, page_id in self.pages:
             content_elt = page.find(f".//{self.mediawiki_ns}text")
-            if content_elt.text and "{{Concept" in content_elt.text:
+            if (
+                content_elt is not None
+                and content_elt.text
+                and "{{Concept" in content_elt.text
+            ):
                 yield title, content_elt, page_id
 
     @property
@@ -105,9 +113,10 @@ class DumpHandler:
         """
         for title, content_elt, _ in self.content_elements:
             try:
-                yield title, termwiki_page_to_dataclass(
-                    title, iter(content_elt.text.replace("\xa0", " ").splitlines())
-                )
+                if content_elt is not None and content_elt.text:
+                    yield title, termwiki_page_to_dataclass(
+                        title, iter(content_elt.text.replace("\xa0", " ").splitlines())
+                    )
             except (ValidationError, KeyError) as error:
                 print(
                     "Error",
@@ -172,12 +181,14 @@ class DumpHandler:
     @staticmethod
     def known_to_descfst(
         language: str, not_in_norms: collections.defaultdict
-    ) -> collections.defaultdict:
+    ) -> dict[str, dict[str, set[str] | list[str]]]:
         # TODO: make suggestions: remove Err-tags, run analyses through generator-norm
         desc_analyser = hfst.HfstInputStream(
             f"/usr/local/share/giella/{language}/analyser-gt-desc.hfstol"
         ).read()
-        founds = collections.defaultdict(dict)
+        founds: dict[str, dict[str, set[str] | list[str]]] = collections.defaultdict(
+            dict
+        )
 
         for real_expression in not_in_norms:
             analyses = {
@@ -251,7 +262,7 @@ class DumpHandler:
         Args:
             language (str): the language to report on.
         """
-        counter = collections.defaultdict(int)
+        counter: dict[str, int] = collections.defaultdict(int)
         for _, concept in self.concepts:
             for expression in concept.related_expressions:
                 if expression.language == language:
@@ -282,10 +293,9 @@ class DumpHandler:
 
     def print_invalid_chars(self, language, only_sanctioned) -> None:
         """Find terms with invalid characters, print the errors to stdout."""
-        invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
         base_url = "https://satni.uit.no/termwiki"
         for title, expression in self.expressions(language, only_sanctioned):
-            if invalid_chars_re.search(expression.expression):
+            if INVALID_CHARS_RE.search(expression.expression):
                 print(
                     f"{expression.expression} "
                     f'{base_url}/index.php?title={title.replace(" ", "_")}'
@@ -338,8 +348,7 @@ class DumpHandler:
                             print("{}\t{}".format(expression, ", ".join(langs[lang2])))
 
     def statistics(self, language: str) -> None:
-        invalid_chars_re = re.compile(r"[()[\]?:;+*=]")
-        counter = {}
+        counter: dict[str, dict[str, int]] = {}
         for title, concept in self.concepts:
             if any(
                 expression.language == language
@@ -373,11 +382,11 @@ class DumpHandler:
                     [
                         expression
                         for expression in expression_with_lang
-                        if invalid_chars_re.search(expression.expression)
+                        if INVALID_CHARS_RE.search(expression.expression)
                     ]
                 )
 
-        total = collections.defaultdict(int)
+        total: dict[str, int] = collections.defaultdict(int)
         print(language)
         for category in counter:
             print(category)

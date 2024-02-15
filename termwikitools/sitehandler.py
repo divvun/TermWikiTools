@@ -58,7 +58,6 @@ class SiteHandler:
 
             return site
 
-    @property
     def content_elements(self, verbose=False) -> Generator[Any, None, None]:
         """Get the concept pages in the TermWiki.
 
@@ -301,7 +300,7 @@ class SiteHandler:
             language (str): the language to sanction
         """
         rollback_token = self.site.get_token("rollback")
-        for page in self.content_elements:
+        for page in self.content_elements():
             try:
                 self.site.api(
                     "rollback",

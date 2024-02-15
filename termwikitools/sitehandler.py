@@ -239,7 +239,7 @@ class SiteHandler:
         for title, dump_tw_page in dump.concepts:
             fixed_dump_tw_page = read_termwiki.cleanup_termwiki_page(dump_tw_page)
             if dump_tw_page != fixed_dump_tw_page:
-                page = self.pages[title]
+                page = self.site.Pages[title]
                 self.fix_termwiki_page(page)
 
     def fix_termwiki_page(self, page: Any) -> None:

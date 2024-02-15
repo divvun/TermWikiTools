@@ -13,7 +13,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this file. If not, see <http://www.gnu.org/licenses/>.
 #
-#   Copyright © 2016-2023 The University of Tromsø
+#   Copyright © 2016-2024 The University of Tromsø
 #   http://giellatekno.uit.no & http://divvun.no
 #
 import collections

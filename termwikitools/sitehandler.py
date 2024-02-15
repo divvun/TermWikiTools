@@ -22,7 +22,7 @@ import sys
 from typing import Any, Generator
 
 import marshmallow
-import mwclient
+import mwclient  # type: ignore
 import yaml
 
 from termwikitools import read_termwiki
@@ -123,27 +123,33 @@ class SiteHandler:
     def add_id(self) -> None:
         dump = DumpHandler()
         for title, content_elt, page_id in dump.content_elements:
-            dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                title, iter(content_elt.text.replace("\xa0", " ").splitlines())
-            )
-            if dump_tw_page.concept.page_id is None:
-                page = self.site.Pages[title]
-                site_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                    title, iter(page.text().splitlines())
+            if content_elt is not None and content_elt.text:
+                dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                    title, iter(content_elt.text.replace("\xa0", " ").splitlines())
                 )
-                site_tw_page.concept.page_id = page_id
-                print(f"Adding {page_id} to {title}")
-                page.save(site_tw_page.to_termwiki(), summary="Added id")
+                if (
+                    dump_tw_page.concept is not None
+                    and dump_tw_page.concept.page_id is None
+                ):
+                    page = self.site.Pages[title]
+                    site_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                        title, iter(page.text().splitlines())
+                    )
+                    if site_tw_page.concept is not None:
+                        site_tw_page.concept.page_id = page_id
+                        print(f"Adding {page_id} to {title}")
+                        page.save(site_tw_page.to_termwiki(), summary="Added id")
 
     def make_related_expression_dict(
         self, dump: DumpHandler
     ) -> collections.defaultdict:
         related_expression_dict = collections.defaultdict(set)
         for _, concept in dump.concepts:
-            for expression_title in concept.related_expressions:
+
+            for related_expression in concept.related_expressions:
                 related_expression_dict[
-                    f'Expression:{expression_title.expression.replace("&amp;", "&")}'
-                ].add(expression_title.language)
+                    f'Expression:{related_expression.expression.replace("&amp;", "&")}'
+                ].add(related_expression.language)
 
         return related_expression_dict
 
@@ -166,9 +172,9 @@ class SiteHandler:
         for expression_title, languages in related_expression_dict.items():
             ideal_content = self.make_expression_content(languages)
             if ideal_content != dump_expression_dict.get(expression_title):
-                dump_expression_dict[
-                    expression_title
-                ] = ideal_content  # to avoid this being deleted in [`delete_expression_pages`]
+                dump_expression_dict[expression_title] = (
+                    ideal_content  # to avoid this being deleted in [`delete_expression_pages`]
+                )
                 self.fix_expression_page(expression_title, content=ideal_content)
 
     def delete_expression_pages(
@@ -201,9 +207,7 @@ class SiteHandler:
                 self.save_page(page, content=content, summary="Fixing expression page")
         else:
             print("\tmaking", expression_title)
-            self.save_page(
-                page, content=content, summary="Making new expression page"
-            )
+            self.save_page(page, content=content, summary="Making new expression page")
 
     def make_expression_content(self, languages: set) -> str:
         strings = []

@@ -2,19 +2,30 @@
 """Export content of files to the termwiki."""
 
 import argparse
-import collections
-
-from lxml import etree
+import json
+import time
 
 from termwikitools import bot
+from termwikitools.read_termwiki import (
+    COLLECTION_SCHEMA,
+    TERMWIKI_PAGE_SCHEMA,
+    Collection,
+    TermWikiPage,
+)
 
 
 def parse_options():
     """Parse commandline options."""
     parser = argparse.ArgumentParser(
-        description="Convert files containing terms to TermWiki mediawiki format"
+        description="Write .result.json files to the termwiki."
     )
 
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="Overwrite existing termwiki pages.",
+    )
     parser.add_argument(
         "wikifiles",
         nargs="+",
@@ -35,33 +46,27 @@ def write_to_termwiki():
     sitehandler = bot.SiteHandler()
     site = sitehandler.get_site()
 
-    page_titles = collections.defaultdict(int)
-    all_pages = etree.Element("all_pages")
-
     for wikifile in args.wikifiles:
-        wikitree = etree.parse(wikifile)
-        for wikipage in wikitree.xpath(".//page"):
-            all_pages.append(wikipage)
-            page_titles[wikipage.get("title")] += 1
+        export_json = json.load(open(wikifile))
 
-    for page_title, count in list(page_titles.items()):
-        pages = all_pages.xpath('.//page[@title="' + page_title + '"]')
-        print(page_title, count, len(pages))
-        new_page_title = page_title
-        counter = 1
-        while len(pages) > 0 and counter <= count + 1:
-            print("testing page", new_page_title)
-            site_page = site.Pages[new_page_title]
+        collection: Collection = COLLECTION_SCHEMA.load(export_json["collection"])
+        collection_page = site.Pages[collection.name]
+        collection_text = collection_page.text()
+        if not collection_text:
+            print(f"Saving {collection.name}")
+            collection_page.save(collection.to_termwiki(), summary="New import")
+        for concept in export_json["concepts"]:
+            termwikipage: TermWikiPage = TERMWIKI_PAGE_SCHEMA.load(concept)
+            site_page = site.Pages[termwikipage.title]
             site_text = site_page.text()
-            if site_text != "":
-                print("\t removing from list", new_page_title)
-                for page in pages:
-                    for page in pages:
-                        if site_text == page.find("./content").text:
-                            pages.remove(page)
+            if not site_text:
+                print(f"Saving {termwikipage.title}")
+                site_page.save(termwikipage.to_termwiki(), summary="New import")
+            elif args.force and site.text != termwikipage.to_termwiki():
+                print(f"Overwriting {termwikipage.title}")
+                site_page.save(
+                    termwikipage.to_termwiki(), summary="Overwrite with new content"
+                )
             else:
-                print("\t adding content", new_page_title)
-                site_page.save(pages.pop().find("./concept").text, summary="New import")
-            new_page_title = page_title + "_" + str(counter)
-            counter += 1
-        print("pages len", len(pages))
+                print(f"{termwikipage.title} already exists")
+            time.sleep(0.5)

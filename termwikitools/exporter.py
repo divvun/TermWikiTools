@@ -9,8 +9,6 @@ from termwikitools import bot
 from termwikitools.read_termwiki import (
     COLLECTION_SCHEMA,
     TERMWIKI_PAGE_SCHEMA,
-    Collection,
-    TermWikiPage,
 )
 
 
@@ -49,14 +47,14 @@ def write_to_termwiki():
     for wikifile in args.wikifiles:
         export_json = json.load(open(wikifile))
 
-        collection: Collection = COLLECTION_SCHEMA.load(export_json["collection"])
+        collection = COLLECTION_SCHEMA.load(export_json["collection"])
         collection_page = site.Pages[collection.name]
         collection_text = collection_page.text()
         if not collection_text:
             print(f"Saving {collection.name}")
             collection_page.save(collection.to_termwiki(), summary="New import")
         for concept in export_json["concepts"]:
-            termwikipage: TermWikiPage = TERMWIKI_PAGE_SCHEMA.load(concept)
+            termwikipage = TERMWIKI_PAGE_SCHEMA.load(concept)
             site_page = site.Pages[termwikipage.title]
             site_text = site_page.text()
             if not site_text:

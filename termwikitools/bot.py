@@ -18,6 +18,8 @@
 #
 """Bot to fix syntax blunders in termwiki articles."""
 
+import time
+
 import click
 import requests
 
@@ -107,7 +109,7 @@ def json():
 @dump.command()
 @click.argument(
     "language",
-    type=click.Choice(LANGUAGES.keys()),
+    type=click.Choice(list(LANGUAGES.keys())),
 )
 @click.option(
     "--only-sanctioned",
@@ -130,7 +132,7 @@ def collection():
 
 
 @dump.command()
-@click.argument("language", type=click.Choice(LANGUAGES.keys()))
+@click.argument("language", type=click.Choice(list(LANGUAGES.keys())))
 @click.option("--only-sanctioned", is_flag=True, help="Sanctioned status for GG.")
 def invalid(language, only_sanctioned):
     """Print invalid characters for a language."""
@@ -143,7 +145,7 @@ def invalid(language, only_sanctioned):
 
 
 @dump.command()
-@click.argument("language", type=click.Choice(LANGUAGES.keys()))
+@click.argument("language", type=click.Choice(list(LANGUAGES.keys())))
 def number_of_terms(language):
     """Sum the number of terms for a language."""
     dumphandler = DumpHandler()
@@ -151,7 +153,7 @@ def number_of_terms(language):
 
 
 @dump.command()
-@click.argument("language", type=click.Choice(LANGUAGES.keys()))
+@click.argument("language", type=click.Choice(list(LANGUAGES.keys())))
 def terms_of_lang(language):
     """Sum the number of terms for a language."""
     dumphandler = DumpHandler()
@@ -160,7 +162,7 @@ def terms_of_lang(language):
 
 @dump.command()
 @click.argument(
-    "languages", nargs=-1, type=click.Choice(LANGUAGES.keys()), required=True
+    "languages", nargs=-1, type=click.Choice(list(LANGUAGES.keys())), required=True
 )
 def statistics(languages):
     """Print statistics for one or more languages."""
@@ -177,8 +179,8 @@ def sort():
 
 
 @dump.command()
-@click.argument("source", type=click.Choice(LANGUAGES.keys()))
-@click.argument("target", type=click.Choice(LANGUAGES.keys()))
+@click.argument("source", type=click.Choice(list(LANGUAGES.keys())))
+@click.argument("target", type=click.Choice(list(LANGUAGES.keys())))
 @click.option(
     "--category",
     type=click.Choice([namespace.replace(" ", "_") for namespace in NAMESPACES]),
@@ -268,3 +270,4 @@ def fixrecent(amount):
     for title in list_recent_changes(amount):
         page = site_handler.site.pages[title]
         site_handler.fix_termwiki_page(page)
+        time.sleep(0.2)

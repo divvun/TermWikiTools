@@ -47,15 +47,15 @@ class SheetImporter:
                 "related_expressions": [
                     related_expression
                     for related_expression in self.make_dict(
-                        sheet_info.get("related_expressions"), row_number
+                        sheet_info.get("related_expressions") or [], row_number
                     )
                     if related_expression.get("expression")
                 ],
-                "concept_infos": self.make_dict(
-                    sheet_info.get("concept_infos"), row_number
-                )
-                if sheet_info.get("concept_infos")
-                else None,
+                "concept_infos": (
+                    self.make_dict(sheet_info.get("concept_infos") or [], row_number)
+                    if sheet_info.get("concept_infos")
+                    else None
+                ),
             }
         )
 
@@ -121,7 +121,7 @@ def main(filename):
             }
         except ValidationError as error:
             message = f"Error in input data\n{error}"
-            raise SystemExit(message)
+            raise SystemExit(message) from error
 
         path.with_name(
             f"{template.get('collection').replace(' ', '_')}.result.json"

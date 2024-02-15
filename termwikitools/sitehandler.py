@@ -290,31 +290,6 @@ class SiteHandler:
 
         print(len(visited_pages))
 
-    def query_replace_text(self, language):
-        """Do a semantic media query and fix pages.
-
-        Change the query and the actions when needed …
-
-        http://mwclient.readthedocs.io/en/latest/reference/site.html#mwclient.client.Site.ask
-        https://www.semantic-mediawiki.org/wiki/Help:API
-        """
-        query = (
-            "[[Related expression::+]]"
-            "[[Language::{}]]"
-            "[[Sanctioned::False]]".format(language)
-        )
-
-        for number, concept in self.semantic_ask_results(query):
-            if concept.collections is None:
-                print("Hit no: {}, title: {}".format(number, concept.title))
-                self.save_page(
-                    page,
-                    str(concept),
-                    summary="Sanctioned expressions not associated with any "
-                    "collections that the normative {} fst "
-                    "recognises.".format(language),
-                )
-
     def revert(self):
         """Automatically sanction expressions that have no collection.
 
@@ -369,42 +344,3 @@ class SiteHandler:
             )
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
-
-    def fix_revisions(self) -> None:
-        """Example on how to restore pages only touched by bots."""
-        import time
-
-        token = self.site.api("query", meta="tokens")
-        start_time = time.strptime("15 Feb 19", "%d %b %y")
-
-        dumphandler = DumpHandler()
-        for title, content_elt, _ in dumphandler.content_elements:
-            concept = read_termwiki.Concept()
-            concept.title = title
-            concept.from_termwiki(content_elt.text)
-
-            if "Collection:JustermTana" in concept.collections:
-                page = self.site.Pages[concept.title]
-                users = {
-                    revision["user"]
-                    for revision in page.revisions()
-                    if revision["timestamp"] > start_time
-                    and "mporter" not in revision["user"]
-                }
-                if users:
-                    print(title, users)
-                else:
-                    print(f"Saving {title}")
-                    self.save_page(page, str(concept), summary="Saved from backup")
-
-    def improve_pagenames(self) -> None:
-        """Remove characters that break eXist search from page names."""
-        for page in self.content_elements:
-            try:
-                my_title = read_termwiki.fix_sms(
-                    self.remove_paren(page.name) if "(" in page.name else page.name
-                )
-                if page.name != my_title:
-                    self.move_page(page.name, my_title)
-            except mwclient.errors.InvalidPageTitle:
-                print(f"Failed on {page.name}")

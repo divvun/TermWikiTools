@@ -144,7 +144,7 @@ class SiteHandler:
         self, dump: DumpHandler
     ) -> collections.defaultdict:
         related_expression_dict = collections.defaultdict(set)
-        for _, concept in dump.concepts:
+        for _, concept in dump.termwiki_pages:
 
             for related_expression in concept.related_expressions:
                 related_expression_dict[
@@ -239,7 +239,7 @@ class SiteHandler:
     def fix(self) -> None:
         """Make the bot fix all pages."""
         dump = DumpHandler()
-        for title, dump_tw_page in dump.concepts:
+        for title, dump_tw_page in dump.termwiki_pages:
             fixed_dump_tw_page = read_termwiki.cleanup_termwiki_page(dump_tw_page)
             if dump_tw_page != fixed_dump_tw_page:
                 page = self.site.Pages[title]

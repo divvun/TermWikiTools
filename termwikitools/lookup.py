@@ -24,7 +24,7 @@ from termwikitools import bot
 DUMPHANDLER = bot.DumpHandler()
 LOOKUP_DICT = defaultdict(set)
 
-for title, concept in DUMPHANDLER.concepts:
+for title, concept in DUMPHANDLER.termwiki_pages:
     for expression in concept.related_expressions:
         LOOKUP_DICT[(expression["expression"], expression["language"])].add(title)
 

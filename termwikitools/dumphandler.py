@@ -105,7 +105,7 @@ class DumpHandler:
                 yield title, content_elt, page_id
 
     @property
-    def concepts(self) -> Generator[Tuple[str, TermWikiPage], None, None]:
+    def termwiki_pages(self) -> Generator[Tuple[str, TermWikiPage], None, None]:
         """Get concepts found in dump.xml.
 
         Yields:
@@ -132,7 +132,7 @@ class DumpHandler:
         """All expressions found in dumphandler."""
         return (
             (title, expression)
-            for title, concept in self.concepts
+            for title, concept in self.termwiki_pages
             for expression in concept.related_expressions
             if (
                 expression.language == language
@@ -146,7 +146,7 @@ class DumpHandler:
             json.dumps(
                 [
                     asdict(termwikipage_to_satniconcept(termwikipage))
-                    for _, termwikipage in self.concepts
+                    for _, termwikipage in self.termwiki_pages
                 ]
             )
         )
@@ -263,7 +263,7 @@ class DumpHandler:
             language (str): the language to report on.
         """
         counter: dict[str, int] = collections.defaultdict(int)
-        for _, concept in self.concepts:
+        for _, concept in self.termwiki_pages:
             for expression in concept.related_expressions:
                 if expression.language == language:
                     counter[expression.sanctioned] += 1
@@ -283,7 +283,7 @@ class DumpHandler:
         Args:
             language (str): the language to report on.
         """
-        for title, concept in self.concepts:
+        for title, concept in self.termwiki_pages:
             for expression in concept.related_expressions:
                 if expression.language == language and expression.sanctioned == "True":
                     print(
@@ -334,7 +334,7 @@ class DumpHandler:
 
     def print_expression_pairs(self, lang1, lang2, category=None):
         """Print pairs of expressions, for use in making bidix files."""
-        for title, concept in self.concepts:
+        for title, concept in self.termwiki_pages:
             if category is None or title.startswith(category):
                 if concept.has_sanctioned_sami():
                     langs = {lang1: set(), lang2: set()}
@@ -349,7 +349,7 @@ class DumpHandler:
 
     def statistics(self, language: str) -> None:
         counter: dict[str, dict[str, int]] = {}
-        for title, concept in self.concepts:
+        for title, concept in self.termwiki_pages:
             if any(
                 expression.language == language
                 for expression in concept.related_expressions

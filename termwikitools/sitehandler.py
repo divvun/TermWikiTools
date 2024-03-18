@@ -124,21 +124,24 @@ class SiteHandler:
         dump = DumpHandler()
         for title, content_elt, page_id in dump.content_elements:
             if content_elt is not None and content_elt.text:
-                dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                    title, iter(content_elt.text.replace("\xa0", " ").splitlines())
-                )
-                if (
-                    dump_tw_page.concept is not None
-                    and dump_tw_page.concept.page_id is None
-                ):
-                    page = self.site.Pages[title]
-                    site_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                        title, iter(page.text().splitlines())
+                try:
+                    dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                        title, iter(content_elt.text.replace("\xa0", " ").splitlines())
                     )
-                    if site_tw_page.concept is not None:
-                        site_tw_page.concept.page_id = page_id
-                        print(f"Adding {page_id} to {title}")
-                        page.save(site_tw_page.to_termwiki(), summary="Added id")
+                    if (
+                        dump_tw_page.concept is not None
+                        and dump_tw_page.concept.page_id is None
+                    ):
+                        page = self.site.Pages[title]
+                        site_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                            title, iter(page.text().splitlines())
+                        )
+                        if site_tw_page.concept is not None:
+                            site_tw_page.concept.page_id = page_id
+                            print(f"Adding {page_id} to {title}")
+                            page.save(site_tw_page.to_termwiki(), summary="Added id")
+                except marshmallow.exceptions.ValidationError as error:
+                    print(f"Error: {title}", error, file=sys.stderr)
 
     def make_related_expression_dict(
         self, dump: DumpHandler

@@ -31,6 +31,7 @@ from lxml import etree
 from lxml.etree import _Element
 from marshmallow import ValidationError
 
+from termwikitools import read_termwiki
 from termwikitools.handler_common import LANGUAGES, NAMESPACES
 from termwikitools.read_termwiki import (
     INVALID_CHARS_RE,
@@ -313,6 +314,94 @@ class DumpHandler:
                         print()
                 else:
                     print(title, etree.tostring(content_elt, encoding="unicode"))
+
+    def collection_to_excel(self, name: str):
+        """Write a collection to an excel file."""
+
+        def get_terms(termwikipage: TermWikiPage, language: str) -> str:
+            """Terms as needed by the excel file"""
+            return "\n".join(
+                [
+                    f"{related_expression.expression}"
+                    f"{'' if related_expression.sanctioned else '*'}"
+                    for related_expression in termwikipage.related_expressions
+                    if related_expression.language == language
+                ]
+            )
+
+        def get_definition(termwikipage: TermWikiPage, language: str) -> str:
+            """Definition as needed by the excel file"""
+            if termwikipage.concept_infos:
+                definitions = [
+                    concept_info.definition
+                    for concept_info in termwikipage.concept_infos
+                    if concept_info.language == language
+                    and concept_info.definition is not None
+                ]
+                if definitions:
+                    return f" \nDefinition: {definitions[0]}"
+
+            return ""
+
+        def get_languages(name: str) -> list[str]:
+            namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
+            collection_elements = self.tree.getroot().xpath(
+                './/mw:page/mw:title[text() ="Collection:Kelan terminologinen sanasto"]',
+                namespaces=namespace,
+            )
+
+            if not collection_elements:
+                raise SystemExit(f"Collection {name} not found")
+
+            if collection_elements[0].text is None:
+                raise SystemExit(f"Collection {name} has no content")
+
+            page = collection_elements[0].getparent()
+
+            content_elt = page.find(".//{}text".format(self.mediawiki_ns))
+            text = content_elt.text
+            print(text)
+            content = read_termwiki.read_semantic_form(
+                iter(text.replace("\xa0", " ").splitlines())
+            )
+            print(content)
+            return content.get("languages", "").split(", ")
+
+        def get_collection_content(
+            name: str,
+        ) -> Generator[list[Tuple[str, str]], None, None]:
+            for _, termwikipage in self.termwiki_pages:
+                if (
+                    termwikipage.concept is not None
+                    and termwikipage.concept.collection
+                    and name in termwikipage.concept.collection
+                ):
+                    yield [
+                        (
+                            get_terms(termwikipage, language),
+                            get_definition(termwikipage, language),
+                        )
+                        for language in languages
+                    ]
+
+        from openpyxl import Workbook
+        from openpyxl.styles import Alignment
+
+        wb = Workbook()
+        ws = wb.active
+
+        languages = get_languages(f"Collection:{name}")
+        ws.append(languages)
+        for y_index, row in enumerate(
+            get_collection_content(f"Collection:{name}"), start=2
+        ):
+            if any(terms for (terms, _) in row):
+                for x_index, (terms, definition) in enumerate(row, start=1):
+                    ws.cell(
+                        row=y_index, column=x_index, value=f"{terms}{definition}"
+                    ).alignment = Alignment(shrink_to_fit=True, wrap_text=True)
+
+        wb.save(f"{name.replace(' ', '_')}.xlsx")
 
     def sort_dump(self):
         """Sort the dump file by page title."""

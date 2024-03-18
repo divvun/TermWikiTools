@@ -132,6 +132,14 @@ def collection():
 
 
 @dump.command()
+@click.argument("name")
+def collection_to_excel(name):
+    """Find collections in the dump."""
+    dumphandler = DumpHandler()
+    dumphandler.collection_to_excel(name)
+
+
+@dump.command()
 @click.argument("language", type=click.Choice(list(LANGUAGES.keys())))
 @click.option("--only-sanctioned", is_flag=True, help="Sanctioned status for GG.")
 def invalid(language, only_sanctioned):

@@ -323,7 +323,7 @@ class DumpHandler:
             return "\n".join(
                 [
                     f"{related_expression.expression}"
-                    f"{'' if related_expression.sanctioned else '*'}"
+                    f"{'' if related_expression.sanctioned == 'True' else '*'}"
                     for related_expression in termwikipage.related_expressions
                     if related_expression.language == language
                 ]

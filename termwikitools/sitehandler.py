@@ -260,9 +260,9 @@ class SiteHandler:
                     self.save_page(
                         page, fixed_tw_page.to_termwiki(), summary="Fixing content"
                     )
-            except marshmallow.exceptions.ValidationError as error:
-                print(f"Error: {page.name}", file=sys.stderr)
-                print(page.text(), error, file=sys.stderr)
+            except (KeyError, marshmallow.exceptions.ValidationError) as error:
+                print(f"Error: {page.name}", error, file=sys.stderr)
+                raise SystemExit() from None
         else:
             print(f"page {page.name} does not exist")
 

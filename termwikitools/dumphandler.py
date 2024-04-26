@@ -318,35 +318,10 @@ class DumpHandler:
     def collection_to_excel(self, name: str):
         """Write a collection to an excel file."""
 
-        def get_terms(termwikipage: TermWikiPage, language: str) -> str:
-            """Terms as needed by the excel file"""
-            return "\n".join(
-                [
-                    f"{related_expression.expression}"
-                    f"{'' if related_expression.sanctioned == 'True' else '*'}"
-                    for related_expression in termwikipage.related_expressions
-                    if related_expression.language == language
-                ]
-            )
-
-        def get_definition(termwikipage: TermWikiPage, language: str) -> str:
-            """Definition as needed by the excel file"""
-            if termwikipage.concept_infos:
-                definitions = [
-                    concept_info.definition
-                    for concept_info in termwikipage.concept_infos
-                    if concept_info.language == language
-                    and concept_info.definition is not None
-                ]
-                if definitions:
-                    return f" \nDefinition: {definitions[0]}"
-
-            return ""
-
         def get_languages(name: str) -> list[str]:
             namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
             collection_elements = self.tree.getroot().xpath(
-                './/mw:page/mw:title[text() ="Collection:Kelan terminologinen sanasto"]',
+                f'.//mw:page/mw:title[text() = "{name}"]',
                 namespaces=namespace,
             )
 
@@ -378,8 +353,8 @@ class DumpHandler:
                 ):
                     yield [
                         (
-                            get_terms(termwikipage, language),
-                            get_definition(termwikipage, language),
+                            "\n".join(termwikipage.get_terms(language)),
+                            termwikipage.get_definition(language),
                         )
                         for language in languages
                     ]

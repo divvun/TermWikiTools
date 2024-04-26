@@ -301,6 +301,37 @@ class TermWikiPage:
             for related_expression in self.related_expressions
         )
 
+    def has_term(self, term: str, language: str) -> bool:
+        return any(
+            term == related_expression.expression
+            and (not language or language == related_expression.language)
+            for related_expression in self.related_expressions
+        )
+
+    def get_terms(self, language: str) -> list[str]:
+        return [
+            f"{related_expression.expression}"
+            f"{'' if related_expression.sanctioned == 'True' else '*'}"
+            for related_expression in self.related_expressions
+            if related_expression.language == language
+        ]
+
+    def get_languages(self) -> list[str]:
+        return list(
+            {
+                related_expression.language
+                for related_expression in self.related_expressions
+            }
+        )
+
+    def get_definition(self, language: str) -> str:
+        if self.concept_infos:
+            for concept_info in self.concept_infos:
+                if concept_info.language == language and concept_info.definition:
+                    return concept_info.definition
+
+        return ""
+
 
 TERMWIKI_PAGE_SCHEMA = marshmallow_dataclass.class_schema(TermWikiPage)()
 

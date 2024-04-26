@@ -26,6 +26,7 @@ termimport = "termwikitools.importer:main"
 termexport = "termwikitools.exporter:write_to_termwiki"
 termbot = "termwikitools.bot:main"
 termmover = "termwikitools.mover:main"
+termsearcher = "termwikitools.searcher:main"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.0"

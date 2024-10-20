@@ -24,6 +24,7 @@ import json
 import click
 
 from termwikitools import bot
+from termwikitools.handler_common import LANGUAGES
 
 # For hver av artiklene i inputfila, så vil jeg:
 # 1. Sjekke om termene i artikkelen finnes i søkeindeksen
@@ -57,25 +58,73 @@ def get_searches(infile):
                 ], concept["title"]
 
 
-@click.command()
-@click.option("--infile", help="Input file")
-# @click.option("--outfile", default="termwiki.tsv", help="Output file")
-# @click.argument("search_language", type=click.Choice(list(LANGUAGES.keys())), nargs=1)
-# @click.argument("searches", nargs=-1)
-def main(infile):
+@click.group()
+def main():
+    pass
+
+
+@main.command()
+@click.option("--outfile", default="termwiki.tsv", help="Output file")
+@click.argument("search_language", type=click.Choice(list(LANGUAGES.keys())), nargs=1)
+@click.argument("searches", nargs=-1)
+def search(search_language, searches, outfile):
     """Search dump."""
-    # termwiki_language = LANGUAGES[search_language]
+    termwiki_language = LANGUAGES[search_language]
+    search_index = make_search_index()
+
+    old_to_new_langs = {v: k for k, v in LANGUAGES.items()}
+    search_terms = sorted(
+        {
+            search.lower().strip().replace(")", "").replace(")", "").replace(":", "")
+            for c_search in searches
+            for search in c_search.split()
+        }
+    )
+    results = [
+        {
+            language: (
+                f'{", ".join(termwiki_page.get_terms(language))}'
+                f" {termwiki_page.get_definition(language)}"
+            ).strip()
+            for termwiki_page in termwiki_pages
+            for language in termwiki_page.get_languages()
+        }
+        for termwiki_pages in [
+            search_index[search] for search in search_terms if search in search_index
+        ]
+    ]
+    langs = sorted(
+        {
+            lang
+            for result in results
+            for lang in result.keys()
+            if lang != termwiki_language
+        }
+    )
+    langs.insert(0, termwiki_language)
+
+    click.echo(f"Writing to {outfile}")
+    with click.open_file(outfile, "w") as f:
+        print("\t".join(old_to_new_langs.get(old) for old in langs), file=f)
+        print(
+            "\n".join(
+                [
+                    "\t".join([result.get(lang, "") for lang in langs])
+                    for result in results
+                ]
+            ),
+            file=f,
+        )
+
+
+@main.command()
+@click.argument("infile", type=click.Path(exists=True))
+def merge(infile):
+    """Search dump."""
     search_index = make_search_index()
 
     search_terms = get_searches(infile)
-    # old_to_new_langs = {v: k for k, v in LANGUAGES.items()}
-    # search_terms = sorted(
-    #     {
-    #         search.lower().strip().replace(")", "").replace(")", "").replace(":", "")
-    #         for search in searches
-    #         # for search in c_search.split()
-    #     }
-    # )
+
     found_pages = [
         (search, search_index[search[0]])
         for search in search_terms
@@ -87,38 +136,3 @@ def main(infile):
         print("\n".join({page.title for page in result[1]}))
         print()
     print(f"Found {len(set({result[0][2] for result in found_pages}))} pages")
-    # results = [
-    #     {
-    #         language: (
-    #             f'{", ".join(termwiki_page.get_terms(language))}'
-    #             f" {termwiki_page.get_definition(language)}"
-    #         ).strip()
-    #         for termwiki_page in termwiki_pages
-    #         for language in termwiki_page.get_languages()
-    #     }
-    #     for termwiki_pages in [
-    #         search_index[search] for search in search_terms if search in search_index
-    #     ]
-    # ]
-    # langs = sorted(
-    #     {
-    #         lang
-    #         for result in results
-    #         for lang in result.keys()
-    #         if lang != termwiki_language
-    #     }
-    # )
-    # langs.insert(0, termwiki_language)
-
-    # click.echo(f"Writing to {outfile}")
-    # with click.open_file(outfile, "w") as f:
-    #     print("\t".join(old_to_new_langs.get(old) for old in langs), file=f)
-    #     print(
-    #         "\n".join(
-    #             [
-    #                 "\t".join([result.get(lang, "") for lang in langs])
-    #                 for result in results
-    #             ]
-    #         ),
-    #         file=f,
-    #     )

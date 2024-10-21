@@ -77,7 +77,7 @@ def write_to_termwiki():
             if not site_text:
                 print(f"Saving {termwikipage.title}")
                 site_page.save(termwikipage.to_termwiki(), summary="New import")
-            elif args.force and site.text != termwikipage.to_termwiki():
+            elif args.force and site_text != termwikipage.to_termwiki():
                 print(f"Overwriting {termwikipage.title}")
                 site_page.save(
                     termwikipage.to_termwiki(), summary="Overwrite with new content"

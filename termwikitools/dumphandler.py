@@ -24,7 +24,7 @@ import re
 import sys
 from dataclasses import asdict
 from pathlib import Path
-from typing import Generator, Tuple
+from typing import Generator, Iterable, Tuple
 
 import hfst  # type: ignore
 from lxml import etree
@@ -74,23 +74,27 @@ class DumpHandler:
             raise SystemExit(f"did not find {main_title}")
 
     @property
-    def pages(self) -> Generator[Tuple[str, _Element, str], None, None]:
+    def pages(self) -> Iterable[Tuple[str, _Element, str]]:
         """Get the namespaced pages from dump.xml.
 
         Yields:
             tuple: The title and the content of a TermWiki page.
         """
         for page in self.tree.getroot().iter("{}page".format(self.mediawiki_ns)):
-            title_element = page.find(".//{}title".format(self.mediawiki_ns))
-            if title_element is not None:
-                title = title_element.text
-                if title is not None and title[: title.find(":")] in NAMESPACES:
-                    page_id_element = page.find(".//{}id".format(self.mediawiki_ns))
-                    if page_id_element is not None and page_id_element.text is not None:
-                        yield title, page, page_id_element.text
+            if page is not None:
+                title_element = page.find(".//{}title".format(self.mediawiki_ns))
+                if title_element is not None and title_element.text is not None:
+                    title = title_element.text
+                    if title[: title.find(":")] in NAMESPACES:
+                        page_id_element = page.find(".//{}id".format(self.mediawiki_ns))
+                        if (
+                            page_id_element is not None
+                            and page_id_element.text is not None
+                        ):
+                            yield title, page, page_id_element.text
 
     @property
-    def content_elements(self) -> Generator[Tuple[str, _Element, str], None, None]:
+    def content_elements(self) -> Iterable[Tuple[str, _Element, str]]:
         """Get concept elements found in dump.xml.
 
         Yields:
@@ -106,7 +110,7 @@ class DumpHandler:
                 yield title, content_elt, page_id
 
     @property
-    def termwiki_pages(self) -> Generator[Tuple[str, TermWikiPage], None, None]:
+    def termwiki_pages(self) -> Iterable[Tuple[str, TermWikiPage]]:
         """Get concepts found in dump.xml.
 
         Yields:
@@ -129,7 +133,7 @@ class DumpHandler:
 
     def expressions(
         self, language, only_sanctioned
-    ) -> Generator[Tuple[str, RelatedExpression], None, None]:
+    ) -> Iterable[Tuple[str, RelatedExpression]]:
         """All expressions found in dumphandler."""
         return (
             (title, expression)

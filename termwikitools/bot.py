@@ -279,3 +279,9 @@ def fixrecent(amount):
         page = site_handler.site.pages[title]
         site_handler.fix_termwiki_page(page)
         time.sleep(0.2)
+
+@site.command()
+def fix_by_timestamp():
+    """Fix Concept pages on the TermWiki by timestamp."""
+    site_handler = SiteHandler()
+    site_handler.fix_by_timestamp()

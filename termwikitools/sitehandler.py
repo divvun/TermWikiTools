@@ -17,8 +17,14 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 import collections
+import json
 import os
+import subprocess
 import sys
+import time
+from dataclasses import asdict
+from datetime import datetime
+from pathlib import Path
 from typing import Any, Generator
 
 import marshmallow
@@ -28,6 +34,42 @@ import yaml
 from termwikitools import read_termwiki
 from termwikitools.dumphandler import DumpHandler
 from termwikitools.handler_common import NAMESPACES
+
+
+def update_svn() -> None:
+    command = f"svn up {os.getenv('GTHOME')}/words/terms/termwiki"
+    ret_value = subprocess.run(command.split(), capture_output=True, check=False)
+    if ret_value.returncode != 0:
+        raise SystemExit(f"Error: {ret_value.stderr.decode()}")
+    print(f"Return value: {ret_value.stdout.decode()}")
+
+
+def read_time_stamp() -> datetime:
+    # read time stamp
+    timestamp = Path(
+        f"{os.getenv('GTHOME')}/words/terms/termwiki/timestamp"
+    ).read_text()
+    return datetime.fromisoformat(timestamp.rstrip("Z"))
+
+
+def write_time_stamp(timestamp: datetime) -> None:
+    # write time stamp
+
+    Path(f"{os.getenv('GTHOME')}/words/terms/termwiki/timestamp").write_text(
+        timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+    )
+    command = [
+        "svn",
+        "commit",
+        "-m",
+        "Update timestamp",
+        f"{os.getenv('GTHOME')}/words/terms/termwiki/timestamp",
+    ]
+    ret_value = subprocess.run(command, capture_output=True, check=False)
+
+    if ret_value.returncode != 0:
+        raise SystemExit(f"Error: {ret_value.stderr.decode()}")
+    print(f"Return value: {ret_value.stdout.decode()}")
 
 
 class SiteHandler:
@@ -204,13 +246,16 @@ class SiteHandler:
 
     def fix_expression_page(self, expression_title: str, content: str) -> None:
         page = self.site.Pages[expression_title]
-        if page.exists:
-            if page.text() != content:
-                print("\treally fixing", expression_title)
-                self.save_page(page, content=content, summary="Fixing expression page")
-        else:
+
+        if not page.exists:
             print("\tmaking", expression_title)
             self.save_page(page, content=content, summary="Making new expression page")
+            time.sleep(0.2)
+
+        if page.text() != content:
+            print("\treally fixing", expression_title)
+            self.save_page(page, content=content, summary="Fixing expression page")
+            time.sleep(0.2)
 
     def make_expression_content(self, languages: set) -> str:
         strings = []
@@ -350,3 +395,93 @@ class SiteHandler:
             )
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
+
+    def fix_recent_termwiki_pages(self, timestamp: datetime) -> datetime:
+        """Fix termwiki pages newer than the time stamp, including adding id.
+
+        Args:
+            timestamp: the time stamp to compare against
+
+        Returns:
+            The latest time stamp
+        """
+        # fix termwiki pages newer than the time stamp, including adding id
+        dumphandler = DumpHandler()
+        latest_timestamp = timestamp
+        for title, dump_xml_page, page_id in dumphandler.pages:
+            xml_timestamp = dump_xml_page.find(
+                ".//{}timestamp".format(dumphandler.mediawiki_ns)
+            )
+            if xml_timestamp is not None and xml_timestamp.text is not None:
+                dump_timestamp = datetime.fromisoformat(xml_timestamp.text.rstrip("Z"))
+                if dump_timestamp > timestamp:
+                    latest_timestamp = dump_timestamp
+                    if dump_xml_page is not None and dump_xml_page.text:
+                        try:
+                            dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                                title,
+                                iter(
+                                    dump_xml_page.text.replace("\xa0", " ").splitlines()
+                                ),
+                            )
+                        except marshmallow.exceptions.ValidationError as error:
+                            print(f"Error: {title}", error, file=sys.stderr)
+                            print(f"Content: {dump_xml_page.text}", file=sys.stderr)
+                            continue
+                        finally:
+                            page = self.site.pages[title]
+
+                            try:
+                                site_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                                    title, iter(page.text().splitlines())
+                                )
+                            except marshmallow.exceptions.ValidationError as error:
+                                print(
+                                    f"Error: Fix termwiki {title}",
+                                    error,
+                                    file=sys.stderr,
+                                )
+                                print(f"Content: {page.text()}", file=sys.stderr)
+                                continue
+
+                            fixed_tw_page = read_termwiki.cleanup_termwiki_page(
+                                site_tw_page
+                            )
+                            if (
+                                fixed_tw_page.concept is not None
+                                and site_tw_page.concept is not None
+                                and dump_tw_page.concept is not None
+                                and dump_tw_page.concept.page_id is None
+                            ):
+                                fixed_tw_page.concept.page_id = page_id
+                            try:
+                                if fixed_tw_page != site_tw_page:
+                                    print("Saving", title)
+                                    self.save_page(
+                                        page,
+                                        fixed_tw_page.to_termwiki(),
+                                        summary="Fixing content",
+                                    )
+                                    time.sleep(0.2)  # only sleep if we actually save
+                            except KeyError as error:
+                                print(
+                                    f"Error: Please fix {title}", error, file=sys.stderr
+                                )
+                                content = json.dumps(
+                                    asdict(fixed_tw_page), ensure_ascii=False, indent=2
+                                )
+                                print(
+                                    f"Content: {content}",
+                                    file=sys.stderr,
+                                )
+        return latest_timestamp
+
+    def fix_by_timestamp(self) -> None:
+        """Fix termwiki pages by timestamp."""
+        if not os.getenv("GTHOME"):
+            raise SystemExit("Error: The environment value GTHOME is not set")
+        update_svn()
+        timestamp = read_time_stamp()
+        write_time_stamp(timestamp=self.fix_recent_termwiki_pages(timestamp))
+        self.fix_expression_pages()
+        self.delete_redirects()

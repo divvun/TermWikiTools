@@ -20,6 +20,7 @@
 
 import collections
 import json
+from dataclasses import asdict
 
 import click
 
@@ -117,22 +118,90 @@ def search(search_language, searches, outfile):
         )
 
 
+def merge_concepts(import_concept, dump_concept):
+    """Merge two concepts."""
+    if dump_concept["concept"].get("collection") is None:
+        dump_concept["concept"]["collection"] = []
+    dump_concept["concept"]["collection"].extend(
+        import_concept["concept"]["collection"]
+    )
+
+    if import_concept.get("concept_infos"):
+        if dump_concept.get("concept_infos") is None:
+            dump_concept["concept_infos"] = []
+        concept_infos_languages = [
+            concept_info["language"]
+            for concept_info in dump_concept.get("concept_infos")
+        ]
+        for concept_info in import_concept["concept_infos"]:
+            if concept_info["language"] not in concept_infos_languages:
+                dump_concept["concept_infos"].append(concept_info)
+
+    dump_expressions = [
+        related_expression["expression"]
+        for related_expression in dump_concept["related_expressions"]
+    ]
+    for related_expression in import_concept["related_expressions"]:
+        if related_expression["expression"] not in dump_expressions:
+            dump_concept["related_expressions"].append(related_expression)
+    return dump_concept
+
+
 @main.command()
 @click.argument("infile", type=click.Path(exists=True))
 def merge(infile):
     """Search dump."""
     search_index = make_search_index()
 
-    search_terms = get_searches(infile)
+    with click.open_file(infile, "r") as f:
+        my_json = json.load(f)
+        new_concepts = []
+        for concept in my_json["concepts"]:
+            search_terms = [
+                (related_expression["expression"], related_expression["language"])
+                for related_expression in concept["related_expressions"]
+            ]
 
-    found_pages = [
-        (search, search_index[search[0]])
-        for search in search_terms
-        if search[0] in search_index
-    ]
+            found_pages = [
+                (search, search_index[search[0]])
+                for search in search_terms
+                if search[0] in search_index
+            ]
 
-    for result in found_pages:
-        print(result[0])
-        print("\n".join({page.title for page in result[1]}))
-        print()
-    print(f"Found {len(set({result[0][2] for result in found_pages}))} pages")
+            if not found_pages:
+                new_concepts.append(concept)
+            else:
+                page_titles = {
+                    page.title for result in found_pages for page in result[1]
+                }
+
+                if len(page_titles) == 1:
+                    title = list(page_titles)[0]
+                else:
+                    prompt = (
+                        "Choose title: \n"
+                        + "\n".join(
+                            [f"{i}: {title}" for i, title in enumerate(page_titles)]
+                        )
+                        + "\n"
+                    )
+                    choice = int(input(prompt))
+                    try:
+                        title = list(page_titles)[choice]
+                    except IndexError:
+                        title = None
+
+                if title is None:
+                    new_concepts.append(concept)
+                else:
+                    for result in found_pages:
+                        for page in result[1]:
+                            if page.title == title:
+                                new_concepts.append(
+                                    merge_concepts(concept, asdict(page))
+                                )
+                                break
+
+        my_json["concepts"] = new_concepts
+        with click.open_file(infile, "w") as f2:
+            f2.write(json.dumps(my_json, indent=2, ensure_ascii=False))

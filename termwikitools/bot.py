@@ -134,7 +134,7 @@ def collection():
 @dump.command()
 @click.argument("name")
 def collection_to_excel(name):
-    """Find collections in the dump."""
+    """Export collections as Excel files."""
     dumphandler = DumpHandler()
     dumphandler.collection_to_excel(name)
 

@@ -193,7 +193,7 @@ class RelatedConcept:
         strings.extend(
             [
                 f"|{key}={concept_dict[key]}"
-                for key in ["language", "definition", "explanation", "more_info"]
+                for key in ["concept", "relation"]
                 if concept_dict[key] is not None
             ]
         )

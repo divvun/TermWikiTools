@@ -455,10 +455,6 @@ def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """
     expression_dict = asdict(related_expression)
 
-    # Fix pos
-    if " " in expression_dict["expression"]:
-        expression_dict["pos"] = "MWE"
-
     if LANG_TRANS.get(expression_dict["language"]):
         expression_dict["expression"] = expression_dict["expression"].translate(
             LANG_TRANS.get(expression_dict["language"])

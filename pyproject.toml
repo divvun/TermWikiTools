@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "TermWikiTools"
-version = "0.3.0"
+version = "0.4.0"
 description = "Manipulate TermWiki data"
 authors = ["Børre Gaup <albbas@gmail.com>"]
 license = "GPLv3+"
@@ -27,6 +27,7 @@ termexport = "termwikitools.exporter:write_to_termwiki"
 termbot = "termwikitools.bot:main"
 termmover = "termwikitools.mover:main"
 termsearcher = "termwikitools.searcher:main"
+satnilogs = "termwikitools.analyse_logs:main"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.7.0"

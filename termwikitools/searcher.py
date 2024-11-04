@@ -127,12 +127,11 @@ def merge_concepts(import_concept, dump_concept):
     )
 
     if import_concept.get("concept_infos"):
-        if dump_concept.get("concept_infos") is None:
-            dump_concept["concept_infos"] = []
         concept_infos_languages = [
             concept_info["language"]
-            for concept_info in dump_concept.get("concept_infos")
+            for concept_info in dump_concept.get("concept_infos", [])
         ]
+
         for concept_info in import_concept["concept_infos"]:
             if concept_info["language"] not in concept_infos_languages:
                 dump_concept["concept_infos"].append(concept_info)

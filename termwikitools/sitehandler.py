@@ -46,9 +46,11 @@ def update_svn() -> None:
 
 def read_time_stamp() -> datetime:
     # read time stamp
-    timestamp = Path(
-        f"{os.getenv('GTHOME')}/words/terms/termwiki/timestamp"
-    ).read_text()
+    timestamp = (
+        Path(f"{os.getenv('GTHOME')}/words/terms/termwiki/timestamp")
+        .read_text()
+        .strip()
+    )
     return datetime.fromisoformat(timestamp.rstrip("Z"))
 
 

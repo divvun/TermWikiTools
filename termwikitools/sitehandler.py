@@ -415,7 +415,7 @@ class SiteHandler:
             if xml_timestamp is not None and xml_timestamp.text is not None:
                 dump_timestamp = datetime.fromisoformat(xml_timestamp.text.rstrip("Z"))
                 if dump_timestamp > timestamp:
-                    latest_timestamp = dump_timestamp
+                    latest_timestamp = max(dump_timestamp, latest_timestamp)
                     if dump_xml_page is not None and dump_xml_page.text:
                         try:
                             dump_tw_page = read_termwiki.termwiki_page_to_dataclass(

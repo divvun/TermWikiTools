@@ -24,7 +24,7 @@ from dataclasses import asdict
 
 import click
 
-from termwikitools import bot
+from termwikitools import bot, read_termwiki
 from termwikitools.handler_common import LANGUAGES
 
 # For hver av artiklene i inputfila, så vil jeg:
@@ -144,7 +144,12 @@ def merge_concepts(import_concept, dump_concept):
     for related_expression in import_concept["related_expressions"]:
         if related_expression["expression"] not in dump_expressions:
             dump_concept["related_expressions"].append(related_expression)
-    return dump_concept
+
+    return asdict(
+        read_termwiki.cleanup_termwiki_page(
+            read_termwiki.TERMWIKI_PAGE_SCHEMA.load(dump_concept)
+        )
+    )
 
 
 @main.command()

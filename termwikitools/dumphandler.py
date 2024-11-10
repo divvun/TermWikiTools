@@ -152,7 +152,8 @@ class DumpHandler:
                 [
                     asdict(termwikipage_to_satniconcept(termwikipage))
                     for _, termwikipage in self.termwiki_pages
-                ]
+                ],
+                ensure_ascii=False,
             )
         )
 

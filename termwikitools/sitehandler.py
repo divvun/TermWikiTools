@@ -485,6 +485,8 @@ class SiteHandler:
         update_svn()
         timestamp = read_time_stamp()
         new_timestamp = self.fix_recent_termwiki_pages(timestamp)
+        print(f"Initial timestamp: {timestamp}")
+        print(f"New timestamp: {new_timestamp}")
         write_time_stamp(new_timestamp)
         self.fix_expression_pages()
         self.delete_redirects()

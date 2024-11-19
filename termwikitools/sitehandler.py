@@ -484,6 +484,7 @@ class SiteHandler:
             raise SystemExit("Error: The environment value GTHOME is not set")
         update_svn()
         timestamp = read_time_stamp()
-        write_time_stamp(timestamp=self.fix_recent_termwiki_pages(timestamp))
+        new_timestamp = self.fix_recent_termwiki_pages(timestamp)
+        write_time_stamp(new_timestamp)
         self.fix_expression_pages()
         self.delete_redirects()

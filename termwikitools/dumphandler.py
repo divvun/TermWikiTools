@@ -40,7 +40,6 @@ from termwikitools.read_termwiki import (
     TermWikiPage,
     termwiki_page_to_dataclass,
 )
-from termwikitools.satni import termwikipage_to_satniconcept
 
 ATTS = re.compile(r"@[^@]+@")
 
@@ -149,11 +148,9 @@ class DumpHandler:
         json_file = Path("terms.json")
         json_file.write_text(
             json.dumps(
-                [
-                    asdict(termwikipage_to_satniconcept(termwikipage))
-                    for _, termwikipage in self.termwiki_pages
-                ],
+                [asdict(termwikipage) for _, termwikipage in self.termwiki_pages],
                 ensure_ascii=False,
+                indent=2,
             )
         )
 

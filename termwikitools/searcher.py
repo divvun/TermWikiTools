@@ -51,7 +51,7 @@ def make_search_index() -> dict[str, list[read_termwiki.TermWikiPage]]:
 
 def find_matching_term_articles(
     search_index: dict[str, list[read_termwiki.TermWikiPage]], json_concept: dict
-) -> list[tuple[str, str, list[read_termwiki.TermWikiPage]]]:
+) -> list[list[read_termwiki.TermWikiPage]]:
     """Find matching term articles to the json_concept.
 
     Args:
@@ -63,9 +63,9 @@ def find_matching_term_articles(
         termwiki pages.
     """
     return [
-        (search_term, term_language, search_index[search_term[0]])
-        for (search_term, term_language) in [
-            (related_expression["expression"], related_expression["language"])
+        search_index[search_term[0]]
+        for search_term in [
+            related_expression["expression"]
             for related_expression in json_concept["related_expressions"]
         ]
         if search_term in search_index
@@ -165,10 +165,10 @@ def merge_concepts(import_concept, dump_concept):
 
 
 def choose_page_title(
-    matching_term_articles: list[tuple[str, str, list[read_termwiki.TermWikiPage]]]
+    matching_term_articles: list[list[read_termwiki.TermWikiPage]],
 ) -> str | None:
     page_titles = {
-        page.title for result in matching_term_articles for page in result[2]
+        page.title for term_articles in matching_term_articles for page in term_articles
     }
 
     if len(page_titles) == 1:
@@ -188,13 +188,21 @@ def choose_page_title(
 
 
 @main.command()
+@click.option(
+    "--collection",
+    is_flag=False,
+    help="Filter by the collection found in the json file",
+)
 @click.argument("infile", type=click.Path(exists=True))
-def merge(infile):
-    """Search dump."""
+def merge(collection, infile):
+    """Merge content of json file with termwiki articles."""
     search_index = make_search_index()
 
     with click.open_file(infile, "r") as f:
         my_json = json.load(f)
+
+        this_collection = my_json["collection"]["name"] if collection else ""
+
         new_concepts = []
         for json_concept in my_json["concepts"]:
             matching_term_articles = find_matching_term_articles(

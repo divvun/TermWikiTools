@@ -49,14 +49,6 @@ def make_search_index() -> dict[str, list[read_termwiki.TermWikiPage]]:
     return search_index
 
 
-def get_searches(infile):
-    with click.open_file(infile, "r") as f:
-        my_json = json.load(f)
-        for concept in my_json["concepts"]:
-            for related_expression in concept["related_expressions"]:
-                yield related_expression["expression"], related_expression[
-                    "language"
-                ], concept["title"]
 def find_matching_term_articles(
     search_index: dict[str, list[read_termwiki.TermWikiPage]], json_concept: dict
 ) -> list[tuple[str, str, list[read_termwiki.TermWikiPage]]]:

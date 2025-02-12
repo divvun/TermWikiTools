@@ -39,7 +39,7 @@ from termwikitools.handler_common import LANGUAGES
 # modus 2: for artkikler med treff, 1. velg hvilken tittel man vil
 # flette inputartikkelen i, 2. erstatt den valgte inputartikkelen med
 # den flettede artikkelen.
-def make_search_index():
+def make_search_index() -> dict[str, list[read_termwiki.TermWikiPage]]:
     """Make a search index."""
     dump_handler = bot.DumpHandler()
     search_index = collections.defaultdict(list)
@@ -57,6 +57,27 @@ def get_searches(infile):
                 yield related_expression["expression"], related_expression[
                     "language"
                 ], concept["title"]
+def find_matching_term_articles(
+    search_index: dict[str, list[read_termwiki.TermWikiPage]], json_concept: dict
+) -> list[tuple[str, str, list[read_termwiki.TermWikiPage]]]:
+    """Find matching term articles to the json_concept.
+
+    Args:
+        search_index: The search index.
+        json_concept: The json concept.
+
+    Returns:
+        A list of tuples with search term, term language and list of matching
+        termwiki pages.
+    """
+    return [
+        (search_term, term_language, search_index[search_term[0]])
+        for (search_term, term_language) in [
+            (related_expression["expression"], related_expression["language"])
+            for related_expression in json_concept["related_expressions"]
+        ]
+        if search_term in search_index
+    ]
 
 
 @click.group()
@@ -160,51 +181,45 @@ def merge(infile):
     with click.open_file(infile, "r") as f:
         my_json = json.load(f)
         new_concepts = []
-        for concept in my_json["concepts"]:
-            search_terms = [
-                (related_expression["expression"], related_expression["language"])
-                for related_expression in concept["related_expressions"]
-            ]
+        for json_concept in my_json["concepts"]:
+            matching_term_articles = find_matching_term_articles(
+                search_index, json_concept
+            )
 
-            found_pages = [
-                (search, search_index[search[0]])
-                for search in search_terms
-                if search[0] in search_index
-            ]
+            if not matching_term_articles:
+                new_concepts.append(json_concept)
+                continue
 
-            if not found_pages:
-                new_concepts.append(concept)
+            page_titles = {
+                page.title for result in matching_term_articles for page in result[1]
+            }
+
+            if len(page_titles) == 1:
+                title = list(page_titles)[0]
             else:
-                page_titles = {
-                    page.title for result in found_pages for page in result[1]
-                }
-
-                if len(page_titles) == 1:
-                    title = list(page_titles)[0]
-                else:
-                    prompt = (
-                        "Choose title: \n"
-                        + "\n".join(
-                            [f"{i}: {title}" for i, title in enumerate(page_titles)]
-                        )
-                        + "\n"
+                prompt = (
+                    "Choose title: \n"
+                    + "\n".join(
+                        [f"{i}: {title}" for i, title in enumerate(page_titles)]
                     )
-                    choice = int(input(prompt))
-                    try:
-                        title = list(page_titles)[choice]
-                    except IndexError:
-                        title = None
+                    + "\n"
+                )
+                choice = int(input(prompt))
+                try:
+                    title = list(page_titles)[choice]
+                except IndexError:
+                    title = None
 
-                if title is None:
-                    new_concepts.append(concept)
-                else:
-                    for result in found_pages:
-                        for page in result[1]:
-                            if page.title == title:
-                                new_concepts.append(
-                                    merge_concepts(concept, asdict(page))
-                                )
-                                break
+            if title is None:
+                new_concepts.append(json_concept)
+            else:
+                for result in matching_term_articles:
+                    for page in result[1]:
+                        if page.title == title:
+                            new_concepts.append(
+                                merge_concepts(json_concept, asdict(page))
+                            )
+                            break
 
         my_json["concepts"] = new_concepts
         with click.open_file(infile, "w") as f2:

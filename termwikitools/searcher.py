@@ -164,6 +164,29 @@ def merge_concepts(import_concept, dump_concept):
     )
 
 
+def choose_page_title(
+    matching_term_articles: list[tuple[str, str, list[read_termwiki.TermWikiPage]]]
+) -> str | None:
+    page_titles = {
+        page.title for result in matching_term_articles for page in result[2]
+    }
+
+    if len(page_titles) == 1:
+        title = list(page_titles)[0]
+    else:
+        prompt = (
+            "Choose title: \n"
+            + "\n".join([f"{i}: {title}" for i, title in enumerate(page_titles)])
+            + "\n"
+        )
+        choice = int(input(prompt))
+        try:
+            title = list(page_titles)[choice]
+        except IndexError:
+            title = None
+    return title
+
+
 @main.command()
 @click.argument("infile", type=click.Path(exists=True))
 def merge(infile):
@@ -182,25 +205,7 @@ def merge(infile):
                 new_concepts.append(json_concept)
                 continue
 
-            page_titles = {
-                page.title for result in matching_term_articles for page in result[1]
-            }
-
-            if len(page_titles) == 1:
-                title = list(page_titles)[0]
-            else:
-                prompt = (
-                    "Choose title: \n"
-                    + "\n".join(
-                        [f"{i}: {title}" for i, title in enumerate(page_titles)]
-                    )
-                    + "\n"
-                )
-                choice = int(input(prompt))
-                try:
-                    title = list(page_titles)[choice]
-                except IndexError:
-                    title = None
+            title = choose_page_title(matching_term_articles)
 
             if title is None:
                 new_concepts.append(json_concept)

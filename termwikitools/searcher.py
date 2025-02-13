@@ -50,8 +50,10 @@ def make_search_index() -> dict[str, list[read_termwiki.TermWikiPage]]:
 
 
 def find_matching_term_articles(
-    search_index: dict[str, list[read_termwiki.TermWikiPage]], json_concept: dict
-) -> list[list[read_termwiki.TermWikiPage]]:
+    search_index: dict[str, list[read_termwiki.TermWikiPage]],
+    json_concept: dict,
+    collection: str | None,
+) -> list[read_termwiki.TermWikiPage]:
     """Find matching term articles to the json_concept.
 
     Args:
@@ -62,13 +64,25 @@ def find_matching_term_articles(
         A list of tuples with search term, term language and list of matching
         termwiki pages.
     """
-    return [
-        search_index[search_term[0]]
+    matching_term_articles = (
+        term_article
         for search_term in [
             related_expression["expression"]
             for related_expression in json_concept["related_expressions"]
         ]
         if search_term in search_index
+        for term_article in search_index[search_term]
+    )
+
+    if collection is None:
+        return list(matching_term_articles)
+
+    return [
+        term_article
+        for term_article in matching_term_articles
+        if term_article.concept is not None
+        and term_article.concept.collection is not None
+        and collection in term_article.concept.collection
     ]
 
 
@@ -133,12 +147,45 @@ def search(search_language, searches, outfile):
 
 def merge_concepts(import_concept, dump_concept):
     """Merge two concepts."""
-    if dump_concept["concept"].get("collection") is None:
-        dump_concept["concept"]["collection"] = []
-    dump_concept["concept"]["collection"].extend(
-        import_concept["concept"]["collection"]
+    merge_collections(import_concept, dump_concept)
+    merge_concept_infos(import_concept, dump_concept)
+
+    chosen_pos = define_partofspeech(import_concept, dump_concept)
+
+    set_dump_pos(dump_concept, chosen_pos)
+
+    merge_related_expressions(import_concept, dump_concept, chosen_pos)
+
+    return asdict(
+        read_termwiki.cleanup_termwiki_page(
+            read_termwiki.TERMWIKI_PAGE_SCHEMA.load(dump_concept)
+        )
     )
 
+
+def merge_related_expressions(import_concept, dump_concept, chosen_pos):
+    dump_expressions = [
+        related_expression["expression"]
+        for related_expression in dump_concept["related_expressions"]
+    ]
+    for related_expression in import_concept["related_expressions"]:
+        if related_expression["expression"] not in dump_expressions:
+            if chosen_pos is not None:
+                related_expression["pos"] = chosen_pos
+            if " " in related_expression["expression"]:
+                related_expression["pos"] = "MWE"
+            dump_concept["related_expressions"].append(related_expression)
+
+
+def set_dump_pos(dump_concept, chosen_pos):
+    for related_expression in dump_concept["related_expressions"]:
+        if chosen_pos is not None:
+            related_expression["pos"] = chosen_pos
+        if " " in related_expression["expression"]:
+            related_expression["pos"] = "MWE"
+
+
+def merge_concept_infos(import_concept, dump_concept):
     if import_concept.get("concept_infos"):
         concept_infos_languages = [
             concept_info["language"]
@@ -149,39 +196,68 @@ def merge_concepts(import_concept, dump_concept):
             if concept_info["language"] not in concept_infos_languages:
                 dump_concept["concept_infos"].append(concept_info)
 
-    dump_expressions = [
-        related_expression["expression"]
-        for related_expression in dump_concept["related_expressions"]
-    ]
-    for related_expression in import_concept["related_expressions"]:
-        if related_expression["expression"] not in dump_expressions:
-            dump_concept["related_expressions"].append(related_expression)
 
-    return asdict(
-        read_termwiki.cleanup_termwiki_page(
-            read_termwiki.TERMWIKI_PAGE_SCHEMA.load(dump_concept)
-        )
+def merge_collections(import_concept, dump_concept):
+    if dump_concept["concept"].get("collection") is None:
+        dump_concept["concept"]["collection"] = []
+    dump_concept["concept"]["collection"].extend(
+        import_concept["concept"]["collection"]
     )
 
 
-def choose_page_title(
-    matching_term_articles: list[list[read_termwiki.TermWikiPage]],
-) -> str | None:
-    page_titles = {
-        page.title for term_articles in matching_term_articles for page in term_articles
-    }
+def define_partofspeech(import_concept, dump_concept):
+    poses = list(
+        {
+            related_expression["pos"]
+            for related_expression in dump_concept["related_expressions"]
+            + import_concept["related_expressions"]
+            if related_expression["pos"] is not None
+            and related_expression["pos"] != "MWE"
+        }
+    )
+    if len(poses) == 1:
+        chosen_pos = poses[0]
+    elif len(poses) > 1:
+        for pos in poses:
+            for related_expression in (
+                import_concept["related_expressions"]
+                + dump_concept["related_expressions"]
+            ):
+                if related_expression["pos"] == pos:
+                    print(
+                        f"{related_expression["pos"]}: "
+                        f"{related_expression["expression"]}"
+                    )
+        prompt = (
+            "Choose pos: \n"
+            + "\n".join([f"{i}: {pos}" for i, pos in enumerate(poses)])
+            + "\n"
+        )
+        choice = int(input(prompt))
+        chosen_pos = poses[choice]
+    else:
+        chosen_pos = None
+    return chosen_pos
 
-    if len(page_titles) == 1:
-        title = list(page_titles)[0]
+
+def choose_page_title(
+    matching_term_articles: set[read_termwiki.TermWikiPage],
+) -> str | None:
+    article_titles = list(
+        {term_article.title for term_article in matching_term_articles}
+    )
+
+    if len(article_titles) == 1:
+        title = list(article_titles)[0]
     else:
         prompt = (
             "Choose title: \n"
-            + "\n".join([f"{i}: {title}" for i, title in enumerate(page_titles)])
+            + "\n".join([f"{i}: {title}" for i, title in enumerate(article_titles)])
             + "\n"
         )
         choice = int(input(prompt))
         try:
-            title = list(page_titles)[choice]
+            title = article_titles[choice]
         except IndexError:
             title = None
     return title
@@ -190,7 +266,7 @@ def choose_page_title(
 @main.command()
 @click.option(
     "--collection",
-    is_flag=False,
+    is_flag=True,
     help="Filter by the collection found in the json file",
 )
 @click.argument("infile", type=click.Path(exists=True))
@@ -201,14 +277,13 @@ def merge(collection, infile):
     with click.open_file(infile, "r") as f:
         my_json = json.load(f)
 
-        this_collection = my_json["collection"]["name"] if collection else ""
+        this_collection = my_json["collection"]["name"] if collection else None
 
         new_concepts = []
         for json_concept in my_json["concepts"]:
             matching_term_articles = find_matching_term_articles(
-                search_index, json_concept
+                search_index, json_concept, this_collection
             )
-
             if not matching_term_articles:
                 new_concepts.append(json_concept)
                 continue
@@ -218,13 +293,12 @@ def merge(collection, infile):
             if title is None:
                 new_concepts.append(json_concept)
             else:
-                for result in matching_term_articles:
-                    for page in result[1]:
-                        if page.title == title:
-                            new_concepts.append(
-                                merge_concepts(json_concept, asdict(page))
-                            )
-                            break
+                for matching_term_article in matching_term_articles:
+                    if matching_term_article.title == title:
+                        new_concepts.append(
+                            merge_concepts(json_concept, asdict(matching_term_article))
+                        )
+                        break
 
         my_json["concepts"] = new_concepts
         with click.open_file(infile, "w") as f2:

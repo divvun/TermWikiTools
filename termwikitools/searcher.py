@@ -18,9 +18,10 @@
 #
 """Search dump."""
 
-import collections
 import json
+from collections import defaultdict
 from dataclasses import asdict
+from pathlib import Path
 
 import click
 
@@ -39,10 +40,57 @@ from termwikitools.handler_common import LANGUAGES
 # modus 2: for artkikler med treff, 1. velg hvilken tittel man vil
 # flette inputartikkelen i, 2. erstatt den valgte inputartikkelen med
 # den flettede artikkelen.
+
+
+def update_expression(
+    excel_related_expression: dict, dump_related_expression: dict
+) -> dict:
+    """Replace excel related expression with dump related expression."""
+
+    # Never negate sanctioned status
+    if dump_related_expression["sanctioned"] == "True":
+        excel_related_expression["sanctioned"] = "True"
+
+    return {
+        key: value if value is not None else dump_related_expression[key]
+        for key, value in excel_related_expression.items()
+    }
+
+
+def is_full_expression_hit(
+    excel_related_expressions: list[dict], dump_related_expressions: list[dict]
+) -> bool:
+    """Check if full expression is hit."""
+    excel = {
+        (excel_related_expression["expression"], excel_related_expression["language"])
+        for excel_related_expression in excel_related_expressions
+    }
+    dump = {
+        (dump_related_expression["expression"], dump_related_expression["language"])
+        for dump_related_expression in dump_related_expressions
+    }
+    return excel.issubset(dump)
+
+
+def is_partial_expression_hit(
+    excel_related_expressions: list[dict], dump_related_expressions: list[dict]
+) -> bool:
+    """Check if partial expression is hit."""
+    excel = {
+        (excel_related_expression["expression"], excel_related_expression["language"])
+        for excel_related_expression in excel_related_expressions
+    }
+    dump = {
+        (dump_related_expression["expression"], dump_related_expression["language"])
+        for dump_related_expression in dump_related_expressions
+    }
+    return 0 < len(excel.intersection(dump)) < len(excel)
+
+
 def make_search_index() -> dict[str, list[read_termwiki.TermWikiPage]]:
     """Make a search index."""
     dump_handler = bot.DumpHandler()
-    search_index = collections.defaultdict(list)
+    search_index = defaultdict(list)
     for _, termwiki_page in dump_handler.termwiki_pages:
         for related_expression in termwiki_page.related_expressions:
             search_index[related_expression.expression].append(termwiki_page)
@@ -145,16 +193,26 @@ def search(search_language, searches, outfile):
         )
 
 
-def merge_concepts(import_concept, dump_concept):
+def merge_concepts(import_concept: dict, dump_concept: dict) -> dict:
     """Merge two concepts."""
-    merge_collections(import_concept, dump_concept)
-    merge_concept_infos(import_concept, dump_concept)
+    new_concept = {}
+    new_concept.update(dump_concept)
+    new_concept["concept"]["collection"] = merge_collections(
+        import_concept["concept"].get("collection"),
+        dump_concept["concept"].get("collection"),
+    )
+    new_concept["concept_infos"] = merge_concept_infos(
+        import_concept.get("concept_infos"), dump_concept.get("concept_infos")
+    )
 
     chosen_pos = define_partofspeech(import_concept, dump_concept)
 
-    set_dump_pos(dump_concept, chosen_pos)
+    set_pos(dump_concept, chosen_pos)
+    set_pos(import_concept, chosen_pos)
 
-    merge_related_expressions(import_concept, dump_concept, chosen_pos)
+    new_concept["related_expressions"] = merge_related_expressions(
+        import_concept, dump_concept, chosen_pos
+    )
 
     return asdict(
         read_termwiki.cleanup_termwiki_page(
@@ -163,21 +221,34 @@ def merge_concepts(import_concept, dump_concept):
     )
 
 
-def merge_related_expressions(import_concept, dump_concept, chosen_pos):
-    dump_expressions = [
-        related_expression["expression"]
-        for related_expression in dump_concept["related_expressions"]
-    ]
-    for related_expression in import_concept["related_expressions"]:
-        if related_expression["expression"] not in dump_expressions:
-            if chosen_pos is not None:
-                related_expression["pos"] = chosen_pos
-            if " " in related_expression["expression"]:
-                related_expression["pos"] = "MWE"
-            dump_concept["related_expressions"].append(related_expression)
+def merge_related_expressions(
+    import_concept: dict, dump_concept: dict, chosen_pos: str
+) -> list[dict]:
+    import_related_expressions = import_concept["related_expressions"]
+    dump_related_expressions = dump_concept["related_expressions"]
+
+    related_expressions = []
+    for dump_related_expression in dump_related_expressions:
+        for import_related_expression in import_related_expressions:
+            if (
+                import_related_expression["expression"]
+                == dump_related_expression["expression"]
+                and import_related_expression["language"]
+                == dump_related_expression["language"]
+            ):
+                related_expressions.append(
+                    update_expression(
+                        import_related_expression, dump_related_expression
+                    )
+                )
+                break
+        else:
+            related_expressions.append(dump_related_expression)
+
+    return related_expressions
 
 
-def set_dump_pos(dump_concept, chosen_pos):
+def set_pos(dump_concept, chosen_pos):
     for related_expression in dump_concept["related_expressions"]:
         if chosen_pos is not None:
             related_expression["pos"] = chosen_pos
@@ -185,24 +256,44 @@ def set_dump_pos(dump_concept, chosen_pos):
             related_expression["pos"] = "MWE"
 
 
-def merge_concept_infos(import_concept, dump_concept):
-    if import_concept.get("concept_infos"):
-        concept_infos_languages = [
-            concept_info["language"]
-            for concept_info in dump_concept.get("concept_infos", [])
-        ]
+def merge_concept_infos(
+    import_concept_infos: list[dict] | None, dump_concept_infos: list[dict] | None
+) -> list[dict] | None:
 
-        for concept_info in import_concept["concept_infos"]:
-            if concept_info["language"] not in concept_infos_languages:
-                dump_concept["concept_infos"].append(concept_info)
+    if import_concept_infos is None:
+        return dump_concept_infos
+
+    if dump_concept_infos is None:
+        return import_concept_infos
+
+    new_concept_infos = []
+
+    for dump_concept_info in dump_concept_infos:
+        for import_concept_info in import_concept_infos:
+            if import_concept_info["language"] == dump_concept_info["language"]:
+                new_concept_infos.append(
+                    {
+                        key: dump_concept_info[key] if value is None else value
+                        for key, value in import_concept_info.items()
+                    }
+                )
+                break
+        else:
+            new_concept_infos.append(dump_concept_info)
+
+    return new_concept_infos
 
 
-def merge_collections(import_concept, dump_concept):
-    if dump_concept["concept"].get("collection") is None:
-        dump_concept["concept"]["collection"] = []
-    dump_concept["concept"]["collection"].extend(
-        import_concept["concept"]["collection"]
-    )
+def merge_collections(
+    import_collections: list[str] | None, dump_collections: list[str] | None
+) -> list[str] | None:
+    if import_collections is None:
+        return dump_collections
+
+    if dump_collections is None:
+        return import_collections
+
+    return list(set(import_collections + dump_collections))
 
 
 def define_partofspeech(import_concept, dump_concept):
@@ -303,3 +394,96 @@ def merge(collection, infile):
         my_json["concepts"] = new_concepts
         with click.open_file(infile, "w") as f2:
             f2.write(json.dumps(my_json, indent=2, ensure_ascii=False))
+
+
+@main.command()
+@click.argument("collection")
+@click.argument("outfile", type=click.Path())
+def c2j(collection, outfile):
+    """Convert a collection to json."""
+
+    with click.open_file(outfile, "w") as f:
+        f.write(
+            json.dumps(
+                [
+                    asdict(termwiki_page)
+                    for _, termwiki_page in bot.DumpHandler().termwiki_pages
+                    if termwiki_page.concept
+                    and termwiki_page.concept.collection
+                    and collection in termwiki_page.concept.collection
+                ],
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+
+
+@main.command()
+@click.argument("collection")
+@click.argument("infile", type=click.Path(exists=True))
+# @click.argument("outfile", type=click.Path())
+def search_as_tsv(collection, infile):
+    """Search dump with tsv."""
+    search_index = make_search_index()
+
+    with click.open_file(infile, "r") as f:
+        lines = f.readlines()
+        langs = lines[0].strip().split(";")
+
+        print(
+            f"|{langs[0]}|{langs[1]} "
+            f"|Titles where both are found in the collection "
+            "|Titles where both are found but not in the collection "
+            f"|Titles where only the {langs[0]} is found "
+            f"|Titles where only the {langs[1]} is found"
+        )
+        print("|---|---|---|---|---|---")
+        for line in lines[1:]:
+            write_md_table_line(line, search_index, collection)
+
+
+def write_md_table_line(line, search_index, collection):
+    """Write a markdown table line.
+
+    The content of the line should be:
+        word1|
+        word2|
+        title where word1 and word2 are found but not collection|
+        titles where only word1 is found|
+        titles where only word2 is found
+    """
+    words = line.strip().split(";")
+    word1, word2 = words[0], words[1]
+
+    def get_titles(word, collection_filter=None):
+        pages = search_index.get(word, [])
+        if collection_filter:
+            pages = [
+                page
+                for page in pages
+                if page.concept
+                and page.concept.collection
+                and collection_filter in page.concept.collection
+            ]
+        return {
+            f"[{page.title}](https://satni.uit.no/termwiki/index.php?title="
+            f"{page.title.replace(' ', '_')})"
+            for page in pages
+        }
+
+    titles_word1 = get_titles(word1)
+    titles_word2 = get_titles(word2)
+    titles_both = titles_word1 & titles_word2
+    titles_both_collection = get_titles(word1, collection) & get_titles(
+        word2, collection
+    )
+    titles_word1_only = titles_word1 - titles_word2
+    titles_word2_only = titles_word2 - titles_word1
+
+    print(
+        f"|{word1} | {word2} "
+        f"|{', '.join(titles_both_collection)}"
+        f"|{', '.join(titles_both - titles_both_collection)}"
+        f"|{', '.join(titles_word1_only)}"
+        f"|{', '.join(titles_word2_only)}"
+    )

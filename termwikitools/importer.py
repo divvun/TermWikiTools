@@ -21,6 +21,7 @@
 import json
 from dataclasses import asdict
 from pathlib import Path
+from typing import Iterator
 
 import click
 import openpyxl
@@ -35,8 +36,10 @@ from termwikitools.read_termwiki import (
 
 
 class SheetImporter:
-    def __init__(self, sheet):
+    def __init__(self, sheet, comma: bool, lowercase: bool):
         self.sheet = sheet
+        self.comma = comma
+        self.lowercase = lowercase
 
     def row_to_concept(self, sheet_info: dict, row_number: int) -> TermWikiPage:
         return TERMWIKI_PAGE_SCHEMA.load(
@@ -46,7 +49,7 @@ class SheetImporter:
                 "concept": {"collection": [sheet_info["collection"]]},
                 "related_expressions": [
                     related_expression
-                    for related_expression in self.make_dict(
+                    for related_expression in self.make_expressions(
                         sheet_info.get("related_expressions") or [], row_number
                     )
                     if related_expression.get("expression")
@@ -58,6 +61,38 @@ class SheetImporter:
                 ),
             }
         )
+
+    def make_expression_list(self, value: str | None) -> list[str]:
+        if value is None:
+            return []
+
+        if self.lowercase:
+            value = value.lower()
+
+        return (
+            [part.strip() for part in value.split(",")]
+            if self.comma
+            else [value.strip()]
+        )
+
+    def make_expressions(self, dict_templates: list, row_number: int) -> Iterator[dict]:
+        for dict_template in dict_templates:
+            for expression in self.make_expression_list(
+                self.sheet.cell(
+                    row=row_number, column=dict_template.get("expression")
+                ).value
+            ):
+                expression_dict = {
+                    key: (
+                        self.sheet.cell(row=row_number, column=value).value
+                        if isinstance(value, int)
+                        else value
+                    )
+                    for key, value in dict_template.items()
+                    if key != "expression"
+                }
+                expression_dict["expression"] = expression
+                yield expression_dict
 
     def make_dict(self, dict_templates: list, row_number: int) -> list:
         return [
@@ -83,8 +118,10 @@ def extract_collection(
 
 
 @click.command()
+@click.option("--lowercase", is_flag=True, help="Lowercase all terms")
+@click.option("--comma", is_flag=True, help="Comma separates terms")
 @click.argument("filename")
-def main(filename):
+def main(lowercase, comma, filename):
     path = Path(filename)
     workbook = openpyxl.load_workbook(filename)
     template_json = path.with_name(f"{path.stem}.template.json")
@@ -113,7 +150,7 @@ def main(filename):
                     asdict(cleanup_termwiki_page(concept))
                     for concept in extract_collection(
                         sheet_importer=SheetImporter(
-                            workbook[sheet_info.get("sheetname")]
+                            workbook[sheet_info.get("sheetname")], comma, lowercase
                         ),
                         sheetinfo=template,
                     )
@@ -123,9 +160,7 @@ def main(filename):
             message = f"Error in input data\n{error}"
             raise SystemExit(message) from error
 
-        path.with_name(
-            f"{template.get('collection').replace(' ', '_')}.result.json"
-        ).write_text(
+        path.with_name(f"{path.stem.lower().replace(' ', '_')}.result.json").write_text(
             json.dumps(
                 data,
                 indent=2,

@@ -15,7 +15,6 @@ click = "^8.1.7"
 marshmallow-dataclass = "^8.6.0"
 hfst = "^3.16.0.1"
 pyyaml = "^6.0.1"
-setuptools = "^69.0.2"
 lxml = "^5.1.0"
 
 [tool.poetry.dev-dependencies]

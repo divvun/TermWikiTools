@@ -30,7 +30,6 @@ from marshmallow.exceptions import ValidationError
 from termwikitools.read_termwiki import (
     COLLECTION_SCHEMA,
     TERMWIKI_PAGE_SCHEMA,
-    TermWikiPage,
     cleanup_termwiki_page,
 )
 
@@ -41,26 +40,25 @@ class SheetImporter:
         self.comma = comma
         self.lowercase = lowercase
 
-    def row_to_concept(self, sheet_info: dict, row_number: int) -> TermWikiPage:
-        return TERMWIKI_PAGE_SCHEMA.load(
-            {
-                "title": f"{sheet_info['main_category']}:"
-                f"{sheet_info['collection']}_{row_number}",
-                "concept": {"collection": [sheet_info["collection"]]},
-                "related_expressions": [
-                    related_expression
-                    for related_expression in self.make_expressions(
-                        sheet_info.get("related_expressions") or [], row_number
-                    )
-                    if related_expression.get("expression")
-                ],
-                "concept_infos": (
-                    self.make_dict(sheet_info.get("concept_infos") or [], row_number)
-                    if sheet_info.get("concept_infos")
-                    else None
-                ),
-            }
-        )
+    def row_to_concept_dict(
+        self, collection: str, sheet_info: dict, row_number: int
+    ) -> dict:
+        return {
+            "title": sheet_info.get("main_category"),
+            "concept": {"collection": [collection]},
+            "related_expressions": [
+                related_expression
+                for related_expression in self.make_expressions(
+                    sheet_info.get("related_expressions") or [], row_number
+                )
+                if related_expression.get("expression")
+            ],
+            "concept_infos": (
+                self.make_dict(sheet_info.get("concept_infos") or [], row_number)
+                if sheet_info.get("concept_infos")
+                else None
+            ),
+        }
 
     def make_expression_list(self, value: str | None) -> list[str]:
         if value is None:
@@ -109,12 +107,14 @@ class SheetImporter:
 
 
 def extract_collection(
-    sheet_importer: SheetImporter, sheetinfo: dict
-) -> list[TermWikiPage]:
-    return [
-        sheet_importer.row_to_concept(sheet_info=sheetinfo, row_number=row_number)
+    sheet_importer: SheetImporter, sheetinfo: dict, collection: str
+) -> Iterator[dict]:
+    return (
+        sheet_importer.row_to_concept_dict(
+            collection, sheet_info=sheetinfo, row_number=row_number
+        )
         for row_number in range(2, sheet_importer.sheet.max_row + 1)
-    ]
+    )
 
 
 @click.command()
@@ -124,46 +124,71 @@ def extract_collection(
 def main(lowercase, comma, filename):
     path = Path(filename)
     workbook = openpyxl.load_workbook(filename)
-    template_json = path.with_name(f"{path.stem}.template.json")
+    template_json = path.with_name(f"{path.stem.lower()}.template.json")
     sheet_infos = json.loads(template_json.read_text())
-
-    for sheet_info in sheet_infos.get("sheets"):
-        template = sheet_info.get("template")
-        try:
-            data = {
-                "collection": asdict(
-                    COLLECTION_SCHEMA.load(
-                        {
-                            "name": f"Collection:{template.get('collection')}",
-                            "info": sheet_infos.get("info"),
-                            "owner": sheet_infos.get("owner"),
-                            "languages": [
+    collection = sheet_infos.get("collection")
+    try:
+        data = {
+            "collection": asdict(
+                COLLECTION_SCHEMA.load(
+                    {
+                        "name": f"Collection:{collection}",
+                        "info": sheet_infos.get("info"),
+                        "owner": sheet_infos.get("owner"),
+                        "languages": list(
+                            {
                                 related_expression.get("language")
-                                for related_expression in template.get(
-                                    "related_expressions"
-                                )
-                            ],
-                        }
-                    )
-                ),
-                "concepts": [
-                    asdict(cleanup_termwiki_page(concept))
-                    for concept in extract_collection(
-                        sheet_importer=SheetImporter(
-                            workbook[sheet_info.get("sheetname")], comma, lowercase
+                                for sheet_info in sheet_infos.get("sheets")
+                                for related_expression in sheet_info.get(
+                                    "template"
+                                ).get("related_expressions")
+                            }
                         ),
-                        sheetinfo=template,
+                    }
+                )
+            ),
+            "concepts": [
+                asdict(
+                    cleanup_termwiki_page(
+                        TERMWIKI_PAGE_SCHEMA.load(
+                            {
+                                **concept_dict,
+                                "title": f"{concept_dict.get('title')}:"
+                                f"{collection}_{index}",
+                            }
+                        )
                     )
-                ],
-            }
-        except ValidationError as error:
-            message = f"Error in input data\n{error}"
-            raise SystemExit(message) from error
+                )
+                for (index, concept_dict) in enumerate(
+                    all_concepts(lowercase, comma, workbook, sheet_infos, collection),
+                    start=1,
+                )
+            ],
+        }
+    except ValidationError as error:
+        message = f"Error in input data\n{error}"
+        raise SystemExit(message) from error
 
-        path.with_name(f"{path.stem.lower().replace(' ', '_')}.result.json").write_text(
-            json.dumps(
-                data,
-                indent=2,
-                ensure_ascii=False,
-            )
+    path.with_name(f"{path.stem.lower().replace(' ', '_')}.result.json").write_text(
+        json.dumps(
+            data,
+            indent=2,
+            ensure_ascii=False,
         )
+    )
+
+
+def all_concepts(
+    lowercase: bool, comma: bool, workbook, sheet_infos: dict, collection: str
+) -> Iterator[dict]:
+    return (
+        concept
+        for sheet_info in sheet_infos.get("sheets", {})
+        for concept in extract_collection(
+            sheet_importer=SheetImporter(
+                workbook[sheet_info.get("sheetname")], comma, lowercase
+            ),
+            sheetinfo=sheet_info.get("template"),
+            collection=collection,
+        )
+    )

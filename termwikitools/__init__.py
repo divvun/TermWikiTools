@@ -1,6 +1,6 @@
 import os.path
 
-from pkg_resources import DistributionNotFound, get_distribution
+from pkg_resources import DistributionNotFound, get_distribution  # type: ignore
 
 try:
     _dist = get_distribution("TermWikiTools")

@@ -204,6 +204,24 @@ def pairs(source, target, category):
     )
 
 
+@dump.command()
+@click.argument("source", type=click.Choice(list(LANGUAGES.keys())))
+@click.argument("target", type=click.Choice(list(LANGUAGES.keys())))
+@click.option(
+    "--category",
+    type=click.Choice([namespace.replace(" ", "_") for namespace in NAMESPACES]),
+    help="Choose category",
+)
+def no_lang2(source, target, category):
+    """Print terms of lang1, not found in lang2."""
+    dumphandler = DumpHandler()
+    dumphandler.print_no_lang2(
+        lang1=LANGUAGES[source],
+        lang2=LANGUAGES[target],
+        category=category.replace("_", " ") if category is not None else category,
+    )
+
+
 @main.group()
 def site():
     pass
@@ -279,6 +297,7 @@ def fixrecent(amount):
         page = site_handler.site.pages[title]
         site_handler.fix_termwiki_page(page)
         time.sleep(0.2)
+
 
 @site.command()
 def fix_by_timestamp():

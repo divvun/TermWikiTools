@@ -413,19 +413,30 @@ class DumpHandler:
                         for expression in langs[lang1]:
                             print("{}\t{}".format(expression, ", ".join(langs[lang2])))
 
-    def print_no_lang2(self, lang1, lang2, category=None):
+    def print_no_lang2(
+        self, lang1: str, lang2: str, helper_langs: list[str], category=None
+    ) -> None:
         """Print expressions of lang1, that do not exist in lang2."""
         for title, concept in self.termwiki_pages:
             if category is None or title.startswith(category):
                 if concept.has_sanctioned_sami():
-                    langs = {lang1: set(), lang2: set()}
+                    all_expressions: list[str] = []
+                    langs: dict[str, set[str]] = collections.defaultdict(set)
                     for expression in concept.related_expressions:
-                        if expression.language in (lang1, lang2):
+                        if expression.language in [lang1, lang2] + helper_langs:
                             if expression.sanctioned:
                                 langs[expression.language].add(expression.expression)
 
                     if langs[lang1] and not langs[lang2]:
-                        print(f"{', '.join(langs[lang1])}")
+                        all_expressions.append(f"{', '.join(langs[lang1])}")
+
+                        for helper_lang in helper_langs:
+                            if langs[helper_lang]:
+                                all_expressions.append(
+                                    f"{', '.join(langs[helper_lang])}"
+                                )
+
+                        print("{}".format("\t".join(all_expressions)))
 
     def statistics(self, language: str) -> None:
         counter: dict[str, dict[str, int]] = {}

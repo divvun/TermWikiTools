@@ -263,7 +263,7 @@ class DumpHandler:
                 "\n".join(
                     [
                         f"{descriptive}\t{analysis}"
-                        for analysis in descriptives[descriptive]["analyses"]
+                        for analysis in sorted(descriptives[descriptive]["analyses"])
                     ]
                 )
             )

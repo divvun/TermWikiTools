@@ -18,7 +18,6 @@
 #
 """Bot to fix syntax blunders in termwiki articles."""
 
-import time
 
 import click
 import requests
@@ -293,14 +292,12 @@ def delete_pages(substring):
 
 
 @site.command()
-@click.option("--amount", default=10, help="The number of recent changes to fix")
-def fixrecent(amount):
-    """Fix recently changed Concept pages on the TermWiki."""
+@click.argument("title", type=str)
+def fix_termpage(title: str):
+    """Fix a named TermWiki page."""
     site_handler = SiteHandler()
-    for title in list_recent_changes(amount):
-        page = site_handler.site.pages[title]
-        site_handler.fix_termwiki_page(page)
-        time.sleep(0.2)
+    page = site_handler.site.pages[title]
+    site_handler.fix_termwiki_page(page)
 
 
 @site.command()

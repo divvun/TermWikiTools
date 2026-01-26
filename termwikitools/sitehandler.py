@@ -23,7 +23,7 @@ import subprocess
 import sys
 import time
 from dataclasses import asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Generator, Iterator
 
@@ -192,7 +192,6 @@ class SiteHandler:
     ) -> collections.defaultdict:
         related_expression_dict = collections.defaultdict(set)
         for _, concept in dump.termwiki_pages:
-
             for related_expression in concept.related_expressions:
                 related_expression_dict[
                     f'Expression:{related_expression.expression.replace("&amp;", "&")}'
@@ -247,17 +246,22 @@ class SiteHandler:
         self.delete_expression_pages(related_expression_dict, dump_expression_dict)
 
     def fix_expression_page(self, expression_title: str, content: str) -> None:
-        page = self.site.Pages[expression_title]
+        try:
+            page = self.site.Pages[expression_title]
 
-        if not page.exists:
-            print("\tmaking", expression_title)
-            self.save_page(page, content=content, summary="Making new expression page")
-            time.sleep(0.2)
+            if not page.exists:
+                print("\tmaking", expression_title)
+                self.save_page(
+                    page, content=content, summary="Making new expression page"
+                )
+                time.sleep(0.2)
 
-        if page.text() != content:
-            print("\treally fixing", expression_title)
-            self.save_page(page, content=content, summary="Fixing expression page")
-            time.sleep(0.2)
+            if page.text() != content:
+                print("\treally fixing", expression_title)
+                self.save_page(page, content=content, summary="Fixing expression page")
+                time.sleep(0.2)
+        except mwclient.InvalidPageTitle as error:
+            print(expression_title, error, file=sys.stderr)
 
     def make_expression_content(self, languages: set) -> str:
         strings = []

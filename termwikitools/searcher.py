@@ -21,7 +21,6 @@
 import json
 from collections import defaultdict
 from dataclasses import asdict
-from pathlib import Path
 
 import click
 
@@ -442,6 +441,23 @@ def search_as_tsv(collection, infile):
             write_md_table_line(line, search_index, collection)
 
 
+def get_titles(search_index, word, collection_filter=None):
+    pages = search_index.get(word, [])
+    if collection_filter:
+        pages = [
+            page
+            for page in pages
+            if page.concept
+            and page.concept.collection
+            and collection_filter in page.concept.collection
+        ]
+    return {
+        f"[{page.title}](https://satni.uit.no/termwiki/index.php?title="
+        f"{page.title.replace(' ', '_')})"
+        for page in pages
+    }
+
+
 def write_md_table_line(line, search_index, collection):
     """Write a markdown table line.
 
@@ -454,22 +470,6 @@ def write_md_table_line(line, search_index, collection):
     """
     words = line.strip().split(";")
     word1, word2 = words[0], words[1]
-
-    def get_titles(word, collection_filter=None):
-        pages = search_index.get(word, [])
-        if collection_filter:
-            pages = [
-                page
-                for page in pages
-                if page.concept
-                and page.concept.collection
-                and collection_filter in page.concept.collection
-            ]
-        return {
-            f"[{page.title}](https://satni.uit.no/termwiki/index.php?title="
-            f"{page.title.replace(' ', '_')})"
-            for page in pages
-        }
 
     titles_word1 = get_titles(word1)
     titles_word2 = get_titles(word2)
@@ -487,3 +487,50 @@ def write_md_table_line(line, search_index, collection):
         f"|{', '.join(titles_word1_only)}"
         f"|{', '.join(titles_word2_only)}"
     )
+
+
+@main.command()
+@click.argument("infile", type=click.Path(exists=True))
+# @click.argument("outfile", type=click.Path())
+def search_as_collection_json(infile):
+    """Search dump with result.json from an excel file."""
+    search_index = make_search_index()
+
+    with click.open_file(infile, "r") as f:
+        my_json = json.load(f)
+
+        search_results = [
+            {
+                word_lang: {
+                    title
+                    for title in get_titles(search_index, word_lang[0])
+                    if "Folkunivers" not in title
+                }
+                for word_lang in {
+                    (
+                        expression.strip().replace("?", ""),
+                        related_expression["language"],
+                    )
+                    for related_expression in concept["related_expressions"]
+                    for expression in related_expression["expression"].split("/")
+                }
+                if word_lang[0] in search_index
+            }
+            for concept in my_json["concepts"]
+        ]
+
+        for search_result in search_results:
+            word_langs = [
+                f"{word_lang[0]} ({word_lang[1]})" for word_lang in search_result.keys()
+            ]
+            links = "\n".join(
+                [
+                    f"  - {word_lang[0]} ({word_lang[1]}): {', '.join(titles)}"
+                    for word_lang, titles in search_result.items()
+                    if titles
+                ]
+            )
+            if word_langs:
+                print(f"- words: {', '.join(word_langs)}")
+            if links:
+                print(links)

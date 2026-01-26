@@ -162,11 +162,21 @@ class DumpHandler:
     def not_found_in_normfst(
         self, language: str, only_sanctioned: str
     ) -> collections.defaultdict:
+        giella_dir = os.getenv("GTLANGS")
+        assert giella_dir is not None, "GTLANGS environment variable not set"
         """Return expressions not found in normfst."""
         not_founds = collections.defaultdict(set)
-        norm_analyser = hfst.HfstInputStream(
-            f"/usr/local/share/giella/{language}/analyser-gt-norm.hfstol"
-        ).read()
+        norm_analyser_path = (
+            Path(giella_dir)
+            / f"lang-{language}"
+            / "src"
+            / "fst"
+            / "analyser-gt-norm.hfstol"
+        )
+        assert (
+            norm_analyser_path.exists()
+        ), f"Norm analyser not found: {norm_analyser_path}"
+        norm_analyser = hfst.HfstInputStream(norm_analyser_path.as_posix()).read()
 
         base_url = "https://satni.uit.no/termwiki"
         for title, expression in self.expressions(LANGUAGES[language], only_sanctioned):
@@ -191,9 +201,19 @@ class DumpHandler:
         language: str, not_in_norms: collections.defaultdict
     ) -> dict[str, dict[str, set[str] | list[str]]]:
         # TODO: make suggestions: remove Err-tags, run analyses through generator-norm
-        desc_analyser = hfst.HfstInputStream(
-            f"/usr/local/share/giella/{language}/analyser-gt-desc.hfstol"
-        ).read()
+        giella_dir = os.getenv("GTLANGS")
+        assert giella_dir is not None, "GTLANGS environment variable not set"
+        desc_analyser_path = (
+            Path(giella_dir)
+            / f"lang-{language}"
+            / "src"
+            / "fst"
+            / "analyser-gt-desc.hfstol"
+        )
+        assert (
+            desc_analyser_path.exists()
+        ), f"Descriptive analyser not found: {desc_analyser_path}"
+        desc_analyser = hfst.HfstInputStream(desc_analyser_path.as_posix()).read()
         founds: dict[str, dict[str, set[str] | list[str]]] = collections.defaultdict(
             dict
         )

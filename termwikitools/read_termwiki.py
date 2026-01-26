@@ -426,24 +426,6 @@ def read_semantic_form(text_iterator: Iterable[str]) -> Dict[str, str]:
     return wiki_form
 
 
-LANG_TRANS = {
-    """Sammallahti letters from his sme-fin dictionary"""
-    "se": str.maketrans("Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ", "Eeiieijlouhlmrvaeouybdg ru' "),
-    """Replace invalid accents with valid ones for the sms language.
-
-    * u2019: RIGHT SINGLE QUOTATION MARK
-    * u0027: APOSTROPHE
-    * u2032: PRIME
-    * u00B4: ACUTE ACCENT
-    * u0301: COMBINING ACUTE ACCENT
-    * u02BC: MODIFIER LETTER APOSTROPHE
-    * u02B9: MODIFIER LETTER PRIME"""
-    "sms": str.maketrans(
-        "\u2019\u0027\u2032\u00B4\u0301", "\u02BC\u02BC\u02B9\u02B9\u02B9"
-    ),
-}
-
-
 def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """Clean up expression.
 
@@ -454,12 +436,28 @@ def cleanup_expression(related_expression: RelatedExpression) -> dict:
         dict: The cleaned up expression.
     """
     expression_dict = asdict(related_expression)
-
-    if LANG_TRANS.get(expression_dict["language"]):
+    if expression_dict.get("language") == "se":
+        # Sammallahti letters from his sme-fin dictionary
         expression_dict["expression"] = expression_dict["expression"].translate(
-            LANG_TRANS.get(expression_dict["language"])
+            str.maketrans(
+                "Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ", "Eeiieijlouhlmrvaeouybdg ru' "
+            )
         )
+    if expression_dict.get("language") == "sms":
+        """Replace invalid accents with valid ones for the sms language.
 
+        * u2019: RIGHT SINGLE QUOTATION MARK
+        * u0027: APOSTROPHE
+        * u2032: PRIME
+        * u00B4: ACUTE ACCENT
+        * u0301: COMBINING ACUTE ACCENT
+        * u02BC: MODIFIER LETTER APOSTROPHE
+        * u02B9: MODIFIER LETTER PRIME"""
+        expression_dict["expression"] = expression_dict["expression"].translate(
+            str.maketrans(
+                "\u2019\u0027\u2032\u00b4\u0301", "\u02bc\u02bc\u02b9\u02b9\u02b9"
+            )
+        )
     return expression_dict
 
 

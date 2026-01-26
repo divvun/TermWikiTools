@@ -16,17 +16,18 @@
 #   Copyright © 2016-2024 The University of Tromsø
 #   http://giellatekno.uit.no & http://divvun.no
 #
-
 import collections
 import json
 import os
 import re
 import sys
 from dataclasses import asdict
+from datetime import datetime
 from pathlib import Path
-from typing import Generator, Iterable, Tuple
+from typing import Generator, Iterable, Iterator, Tuple
 
 import hfst  # type: ignore
+import marshmallow
 from lxml import etree
 from lxml.etree import _Element
 from marshmallow import ValidationError
@@ -118,8 +119,12 @@ class DumpHandler:
         for title, content_elt, _ in self.content_elements:
             try:
                 if content_elt is not None and content_elt.text:
-                    yield title, termwiki_page_to_dataclass(
-                        title, iter(content_elt.text.replace("\xa0", " ").splitlines())
+                    yield (
+                        title,
+                        termwiki_page_to_dataclass(
+                            title,
+                            iter(content_elt.text.replace("\xa0", " ").splitlines()),
+                        ),
                     )
             except (ValidationError, KeyError) as error:
                 print(
@@ -491,3 +496,32 @@ class DumpHandler:
             total[item[0]] += item[1]
             print(f"{item[0]}\t{item[1]}")
         print()
+
+    def dump_pages_newer_than_timestamp(
+        self, timestamp: datetime
+    ) -> Iterator[tuple[TermWikiPage, str]]:
+        """Check if the dump file is newer than the given timestamp."""
+        dumphandler = DumpHandler()
+        for title, dump_xml_page, page_id in dumphandler.pages:
+            xml_timestamp = dump_xml_page.find(
+                ".//{}timestamp".format(dumphandler.mediawiki_ns)
+            )
+            if xml_timestamp is not None and xml_timestamp.text is not None:
+                dump_timestamp = datetime.fromisoformat(xml_timestamp.text.rstrip("Z"))
+                if dump_timestamp > timestamp:
+                    if dump_xml_page is not None and dump_xml_page.text:
+                        try:
+                            yield (
+                                read_termwiki.termwiki_page_to_dataclass(
+                                    title,
+                                    iter(
+                                        dump_xml_page.text.replace(
+                                            "\xa0", " "
+                                        ).splitlines()
+                                    ),
+                                ),
+                                page_id,
+                            )
+                        except marshmallow.exceptions.ValidationError as error:
+                            print(f"Error: {title}", error, file=sys.stderr)
+                            print(f"Content: {dump_xml_page.text}", file=sys.stderr)

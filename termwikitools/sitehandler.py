@@ -25,7 +25,7 @@ import time
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any, Generator, Iterator
 
 import marshmallow
 import mwclient  # type: ignore
@@ -398,7 +398,32 @@ class SiteHandler:
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
 
-    def fix_recent_termwiki_pages(self, timestamp: datetime) -> datetime:
+    def get_valid_site_termwiki_pages(
+        self
+    ) -> Iterator[tuple[read_termwiki.TermWikiPage, str, mwclient.page.Page]]:
+        dumphandler = DumpHandler()
+        for dump_tw_page, page_id in dumphandler.dump_pages_newer_than_timestamp(
+            read_time_stamp()
+        ):
+            page = self.site.pages[dump_tw_page.title]
+
+            try:
+                yield (
+                    read_termwiki.termwiki_page_to_dataclass(
+                        dump_tw_page.title, iter(page.text().splitlines())
+                    ),
+                    page_id,
+                    page,
+                )
+            except marshmallow.exceptions.ValidationError as error:
+                print(
+                    f"Error: Fix termwiki {dump_tw_page.title}",
+                    error,
+                    file=sys.stderr,
+                )
+                print(f"Content: {page.text()}", file=sys.stderr)
+
+    def fix_recent_termwiki_pages(self) -> None:
         """Fix termwiki pages newer than the time stamp, including adding id.
 
         Args:
@@ -408,85 +433,39 @@ class SiteHandler:
             The latest time stamp
         """
         # fix termwiki pages newer than the time stamp, including adding id
-        dumphandler = DumpHandler()
-        latest_timestamp = timestamp
-        for title, dump_xml_page, page_id in dumphandler.pages:
-            xml_timestamp = dump_xml_page.find(
-                ".//{}timestamp".format(dumphandler.mediawiki_ns)
-            )
-            if xml_timestamp is not None and xml_timestamp.text is not None:
-                dump_timestamp = datetime.fromisoformat(xml_timestamp.text.rstrip("Z"))
-                if dump_timestamp > timestamp:
-                    latest_timestamp = max(dump_timestamp, latest_timestamp)
-                    if dump_xml_page is not None and dump_xml_page.text:
-                        try:
-                            dump_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                                title,
-                                iter(
-                                    dump_xml_page.text.replace("\xa0", " ").splitlines()
-                                ),
-                            )
-                        except marshmallow.exceptions.ValidationError as error:
-                            print(f"Error: {title}", error, file=sys.stderr)
-                            print(f"Content: {dump_xml_page.text}", file=sys.stderr)
-                            continue
-                        finally:
-                            page = self.site.pages[title]
-
-                            try:
-                                site_tw_page = read_termwiki.termwiki_page_to_dataclass(
-                                    title, iter(page.text().splitlines())
-                                )
-                            except marshmallow.exceptions.ValidationError as error:
-                                print(
-                                    f"Error: Fix termwiki {title}",
-                                    error,
-                                    file=sys.stderr,
-                                )
-                                print(f"Content: {page.text()}", file=sys.stderr)
-                                continue
-
-                            fixed_tw_page = read_termwiki.cleanup_termwiki_page(
-                                site_tw_page
-                            )
-                            if (
-                                fixed_tw_page.concept is not None
-                                and site_tw_page.concept is not None
-                                and dump_tw_page.concept is not None
-                                and dump_tw_page.concept.page_id is None
-                            ):
-                                fixed_tw_page.concept.page_id = page_id
-                            try:
-                                if fixed_tw_page != site_tw_page:
-                                    print("Saving", title)
-                                    self.save_page(
-                                        page,
-                                        fixed_tw_page.to_termwiki(),
-                                        summary="Fixing content",
-                                    )
-                                    time.sleep(0.2)  # only sleep if we actually save
-                            except KeyError as error:
-                                print(
-                                    f"Error: Please fix {title}", error, file=sys.stderr
-                                )
-                                content = json.dumps(
-                                    asdict(fixed_tw_page), ensure_ascii=False, indent=2
-                                )
-                                print(
-                                    f"Content: {content}",
-                                    file=sys.stderr,
-                                )
-        return latest_timestamp
+        for valid_site_tw_page, page_id, page in self.get_valid_site_termwiki_pages():
+            fixed_tw_page = read_termwiki.cleanup_termwiki_page(valid_site_tw_page)
+            if fixed_tw_page.concept is not None:
+                fixed_tw_page.concept.page_id = page_id
+                try:
+                    if fixed_tw_page != valid_site_tw_page:
+                        print("Saving", valid_site_tw_page.title)
+                        self.save_page(
+                            page,
+                            fixed_tw_page.to_termwiki(),
+                            summary="Fixing content",
+                        )
+                        time.sleep(0.2)  # only sleep if we actually save
+                except KeyError as error:
+                    print(
+                        f"Error: Please fix {valid_site_tw_page.title}",
+                        error,
+                        file=sys.stderr,
+                    )
+                    content = json.dumps(
+                        asdict(fixed_tw_page), ensure_ascii=False, indent=2
+                    )
+                    print(
+                        f"Content: {content}",
+                        file=sys.stderr,
+                    )
 
     def fix_by_timestamp(self) -> None:
         """Fix termwiki pages by timestamp."""
         if not os.getenv("GTHOME"):
             raise SystemExit("Error: The environment value GTHOME is not set")
         update_svn()
-        timestamp = read_time_stamp()
-        new_timestamp = self.fix_recent_termwiki_pages(timestamp)
-        print(f"Initial timestamp: {timestamp}")
-        print(f"New timestamp: {new_timestamp}")
-        write_time_stamp(new_timestamp)
+        self.fix_recent_termwiki_pages()
+        write_time_stamp(datetime.now(timezone.utc))
         self.fix_expression_pages()
         self.delete_redirects()

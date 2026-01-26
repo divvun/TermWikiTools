@@ -15,8 +15,7 @@ click = "^8.1.7"
 marshmallow-dataclass = "^8.6.0"
 hfst = "^3.16.0.1"
 pyyaml = "^6.0.1"
-lxml = "^5.1.0"
-setuptools = "^76.1.0"
+lxml = "^6.0.2"
 
 [tool.poetry.scripts]
 termimport = "termwikitools.importer:main"
@@ -29,10 +28,10 @@ satnilogs = "termwikitools.analyse_logs:main"
 [tool.poetry.group.dev.dependencies]
 nose = "^1.3.7"
 mypy = "^1.7.0"
-types-lxml = "^2024.2.9"
 types-pyyaml = "^6.0.12.12"
 types-openpyxl = "^3.1.0.20240205"
-ruff = "^0.7.0"
+types-lxml = "^2026.1.1"
+ruff = "^0.14.14"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

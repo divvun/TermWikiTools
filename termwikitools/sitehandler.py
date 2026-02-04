@@ -277,18 +277,16 @@ class SiteHandler:
         root = dump.tree.getroot()
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
         to_deletes = {
-            expression_xml.text
-            for expression_xml in root.xpath(
-                f'.//mw:title[starts-with(text(), "{part_of_title}")]',
-                namespaces=namespace,
-            )
+            title_xml.text
+            for title_xml in root.xpath('.//mw:title', namespaces=namespace)
+            if title_xml.text and title_xml.text.startswith(part_of_title)
         }
         print(f"{len(to_deletes)} pages to delete")
         for to_delete in to_deletes:
             page = self.site.Pages[to_delete]
             if page.exists:
                 print(f"Removing {to_delete}")
-                page.delete(reason="Pages is not needed anymore")
+                page.delete(reason="Page is not needed anymore")
 
     def fix(self) -> None:
         """Make the bot fix all pages."""

@@ -285,8 +285,11 @@ class SiteHandler:
         for to_delete in to_deletes:
             page = self.site.pages[to_delete]
             if page.exists:
-                print(f"Removing {to_delete}")
-                page.delete(reason="Page is not needed anymore")
+                try:
+                    print(f"Removing {to_delete}")
+                    page.delete(reason="Page is not needed anymore")
+                except mwclient.errors.APIError as error:
+                    print(f"Error deleting {to_delete}: {error}", file=sys.stderr)
 
     def fix(self) -> None:
         """Make the bot fix all pages."""

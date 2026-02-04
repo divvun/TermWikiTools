@@ -176,7 +176,7 @@ class SiteHandler:
                         dump_tw_page.concept is not None
                         and dump_tw_page.concept.page_id is None
                     ):
-                        page = self.site.Pages[title]
+                        page = self.site.pages[title]
                         site_tw_page = read_termwiki.termwiki_page_to_dataclass(
                             title, iter(page.text().splitlines())
                         )
@@ -232,7 +232,7 @@ class SiteHandler:
         dump_expressions = set(dump_expression_dict.keys())
 
         for to_delete in dump_expressions - related_expressions:
-            page = self.site.Pages[to_delete]
+            page = self.site.pages[to_delete]
             if page.exists:
                 print(f"Removing {to_delete}")
                 page.delete(reason="Is not found among related expressions")
@@ -247,7 +247,7 @@ class SiteHandler:
 
     def fix_expression_page(self, expression_title: str, content: str) -> None:
         try:
-            page = self.site.Pages[expression_title]
+            page = self.site.pages[expression_title]
 
             if not page.exists:
                 print("\tmaking", expression_title)
@@ -283,7 +283,7 @@ class SiteHandler:
         }
         print(f"{len(to_deletes)} pages to delete")
         for to_delete in to_deletes:
-            page = self.site.Pages[to_delete]
+            page = self.site.pages[to_delete]
             if page.exists:
                 print(f"Removing {to_delete}")
                 page.delete(reason="Page is not needed anymore")
@@ -294,7 +294,7 @@ class SiteHandler:
         for title, dump_tw_page in dump.termwiki_pages:
             fixed_dump_tw_page = read_termwiki.cleanup_termwiki_page(dump_tw_page)
             if dump_tw_page != fixed_dump_tw_page:
-                page = self.site.Pages[title]
+                page = self.site.pages[title]
                 self.fix_termwiki_page(page)
 
     def fix_termwiki_page(self, page: Any) -> None:
@@ -329,7 +329,7 @@ class SiteHandler:
             if "Collection:SD-terms" in concept1.collections:
                 if title not in visited_pages:
                     visited_pages.add(title)
-                    page = self.site.Pages[title]
+                    page = self.site.pages[title]
                     concept = read_termwiki.Concept()
                     concept.from_termwiki(page.text())
                     name = title.split(":")[1]

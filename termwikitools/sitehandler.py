@@ -151,9 +151,8 @@ class SiteHandler:
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
         redirects = {
             redirect_xml.getparent().getparent()
-            for redirect_xml in root.xpath(
-                './/mw:text[starts-with(text(), "#STIVREN")]', namespaces=namespace
-            )
+            for redirect_xml in root.xpath('.//mw:text', namespaces=namespace)
+            if redirect_xml.text and redirect_xml.text.startswith("#STIVREN")
         }
         print("Redirects pages", len(redirects))
         for redirect in redirects:
@@ -206,8 +205,8 @@ class SiteHandler:
             .xpath(".//mw:text", namespaces=namespace)[0]
             .text
             for expression_xml in dump.tree.getroot().xpath(
-                './/mw:title[starts-with(text(), "Expression:")]', namespaces=namespace
-            )
+                './/mw:title', namespaces=namespace
+            ) if expression_xml.text and expression_xml.text.startswith("Expression:")
         }
 
     def make_expression_pages(

@@ -288,6 +288,7 @@ class SiteHandler:
                 try:
                     print(f"Removing {to_delete}")
                     page.delete(reason="Page is not needed anymore")
+                    time.sleep(0.2)
                 except mwclient.errors.APIError as error:
                     print(f"Error deleting {to_delete}: {error}", file=sys.stderr)
 

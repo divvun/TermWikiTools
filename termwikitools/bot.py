@@ -116,7 +116,10 @@ def json():
     help="Sanctioned status for GG.",
 )
 def missing(language, only_sanctioned):
-    """Print missing terms for a language."""
+    """Print unknown for a given language.
+    
+    Unknown means that neither the descriptive nor the norm fst recognises the term.
+    """
     dumphandler = DumpHandler()
     dumphandler.print_missing(
         language=language, only_sanctioned="True" if only_sanctioned else "False"

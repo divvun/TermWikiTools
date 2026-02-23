@@ -241,7 +241,6 @@ class DumpHandler:
 
         return founds
 
-    def print_missing(self, language, only_sanctioned):
     def typo_analyses_to_suggestions(
         self, typo_analyses: Iterable[str], language
     ) -> set[str]:
@@ -268,6 +267,7 @@ class DumpHandler:
             for suggestion in norm_generator.lookup(analysis)
         }
 
+    def print_missing(self, language: str, only_sanctioned: str):
         """Find all expressions of the given language.
 
         Args:
@@ -283,22 +283,6 @@ class DumpHandler:
         not_in_norms = self.not_found_in_normfst(language, only_sanctioned)
 
         descriptives = self.known_to_descfst(language, not_in_norms)
-        for descriptive in revsorted_expressions(descriptives):
-            print(descriptive)
-            print(
-                "\n".join(
-                    [
-                        f"{descriptive}\t{analysis}"
-                        for analysis in sorted(descriptives[descriptive]["analyses"])
-                    ]
-                )
-            )
-            print(
-                "\n".join(
-                    [f"\t{source}" for source in descriptives[descriptive]["sources"]]
-                )
-            )
-            print()
 
         norms = {
             expression: not_in_norms[expression]

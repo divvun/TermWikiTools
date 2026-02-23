@@ -136,7 +136,7 @@ class DumpHandler:
                 )
 
     def expressions(
-        self, language, only_sanctioned
+        self, language: str, only_sanctioned: str
     ) -> Iterable[Tuple[str, RelatedExpression]]:
         """All expressions found in dumphandler."""
         return (
@@ -173,9 +173,9 @@ class DumpHandler:
             / "fst"
             / "analyser-gt-norm.hfstol"
         )
-        assert (
-            norm_analyser_path.exists()
-        ), f"Norm analyser not found: {norm_analyser_path}"
+        assert norm_analyser_path.exists(), (
+            f"Norm analyser not found: {norm_analyser_path}"
+        )
         norm_analyser = hfst.HfstInputStream(norm_analyser_path.as_posix()).read()
 
         base_url = "https://satni.uit.no/termwiki"
@@ -191,7 +191,7 @@ class DumpHandler:
                     and not norm_analyser.lookup(real_expression)
                 ):
                     not_founds[real_expression].add(
-                        f'{base_url}/index.php?title={title.replace(" ", "_")}'
+                        f"{base_url}/index.php?title={title.replace(' ', '_')}"
                     )
 
         return not_founds
@@ -210,9 +210,9 @@ class DumpHandler:
             / "fst"
             / "analyser-gt-desc.hfstol"
         )
-        assert (
-            desc_analyser_path.exists()
-        ), f"Descriptive analyser not found: {desc_analyser_path}"
+        assert desc_analyser_path.exists(), (
+            f"Descriptive analyser not found: {desc_analyser_path}"
+        )
         desc_analyser = hfst.HfstInputStream(desc_analyser_path.as_posix()).read()
         founds: dict[str, dict[str, set[str] | list[str]]] = collections.defaultdict(
             dict
@@ -352,17 +352,17 @@ class DumpHandler:
                 if expression.language == language and expression.sanctioned == "True":
                     print(
                         expression.expression,
-                        f'https://satni.uit.no/termwiki/index.php?title={title.replace(" ", "_")}',  # noqa: E501
+                        f"https://satni.uit.no/termwiki/index.php?title={title.replace(' ', '_')}",  # noqa: E501
                     )
 
-    def print_invalid_chars(self, language, only_sanctioned) -> None:
+    def print_invalid_chars(self, language: str, only_sanctioned: bool) -> None:
         """Find terms with invalid characters, print the errors to stdout."""
         base_url = "https://satni.uit.no/termwiki"
         for title, expression in self.expressions(language, only_sanctioned):
             if INVALID_CHARS_RE.search(expression.expression):
                 print(
                     f"{expression.expression} "
-                    f'{base_url}/index.php?title={title.replace(" ", "_")}'
+                    f"{base_url}/index.php?title={title.replace(' ', '_')}"
                 )
 
     def find_collections(self):

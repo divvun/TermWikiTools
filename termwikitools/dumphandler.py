@@ -242,6 +242,32 @@ class DumpHandler:
         return founds
 
     def print_missing(self, language, only_sanctioned):
+    def typo_analyses_to_suggestions(
+        self, typo_analyses: Iterable[str], language
+    ) -> set[str]:
+        giella_dir = os.getenv("GTLANGS")
+        assert giella_dir is not None, "GTLANGS environment variable not set"
+        norm_generator_path = (
+            Path(giella_dir)
+            / f"lang-{language}"
+            / "src"
+            / "fst"
+            / "generator-gt-norm.hfstol"
+        )
+        assert norm_generator_path.exists(), (
+            f"Descriptive generator not found: {norm_generator_path}"
+        )
+        norm_generator = hfst.HfstInputStream(norm_generator_path.as_posix()).read()
+        rinsed_blabla = (
+            analysis.replace("+Err/Orth", "").replace("+Err/Lex", "")
+            for analysis in typo_analyses
+        )
+        return {
+            ATTS.sub("", suggestion[0])
+            for analysis in rinsed_blabla
+            for suggestion in norm_generator.lookup(analysis)
+        }
+
         """Find all expressions of the given language.
 
         Args:

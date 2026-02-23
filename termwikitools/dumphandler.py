@@ -310,6 +310,32 @@ class DumpHandler:
             print(f"{norm}:{norm} TODO ; !", end="  ")
             print(" ".join(sorted(norms[norm])))
 
+    def print_typos(self, language: str, only_sanctioned: str) -> None:
+        """Find all expressions of the given language.
+
+        Args:
+            language: language of the terms.
+        """
+
+        def revsorted_expressions(not_founds):
+            return [
+                reverted[::-1]
+                for reverted in sorted([not_found[::-1] for not_found in not_founds])
+            ]
+
+        not_in_norms = self.not_found_in_normfst(language, only_sanctioned)
+
+        descriptives = self.known_to_descfst(language, not_in_norms)
+        for descriptive in revsorted_expressions(descriptives):
+            suggestions = self.typo_analyses_to_suggestions(
+                descriptives[descriptive]["analyses"], language
+            )
+            if suggestions and descriptive not in suggestions:
+                sources = "\n".join(
+                    [f"\t{source}" for source in descriptives[descriptive]["sources"]]
+                )
+                print(f"{descriptive} -> {', '.join(suggestions)}\n{sources}\n")
+
     def sum_terms(self, language: str) -> None:
         """Sum up sanctioned and none sanctioned terms.
 

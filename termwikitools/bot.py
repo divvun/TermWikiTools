@@ -123,6 +123,19 @@ def missing(language, only_sanctioned):
     )
 
 
+@click.option(
+    "--only-sanctioned",
+    is_flag=True,
+    help="Sanctioned status for GG.",
+)
+def typos(language, only_sanctioned):
+    """Print terms that are typos for a given language."""
+    dumphandler = DumpHandler()
+    dumphandler.print_typos(
+        language=language, only_sanctioned="True" if only_sanctioned else "False"
+    )
+
+
 @dump.command()
 def collection():
     """Find collections in the dump."""

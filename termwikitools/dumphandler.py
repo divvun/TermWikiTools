@@ -27,11 +27,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Callable, Generator, Iterable, Iterator, Tuple
 
-import hfst  # type: ignore
+import hfst
 import marshmallow
 from lxml import etree
 from lxml.etree import _Element
 from marshmallow import ValidationError
+from openpyxl import Workbook
+from openpyxl.styles import Alignment
 from rdflib import RDF, SKOS, Graph, Literal, Namespace, URIRef
 
 from termwikitools import read_termwiki
@@ -493,11 +495,14 @@ class DumpHandler:
                     f"{base_url}/index.php?title={title.replace(' ', '_')}"
                 )
 
-    def find_collections(self):
+    def find_collections(self) -> None:
         """Check if collections are correctly defined."""
-        for title, _, page in self.pages:
+        for title, page, _ in self.pages:
             if title.startswith("Collection:"):
                 content_elt = page.find(".//{}text".format(self.mediawiki_ns))
+                if content_elt is None:
+                    print(title, "missing content element")
+                    continue
                 text = content_elt.text
                 if text:
                     if "{{Collection" not in text:
@@ -506,60 +511,68 @@ class DumpHandler:
                 else:
                     print(title, etree.tostring(content_elt, encoding="unicode"))
 
-    def collection_to_excel(self, name: str):
+    def _get_collection_languages(self, name: str) -> list[str]:
+        namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
+        collection_elements = self.tree.getroot().xpath(
+            f'.//mw:page/mw:title[text() = "{name}"]',
+            namespaces=namespace,
+        )
+
+        if not collection_elements:
+            raise SystemExit(f"Collection {name} not found")
+
+        collection_title = collection_elements[0]
+        if not isinstance(collection_title, _Element):
+            raise SystemExit(f"Collection {name} has an unexpected XML shape")
+
+        if collection_title.text is None:
+            raise SystemExit(f"Collection {name} has no content")
+
+        page = collection_title.getparent()
+        if page is None:
+            raise SystemExit(f"Collection {name} has no page element")
+
+        content_elt = page.find(".//{}text".format(self.mediawiki_ns))
+        if content_elt is None or content_elt.text is None:
+            raise SystemExit(f"Collection {name} has no content")
+
+        text = content_elt.text
+        print(text)
+        content = read_termwiki.read_semantic_form(
+            iter(text.replace("\xa0", " ").splitlines())
+        )
+        print(content)
+        return content.get("languages", "").split(", ")
+
+    def _get_collection_content(
+        self, name: str, languages: list[str]
+    ) -> Generator[list[Tuple[str, str]], None, None]:
+        for _, termwikipage in self.termwiki_pages:
+            if (
+                termwikipage.concept is not None
+                and termwikipage.concept.collection
+                and name in termwikipage.concept.collection
+            ):
+                yield [
+                    (
+                        "\n".join(termwikipage.get_terms(language)),
+                        termwikipage.get_definition(language),
+                    )
+                    for language in languages
+                ]
+
+    def collection_to_excel(self, name: str) -> None:
         """Write a collection to an excel file."""
-
-        def get_languages(name: str) -> list[str]:
-            namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
-            collection_elements = self.tree.getroot().xpath(
-                f'.//mw:page/mw:title[text() = "{name}"]',
-                namespaces=namespace,
-            )
-
-            if not collection_elements:
-                raise SystemExit(f"Collection {name} not found")
-
-            if collection_elements[0].text is None:
-                raise SystemExit(f"Collection {name} has no content")
-
-            page = collection_elements[0].getparent()
-
-            content_elt = page.find(".//{}text".format(self.mediawiki_ns))
-            text = content_elt.text
-            print(text)
-            content = read_termwiki.read_semantic_form(
-                iter(text.replace("\xa0", " ").splitlines())
-            )
-            print(content)
-            return content.get("languages", "").split(", ")
-
-        def get_collection_content(
-            name: str,
-        ) -> Generator[list[Tuple[str, str]], None, None]:
-            for _, termwikipage in self.termwiki_pages:
-                if (
-                    termwikipage.concept is not None
-                    and termwikipage.concept.collection
-                    and name in termwikipage.concept.collection
-                ):
-                    yield [
-                        (
-                            "\n".join(termwikipage.get_terms(language)),
-                            termwikipage.get_definition(language),
-                        )
-                        for language in languages
-                    ]
-
-        from openpyxl import Workbook
-        from openpyxl.styles import Alignment
 
         wb = Workbook()
         ws = wb.active
+        if ws is None:
+            raise SystemExit("Workbook has no active worksheet")
 
-        languages = get_languages(f"Collection:{name}")
+        languages = self._get_collection_languages(f"Collection:{name}")
         ws.append(languages)
         for y_index, row in enumerate(
-            get_collection_content(f"Collection:{name}"), start=2
+            self._get_collection_content(f"Collection:{name}", languages), start=2
         ):
             if any(terms for (terms, _) in row):
                 for x_index, (terms, definition) in enumerate(row, start=1):
@@ -668,17 +681,16 @@ class DumpHandler:
 
         total: dict[str, int] = collections.defaultdict(int)
         print(language)
-        for category in counter:
+        for category, category_counts in counter.items():
             print(category)
-            for item in counter[category].items():
-                total[item[0]] += item[1]
-                print(f"{item[0]}\t{item[1]}")
+            for key, value in category_counts.items():
+                total[key] += value
+                print(f"{key}\t{value}")
             print()
 
         print(f"Totally for {language}")
-        for item in total.items():
-            total[item[0]] += item[1]
-            print(f"{item[0]}\t{item[1]}")
+        for key, value in total.items():
+            print(f"{key}\t{value}")
         print()
 
     def dump_pages_newer_than_timestamp(

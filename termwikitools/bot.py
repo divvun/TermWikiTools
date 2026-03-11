@@ -126,6 +126,7 @@ def missing(language, only_sanctioned):
     )
 
 
+@dump.command()
 @click.option(
     "--only-sanctioned",
     is_flag=True,

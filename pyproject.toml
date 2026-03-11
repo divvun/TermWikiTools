@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "TermWikiTools"
-version = "0.8.0"
+version = "0.8.1"
 description = "Manipulate TermWiki data"
 authors = ["Børre Gaup <albbas@gmail.com>"]
 license = "GPLv3+"

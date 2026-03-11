@@ -34,7 +34,7 @@ from lxml.etree import _Element
 from marshmallow import ValidationError
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
-from rdflib import RDF, SKOS, Graph, Literal, Namespace, URIRef
+from rdflib import RDF, SKOS, BNode, Graph, Literal, Namespace, URIRef
 
 from termwikitools import read_termwiki
 from termwikitools.handler_common import LANGUAGES, NAMESPACES
@@ -52,6 +52,8 @@ ATTS = re.compile(r"@[^@]+@")
 
 # VocBench export constants
 _VOCBENCH_BASE = "https://satni.uit.no/termwiki/"
+_TW = Namespace(_VOCBENCH_BASE + "prop/")
+SKOSXL = Namespace("http://www.w3.org/2008/05/skos-xl#")
 
 _LANG_TAGS: dict[str, str] = {
     "se": "se",
@@ -210,7 +212,9 @@ class DumpHandler:
         base = Namespace(_VOCBENCH_BASE)
         g = Graph()
         g.bind("skos", SKOS)
+        g.bind("skosxl", SKOSXL)
         g.bind("termwiki", base)
+        g.bind("tw", _TW)
 
         schemes: dict[str, URIRef] = {}
 
@@ -256,12 +260,31 @@ class DumpHandler:
         pref_label_langs: set[str] = set()
         for expr in expressions:
             tag = _LANG_TAGS.get(expr.language, expr.language)
-            label = Literal(expr.expression, lang=tag)
-            if expr.sanctioned == "True" and tag not in pref_label_langs:
-                g.add((uri, SKOS.prefLabel, label))
+            literal = Literal(expr.expression, lang=tag)
+            is_pref = expr.sanctioned == "True" and tag not in pref_label_langs
+            if is_pref:
                 pref_label_langs.add(tag)
-            else:
-                g.add((uri, SKOS.altLabel, label))
+
+            label_node = BNode()
+            g.add((label_node, RDF.type, SKOSXL.Label))
+            g.add((label_node, SKOSXL.literalForm, literal))
+            if expr.pos:
+                g.add((label_node, _TW.pos, Literal(expr.pos)))
+            if expr.source:
+                g.add((label_node, _TW.source, Literal(expr.source)))
+            if expr.inflection:
+                g.add((label_node, _TW.inflection, Literal(expr.inflection)))
+            if expr.country:
+                g.add((label_node, _TW.country, Literal(expr.country)))
+            if expr.dialect:
+                g.add((label_node, _TW.dialect, Literal(expr.dialect)))
+            if expr.status:
+                g.add((label_node, _TW.status, Literal(expr.status)))
+            if expr.note:
+                g.add((label_node, SKOS.note, Literal(expr.note, lang=tag)))
+
+            pred = SKOSXL.prefLabel if is_pref else SKOSXL.altLabel
+            g.add((uri, pred, label_node))
 
     @staticmethod
     def _add_definitions(

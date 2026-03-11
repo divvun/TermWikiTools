@@ -215,7 +215,7 @@ class DumpHandler:
         schemes: dict[str, URIRef] = {}
 
         def concept_uri(title: str) -> URIRef:
-            return base["concept/" + urllib.parse.quote(title, safe="")]
+            return base["index.php?title=" + urllib.parse.quote(title, safe="")]
 
         def ensure_scheme(collection: str) -> URIRef:
             if collection not in schemes:
@@ -275,6 +275,8 @@ class DumpHandler:
                 g.add((uri, SKOS.definition, Literal(ci.definition, lang=tag)))
             if ci.explanation:
                 g.add((uri, SKOS.scopeNote, Literal(ci.explanation, lang=tag)))
+            if ci.more_info:
+                g.add((uri, SKOS.note, Literal(ci.more_info, lang=tag)))
 
     @staticmethod
     def _add_relations(

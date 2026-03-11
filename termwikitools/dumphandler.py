@@ -21,28 +21,62 @@ import json
 import os
 import re
 import sys
+import urllib.parse
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-from typing import Generator, Iterable, Iterator, Tuple
+from typing import Callable, Generator, Iterable, Iterator, Tuple
 
 import hfst  # type: ignore
 import marshmallow
 from lxml import etree
 from lxml.etree import _Element
 from marshmallow import ValidationError
+from rdflib import RDF, SKOS, Graph, Literal, Namespace, URIRef
 
 from termwikitools import read_termwiki
 from termwikitools.handler_common import LANGUAGES, NAMESPACES
 from termwikitools.read_termwiki import (
     INVALID_CHARS_RE,
     Concept,
+    ConceptInfo,
+    RelatedConcept,
     RelatedExpression,
     TermWikiPage,
     termwiki_page_to_dataclass,
 )
 
 ATTS = re.compile(r"@[^@]+@")
+
+# VocBench export constants
+_VOCBENCH_BASE = "https://satni.uit.no/termwiki/"
+
+_LANG_TAGS: dict[str, str] = {
+    "se": "se",
+    "fi": "fi",
+    "en": "en",
+    "nb": "nb",
+    "nn": "nn",
+    "sv": "sv",
+    "sma": "sma",
+    "smj": "smj",
+    "smn": "smn",
+    "sms": "sms",
+    "lat": "la",
+}
+
+_RELATION_MAP: dict[str, URIRef] = {
+    "broader concept": SKOS.broader,
+    "comprehensive concept": SKOS.broader,
+    "hyperonym": SKOS.broader,
+    "narrower concept": SKOS.narrower,
+    "partitive concept": SKOS.narrower,
+    "coordinate concept": SKOS.related,
+    "cohyponym": SKOS.related,
+    "synonym": SKOS.related,
+    "pragmatic relation": SKOS.related,
+    "unspecified": SKOS.related,
+}
 
 
 class DumpHandler:
@@ -158,6 +192,100 @@ class DumpHandler:
                 indent=2,
             )
         )
+
+    def dump2vocbench(self, output_path: str = "termwiki.ttl") -> None:
+        """Convert dump.xml content to SKOS/RDF Turtle for VocBench import.
+
+        Each TermWiki page becomes a skos:Concept. Collections become
+        skos:ConceptScheme instances. Sanctioned expressions become
+        skos:prefLabel (first per language) or skos:altLabel; unsanctioned
+        expressions become skos:altLabel. Definitions map to skos:definition
+        and explanations to skos:scopeNote.
+
+        Args:
+            output_path: Destination file path (default: termwiki.ttl).
+        """
+        base = Namespace(_VOCBENCH_BASE)
+        g = Graph()
+        g.bind("skos", SKOS)
+        g.bind("termwiki", base)
+
+        schemes: dict[str, URIRef] = {}
+
+        def concept_uri(title: str) -> URIRef:
+            return base["concept/" + urllib.parse.quote(title, safe="")]
+
+        def ensure_scheme(collection: str) -> URIRef:
+            if collection not in schemes:
+                uri = base["scheme/" + urllib.parse.quote(collection, safe="")]
+                schemes[collection] = uri
+                g.add((uri, RDF.type, SKOS.ConceptScheme))
+                g.add((uri, SKOS.prefLabel, Literal(collection)))
+            return schemes[collection]
+
+        for title, page in self.termwiki_pages:
+            self._add_concept_to_graph(g, page, title, concept_uri, ensure_scheme)
+
+        output = Path(output_path)
+        output.write_text(g.serialize(format="turtle"), encoding="utf-8")
+        print(f"Wrote {len(g)} triples to {output}")
+
+    @staticmethod
+    def _add_concept_to_graph(
+        g: Graph,
+        page: TermWikiPage,
+        title: str,
+        concept_uri: Callable[[str], URIRef],
+        ensure_scheme: Callable[[str], URIRef],
+    ) -> None:
+        uri = concept_uri(title)
+        g.add((uri, RDF.type, SKOS.Concept))
+        if page.concept and page.concept.collection:
+            for collection in page.concept.collection:
+                g.add((uri, SKOS.inScheme, ensure_scheme(collection)))
+        DumpHandler._add_labels(g, uri, page.related_expressions)
+        DumpHandler._add_definitions(g, uri, page.concept_infos)
+        DumpHandler._add_relations(g, uri, page.related_concepts, concept_uri)
+
+    @staticmethod
+    def _add_labels(
+        g: Graph, uri: URIRef, expressions: Iterable[RelatedExpression]
+    ) -> None:
+        pref_label_langs: set[str] = set()
+        for expr in expressions:
+            tag = _LANG_TAGS.get(expr.language, expr.language)
+            label = Literal(expr.expression, lang=tag)
+            if expr.sanctioned == "True" and tag not in pref_label_langs:
+                g.add((uri, SKOS.prefLabel, label))
+                pref_label_langs.add(tag)
+            else:
+                g.add((uri, SKOS.altLabel, label))
+
+    @staticmethod
+    def _add_definitions(
+        g: Graph, uri: URIRef, concept_infos: Iterable[ConceptInfo] | None
+    ) -> None:
+        if not concept_infos:
+            return
+        for ci in concept_infos:
+            tag = _LANG_TAGS.get(ci.language, ci.language)
+            if ci.definition:
+                g.add((uri, SKOS.definition, Literal(ci.definition, lang=tag)))
+            if ci.explanation:
+                g.add((uri, SKOS.scopeNote, Literal(ci.explanation, lang=tag)))
+
+    @staticmethod
+    def _add_relations(
+        g: Graph,
+        uri: URIRef,
+        related_concepts: Iterable[RelatedConcept] | None,
+        concept_uri: Callable[[str], URIRef],
+    ) -> None:
+        if not related_concepts:
+            return
+        for rc in related_concepts:
+            predicate = _RELATION_MAP.get(rc.relation, SKOS.related)
+            g.add((uri, predicate, concept_uri(rc.concept)))
 
     def not_found_in_normfst(
         self, language: str, only_sanctioned: str
@@ -355,7 +483,7 @@ class DumpHandler:
                         f"https://satni.uit.no/termwiki/index.php?title={title.replace(' ', '_')}",  # noqa: E501
                     )
 
-    def print_invalid_chars(self, language: str, only_sanctioned: bool) -> None:
+    def print_invalid_chars(self, language: str, only_sanctioned: str) -> None:
         """Find terms with invalid characters, print the errors to stdout."""
         base_url = "https://satni.uit.no/termwiki"
         for title, expression in self.expressions(language, only_sanctioned):

@@ -106,6 +106,19 @@ def json():
 
 
 @dump.command()
+@click.option(
+    "--output",
+    "-o",
+    default="termwiki.ttl",
+    help="Output Turtle file (default: termwiki.ttl).",
+)
+def vocbench(output: str) -> None:
+    """Export the TermWiki database to SKOS/RDF Turtle for VocBench import."""
+    dumphandler = DumpHandler()
+    dumphandler.dump2vocbench(output_path=output)
+
+
+@dump.command()
 @click.argument(
     "language",
     type=click.Choice(list(LANGUAGES.keys())),

@@ -17,6 +17,7 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 import collections
+import importlib
 import json
 import os
 import subprocess
@@ -28,12 +29,13 @@ from pathlib import Path
 from typing import Any, Generator, Iterator
 
 import marshmallow
-import mwclient  # type: ignore
 import yaml
 
 from termwikitools import read_termwiki
 from termwikitools.dumphandler import DumpHandler
 from termwikitools.handler_common import NAMESPACES
+
+mwclient: Any = importlib.import_module("mwclient")
 
 
 def update_svn() -> None:
@@ -92,7 +94,11 @@ class SiteHandler:
         Returns:
             mwclient.Site
         """
-        config_file = os.path.join(os.getenv("HOME"), ".config", "term_config.yaml")
+        home = os.getenv("HOME")
+        if home is None:
+            raise SystemExit("Error: The environment value HOME is not set")
+
+        config_file = os.path.join(home, ".config", "term_config.yaml")
         with open(config_file) as config_stream:
             config = yaml.load(config_stream, Loader=yaml.FullLoader)
             site = mwclient.Site("satni.uit.no", path="/termwiki/")
@@ -102,7 +108,7 @@ class SiteHandler:
 
             return site
 
-    def content_elements(self, verbose=False) -> Generator[Any, None, None]:
+    def content_elements(self, verbose: bool = False) -> Generator[Any, None, None]:
         """Get the concept pages in the TermWiki.
 
         Yields:
@@ -117,7 +123,7 @@ class SiteHandler:
                         yield page
 
     @staticmethod
-    def is_concept_tag(content):
+    def is_concept_tag(content: str) -> bool:
         """Check if content is a TermWiki Concept page.
 
         Args:
@@ -129,11 +135,11 @@ class SiteHandler:
         return "{{Concept" in content
 
     @staticmethod
-    def save_page(page: mwclient.page.Page, content: str, summary: str) -> None:
+    def save_page(page: Any, content: str, summary: str) -> None:
         """Save a given TermWiki page.
 
         Args:
-            page (mwclient.page.Page): The page to be saved.
+            page: The page to be saved.
             content (str): The new content to be saved.
             summary (str): The commit message.
 
@@ -217,9 +223,8 @@ class SiteHandler:
         for expression_title, languages in related_expression_dict.items():
             ideal_content = self.make_expression_content(languages)
             if ideal_content != dump_expression_dict.get(expression_title):
-                dump_expression_dict[expression_title] = (
-                    ideal_content  # to avoid this being deleted in [`delete_expression_pages`]
-                )
+                # Avoid deleting pages we are about to recreate.
+                dump_expression_dict[expression_title] = ideal_content
                 self.fix_expression_page(expression_title, content=ideal_content)
 
     def delete_expression_pages(
@@ -318,37 +323,54 @@ class SiteHandler:
         else:
             print(f"page {page.name} does not exist")
 
-    def semantic_ask_results(self, query):
+    def semantic_ask_results(
+        self, query: str
+    ) -> Generator[tuple[int, str], None, None]:
         for number, answer in enumerate(self.site.ask(query), start=1):
             print(answer)
             yield number, answer["fulltext"]
 
-    def add_extra_collection(self):
+    def add_extra_collection(self) -> None:
         visited_pages = set()
         dumphandler = DumpHandler()
-        for title, content_elt, _ in dumphandler.content_elements:
-            concept1 = read_termwiki.Concept()
-            concept1.from_termwiki(content_elt.text)
-            if "Collection:SD-terms" in concept1.collections:
-                if title not in visited_pages:
-                    visited_pages.add(title)
-                    page = self.site.pages[title]
-                    concept = read_termwiki.Concept()
-                    concept.from_termwiki(page.text())
-                    name = title.split(":")[1]
-                    extra_collection = f"Collection:SD-terms-{name[0].lower()}"
-                    if extra_collection not in concept.collections:
-                        concept.collections.add(extra_collection)
-                        print(f"\n\t{title} {extra_collection}\n")
-                        self.save_page(
-                            page,
-                            str(concept),
-                            summary=f"Add collection: {extra_collection}",
-                        )
+        for title, dump_tw_page in dumphandler.termwiki_pages:
+            concept = dump_tw_page.concept
+            if (
+                concept is None
+                or not concept.collection
+                or "Collection:SD-terms" not in concept.collection
+                or title in visited_pages
+            ):
+                continue
+
+            visited_pages.add(title)
+            page = self.site.pages[title]
+            site_tw_page = read_termwiki.termwiki_page_to_dataclass(
+                title, iter(page.text().splitlines())
+            )
+            if site_tw_page.concept is None:
+                continue
+
+            _, _, name = title.partition(":")
+            if not name:
+                continue
+
+            extra_collection = f"Collection:SD-terms-{name[0].lower()}"
+            collections = set(site_tw_page.concept.collection or [])
+            if extra_collection not in collections:
+                site_tw_page.concept.collection = sorted(
+                    collections | {extra_collection}
+                )
+                print(f"\n\t{title} {extra_collection}\n")
+                self.save_page(
+                    page,
+                    site_tw_page.to_termwiki(),
+                    summary=f"Add collection: {extra_collection}",
+                )
 
         print(len(visited_pages))
 
-    def revert(self):
+    def revert(self) -> None:
         """Automatically sanction expressions that have no collection.
 
         The theory is that concept pages with no collections mostly are from
@@ -403,9 +425,75 @@ class SiteHandler:
         except mwclient.errors.InvalidPageTitle as error:
             print(old_name, error, file=sys.stderr)
 
+    @staticmethod
+    def normalize_sms_title(title: str) -> str:
+        """Replace characters that are invalid in sms page names."""
+        return title.translate(
+            str.maketrans(
+                "\u2019\u0027\u2032\u00b4\u0301",
+                "\u02bc\u02bc\u02b9\u02b9\u02b9",
+            )
+        )
+
+    @staticmethod
+    def parse_revision_timestamp(revision: dict[str, Any]) -> datetime | None:
+        timestamp = revision.get("timestamp")
+        if isinstance(timestamp, datetime):
+            return timestamp
+        if isinstance(timestamp, str):
+            return datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
+        return None
+
+    def fix_revisions(self) -> None:
+        """Restore selected dump pages when only importer accounts touched them."""
+        start_time = datetime.strptime("15 Feb 19", "%d %b %y").replace(
+            tzinfo=timezone.utc
+        )
+
+        dumphandler = DumpHandler()
+        for title, dump_tw_page in dumphandler.termwiki_pages:
+            concept = dump_tw_page.concept
+            if (
+                concept is None
+                or not concept.collection
+                or "Collection:JustermTana" not in concept.collection
+            ):
+                continue
+
+            page = self.site.pages[title]
+            users = {
+                revision["user"]
+                for revision in page.revisions()
+                if revision.get("user")
+                and (timestamp := self.parse_revision_timestamp(revision)) is not None
+                and timestamp > start_time
+                and "mporter" not in revision["user"]
+            }
+            if users:
+                print(title, users)
+            else:
+                print(f"Saving {title}")
+                self.save_page(
+                    page,
+                    dump_tw_page.to_termwiki(),
+                    summary="Saved from backup",
+                )
+
+    def improve_pagenames(self) -> None:
+        """Remove characters that break eXist search from page names."""
+        for page in self.content_elements():
+            try:
+                my_title = self.normalize_sms_title(
+                    self.remove_paren(page.name) if "(" in page.name else page.name
+                )
+                if page.name != my_title:
+                    self.move_page(page.name, my_title)
+            except mwclient.errors.InvalidPageTitle:
+                print(f"Failed on {page.name}")
+
     def get_valid_site_termwiki_pages(
         self
-    ) -> Iterator[tuple[read_termwiki.TermWikiPage, str, mwclient.page.Page]]:
+    ) -> Iterator[tuple[read_termwiki.TermWikiPage, str, Any]]:
         dumphandler = DumpHandler()
         for dump_tw_page, page_id in dumphandler.dump_pages_newer_than_timestamp(
             read_time_stamp()

@@ -271,6 +271,20 @@ def duplicates(only_sanctioned):
     )
 
 
+@dump.command()
+@click.option(
+    "--only-sanctioned", is_flag=True, help="Only consider sanctioned expressions."
+)
+def duplicates_report(only_sanctioned):
+    """Print duplicate candidates as MediaWiki report text."""
+    dumphandler = DumpHandler()
+    print(
+        dumphandler.render_duplicate_candidates_wikitext(
+            only_sanctioned="True" if only_sanctioned else "False"
+        )
+    )
+
+
 @main.group()
 def site():
     pass
@@ -320,6 +334,36 @@ def add_id():
     """Add permanent id to Concept pages on the TermWiki"""
     site_handler = SiteHandler()
     site_handler.add_id()
+
+
+@site.command()
+@click.argument("report_title", type=str)
+@click.option(
+    "--only-sanctioned", is_flag=True, help="Only consider sanctioned expressions."
+)
+def publish_duplicates_report(report_title: str, only_sanctioned: bool):
+    """Publish duplicate candidate report to a TermWiki page."""
+    site_handler = SiteHandler()
+    site_handler.publish_duplicate_report(
+        page_title=report_title,
+        only_sanctioned="True" if only_sanctioned else "False",
+    )
+
+
+@site.command()
+@click.argument("report_title", type=str)
+@click.option(
+    "--execute",
+    is_flag=True,
+    help="Execute merges and deletions. Without this flag, only print actions.",
+)
+def merge_duplicates(report_title: str, execute: bool):
+    """Merge duplicate Concept pages from a reviewed report page."""
+    site_handler = SiteHandler()
+    site_handler.merge_duplicates_from_report(
+        report_title=report_title,
+        execute=execute,
+    )
 
 
 @site.command()

@@ -20,10 +20,11 @@ import collections
 import importlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Generator, Iterator
@@ -36,6 +37,21 @@ from termwikitools.dumphandler import DumpHandler
 from termwikitools.handler_common import NAMESPACES
 
 mwclient: Any = importlib.import_module("mwclient")
+
+
+@dataclass
+class DuplicateMergeRow:
+    line_index: int
+    pair_text: str
+    pages: list[str]
+    decision: str
+    keep_page: str
+    report: str
+    processed: str
+
+
+DUPLICATE_REPORT_COLUMN_COUNT = 6
+DUPLICATE_REPORT_MIN_PAGES = 2
 
 
 def update_svn() -> None:
@@ -150,6 +166,283 @@ class SiteHandler:
             page.save(content, summary=summary)
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
+
+    def publish_duplicate_report(self, page_title: str, only_sanctioned: str) -> None:
+        """Create or update a wiki page with duplicate candidate review rows."""
+        dumphandler = DumpHandler()
+        content = dumphandler.render_duplicate_candidates_wikitext(only_sanctioned)
+        page = self.site.pages[page_title]
+        self.save_page(
+            page,
+            content,
+            summary="Update duplicate Concept candidate report",
+        )
+
+    @staticmethod
+    def parse_duplicate_merge_rows(content: str) -> list[DuplicateMergeRow]:
+        """Parse machine-readable rows from the duplicate report wikitext."""
+        rows: list[DuplicateMergeRow] = []
+        for line_index, line in enumerate(content.splitlines()):
+            stripped = line.strip()
+            if not stripped.startswith("| ") or "||" not in stripped:
+                continue
+
+            columns = [column.strip() for column in stripped[2:].split("||")]
+            if len(columns) != DUPLICATE_REPORT_COLUMN_COUNT:
+                continue
+
+            pair_text, pages_cell, decision, keep_page, report, processed = columns
+            pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
+            if len(pages) < DUPLICATE_REPORT_MIN_PAGES:
+                continue
+
+            rows.append(
+                DuplicateMergeRow(
+                    line_index=line_index,
+                    pair_text=pair_text,
+                    pages=pages,
+                    decision=decision,
+                    keep_page=keep_page,
+                    report=report,
+                    processed=processed,
+                )
+            )
+
+        return rows
+
+    @staticmethod
+    def format_duplicate_merge_row(row: DuplicateMergeRow) -> str:
+        """Format a duplicate row back to one wikitext table row."""
+        pages_text = " / ".join(f"[[{title}]]" for title in row.pages)
+        return (
+            f"| {row.pair_text} || {pages_text} || {row.decision} "
+            f"|| {row.keep_page} || {row.report} || {row.processed}"
+        )
+
+    @staticmethod
+    def _pick_first_nonempty(values: list[str | None]) -> str | None:
+        for value in values:
+            if value:
+                return value
+        return None
+
+    def _load_termwiki_pages(
+        self, titles: list[str]
+    ) -> list[read_termwiki.TermWikiPage]:
+        parsed_pages: list[read_termwiki.TermWikiPage] = []
+        for title in titles:
+            page = self.site.pages[title]
+            if not page.exists:
+                raise SystemExit(f"Error: page does not exist: {title}")
+            parsed_pages.append(
+                read_termwiki.termwiki_page_to_dataclass(
+                    title,
+                    iter(page.text().replace("\xa0", " ").splitlines()),
+                )
+            )
+        return parsed_pages
+
+    def _merge_concept(
+        self, parsed_pages: list[read_termwiki.TermWikiPage]
+    ) -> read_termwiki.Concept:
+        collections: set[str] = set()
+        categories: list[str | None] = []
+        main_categories: list[str | None] = []
+        sources: list[str | None] = []
+        page_ids: list[str | None] = []
+
+        for page in parsed_pages:
+            if page.concept is None:
+                continue
+            if page.concept.collection:
+                collections.update(page.concept.collection)
+            categories.append(page.concept.category)
+            main_categories.append(page.concept.main_category)
+            sources.append(page.concept.sources)
+            page_ids.append(page.concept.page_id)
+
+        return read_termwiki.Concept(
+            collection=sorted(collections) if collections else None,
+            category=self._pick_first_nonempty(categories),
+            main_category=self._pick_first_nonempty(main_categories),
+            sources=self._pick_first_nonempty(sources),
+            page_id=self._pick_first_nonempty(page_ids),
+        )
+
+    @staticmethod
+    def _merge_concept_infos(
+        parsed_pages: list[read_termwiki.TermWikiPage],
+    ) -> list[read_termwiki.ConceptInfo]:
+        merged_infos: list[read_termwiki.ConceptInfo] = []
+        seen_infos: set[tuple[str, str | None, str | None, str | None]] = set()
+        for page in parsed_pages:
+            for concept_info in page.concept_infos or []:
+                info_key = (
+                    concept_info.language,
+                    concept_info.definition,
+                    concept_info.explanation,
+                    concept_info.more_info,
+                )
+                if info_key not in seen_infos:
+                    seen_infos.add(info_key)
+                    merged_infos.append(concept_info)
+        return merged_infos
+
+    @staticmethod
+    def _merge_related_expressions(
+        parsed_pages: list[read_termwiki.TermWikiPage],
+    ) -> list[read_termwiki.RelatedExpression]:
+        merged_expressions: list[read_termwiki.RelatedExpression] = []
+        seen_expressions: set[
+            tuple[
+                str | None,
+                str | None,
+                str | None,
+                str | None,
+                str | None,
+                str | None,
+                str | None,
+                str,
+                str,
+                str,
+            ]
+        ] = set()
+        for page in parsed_pages:
+            for expression in page.related_expressions:
+                expression_key = (
+                    expression.note,
+                    expression.pos,
+                    expression.source,
+                    expression.inflection,
+                    expression.country,
+                    expression.dialect,
+                    expression.status,
+                    expression.expression,
+                    expression.language,
+                    expression.sanctioned,
+                )
+                if expression_key not in seen_expressions:
+                    seen_expressions.add(expression_key)
+                    merged_expressions.append(expression)
+        return merged_expressions
+
+    @staticmethod
+    def _merge_related_concepts(
+        parsed_pages: list[read_termwiki.TermWikiPage],
+    ) -> list[read_termwiki.RelatedConcept]:
+        merged_related_concepts: list[read_termwiki.RelatedConcept] = []
+        seen_related_concepts: set[tuple[str, str]] = set()
+        for page in parsed_pages:
+            for related_concept in page.related_concepts or []:
+                related_key = (related_concept.concept, related_concept.relation)
+                if related_key not in seen_related_concepts:
+                    seen_related_concepts.add(related_key)
+                    merged_related_concepts.append(related_concept)
+        return merged_related_concepts
+
+    def _save_merged_page(
+        self,
+        keep_page: str,
+        parsed_pages: list[read_termwiki.TermWikiPage],
+    ) -> None:
+        merged_page = read_termwiki.TermWikiPage(
+            title=keep_page,
+            concept=self._merge_concept(parsed_pages),
+            concept_infos=self._merge_concept_infos(parsed_pages),
+            related_expressions=self._merge_related_expressions(parsed_pages),
+            related_concepts=self._merge_related_concepts(parsed_pages),
+        )
+        keep_site_page = self.site.pages[keep_page]
+        self.save_page(
+            keep_site_page,
+            merged_page.to_termwiki(),
+            summary=f"Merge duplicate Concept pages into {keep_page}",
+        )
+
+    def _delete_merged_pages(self, keep_page: str, merge_pages: list[str]) -> None:
+        for title in merge_pages:
+            page = self.site.pages[title]
+            if page.exists:
+                print(f"Removing merged page {title}")
+                page.delete(reason=f"Merged into {keep_page}")
+                time.sleep(0.2)
+
+    @staticmethod
+    def _validated_merge_targets(
+        row: DuplicateMergeRow,
+    ) -> tuple[str, list[str]] | None:
+        keep_page = row.keep_page.strip()
+        if not keep_page:
+            print(f"Skipping row without keep page: {row.pair_text}")
+            return None
+        if keep_page not in row.pages:
+            print(f"Skipping row where keep page is not in candidates: {keep_page}")
+            return None
+
+        merge_pages = [title for title in row.pages if title != keep_page]
+        if not merge_pages:
+            print(f"Skipping row with no pages to merge: {row.pair_text}")
+            return None
+        return keep_page, merge_pages
+
+    @staticmethod
+    def _row_is_mergeable(row: DuplicateMergeRow) -> bool:
+        decision = row.decision.strip().lower()
+        row_processed = row.processed.strip().lower()
+        return decision == "merge" and row_processed != "yes"
+
+    def merge_termwiki_pages(self, keep_page: str, merge_pages: list[str]) -> None:
+        """Merge Concept pages into keep_page and delete merged-away pages."""
+        titles = [keep_page] + merge_pages
+        parsed_pages = self._load_termwiki_pages(titles)
+        self._save_merged_page(keep_page, parsed_pages)
+        self._delete_merged_pages(keep_page, merge_pages)
+
+    def _execute_merge_row(self, row: DuplicateMergeRow, execute: bool) -> bool:
+        merge_targets = self._validated_merge_targets(row)
+        if merge_targets is None:
+            return False
+
+        keep_page, merge_pages = merge_targets
+        print(f"{keep_page} <= {', '.join(merge_pages)}")
+        if not execute:
+            return False
+
+        self.merge_termwiki_pages(keep_page, merge_pages)
+        row.processed = "yes"
+        note = f"Merged into [[{keep_page}]]"
+        row.report = note if not row.report else f"{row.report}; {note}"
+        return True
+
+    def merge_duplicates_from_report(self, report_title: str, execute: bool) -> None:
+        """Read a report page and merge all approved duplicate rows."""
+        report_page = self.site.pages[report_title]
+        if not report_page.exists:
+            raise SystemExit(f"Error: report page does not exist: {report_title}")
+
+        content = report_page.text()
+        rows = self.parse_duplicate_merge_rows(content)
+        if not rows:
+            print("No duplicate rows found in report page")
+            return
+
+        lines = content.splitlines()
+        processed = 0
+        for row in rows:
+            if not self._row_is_mergeable(row):
+                continue
+            if self._execute_merge_row(row, execute):
+                lines[row.line_index] = self.format_duplicate_merge_row(row)
+                processed += 1
+
+        if execute and processed:
+            self.save_page(
+                report_page,
+                "\n".join(lines),
+                summary=f"Mark {processed} duplicate merge rows as processed",
+            )
+        elif execute:
+            print("No rows were merged")
 
     def delete_redirects(self) -> None:
         dump = DumpHandler()

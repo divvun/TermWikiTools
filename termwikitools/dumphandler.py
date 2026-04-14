@@ -665,6 +665,7 @@ class DumpHandler:
                                 )
 
                         print("{}".format("\t".join(all_expressions)))
+
     def find_duplicate_candidates(
         self, only_sanctioned: str
     ) -> dict[frozenset, set[str]]:
@@ -686,6 +687,51 @@ class DumpHandler:
                     index[key].add(title)
         return {key: titles for key, titles in index.items() if len(titles) > 1}
 
+    def render_duplicate_candidates_wikitext(self, only_sanctioned: str) -> str:
+        """Render duplicate candidates as a MediaWiki review page."""
+        grouped: dict[tuple[str, str], list[tuple[tuple[str, str], list[str]]]] = (
+            collections.defaultdict(list)
+        )
+        for pair, titles in self.find_duplicate_candidates(only_sanctioned).items():
+            sorted_pair = tuple(sorted(pair, key=lambda p: (p[0], p[1])))
+            lang_pair = (sorted_pair[0][0], sorted_pair[1][0])
+            grouped[lang_pair].append((sorted_pair, sorted(titles)))
+
+        lines = [
+            "__TOC__",
+            "",
+            "This page lists possible duplicate Concept pages detected automatically.",
+            "",
+            "Use Decision=merge to approve merging, or keep to leave pages untouched.",
+            "Only rows with Decision=merge and Processed=no are executed by the bot.",
+            "",
+        ]
+
+        if not grouped:
+            lines.append("No duplicate candidates were found.")
+            return "\n".join(lines)
+
+        for lang1, lang2 in sorted(grouped):
+            lines.append(f"== {lang1} <-> {lang2} ==")
+            lines.append('{| class="wikitable sortable"')
+            lines.append(
+                "! Term pair !! Candidate pages !! Decision "
+                "!! Keep page !! Report !! Processed"
+            )
+
+            for pair, titles in sorted(grouped[(lang1, lang2)], key=lambda p: p[0]):
+                pair_text = " <-> ".join(f"{lang}:{expr}" for lang, expr in pair)
+                pages_text = " / ".join(f"[[{title}]]" for title in titles)
+                lines.append("|-")
+                lines.append(
+                    f"| {pair_text} || {pages_text} || keep || || || no"
+                )
+
+            lines.append("|}")
+            lines.append("")
+
+        return "\n".join(lines)
+
     def print_duplicate_candidates(self, only_sanctioned: str) -> None:
         """Print Concept pages that share a cross-language term pair."""
         candidates = self.find_duplicate_candidates(only_sanctioned)
@@ -695,6 +741,7 @@ class DumpHandler:
             for title in sorted(titles):
                 print(f"  {title}")
             print()
+
     def statistics(self, language: str) -> None:
         counter: dict[str, dict[str, int]] = {}
         for title, concept in self.termwiki_pages:

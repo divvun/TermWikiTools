@@ -259,6 +259,18 @@ def no_lang2(source, target, helper_langs, category):
     )
 
 
+@dump.command()
+@click.option(
+    "--only-sanctioned", is_flag=True, help="Only consider sanctioned expressions."
+)
+def duplicates(only_sanctioned):
+    """Print possible duplicate Concept pages sharing a cross-language term pair."""
+    dumphandler = DumpHandler()
+    dumphandler.print_duplicate_candidates(
+        only_sanctioned="True" if only_sanctioned else "False"
+    )
+
+
 @main.group()
 def site():
     pass

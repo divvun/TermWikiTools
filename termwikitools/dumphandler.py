@@ -17,6 +17,7 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 import collections
+import itertools
 import json
 import os
 import re
@@ -664,7 +665,36 @@ class DumpHandler:
                                 )
 
                         print("{}".format("\t".join(all_expressions)))
+    def find_duplicate_candidates(
+        self, only_sanctioned: str
+    ) -> dict[frozenset, set[str]]:
+        """Return cross-language term pairs shared by more than one Concept page.
 
+        Keys are frozensets of two (language, expression) pairs from different
+        languages. Only entries where 2+ Concept pages share the pair are returned.
+        """
+        index: dict[frozenset, set[str]] = collections.defaultdict(set)
+        for title, page in self.termwiki_pages:
+            lang_expr_pairs = [
+                (expr.language, expr.expression)
+                for expr in page.related_expressions
+                if only_sanctioned != "True" or expr.sanctioned == "True"
+            ]
+            for pair_a, pair_b in itertools.combinations(lang_expr_pairs, 2):
+                if pair_a[0] != pair_b[0]:
+                    key = frozenset({pair_a, pair_b})
+                    index[key].add(title)
+        return {key: titles for key, titles in index.items() if len(titles) > 1}
+
+    def print_duplicate_candidates(self, only_sanctioned: str) -> None:
+        """Print Concept pages that share a cross-language term pair."""
+        candidates = self.find_duplicate_candidates(only_sanctioned)
+        for pair, titles in sorted(candidates.items(), key=lambda x: sorted(x[1])):
+            sorted_pair = sorted(pair, key=lambda p: p[0])
+            print("  ".join(f"{lang}:{expr}" for lang, expr in sorted_pair))
+            for title in sorted(titles):
+                print(f"  {title}")
+            print()
     def statistics(self, language: str) -> None:
         counter: dict[str, dict[str, int]] = {}
         for title, concept in self.termwiki_pages:

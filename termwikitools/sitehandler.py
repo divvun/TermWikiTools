@@ -359,12 +359,26 @@ class SiteHandler:
             summary=f"Merge duplicate Concept pages into {keep_page}",
         )
 
-    def _delete_merged_pages(self, keep_page: str, merge_pages: list[str]) -> None:
+    def _delete_merged_pages(
+        self,
+        keep_page: str,
+        merge_pages: list[str],
+        deletion_strategy: str,
+    ) -> None:
         for title in merge_pages:
             page = self.site.pages[title]
             if page.exists:
-                print(f"Removing merged page {title}")
-                page.delete(reason=f"Merged into {keep_page}")
+                if deletion_strategy == "redirect":
+                    redirect_text = f"#STIVREN [[{keep_page}]]"
+                    print(f"Redirecting merged page {title} -> {keep_page}")
+                    self.save_page(
+                        page,
+                        redirect_text,
+                        summary=f"Merged into {keep_page}",
+                    )
+                else:
+                    print(f"Removing merged page {title}")
+                    page.delete(reason=f"Merged into {keep_page}")
                 time.sleep(0.2)
 
     @staticmethod
@@ -391,14 +405,24 @@ class SiteHandler:
         row_processed = row.processed.strip().lower()
         return decision == "merge" and row_processed != "yes"
 
-    def merge_termwiki_pages(self, keep_page: str, merge_pages: list[str]) -> None:
+    def merge_termwiki_pages(
+        self,
+        keep_page: str,
+        merge_pages: list[str],
+        deletion_strategy: str,
+    ) -> None:
         """Merge Concept pages into keep_page and delete merged-away pages."""
         titles = [keep_page] + merge_pages
         parsed_pages = self._load_termwiki_pages(titles)
         self._save_merged_page(keep_page, parsed_pages)
-        self._delete_merged_pages(keep_page, merge_pages)
+        self._delete_merged_pages(keep_page, merge_pages, deletion_strategy)
 
-    def _execute_merge_row(self, row: DuplicateMergeRow, execute: bool) -> bool:
+    def _execute_merge_row(
+        self,
+        row: DuplicateMergeRow,
+        execute: bool,
+        deletion_strategy: str,
+    ) -> bool:
         merge_targets = self._validated_merge_targets(row)
         if merge_targets is None:
             return False
@@ -408,17 +432,27 @@ class SiteHandler:
         if not execute:
             return False
 
-        self.merge_termwiki_pages(keep_page, merge_pages)
+        self.merge_termwiki_pages(keep_page, merge_pages, deletion_strategy)
         row.processed = "yes"
         note = f"Merged into [[{keep_page}]]"
         row.report = note if not row.report else f"{row.report}; {note}"
         return True
 
-    def merge_duplicates_from_report(self, report_title: str, execute: bool) -> None:
+    def merge_duplicates_from_report(
+        self,
+        report_title: str,
+        execute: bool,
+        deletion_strategy: str,
+    ) -> None:
         """Read a report page and merge all approved duplicate rows."""
         report_page = self.site.pages[report_title]
         if not report_page.exists:
             raise SystemExit(f"Error: report page does not exist: {report_title}")
+
+        if deletion_strategy not in {"delete", "redirect"}:
+            raise SystemExit(
+                "Error: deletion_strategy must be one of: delete, redirect"
+            )
 
         content = report_page.text()
         rows = self.parse_duplicate_merge_rows(content)
@@ -431,7 +465,7 @@ class SiteHandler:
         for row in rows:
             if not self._row_is_mergeable(row):
                 continue
-            if self._execute_merge_row(row, execute):
+            if self._execute_merge_row(row, execute, deletion_strategy):
                 lines[row.line_index] = self.format_duplicate_merge_row(row)
                 processed += 1
 

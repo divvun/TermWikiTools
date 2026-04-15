@@ -720,12 +720,14 @@ class DumpHandler:
             )
 
             for pair, titles in sorted(grouped[(lang1, lang2)], key=lambda p: p[0]):
-                pair_text = " <-> ".join(f"{lang}:{expr}" for lang, expr in pair)
-                pages_text = " / ".join(f"[[{title}]]" for title in titles)
-                lines.append("|-")
-                lines.append(
-                    f"| {pair_text} || {pages_text} || keep || || || no"
-                )
+                set_titles = set(titles)
+                if len(set_titles) > 1:
+                    pair_text = " <-> ".join(f"{lang}:{expr}" for lang, expr in pair)
+                    pages_text = " / ".join(f"[[{title}]]" for title in set_titles)
+                    lines.append("|-")
+                    lines.append(
+                        f"| {pair_text} || {pages_text} || keep || || || no"
+                    )
 
             lines.append("|}")
             lines.append("")

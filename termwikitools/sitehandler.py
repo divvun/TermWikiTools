@@ -385,7 +385,7 @@ class SiteHandler:
     def _validated_merge_targets(
         row: DuplicateMergeRow,
     ) -> tuple[str, list[str]] | None:
-        keep_page = row.keep_page.strip()
+        keep_page = row.keep_page.strip().replace('[[', '').replace(']]', '')
         if not keep_page:
             print(f"Skipping row without keep page: {row.pair_text}")
             return None

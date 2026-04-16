@@ -357,20 +357,12 @@ def publish_duplicates_report(report_title: str, only_sanctioned: bool):
     is_flag=True,
     help="Execute merges and deletions. Without this flag, only print actions.",
 )
-@click.option(
-    "--deletion-strategy",
-    type=click.Choice(["redirect", "delete"]),
-    default="redirect",
-    show_default=True,
-    help="How to handle pages merged away.",
-)
-def merge_duplicates(report_title: str, execute: bool, deletion_strategy: str):
+def merge_duplicates(report_title: str, execute: bool):
     """Merge duplicate Concept pages from a reviewed report page."""
     site_handler = SiteHandler()
     site_handler.merge_duplicates_from_report(
         report_title=report_title,
         execute=execute,
-        deletion_strategy=deletion_strategy,
     )
 
 

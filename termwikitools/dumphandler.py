@@ -38,6 +38,7 @@ from openpyxl.styles import Alignment
 from rdflib import RDF, SKOS, BNode, Graph, Literal, Namespace, URIRef
 
 from termwikitools import read_termwiki
+from termwikitools.duplicate_merge_row import DuplicateMergeRow
 from termwikitools.handler_common import LANGUAGES, NAMESPACES
 from termwikitools.read_termwiki import (
     INVALID_CHARS_RE,
@@ -687,15 +688,16 @@ class DumpHandler:
                     index[key].add(title)
         return {key: titles for key, titles in index.items() if len(titles) > 1}
 
-    def render_duplicate_candidates_wikitext(self, only_sanctioned: str) -> str:
+    def render_duplicate_candidates_wikitext(
+        self, duplicate_merge_rows: list[DuplicateMergeRow]
+    ) -> str:
         """Render duplicate candidates as a MediaWiki review page."""
-        grouped: dict[tuple[str, str], list[tuple[tuple[str, str], list[str]]]] = (
+        grouped: dict[tuple[str, str], list[DuplicateMergeRow]] = (
             collections.defaultdict(list)
         )
-        for pair, titles in self.find_duplicate_candidates(only_sanctioned).items():
-            sorted_pair = tuple(sorted(pair, key=lambda p: (p[0], p[1])))
-            lang_pair = (sorted_pair[0][0], sorted_pair[1][0])
-            grouped[lang_pair].append((sorted_pair, sorted(titles)))
+
+        for row in duplicate_merge_rows:
+            grouped[row.get_lang_pair_key()].append(row)
 
         lines = [
             "__TOC__",
@@ -719,15 +721,9 @@ class DumpHandler:
                 "!! Keep page !! Report !! Processed"
             )
 
-            for pair, titles in sorted(grouped[(lang1, lang2)], key=lambda p: p[0]):
-                set_titles = set(titles)
-                if len(set_titles) > 1:
-                    pair_text = " <-> ".join(f"{lang}:{expr}" for lang, expr in pair)
-                    pages_text = " / ".join(f"[[{title}]]" for title in set_titles)
-                    lines.append("|-")
-                    lines.append(
-                        f"| {pair_text} || {pages_text} || keep || || || no"
-                    )
+            for row in sorted(grouped[(lang1, lang2)], key=lambda r: r.pair_text):
+                lines.append("|-")
+                lines.append(row.to_wikitext())
 
             lines.append("|}")
             lines.append("")

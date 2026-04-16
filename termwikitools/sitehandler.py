@@ -24,7 +24,7 @@ import re
 import subprocess
 import sys
 import time
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Generator, Iterator
@@ -34,27 +34,11 @@ import yaml
 
 from termwikitools import read_termwiki
 from termwikitools.dumphandler import DumpHandler
+from termwikitools.duplicate_merge_row import DuplicateMergeRow
 from termwikitools.handler_common import NAMESPACES
 
 mwclient: Any = importlib.import_module("mwclient")
 
-
-@dataclass
-class DuplicateMergeRow:
-    line_index: int
-    pair_text: str
-    pages: list[str]
-    decision: str
-    keep_page: str
-    report: str
-    processed: str
-
-    def to_mediawiki_row(self) -> str:
-        pages_text = " / ".join(f"[[{title}]]" for title in self.pages)
-        return (
-            f"| {self.pair_text} || {pages_text} || {self.decision} "
-            f"|| {self.keep_page} || {self.report} || {self.processed}"
-        )
 
 
 DUPLICATE_REPORT_COLUMN_COUNT = 6
@@ -174,82 +158,75 @@ class SiteHandler:
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
 
+    def existing_processed_rows(self, page: Any) -> list[DuplicateMergeRow]:
+        existing_content = page.text() if page.exists else ""
+
+        rows: list[DuplicateMergeRow] = []
+        for line in existing_content.splitlines():
+            parsed_row = self.parse_duplicate_merge_row(line)
+            if parsed_row is not None and parsed_row.processed.strip().lower() == "yes":
+                rows.append(parsed_row)
+
+        return rows
+
     def publish_duplicate_report(self, page_title: str, only_sanctioned: str) -> None:
         """Create or update a wiki page with duplicate candidate review rows."""
         page = self.site.pages[page_title]
-        existing_content = page.text() if page.exists else ""
 
-        dumphandler = DumpHandler()
-        content = dumphandler.render_duplicate_candidates_wikitext(only_sanctioned)
+        existing_rows = self.existing_processed_rows(page)
+
+        print(f"Preserving {len(existing_rows)} processed rows from existing report page")
+
         content = self._preserve_processed_duplicate_rows(
-            existing_content=existing_content,
-            generated_content=content,
+            existing_content=existing_rows, only_sanctioned=only_sanctioned
         )
 
-        self.save_page(
-            page,
-            content,
-            summary="Update duplicate Concept candidate report",
-        )
-
-    @staticmethod
-    def _duplicate_report_row_key(
-        row: DuplicateMergeRow,
-    ) -> tuple[str, tuple[str, ...]]:
-        normalized_pair = " ".join(row.pair_text.split())
-        normalized_pages = tuple(sorted(page.strip() for page in row.pages))
-        return normalized_pair, normalized_pages
-
-    @staticmethod
-    def _is_processed_yes(processed_value: str) -> bool:
-        return "yes" in processed_value.strip().lower()
+        # self.save_page(
+        #     page,
+        #     content,
+        #     summary="Update duplicate Concept candidate report",
+        # )
 
     @classmethod
     def _preserve_processed_duplicate_rows(
         cls,
-        existing_content: str,
-        generated_content: str,
+        existing_content: list[DuplicateMergeRow],
+        only_sanctioned: str,
     ) -> str:
+        def key_text(key: frozenset[tuple[str, str]]) -> str:
+            sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
+            return " <-> ".join(f"{lang}:{term}" for lang, term in sorted_pair)
+
+        def key_lang_pair(key: set[tuple[str, str]]) -> tuple[str, str]:
+            sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
+            return (sorted_pair[0][0], sorted_pair[0][1])
+
         if not existing_content:
-            return generated_content
+            return ""
 
-        preserved_rows_by_key: dict[
-            tuple[str, tuple[str, ...]],
-            DuplicateMergeRow,
-        ] = {}
-        for row in cls.parse_duplicate_merge_rows(existing_content):
-            if not cls._is_processed_yes(row.processed):
-                continue
-            row_key = cls._duplicate_report_row_key(row)
-            preserved_rows_by_key[row_key] = row
+        existing_keys = {row.get_frozenset_key() for row in existing_content}
+        existing_page_sets = {frozenset(row.pages) for row in existing_content}
 
-        if not preserved_rows_by_key:
-            return generated_content
+        dumphandler = DumpHandler()
+        generated_dict = dumphandler.find_duplicate_candidates(
+            only_sanctioned=only_sanctioned
+        )
 
-        generated_rows = cls.parse_duplicate_merge_rows(generated_content)
-        if not generated_rows:
-            return generated_content
+        dumps_without_existing = [
+            DuplicateMergeRow(
+                line_index=0,
+                pair_text=key_text(key),
+                pages=sorted(pages),
+                decision="keep",
+                keep_page="",
+                report="",
+                processed="no",
+            )
+            for key, pages in generated_dict.items()
+            if key not in existing_keys and pages not in existing_page_sets
+        ]
 
-        updated_lines = generated_content.splitlines()
-        preserved_count = 0
-
-        for row in generated_rows:
-            row_key = cls._duplicate_report_row_key(row)
-            preserved_row = preserved_rows_by_key.get(row_key)
-            if preserved_row is None:
-                continue
-
-            row.decision = preserved_row.decision
-            row.keep_page = preserved_row.keep_page
-            row.report = preserved_row.report
-            row.processed = preserved_row.processed
-            updated_lines[row.line_index] = cls.format_duplicate_merge_row(row)
-            preserved_count += 1
-
-        if preserved_count:
-            print(f"Preserved {preserved_count} already processed duplicate rows")
-
-        return "\n".join(updated_lines)
+        return dumphandler.render_duplicate_candidates_wikitext(existing_content + dumps_without_existing)
 
     @staticmethod
     def parse_duplicate_merge_rows(content: str) -> list[DuplicateMergeRow]:
@@ -268,20 +245,28 @@ class SiteHandler:
             pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
             if len(pages) < DUPLICATE_REPORT_MIN_PAGES:
                 continue
+    def parse_duplicate_merge_row(
+        line: str, line_index: int = 0
+    ) -> DuplicateMergeRow | None:
+        stripped = line.strip()
+        if not stripped.startswith("| ") or "||" not in stripped:
+            return None
 
-            rows.append(
-                DuplicateMergeRow(
-                    line_index=line_index,
-                    pair_text=pair_text,
-                    pages=pages,
-                    decision=decision,
-                    keep_page=keep_page,
-                    report=report,
-                    processed=processed,
-                )
-            )
+        columns = [column.strip() for column in stripped[2:].split("||")]
+        if len(columns) != DUPLICATE_REPORT_COLUMN_COUNT:
+            return None
 
-        return rows
+        pair_text, pages_cell, decision, keep_page, report, processed = columns
+        pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
+        return DuplicateMergeRow(
+            line_index=0,
+            pair_text=pair_text,
+            pages=pages,
+            decision=decision,
+            keep_page=keep_page,
+            report=report,
+            processed=processed,
+        )
 
     @staticmethod
     def _pick_first_nonempty(values: list[str | None]) -> str | None:
@@ -440,7 +425,7 @@ class SiteHandler:
     def _validated_merge_targets(
         row: DuplicateMergeRow,
     ) -> tuple[str, list[str]] | None:
-        keep_page = row.keep_page.strip().replace('[[', '').replace(']]', '')
+        keep_page = row.keep_page.strip().replace("[", "").replace("]", "")
         if not keep_page:
             print(f"Skipping row without keep page: {row.pair_text}")
             return None
@@ -514,7 +499,7 @@ class SiteHandler:
             if not self._row_is_mergeable(row):
                 continue
             if self._execute_merge_row(row, execute):
-                lines[row.line_index] = row.to_mediawiki_row()
+                lines[row.line_index] = row.to_wikitext()
                 processed += 1
 
         if execute and processed:
@@ -532,7 +517,7 @@ class SiteHandler:
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
         redirects = {
             redirect_xml.getparent().getparent()
-            for redirect_xml in root.xpath('.//mw:text', namespaces=namespace)
+            for redirect_xml in root.xpath(".//mw:text", namespaces=namespace)
             if redirect_xml.text and redirect_xml.text.startswith("#STIVREN")
         }
         print("Redirects pages", len(redirects))
@@ -574,7 +559,7 @@ class SiteHandler:
         for _, concept in dump.termwiki_pages:
             for related_expression in concept.related_expressions:
                 related_expression_dict[
-                    f'Expression:{related_expression.expression.replace("&amp;", "&")}'
+                    f"Expression:{related_expression.expression.replace('&amp;', '&')}"
                 ].add(related_expression.language)
 
         return related_expression_dict
@@ -586,8 +571,9 @@ class SiteHandler:
             .xpath(".//mw:text", namespaces=namespace)[0]
             .text
             for expression_xml in dump.tree.getroot().xpath(
-                './/mw:title', namespaces=namespace
-            ) if expression_xml.text and expression_xml.text.startswith("Expression:")
+                ".//mw:title", namespaces=namespace
+            )
+            if expression_xml.text and expression_xml.text.startswith("Expression:")
         }
 
     def make_expression_pages(
@@ -657,7 +643,7 @@ class SiteHandler:
         namespace = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
         to_deletes = {
             title_xml.text
-            for title_xml in root.xpath('.//mw:title', namespaces=namespace)
+            for title_xml in root.xpath(".//mw:title", namespaces=namespace)
             if title_xml.text and title_xml.text.startswith(part_of_title)
         }
         print(f"{len(to_deletes)} pages to delete")
@@ -867,7 +853,7 @@ class SiteHandler:
                 print(f"Failed on {page.name}")
 
     def get_valid_site_termwiki_pages(
-        self
+        self,
     ) -> Iterator[tuple[read_termwiki.TermWikiPage, str, Any]]:
         dumphandler = DumpHandler()
         for dump_tw_page, page_id in dumphandler.dump_pages_newer_than_timestamp(

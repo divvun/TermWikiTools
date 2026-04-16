@@ -169,14 +169,80 @@ class SiteHandler:
 
     def publish_duplicate_report(self, page_title: str, only_sanctioned: str) -> None:
         """Create or update a wiki page with duplicate candidate review rows."""
+        page = self.site.pages[page_title]
+        existing_content = page.text() if page.exists else ""
+
         dumphandler = DumpHandler()
         content = dumphandler.render_duplicate_candidates_wikitext(only_sanctioned)
-        page = self.site.pages[page_title]
+        content = self._preserve_processed_duplicate_rows(
+            existing_content=existing_content,
+            generated_content=content,
+        )
+
         self.save_page(
             page,
             content,
             summary="Update duplicate Concept candidate report",
         )
+
+    @staticmethod
+    def _duplicate_report_row_key(
+        row: DuplicateMergeRow,
+    ) -> tuple[str, tuple[str, ...]]:
+        normalized_pair = " ".join(row.pair_text.split())
+        normalized_pages = tuple(sorted(page.strip() for page in row.pages))
+        return normalized_pair, normalized_pages
+
+    @staticmethod
+    def _is_processed_yes(processed_value: str) -> bool:
+        return "yes" in processed_value.strip().lower()
+
+    @classmethod
+    def _preserve_processed_duplicate_rows(
+        cls,
+        existing_content: str,
+        generated_content: str,
+    ) -> str:
+        if not existing_content:
+            return generated_content
+
+        preserved_rows_by_key: dict[
+            tuple[str, tuple[str, ...]],
+            DuplicateMergeRow,
+        ] = {}
+        for row in cls.parse_duplicate_merge_rows(existing_content):
+            if not cls._is_processed_yes(row.processed):
+                continue
+            row_key = cls._duplicate_report_row_key(row)
+            preserved_rows_by_key[row_key] = row
+
+        if not preserved_rows_by_key:
+            return generated_content
+
+        generated_rows = cls.parse_duplicate_merge_rows(generated_content)
+        if not generated_rows:
+            return generated_content
+
+        updated_lines = generated_content.splitlines()
+        preserved_count = 0
+
+        for row in generated_rows:
+            row_key = cls._duplicate_report_row_key(row)
+            preserved_row = preserved_rows_by_key.get(row_key)
+            if preserved_row is None:
+                continue
+
+            row.decision = preserved_row.decision
+            row.keep_page = preserved_row.keep_page
+            row.report = preserved_row.report
+            row.processed = preserved_row.processed
+            updated_lines[row.line_index] = cls.format_duplicate_merge_row(row)
+            preserved_count += 1
+
+        if preserved_count:
+            print(f"Preserved {preserved_count} already processed duplicate rows")
+
+        return "\n".join(updated_lines)
 
     @staticmethod
     def parse_duplicate_merge_rows(content: str) -> list[DuplicateMergeRow]:

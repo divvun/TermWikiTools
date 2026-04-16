@@ -49,6 +49,13 @@ class DuplicateMergeRow:
     report: str
     processed: str
 
+    def to_mediawiki_row(self) -> str:
+        pages_text = " / ".join(f"[[{title}]]" for title in self.pages)
+        return (
+            f"| {self.pair_text} || {pages_text} || {self.decision} "
+            f"|| {self.keep_page} || {self.report} || {self.processed}"
+        )
+
 
 DUPLICATE_REPORT_COLUMN_COUNT = 6
 DUPLICATE_REPORT_MIN_PAGES = 2
@@ -275,15 +282,6 @@ class SiteHandler:
             )
 
         return rows
-
-    @staticmethod
-    def format_duplicate_merge_row(row: DuplicateMergeRow) -> str:
-        """Format a duplicate row back to one wikitext table row."""
-        pages_text = " / ".join(f"[[{title}]]" for title in row.pages)
-        return (
-            f"| {row.pair_text} || {pages_text} || {row.decision} "
-            f"|| {row.keep_page} || {row.report} || {row.processed}"
-        )
 
     @staticmethod
     def _pick_first_nonempty(values: list[str | None]) -> str | None:
@@ -516,7 +514,7 @@ class SiteHandler:
             if not self._row_is_mergeable(row):
                 continue
             if self._execute_merge_row(row, execute):
-                lines[row.line_index] = self.format_duplicate_merge_row(row)
+                lines[row.line_index] = row.to_mediawiki_row()
                 processed += 1
 
         if execute and processed:

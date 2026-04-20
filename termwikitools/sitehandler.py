@@ -20,7 +20,6 @@ import collections
 import importlib
 import json
 import os
-import re
 import subprocess
 import sys
 import time
@@ -34,7 +33,10 @@ import yaml
 
 from termwikitools import read_termwiki
 from termwikitools.dumphandler import DumpHandler
-from termwikitools.duplicate_merge_row import DuplicateMergeRow
+from termwikitools.duplicate_merge_row import (
+    DuplicateMergeRow,
+    merge_row_from_valid_columns,
+)
 from termwikitools.handler_common import NAMESPACES
 
 mwclient: Any = importlib.import_module("mwclient")
@@ -244,25 +246,9 @@ class SiteHandler:
         )
 
         return [
-            self.parse_duplicate_merge_row(column, line_index)
+            merge_row_from_valid_columns(column, line_index)
             for line_index, column in enumerate(valid_columns)
         ]
-
-    @staticmethod
-    def parse_duplicate_merge_row(
-        column: list[str], line_index: int = 0
-    ) -> DuplicateMergeRow:
-        pair_text, pages_cell, decision, keep_page, report, processed = column
-        pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
-        return DuplicateMergeRow(
-            line_index=0,
-            pair_text=pair_text,
-            pages=pages,
-            decision=decision,
-            keep_page=keep_page,
-            report=report,
-            processed=processed,
-        )
 
     @staticmethod
     def _pick_first_nonempty(values: list[str | None]) -> str | None:

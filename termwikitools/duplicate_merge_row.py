@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 
 
@@ -34,3 +35,18 @@ class DuplicateMergeRow:
         lang2, _ = pairs[1].split(":")
         return (lang1.strip(), lang2.strip())
 
+
+def merge_row_from_valid_columns(
+    column: list[str], line_index: int = 0
+) -> DuplicateMergeRow:
+    pair_text, pages_cell, decision, keep_page, report, processed = column
+    pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
+    return DuplicateMergeRow(
+        line_index=0,
+        pair_text=pair_text,
+        pages=pages,
+        decision=decision,
+        keep_page=keep_page,
+        report=report,
+        processed=processed,
+    )

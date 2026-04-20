@@ -29,16 +29,17 @@ from pathlib import Path
 from typing import Any, Generator, Iterator
 
 import marshmallow
+import requests
 import yaml
 
 from termwikitools import read_termwiki
 from termwikitools.dumphandler import DumpHandler
 from termwikitools.duplicate_merge_row import (
     DuplicateMergeRow,
-    merge_row_from_valid_columns,
 )
 from termwikitools.duplicate_merge_rows import (
     DuplicateMergeRows,
+    merge_rows_from_dump,
     merge_rows_from_wikitext,
     none_processed_rows,
     only_processed_rows,
@@ -170,86 +171,30 @@ class SiteHandler:
 
         return only_processed_rows(all_rows)
 
-    def publish_duplicate_report(self, page_title: str, only_sanctioned: str) -> None:
+    def publish_duplicate_report(self, report_title: str, only_sanctioned: str) -> None:
         """Create or update a wiki page with duplicate candidate review rows."""
-        page = self.site.pages[page_title]
+        report_page = self.site.pages[report_title]
 
-        existing_rows = self.existing_processed_rows(page)
-
+        content = report_page.text() if report_page.exists else ""
+        rows = merge_rows_from_wikitext(content).rows
+        only_processed = only_processed_rows(DuplicateMergeRows(rows)).rows
         print(
-            f"Preserving {len(existing_rows.rows)} processed rows from existing report page"
+            f"Preserving {len(only_processed)} processed rows from existing report page"
         )
-
-        content = self._preserve_processed_duplicate_rows(
-            existing_content=existing_rows.rows, only_sanctioned=only_sanctioned
-        )
-
-        # self.save_page(
-        #     page,
-        #     content,
-        #     summary="Update duplicate Concept candidate report",
-        # )
-
-    @classmethod
-    def _preserve_processed_duplicate_rows(
-        cls,
-        existing_content: list[DuplicateMergeRow],
-        only_sanctioned: str,
-    ) -> str:
-        def key_text(key: frozenset[tuple[str, str]]) -> str:
-            sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
-            print(f"key_text: {sorted_pair}")
-            return " <-> ".join(f"{lang}:{term}" for lang, term in sorted_pair)
-
-        def key_lang_pair(key: set[tuple[str, str]]) -> tuple[str, str]:
-            sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
-            return (sorted_pair[0][0], sorted_pair[0][1])
-
-        if not existing_content:
-            return ""
-
-        existing_keys = {row.get_frozenset_key() for row in existing_content}
-        existing_page_sets = {frozenset(row.pages) for row in existing_content}
-
-        dumphandler = DumpHandler()
-        generated_dict = dumphandler.find_duplicate_candidates(
-            only_sanctioned=only_sanctioned
-        )
+        existing_page_sets = {frozenset(row.pages) for row in only_processed}
+        from_dump = merge_rows_from_dump(only_sanctioned=only_sanctioned).rows
 
         dumps_without_existing = [
-            DuplicateMergeRow(
-                line_index=0,
-                pair_text=key_text(key),
-                pages=sorted(pages),
-                decision="keep",
-                keep_page="",
-                report="",
-                processed="no",
-            )
-            for key, pages in generated_dict.items()
-            if key not in existing_keys and pages not in existing_page_sets
+            row for row in from_dump if set(row.pages) not in existing_page_sets
         ]
 
-        return dumphandler.render_duplicate_candidates_wikitext(
-            existing_content + dumps_without_existing
+        self.save_page(
+            report_page,
+            content=DuplicateMergeRows(
+                rows=only_processed + dumps_without_existing
+            ).to_wikitext(),
+            summary="Update duplicate Concept candidate report",
         )
-
-    def parse_duplicate_merge_rows(self, content: str) -> list[DuplicateMergeRow]:
-        """Parse machine-readable rows from the duplicate report wikitext."""
-        stripped_lines = (line.strip() for line in content.splitlines())
-        columns = (
-            line.split("||")
-            for line in stripped_lines
-            if line.startswith("| ") and "||" in line
-        )
-        valid_columns = (
-            col for col in columns if len(col) == DUPLICATE_REPORT_COLUMN_COUNT
-        )
-
-        return [
-            merge_row_from_valid_columns(column, line_index)
-            for line_index, column in enumerate(valid_columns)
-        ]
 
     @staticmethod
     def _pick_first_nonempty(values: list[str | None]) -> str | None:
@@ -482,9 +427,7 @@ class SiteHandler:
         existing_page_sets = {frozenset(row.pages) for row in only_processed}
 
         dumps_without_existing = [
-            row
-            for row in none_processed
-            if set(row.pages) not in existing_page_sets
+            row for row in none_processed if set(row.pages) not in existing_page_sets
         ]
 
         if execute and processed:
@@ -665,7 +608,11 @@ class SiteHandler:
                     self.save_page(
                         page, fixed_tw_page.to_termwiki(), summary="Fixing content"
                     )
-            except (KeyError, marshmallow.exceptions.ValidationError) as error:
+            except (
+                KeyError,
+                marshmallow.exceptions.ValidationError,
+                requests.exceptions.HTTPError,
+            ) as error:
                 print(f"Error: {page.name}", error, file=sys.stderr)
                 raise SystemExit() from None
         else:

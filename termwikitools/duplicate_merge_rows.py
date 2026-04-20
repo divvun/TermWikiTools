@@ -1,6 +1,7 @@
 from collections import defaultdict
 from dataclasses import dataclass
 
+from termwikitools.dumphandler import DumpHandler
 from termwikitools.duplicate_merge_row import (
     DuplicateMergeRow,
     merge_row_from_valid_columns,
@@ -72,6 +73,31 @@ def merge_rows_from_wikitext(wikitext: str) -> DuplicateMergeRows:
         ]
     )
 
+def merge_rows_from_dump(only_sanctioned: str) -> DuplicateMergeRows:
+    def key_text(key: frozenset[tuple[str, str]]) -> str:
+        sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
+        print(f"key_text: {sorted_pair}")
+        return " <-> ".join(f"{lang}:{term}" for lang, term in sorted_pair)
+
+
+    dumphandler = DumpHandler()
+    generated_dict = dumphandler.find_duplicate_candidates(
+        only_sanctioned=only_sanctioned
+    )
+
+    return DuplicateMergeRows(rows=[
+        DuplicateMergeRow(
+            line_index=0,
+            pair_text=key_text(key),
+            pages=sorted(pages),
+            decision="keep",
+            keep_page="",
+            report="",
+            processed="no",
+        )
+        for key, pages in generated_dict.items()
+    ])
+    
 def only_processed_rows(duplicate_merge_rows: DuplicateMergeRows) -> DuplicateMergeRows:
     """Filter the rows to only include those that have been processed."""
     processed_rows = [

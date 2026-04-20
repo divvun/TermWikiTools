@@ -345,7 +345,7 @@ def publish_duplicates_report(report_title: str, only_sanctioned: bool):
     """Publish duplicate candidate report to a TermWiki page."""
     site_handler = SiteHandler()
     site_handler.publish_duplicate_report(
-        page_title=report_title,
+        report_title=report_title,
         only_sanctioned="True" if only_sanctioned else "False",
     )
 

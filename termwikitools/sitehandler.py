@@ -40,7 +40,6 @@ from termwikitools.handler_common import NAMESPACES
 mwclient: Any = importlib.import_module("mwclient")
 
 
-
 DUPLICATE_REPORT_COLUMN_COUNT = 6
 DUPLICATE_REPORT_MIN_PAGES = 2
 
@@ -175,7 +174,9 @@ class SiteHandler:
 
         existing_rows = self.existing_processed_rows(page)
 
-        print(f"Preserving {len(existing_rows)} processed rows from existing report page")
+        print(
+            f"Preserving {len(existing_rows)} processed rows from existing report page"
+        )
 
         content = self._preserve_processed_duplicate_rows(
             existing_content=existing_rows, only_sanctioned=only_sanctioned
@@ -226,37 +227,32 @@ class SiteHandler:
             if key not in existing_keys and pages not in existing_page_sets
         ]
 
-        return dumphandler.render_duplicate_candidates_wikitext(existing_content + dumps_without_existing)
+        return dumphandler.render_duplicate_candidates_wikitext(
+            existing_content + dumps_without_existing
+        )
+
+    def parse_duplicate_merge_rows(self, content: str) -> list[DuplicateMergeRow]:
+        """Parse machine-readable rows from the duplicate report wikitext."""
+        stripped_lines = (line.strip() for line in content.splitlines())
+        columns = (
+            line.split("||")
+            for line in stripped_lines
+            if line.startswith("| ") and "||" in line
+        )
+        valid_columns = (
+            col for col in columns if len(col) == DUPLICATE_REPORT_COLUMN_COUNT
+        )
+
+        return [
+            self.parse_duplicate_merge_row(column, line_index)
+            for line_index, column in enumerate(valid_columns)
+        ]
 
     @staticmethod
-    def parse_duplicate_merge_rows(content: str) -> list[DuplicateMergeRow]:
-        """Parse machine-readable rows from the duplicate report wikitext."""
-        rows: list[DuplicateMergeRow] = []
-        for line_index, line in enumerate(content.splitlines()):
-            stripped = line.strip()
-            if not stripped.startswith("| ") or "||" not in stripped:
-                continue
-
-            columns = [column.strip() for column in stripped[2:].split("||")]
-            if len(columns) != DUPLICATE_REPORT_COLUMN_COUNT:
-                continue
-
-            pair_text, pages_cell, decision, keep_page, report, processed = columns
-            pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
-            if len(pages) < DUPLICATE_REPORT_MIN_PAGES:
-                continue
     def parse_duplicate_merge_row(
-        line: str, line_index: int = 0
-    ) -> DuplicateMergeRow | None:
-        stripped = line.strip()
-        if not stripped.startswith("| ") or "||" not in stripped:
-            return None
-
-        columns = [column.strip() for column in stripped[2:].split("||")]
-        if len(columns) != DUPLICATE_REPORT_COLUMN_COUNT:
-            return None
-
-        pair_text, pages_cell, decision, keep_page, report, processed = columns
+        column: list[str], line_index: int = 0
+    ) -> DuplicateMergeRow:
+        pair_text, pages_cell, decision, keep_page, report, processed = column
         pages = re.findall(r"\[\[([^\]|]+)(?:\|[^\]]+)?\]\]", pages_cell)
         return DuplicateMergeRow(
             line_index=0,

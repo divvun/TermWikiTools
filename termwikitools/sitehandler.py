@@ -37,12 +37,17 @@ from termwikitools.duplicate_merge_row import (
     DuplicateMergeRow,
     merge_row_from_valid_columns,
 )
+from termwikitools.duplicate_merge_rows import (
+    DuplicateMergeRows,
+    merge_rows_from_wikitext,
+    none_processed_rows,
+    only_processed_rows,
+)
 from termwikitools.handler_common import NAMESPACES
 
 mwclient: Any = importlib.import_module("mwclient")
 
 
-DUPLICATE_REPORT_COLUMN_COUNT = 6
 DUPLICATE_REPORT_MIN_PAGES = 2
 
 
@@ -159,16 +164,11 @@ class SiteHandler:
         except mwclient.errors.APIError as error:
             print(page.name, content, str(error), file=sys.stderr)
 
-    def existing_processed_rows(self, page: Any) -> list[DuplicateMergeRow]:
+    def existing_processed_rows(self, page: Any) -> DuplicateMergeRows:
         existing_content = page.text() if page.exists else ""
+        all_rows = merge_rows_from_wikitext(existing_content)
 
-        rows: list[DuplicateMergeRow] = []
-        for line in existing_content.splitlines():
-            parsed_row = self.parse_duplicate_merge_row(line)
-            if parsed_row is not None and parsed_row.processed.strip().lower() == "yes":
-                rows.append(parsed_row)
-
-        return rows
+        return only_processed_rows(all_rows)
 
     def publish_duplicate_report(self, page_title: str, only_sanctioned: str) -> None:
         """Create or update a wiki page with duplicate candidate review rows."""
@@ -177,11 +177,11 @@ class SiteHandler:
         existing_rows = self.existing_processed_rows(page)
 
         print(
-            f"Preserving {len(existing_rows)} processed rows from existing report page"
+            f"Preserving {len(existing_rows.rows)} processed rows from existing report page"
         )
 
         content = self._preserve_processed_duplicate_rows(
-            existing_content=existing_rows, only_sanctioned=only_sanctioned
+            existing_content=existing_rows.rows, only_sanctioned=only_sanctioned
         )
 
         # self.save_page(
@@ -198,6 +198,7 @@ class SiteHandler:
     ) -> str:
         def key_text(key: frozenset[tuple[str, str]]) -> str:
             sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
+            print(f"key_text: {sorted_pair}")
             return " <-> ".join(f"{lang}:{term}" for lang, term in sorted_pair)
 
         def key_lang_pair(key: set[tuple[str, str]]) -> tuple[str, str]:
@@ -421,12 +422,6 @@ class SiteHandler:
             return None
         return keep_page, merge_pages
 
-    @staticmethod
-    def _row_is_mergeable(row: DuplicateMergeRow) -> bool:
-        decision = row.decision.strip().lower()
-        row_processed = row.processed.strip().lower()
-        return decision == "merge" and row_processed != "yes"
-
     def merge_termwiki_pages(
         self,
         keep_page: str,
@@ -443,7 +438,7 @@ class SiteHandler:
         row: DuplicateMergeRow,
         execute: bool,
     ) -> bool:
-        merge_targets = self._validated_merge_targets(row)
+        merge_targets = row.validated_merge_targets()
         if merge_targets is None:
             return False
 
@@ -453,9 +448,7 @@ class SiteHandler:
             return False
 
         self.merge_termwiki_pages(keep_page, merge_pages)
-        row.processed = "yes"
-        note = f"Merged into [[{keep_page}]]"
-        row.report = note if not row.report else f"{row.report}; {note}"
+
         return True
 
     def merge_duplicates_from_report(
@@ -464,30 +457,42 @@ class SiteHandler:
         execute: bool,
     ) -> None:
         """Read a report page and merge all approved duplicate rows."""
+
         report_page = self.site.pages[report_title]
         if not report_page.exists:
             print(f"Error: report page does not exist: {report_title}")
             return
 
         content = report_page.text()
-        rows = self.parse_duplicate_merge_rows(content)
+        rows = merge_rows_from_wikitext(content).rows
         if not rows:
             print("No duplicate rows found in report page")
             return
 
-        lines = content.splitlines()
         processed = 0
         for row in rows:
-            if not self._row_is_mergeable(row):
+            if not row.is_mergeable():
                 continue
             if self._execute_merge_row(row, execute):
-                lines[row.line_index] = row.to_wikitext()
+                row.mark_as_processed()
                 processed += 1
+
+        only_processed = only_processed_rows(DuplicateMergeRows(rows)).rows
+        none_processed = none_processed_rows(DuplicateMergeRows(rows)).rows
+        existing_page_sets = {frozenset(row.pages) for row in only_processed}
+
+        dumps_without_existing = [
+            row
+            for row in none_processed
+            if set(row.pages) not in existing_page_sets
+        ]
 
         if execute and processed:
             self.save_page(
                 report_page,
-                "\n".join(lines),
+                DuplicateMergeRows(
+                    rows=only_processed + dumps_without_existing
+                ).to_wikitext(),
                 summary=f"Mark {processed} duplicate merge rows as processed",
             )
         elif execute:

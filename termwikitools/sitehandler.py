@@ -375,8 +375,9 @@ class SiteHandler:
         """Merge Concept pages into keep_page and delete merged-away pages."""
         titles = [keep_page] + merge_pages
         parsed_pages = self._load_termwiki_pages(titles)
-        self._save_merged_page(keep_page, parsed_pages)
-        self._delete_merged_pages(keep_page, merge_pages)
+        if parsed_pages:
+            self._save_merged_page(keep_page, parsed_pages)
+            self._delete_merged_pages(keep_page, merge_pages)
 
     def _execute_merge_row(
         self,

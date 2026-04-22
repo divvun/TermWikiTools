@@ -76,7 +76,6 @@ def merge_rows_from_wikitext(wikitext: str) -> DuplicateMergeRows:
 def merge_rows_from_dump(only_sanctioned: str) -> DuplicateMergeRows:
     def key_text(key: frozenset[tuple[str, str]]) -> str:
         sorted_pair = tuple(sorted(key, key=lambda p: (p[0], p[1])))
-        print(f"key_text: {sorted_pair}")
         return " <-> ".join(f"{lang}:{term}" for lang, term in sorted_pair)
 
 

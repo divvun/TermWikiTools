@@ -468,6 +468,14 @@ def cleanup_sms_expression(expression: str) -> str:
     )
 
 
+def cleanup_la_expression(expression: str) -> str:
+    """Normalize Latin expressions to initial uppercase."""
+    if not expression:
+        return expression
+
+    return expression[0].upper() + expression[1:]
+
+
 def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """Clean up expression.
 
@@ -484,6 +492,10 @@ def cleanup_expression(related_expression: RelatedExpression) -> dict:
         )
     if expression_dict.get("language") == "sms":
         expression_dict["expression"] = cleanup_sms_expression(
+            expression_dict["expression"]
+        )
+    if expression_dict.get("language") == "lat":
+        expression_dict["expression"] = cleanup_la_expression(
             expression_dict["expression"]
         )
     return expression_dict

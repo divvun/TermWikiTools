@@ -426,6 +426,48 @@ def read_semantic_form(text_iterator: Iterable[str]) -> Dict[str, str]:
     return wiki_form
 
 
+def cleanup_se_expression(expression: str) -> str:
+    """Normalize sme-fin dictionary characters in North Sami expressions.
+    
+    Sammallahti letters from his sme-fin dictionary
+    are replaced with the corresponding standard North Sami characters.
+
+    Args:
+        expression: The North Sami expression to be normalized.
+
+    Returns:
+        The normalized expression.
+    """
+    return expression.translate(
+        str.maketrans(
+            "Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ", "Eeiieijlouhlmrvaeouybdg ru' "
+        )
+    )
+
+
+def cleanup_sms_expression(expression: str) -> str:
+    """Replace invalid accents with valid ones for the sms language.
+
+        * u2019: RIGHT SINGLE QUOTATION MARK
+        * u0027: APOSTROPHE
+        * u2032: PRIME
+        * u00B4: ACUTE ACCENT
+        * u0301: COMBINING ACUTE ACCENT
+        * u02BC: MODIFIER LETTER APOSTROPHE
+        * u02B9: MODIFIER LETTER PRIME
+
+    Args:
+        expression: The expression to be cleaned up.
+    Returns:
+        The cleaned up expression.
+    """
+    return expression.translate(
+        str.maketrans(
+            "\u2019\u0027\u2032\u00b4\u0301", "\u02bc\u02bc\u02b9\u02b9\u02b9"
+        )
+    )
+
+
 def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """Clean up expression.
 
@@ -437,26 +479,12 @@ def cleanup_expression(related_expression: RelatedExpression) -> dict:
     """
     expression_dict = asdict(related_expression)
     if expression_dict.get("language") == "se":
-        # Sammallahti letters from his sme-fin dictionary
-        expression_dict["expression"] = expression_dict["expression"].translate(
-            str.maketrans(
-                "Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ", "Eeiieijlouhlmrvaeouybdg ru' "
-            )
+        expression_dict["expression"] = cleanup_se_expression(
+            expression_dict["expression"]
         )
     if expression_dict.get("language") == "sms":
-        """Replace invalid accents with valid ones for the sms language.
-
-        * u2019: RIGHT SINGLE QUOTATION MARK
-        * u0027: APOSTROPHE
-        * u2032: PRIME
-        * u00B4: ACUTE ACCENT
-        * u0301: COMBINING ACUTE ACCENT
-        * u02BC: MODIFIER LETTER APOSTROPHE
-        * u02B9: MODIFIER LETTER PRIME"""
-        expression_dict["expression"] = expression_dict["expression"].translate(
-            str.maketrans(
-                "\u2019\u0027\u2032\u00b4\u0301", "\u02bc\u02bc\u02b9\u02b9\u02b9"
-            )
+        expression_dict["expression"] = cleanup_sms_expression(
+            expression_dict["expression"]
         )
     return expression_dict
 

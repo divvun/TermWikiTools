@@ -326,3 +326,39 @@ class TestConcept(unittest.TestCase):
         concept = read_termwiki.Concept()
         concept.from_termwiki(content)
         self.assertEqual(want, str(concept))
+
+
+class TestCleanupExpression(unittest.TestCase):
+    def test_cleanup_expression_normalizes_se_characters(self):
+        related_expression = read_termwiki.RelatedExpression(
+            note=None,
+            pos=None,
+            source=None,
+            inflection=None,
+            country=None,
+            dialect=None,
+            status=None,
+            expression="Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ",
+            language="se",
+        )
+
+        cleaned_expression = read_termwiki.cleanup_expression(related_expression)
+
+        self.assertEqual(cleaned_expression["expression"], "Eeiieijlouhlmrvaeouybdg ru' ")
+
+    def test_cleanup_expression_normalizes_sms_apostrophes(self):
+        related_expression = read_termwiki.RelatedExpression(
+            note=None,
+            pos=None,
+            source=None,
+            inflection=None,
+            country=None,
+            dialect=None,
+            status=None,
+            expression="\u2019\u0027\u2032\u00b4\u0301",
+            language="sms",
+        )
+
+        cleaned_expression = read_termwiki.cleanup_expression(related_expression)
+
+        self.assertEqual(cleaned_expression["expression"], "\u02bc\u02bc\u02b9\u02b9\u02b9")

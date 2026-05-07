@@ -45,6 +45,7 @@ from termwikitools.duplicate_merge_rows import (
     only_processed_rows,
 )
 from termwikitools.handler_common import NAMESPACES
+from termwikitools.read_termwiki import termwiki_page_to_dataclass
 
 mwclient: Any = importlib.import_module("mwclient")
 
@@ -858,3 +859,37 @@ class SiteHandler:
         write_time_stamp(datetime.now(timezone.utc))
         self.fix_expression_pages()
         self.delete_redirects()
+
+    def fix_latin_expressions(self) -> None:
+        """Fix pages containing latin expressions with initial lowercase letters."""
+        dump = DumpHandler()
+        for title, page in dump.termwiki_pages:
+            if any(
+                expression
+                for expression in page.related_expressions
+                if expression.language == "lat"
+                and expression.expression[0].lower() == expression.expression[0]
+            ):
+                site_page = self.site.pages[title]
+                if site_page.exists:
+                    try:
+                        print(f"Fixing Latin expressions in {title}")
+                        content = termwiki_page_to_dataclass(
+                            title, iter(site_page.text().splitlines())
+                        )
+                        cleaned_content = read_termwiki.cleanup_termwiki_page(content)
+                        self.save_page(
+                            site_page,
+                            cleaned_content.to_termwiki(),
+                            summary="Fixing Latin expressions",
+                        )
+                        time.sleep(0.2)
+                    except (
+                        KeyError,
+                        marshmallow.exceptions.ValidationError,
+                        requests.exceptions.HTTPError,
+                    ) as error:
+                        print(f"Error: {title}", error, file=sys.stderr)
+                        raise SystemExit() from None
+                else:
+                    print(f"page {title} does not exist")

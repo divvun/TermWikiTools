@@ -395,3 +395,9 @@ def fix_by_timestamp():
     """Fix Concept pages on the TermWiki by timestamp."""
     site_handler = SiteHandler()
     site_handler.fix_by_timestamp()
+
+@site.command()
+def fix_latin_expressions():
+    """Fix pages containing latin expressions with initial lowercase letters."""
+    site_handler = SiteHandler()
+    site_handler.fix_latin_expressions()

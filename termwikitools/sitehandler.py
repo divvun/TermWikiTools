@@ -855,10 +855,10 @@ class SiteHandler:
         if not os.getenv("GTHOME"):
             raise SystemExit("Error: The environment value GTHOME is not set")
         update_svn()
+        self.delete_redirects()
         self.fix_recent_termwiki_pages()
         write_time_stamp(datetime.now(timezone.utc))
         self.fix_expression_pages()
-        self.delete_redirects()
 
     def fix_latin_expressions(self) -> None:
         """Fix pages containing latin expressions with initial lowercase letters."""

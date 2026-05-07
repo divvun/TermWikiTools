@@ -271,20 +271,6 @@ def duplicates(only_sanctioned):
     )
 
 
-@dump.command()
-@click.option(
-    "--only-sanctioned", is_flag=True, help="Only consider sanctioned expressions."
-)
-def duplicates_report(only_sanctioned):
-    """Print duplicate candidates as MediaWiki report text."""
-    dumphandler = DumpHandler()
-    print(
-        dumphandler.render_duplicate_candidates_wikitext(
-            only_sanctioned="True" if only_sanctioned else "False"
-        )
-    )
-
-
 @main.group()
 def site():
     pass

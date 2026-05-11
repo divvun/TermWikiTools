@@ -3,7 +3,10 @@
 
 import unittest
 
-from termwikitools import read_termwiki
+from termwikitools.read_termwiki import (
+    cleanup_termwiki_page,
+    termwiki_page_to_dataclass,
+)
 
 
 class FalseMockAnalyser(object):
@@ -16,143 +19,119 @@ class TrueMockAnalyser(object):
         return True
 
 
+def test_bot1():
+    """Check that continued lines in Concept is kept as is."""
+    content = iter(
+        [
+            "{{Concept info",
+            "|language=nb",
+            "|explanation=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe",
+            " 1. du blir nok ikke fet av det arbeidet",
+            "}}",
+            "{{Concept info",
+            "|language=se",
+            "|explanation=omd",
+            " 1. it don gal dainna bargguin ađaiduva",
+            "}}",
+            "{{Related expression",
+            "|language=se",
+            "|expression=ađaiduvvat",
+            "|sanctioned=False",
+            "|pos=V",
+            "}}",
+        ]
+    )
+
+    want = iter(
+        [
+            "{{Concept info",
+            "|language=nb",
+            "|explanation=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe",
+            "1. du blir nok ikke fet av det arbeidet",
+            "}}",
+            "{{Concept info",
+            "|language=se",
+            "|explanation=omd",
+            "1. it don gal dainna bargguin ađaiduva",
+            "}}",
+            "{{Related expression",
+            "|language=se",
+            "|expression=ađaiduvvat",
+            "|sanctioned=False",
+            "|pos=V",
+            "}}",
+            "{{Concept}}",
+        ]
+    )
+
+    concept = termwiki_page_to_dataclass(title="Test1", text_iterator=content)
+
+    assert termwiki_page_to_dataclass(
+        title="Test1", text_iterator=want
+    ) == cleanup_termwiki_page(concept)
+
+
+def test_bot4():
+    """Check that sanctioned=No is set default."""
+    content = iter(
+        [
+            "{{Concept info",
+            "|language=se",
+            "|definition=njiŋŋálas",
+            "}}",
+            "{{Related expression",
+            "|language=se",
+            "|expression=rotnu",
+            "|pos=N",
+            "}}",
+        ]
+    )
+    want = iter(
+        [
+            "{{Concept info",
+            "|language=se",
+            "|definition=njiŋŋálas",
+            "}}",
+            "{{Related expression",
+            "|language=se",
+            "|expression=rotnu",
+            "|pos=N",
+            "|sanctioned=False",
+            "}}",
+            "{{Concept}}",
+        ]
+    )
+
+    concept = termwiki_page_to_dataclass(title="Test", text_iterator=content)
+    assert termwiki_page_to_dataclass(
+        title="Test", text_iterator=want
+    ) == cleanup_termwiki_page(concept)
+
+def test_bot6():
+    """Check that Related concept is parsed correctly."""
+
+    content = [
+            "{{Related expression",
+            "|language=se",
+            "|expression=exp",
+            "|sanctioned=False",
+            "}}",
+            "{{Related concept",
+            "|concept=Boazodoallu:duottarmiessi",
+            "|relation=cohyponym",
+            "}}",
+            "{{Concept}}",
+        ]
+    
+
+    concept = termwiki_page_to_dataclass(title="Test", text_iterator=iter(content))
+    assert concept.related_concepts is not None
+    assert len(concept.related_concepts) == 1
+    assert concept.related_concepts[0].concept == content[6].split("|concept=")[1]
+    assert concept.related_concepts[0].relation == content[7].split("|relation=")[1]
+
+
 class TestConcept(unittest.TestCase):
-    def test_bot1(self):
-        """Check that continued lines in Concept is kept as is."""
-        self.maxDiff = None
-        content = "\n".join(
-            [
-                "{{Concept",
-                "|explanation_se=omd",
-                " 1. it don gal dainna bargguin ađaiduva",
-                "|explanation_nb=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe",
-                " 1. du blir nok ikke fet av det arbeidet",
-                "}}",
-                "{{Related expression",
-                "|language=se",
-                "|expression=ađaiduvvat",
-                "|sanctioned=No",
-                "|pos=V",
-                "}}",
-            ]
-        )
-
-        want = "\n".join(
-            [
-                "{{Concept info",
-                "|language=nb",
-                "|explanation=bli fetere - om husdyr; - ironisk: «bli fet av» noe, ha fordel av noe",
-                "1. du blir nok ikke fet av det arbeidet",
-                "}}",
-                "{{Concept info",
-                "|language=se",
-                "|explanation=omd",
-                "1. it don gal dainna bargguin ađaiduva",
-                "}}",
-                "{{Related expression",
-                "|language=se",
-                "|expression=ađaiduvvat",
-                "|sanctioned=False",
-                "|pos=V",
-                "}}",
-                "{{Concept}}",
-            ]
-        )
-
-        concept = read_termwiki.Concept()
-        concept.from_termwiki(content)
-        self.assertEqual(want, str(concept))
-
-    def test_bot4(self):
-        """Check that sanctioned=No is set default."""
-        self.maxDiff = None
-        content = "\n".join(
-            [
-                "{{Concept",
-                "|definition_se=njiŋŋálas",
-                "}}",
-                "{{Related expression",
-                "|language=se",
-                "|expression=rotnu",
-                "|pos=N",
-                "}}",
-            ]
-        )
-        want = "\n".join(
-            [
-                "{{Concept info",
-                "|language=se",
-                "|definition=njiŋŋálas",
-                "}}",
-                "{{Related expression",
-                "|language=se",
-                "|expression=rotnu",
-                "|pos=N",
-                "|sanctioned=False",
-                "}}",
-                "{{Concept}}",
-            ]
-        )
-
-        concept = read_termwiki.Concept()
-        concept.from_termwiki(content)
-        self.assertEqual(want, str(concept))
-
-    def test_bot6(self):
-        """Check that Related concept is parsed correctly."""
-        self.maxDiff = None
-
-        content = "\n".join(
-            [
-                "{{Related expression",
-                "|language=se",
-                "|expression=exp",
-                "|sanctioned=False",
-                "}}",
-                "{{Related concept",
-                "|concept=Boazodoallu:duottarmiessi",
-                "|relation=cohyponym",
-                "}}",
-                "{{Concept}}",
-            ]
-        )
-
-        want = content
-
-        concept = read_termwiki.Concept()
-        concept.from_termwiki(content)
-        self.assertEqual(want, str(concept))
-
-    def test_is_expression_set(self):
-        """Check Related expressions with empty expressions are deleted."""
-        self.maxDiff = None
-
-        content = "\n".join(
-            [
-                "{{Concept",
-                "|definition_se=definition1",
-                "}}",
-                "{{Related expression",
-                "|language=se",
-                "|sanctioned=No",
-                "}}",
-            ]
-        )
-
-        want = "\n".join(
-            [
-                "{{Concept info",
-                "|language=se",
-                "|definition=definition1",
-                "}}",
-                "{{Concept}}",
-            ]
-        )
-
-        concept = read_termwiki.Concept()
-        concept.from_termwiki(content)
-        self.assertEqual(want, str(concept))
-
     def test_bot8(self):
         """Check that empty and unwanted attributes in Concept are removed."""
         content = """{{Concept

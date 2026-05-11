@@ -344,7 +344,9 @@ class TestCleanupExpression(unittest.TestCase):
 
         cleaned_expression = read_termwiki.cleanup_expression(related_expression)
 
-        self.assertEqual(cleaned_expression["expression"], "Eeiieijlouhlmrvaeouybdg ru' ")
+        self.assertEqual(
+            cleaned_expression["expression"], "Eeiieijlouhlmrvaeouybdg ru' "
+        )
 
     def test_cleanup_expression_normalizes_sms_apostrophes(self):
         related_expression = read_termwiki.RelatedExpression(
@@ -361,7 +363,9 @@ class TestCleanupExpression(unittest.TestCase):
 
         cleaned_expression = read_termwiki.cleanup_expression(related_expression)
 
-        self.assertEqual(cleaned_expression["expression"], "\u02bc\u02bc\u02b9\u02b9\u02b9")
+        self.assertEqual(
+            cleaned_expression["expression"], "\u02bc\u02bc\u02b9\u02b9\u02b9"
+        )
 
     def test_cleanup_expression_uppercases_initial_latin_character(self):
         related_expression = read_termwiki.RelatedExpression(

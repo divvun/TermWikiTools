@@ -6,6 +6,8 @@ import unittest
 from termwikitools.read_termwiki import (
     cleanup_termwiki_page,
     termwiki_page_to_dataclass,
+    RelatedExpression,
+    cleanup_expression,
 )
 
 
@@ -107,22 +109,22 @@ def test_bot4():
         title="Test", text_iterator=want
     ) == cleanup_termwiki_page(concept)
 
+
 def test_bot6():
     """Check that Related concept is parsed correctly."""
 
     content = [
-            "{{Related expression",
-            "|language=se",
-            "|expression=exp",
-            "|sanctioned=False",
-            "}}",
-            "{{Related concept",
-            "|concept=Boazodoallu:duottarmiessi",
-            "|relation=cohyponym",
-            "}}",
-            "{{Concept}}",
-        ]
-    
+        "{{Related expression",
+        "|language=se",
+        "|expression=exp",
+        "|sanctioned=False",
+        "}}",
+        "{{Related concept",
+        "|concept=Boazodoallu:duottarmiessi",
+        "|relation=cohyponym",
+        "}}",
+        "{{Concept}}",
+    ]
 
     concept = termwiki_page_to_dataclass(title="Test", text_iterator=iter(content))
     assert concept.related_concepts is not None
@@ -131,58 +133,55 @@ def test_bot6():
     assert concept.related_concepts[0].relation == content[7].split("|relation=")[1]
 
 
-class TestCleanupExpression(unittest.TestCase):
-    def test_cleanup_expression_normalizes_se_characters(self):
-        related_expression = read_termwiki.RelatedExpression(
-            note=None,
-            pos=None,
-            source=None,
-            inflection=None,
-            country=None,
-            dialect=None,
-            status=None,
-            expression="Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ",
-            language="se",
-        )
+def test_cleanup_expression_normalizes_se_characters():
+    related_expression = RelatedExpression(
+        note=None,
+        pos=None,
+        source=None,
+        inflection=None,
+        country=None,
+        dialect=None,
+        status=None,
+        expression="Èéíïēīĵĺōūḥḷṃṇṿạẹọụÿⓑⓓⓖ·ṛü’ ",
+        language="se",
+    )
 
-        cleaned_expression = read_termwiki.cleanup_expression(related_expression)
+    cleaned_expression = cleanup_expression(related_expression)
 
-        self.assertEqual(
-            cleaned_expression["expression"], "Eeiieijlouhlmrvaeouybdg ru' "
-        )
+    assert cleaned_expression["expression"] == "Eeiieijlouhlmrvaeouybdg ru' "
 
-    def test_cleanup_expression_normalizes_sms_apostrophes(self):
-        related_expression = read_termwiki.RelatedExpression(
-            note=None,
-            pos=None,
-            source=None,
-            inflection=None,
-            country=None,
-            dialect=None,
-            status=None,
-            expression="\u2019\u0027\u2032\u00b4\u0301",
-            language="sms",
-        )
 
-        cleaned_expression = read_termwiki.cleanup_expression(related_expression)
+def test_cleanup_expression_normalizes_sms_apostrophes():
+    related_expression = RelatedExpression(
+        note=None,
+        pos=None,
+        source=None,
+        inflection=None,
+        country=None,
+        dialect=None,
+        status=None,
+        expression="\u2019\u0027\u2032\u00b4\u0301",
+        language="sms",
+    )
 
-        self.assertEqual(
-            cleaned_expression["expression"], "\u02bc\u02bc\u02b9\u02b9\u02b9"
-        )
+    cleaned_expression = cleanup_expression(related_expression)
 
-    def test_cleanup_expression_uppercases_initial_latin_character(self):
-        related_expression = read_termwiki.RelatedExpression(
-            note=None,
-            pos=None,
-            source=None,
-            inflection=None,
-            country=None,
-            dialect=None,
-            status=None,
-            expression="rosa canina",
-            language="lat",
-        )
+    assert cleaned_expression["expression"] == "\u02bc\u02bc\u02b9\u02b9\u02b9"
 
-        cleaned_expression = read_termwiki.cleanup_expression(related_expression)
 
-        self.assertEqual(cleaned_expression["expression"], "Rosa canina")
+def test_cleanup_expression_uppercases_initial_latin_character():
+    related_expression = RelatedExpression(
+        note=None,
+        pos=None,
+        source=None,
+        inflection=None,
+        country=None,
+        dialect=None,
+        status=None,
+        expression="rosa canina",
+        language="lat",
+    )
+
+    cleaned_expression = cleanup_expression(related_expression)
+
+    assert cleaned_expression["expression"] == "Rosa canina"

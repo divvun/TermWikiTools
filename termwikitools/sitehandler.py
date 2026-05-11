@@ -557,7 +557,7 @@ class SiteHandler:
                 print("\treally fixing", expression_title)
                 self.save_page(page, content=content, summary="Fixing expression page")
                 time.sleep(0.2)
-        except mwclient.InvalidPageTitle as error:
+        except (mwclient.InvalidPageTitle, requests.exceptions.HTTPError) as error:
             print(expression_title, error, file=sys.stderr)
 
     def make_expression_content(self, languages: set) -> str:

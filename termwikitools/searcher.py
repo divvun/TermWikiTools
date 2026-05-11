@@ -158,7 +158,7 @@ def search(search_language, searches, outfile):
     results = [
         {
             language: (
-                f'{", ".join(termwiki_page.get_terms(language))}'
+                f"{', '.join(termwiki_page.get_terms(language))}"
                 f" {termwiki_page.get_definition(language)}"
             ).strip()
             for termwiki_page in termwiki_pages
@@ -315,8 +315,8 @@ def define_partofspeech(import_concept, dump_concept):
             ):
                 if related_expression["pos"] == pos:
                     print(
-                        f"{related_expression["pos"]}: "
-                        f"{related_expression["expression"]}"
+                        f"{related_expression['pos']}: "
+                        f"{related_expression['expression']}"
                     )
         prompt = (
             "Choose pos: \n"

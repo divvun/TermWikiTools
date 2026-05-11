@@ -1,7 +1,7 @@
 """Make a dict of stem:set(languages) from terms and dictionaries.
 
 For terms, index all sanctioned lemmas of the terms.
-For dictionaries, index all lemmas of the lookup lemmas. 
+For dictionaries, index all lemmas of the lookup lemmas.
 For the Sammallahti dictionary, index the translation lemmas as well.
 """
 
@@ -104,8 +104,9 @@ def import_sammallahti():
         make_entries(parse_xmlfile(xml_file), dictprefix="sammallahti")
     except etree.XMLSyntaxError as error:
         print(
-            "Syntax error in {} "
-            "with the following error:\n{}\n".format(xml_file, error),
+            "Syntax error in {} with the following error:\n{}\n".format(
+                xml_file, error
+            ),
             file=sys.stderr,
         )
     except OSError:
@@ -143,8 +144,9 @@ def import_smjmed():
             make_entries(parse_xmlfile(xml_file), dictprefix="habmer")
         except etree.XMLSyntaxError as error:
             print(
-                "Syntax error in {} "
-                "with the following error:\n{}\n".format(xml_file, error),
+                "Syntax error in {} with the following error:\n{}\n".format(
+                    xml_file, error
+                ),
                 file=sys.stderr,
             )
         except OSError:

@@ -17,6 +17,7 @@
 #   http://giellatekno.uit.no & http://divvun.no
 #
 """Lookup which articles belongs to an expression."""
+
 from collections import defaultdict
 
 from termwikitools import bot

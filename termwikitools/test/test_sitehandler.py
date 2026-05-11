@@ -3,8 +3,7 @@
 from termwikitools.sitehandler import SiteHandler
 
 HEADER = (
-    "! Term pair !! Candidate pages !! Decision !! Keep page !! "
-    "Report !! Processed\\n"
+    "! Term pair !! Candidate pages !! Decision !! Keep page !! Report !! Processed\\n"
 )
 
 

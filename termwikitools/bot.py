@@ -18,7 +18,6 @@
 #
 """Bot to fix syntax blunders in termwiki articles."""
 
-
 import click
 import requests
 
@@ -130,7 +129,7 @@ def vocbench(output: str) -> None:
 )
 def missing(language, only_sanctioned):
     """Print unknown for a given language.
-    
+
     Unknown means that neither the descriptive nor the norm fst recognises the term.
     """
     dumphandler = DumpHandler()
@@ -381,6 +380,7 @@ def fix_by_timestamp():
     """Fix Concept pages on the TermWiki by timestamp."""
     site_handler = SiteHandler()
     site_handler.fix_by_timestamp()
+
 
 @site.command()
 def fix_latin_expressions():
